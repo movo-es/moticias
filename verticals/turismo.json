@@ -1,0 +1,16 @@
+{
+  "id": "turismo",
+  "name": "Viajar en grupo",
+  "tagline": "por definir",
+  "domain": "por definir",
+  "language": "es-ES",
+  "timezone": "Europe/Madrid",
+  "status": "previsto",
+  "note": "Segundo vertical del mismo motor. Rellenar a partir del proyecto «viajar en grupo»: secciones, fuentes, rotación, segmentos y soluciones. Nada específico de turismo va en el código: solo en este fichero y en su carpeta data/ propia.",
+  "sections": ["viajes-en-grupo", "transporte-turistico", "alojamiento-colectivo", "regulacion", "licitaciones-y-ayudas", "analisis"],
+  "analysis_rotation": [],
+  "sources_file": null,
+  "segments": [],
+  "subscriptions": {"tiers": ["lector", "profesional", "corporativa"], "sponsor_tier": "anunciante"},
+  "sensors": {"topics": ["turismo", "viajes en grupo", "autocar turístico", "alojamiento"], "risk_keywords": [], "watched_entities": [], "shared_with": ["amarantia"]}
+}

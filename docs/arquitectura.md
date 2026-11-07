@@ -14,6 +14,10 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | Benchmark y plan de negocio | `docs/benchmark-referencias.md`, `docs/plan-moticias-com.md` | Rainer |
 | Gestores del portal (blogs, publicidad, licitaciones, logística, tecnología) | `docs/gestores-portal.md` | cambio OpenSpec |
 | Registro de ediciones | `docs/ediciones.md` | la rutina, cada mañana |
+| Estrategia (modelo, segmentos, verticales, sensores) | `docs/estrategia.md` | Rainer |
+| Configuración de cada vertical | `verticals/<id>.json` | cambio OpenSpec |
+| Esquema de la plataforma (CRM, señales, asesor) | `supabase/migrations/` | cambio OpenSpec |
+| Informes del asesor y borradores de promoción | `docs/asesor/`, `docs/promo/` | los agentes, cada semana / cada edición |
 | Especificaciones vivas y cambios en curso | `openspec/` | Rainer y Claude Code, método OpenSpec |
 | Contenido publicado (piezas, boletines, plazos, ediciones, ajustes, blogs, anuncios, soluciones) | `data/<colección>/<id>.json` | la rutina (altas); Rainer (correcciones) |
 | Fotos con licencia y sus créditos | `portal/img/*.jpg`, `portal/img/credits.json` | la rutina |
@@ -32,7 +36,7 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 
 - **Proyecto de Claude «moticias.com con M de Movilidad»**: pasa a ser espejo de lectura. Sus documentos `moticias/*` ya no se editan; cuando cambie algo aquí se copia allí (o se enlaza). El archivo histórico se conserva.
 - **Artefacto MOTICIAS (portal)** y **Hemeroteca**: siguen funcionando y recibiendo la edición diaria hasta que Ghost esté listo; su contenido se refleja en `data/` y `hemeroteca/data/`.
-- **Tarea programada en Cowork**: se sustituye por una tarea programada de Claude Code que clona este repositorio y ejecuta `/edicion-diaria`.
+- **Tarea programada «MOTICIAS · edición diaria»**: desde el 7-11-2026 clona este repositorio y ejecuta `/edicion-diaria` (con `project_read` del proyecto de Claude como respaldo si no puede clonar). La tarea «asesor de visibilidad y credibilidad» corre los lunes a las 09:17.
 - **Ghost(Pro)**: destino de publicación de moticias.com (cuenta creada el 7-11-2026). El publicador (`src/ghost_publish.py`) se añade por OpenSpec cuando el dominio y la clave de API estén listos.
 
 ## 4. Convenciones

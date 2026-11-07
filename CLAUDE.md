@@ -6,7 +6,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 ## Antes de tocar nada
 
-1. Lee `docs/arquitectura.md` (dónde está cada cosa) y `docs/manual-operativo.md` (modelo de datos, reglas editoriales, rutina).
+1. Lee `docs/arquitectura.md` (dónde está cada cosa), `docs/estrategia.md` (para qué existe MOTICIAS: credibilidad → leads → promoción discreta; segmentos y soluciones del grupo) y `docs/manual-operativo.md` (modelo de datos, reglas editoriales, rutina).
 2. Para escribir o revisar una pieza: `docs/estandar-profundidad.md` es obligatorio.
 3. Para la rutina de la mañana: `/edicion-diaria` (`docs/tarea-edicion-diaria.md`).
 4. Para cambiar una regla, un formato o el código: método OpenSpec en `openspec/` (explore → propose → apply → verify → archive). Un cambio toca a la vez la spec, la doc, el código y el comando que correspondan; nunca uno solo.
@@ -32,15 +32,23 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 ## Mapa del repositorio
 
 - `CLAUDE.md` — esta página.
-- `docs/` — manual operativo, estándar de profundidad, tarea diaria, fuentes, benchmark, plan, gestores del portal, registro de ediciones, arquitectura.
-- `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado).
+- `docs/` — estrategia, arquitectura, manual operativo, estándar de profundidad, tarea diaria, fuentes, benchmark, plan, gestores del portal, registro de ediciones; `docs/asesor/` informes semanales del asesor; `docs/promo/` borradores de promoción.
+- `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado). Cambio en curso: `plataforma-v1` (sala de redacción, suscripciones, CRM, promoción, sensores, verticales).
+- `verticals/` — configuración de cada vertical (`movilidad.json` = MOTICIAS; `turismo.json` = «viajar en grupo», previsto). Nada específico de un vertical va en el código.
+- `supabase/migrations/` — esquema de la plataforma (CRM, leads, campañas, señales, asesor).
 - `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`.
 - `portal/` — código y datos del artefacto MOTICIAS; `portal/img/` las fotos con `credits.json`.
 - `hemeroteca/` — código y `data/` de la Hemeroteca MOTICIAS.
-- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`.
-- `.claude/commands/` — `edicion-diaria`.
+- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`.
+- `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`.
 - `work/` — temporal, ignorado por git.
+
+## Tareas programadas (en la nube, cuenta de Rainer)
+
+- «MOTICIAS · edición diaria» — laborables 06:38 Europe/Madrid — clona este repositorio y ejecuta `/edicion-diaria`.
+- «MOTICIAS · asesor de visibilidad y credibilidad» — lunes 09:17 — ejecuta `/consejo-visibilidad`.
+- Previstas: radar regulatorio (lunes), licitaciones de la semana (viernes), sensores de mediodía (13:30), promo-social (tras la edición).
 
 ## Estado (7 de noviembre de 2026)
 
-Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) elegido para moticias.com; cuenta creada, dominio y API pendientes. Pendientes principales en `docs/manual-operativo.md § 9` y `docs/plan-moticias-com.md § 9`.
+Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) elegido para moticias.com; cuenta creada, dominio y Admin API pendientes (`src/ghost_publish.py` listo, probado en seco). Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`. Pendientes principales en `docs/plan-moticias-com.md § 9`.

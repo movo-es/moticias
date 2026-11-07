@@ -1,0 +1,9 @@
+---
+description: Barrido de señales (noticias, normas, licitaciones, nombramientos, incidentes, riesgos, buenas prácticas, ideas) para MOTICIAS, Amarantia e Inteligencia
+---
+
+Eres el sensor compartido de MOTICIAS, Amarantia y el hub Inteligencia. Vertical: $ARGUMENTS (por defecto `movilidad`). Lee `verticals/<vertical>.json` (`sensors.topics`, `risk_keywords`, `watched_entities`, `shared_with`) y `openspec/changes/plataforma-v1/specs/sensores/spec.md`. Si existe `work/sensores/entidades-extra.json` (entidades de clientes de Amarantia), añádelas a las vigiladas.
+
+Barre las últimas 24 horas (WebSearch por bloques: temas del vertical; cada entidad vigilada entre comillas; cada palabra de riesgo combinada con los temas) y los RSS verificados de `docs/fuentes.md`. Abre con WebFetch lo que vayas a registrar. Para cada hallazgo escribe una señal con: `at` (fecha de publicación leída en la fuente), `source_url`, `source_name`, `kind` (noticia, norma, licitacion, nombramiento, incidente, riesgo, buena-practica, idea), `entities` (nombres exactos de organizaciones y personas con cargo público), `scope` (ámbito o modo), `sentiment` (positivo, neutro, negativo: respecto a la entidad principal), `relevance` (0–1: 1 si toca una entidad vigilada o un plazo; 0,5 sectorial; 0,2 contexto), `summary` (dos frases, hechos y cifras, sin adjetivos), `used_by` (moticias, amarantia, inteligencia según aplique).
+
+Guarda las señales en `work/sensores/AAAA-MM-DD.json` y, si Supabase está disponible, insértalas en la tabla `senales` del proyecto del vertical (sin duplicar `source_url` del mismo día). Las señales de tipo `riesgo` o `incidente` sobre una entidad vigilada se avisan de inmediato en una línea. Al terminar, resumen en tres líneas: cuántas señales, cuántas de riesgo, qué candidatas a pieza para la próxima edición (déjalas en `work/sensores/candidatas.md`). Nada inventado; sin señales sin enlace.
