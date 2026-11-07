@@ -134,7 +134,7 @@ Artefacto aparte, «Hemeroteca MOTICIAS», con todas las ediciones archivadas ta
 
 ## 9. Pendiente y hoja de ruta
 
-- Publicación en moticias.com con Ghost(Pro) (plan Publisher), decidido el 7-11-2026; el publicador va en `src/` cuando exista.
+- Publicación en moticias.com con Ghost(Pro) (plan Publisher), decidido el 7-11-2026; publicador `src/ghost_publish.py`: rutinarias publicadas con firma G. Jordan, críticas en borrador a nombre de Rainer (`docs/firma-y-publicacion.md`).
 - Apellido para la firma de los análisis (hoy «Rainer»).
 - Flujo de aprobación (borrador → publicado) desde el móvil y gestión de usuarios/suscriptores.
 - Dominio propio moticias.com y correo (Brevo) para el briefing de las 7:30.

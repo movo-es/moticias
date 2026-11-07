@@ -56,6 +56,8 @@
  "published_time": "07:28",
  "relevance": "ALTA",
  "relevance_for": "Operadores de transporte regular de viajeros, con o sin concesión; direcciones generales de transporte estatales y autonómicas; interventores y asesores jurídicos; inversores y financiadores de flota.",
+ "review_note": "Análisis del director: firma Rainer y requiere su aprobación",
+ "risk": "critica",
  "scope": "Autobús y carretera",
  "section": "analisis",
  "sources": [
@@ -148,6 +150,7 @@
    "url": "https://www.autobusesyautocares.com/texto-diario/mostrar/6080167/cantabria-destina-36-millones-ayudas-compensar-lineas-deficitarias"
   }
  ],
+ "status": "pendiente",
  "subsector": "autobús",
  "subtitle": "Cantabria paga por tercera vez el déficit de 27 líneas con el contrato vencido; el Estado tiene hasta el 5 de diciembre para aprobar un mapa de 34 corredores del que ha licitado dos",
  "summary": "Cantabria cubre por tercera vez en cuatro años, con subvención directa, el déficit de 27 líneas de autobús con el contrato vencido. El Estado debe aprobar antes del 5 de diciembre un mapa concesional de 34 corredores del que ha licitado dos. En un caso la demora la paga el presupuesto; en el otro, el viajero.",

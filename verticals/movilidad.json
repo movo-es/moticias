@@ -186,7 +186,15 @@
    "toca a empresas del grupo, socios o clientes (Movenbus, MUFMI, MOVO, Moveme, Avionline, Amarantia, socios de la línea de planes de movilidad)",
    "corrige o contradice una pieza anterior de MOTICIAS",
    "análisis y reportajes firmados por el director"
-  ]
+  ],
+  "ghost_authors": {
+   "G. Jordan": "g-jordan",
+   "Rainer": "rainer"
+  },
+  "ghost_status": {
+   "rutinaria": "published",
+   "critica": "draft"
+  }
  },
  "campaigns": {
   "dir": "data/campanas/",

@@ -4,7 +4,8 @@
   python3 -I src/ghost_publish.py --dry-run --ids <id> [<id> ...]      genera el HTML y el JSON del post sin tocar Ghost
   python3 -I src/ghost_publish.py --dry-run --date AAAA-MM-DD         todas las piezas de una edición
   python3 -I src/ghost_publish.py --all --status draft                 publica (o deja en borrador) todas las piezas de data/articles
-  python3 -I src/ghost_publish.py --date AAAA-MM-DD --status published
+  python3 -I src/ghost_publish.py --date AAAA-MM-DD --status published  (edición diaria: rutinarias publicadas, críticas en borrador)
+  python3 -I src/ghost_publish.py --pages [--ids <slug> ...]            páginas fijas de data/paginas/ (siempre en borrador)
 
 Variables de entorno (nunca en el repositorio): GHOST_URL (p. ej. https://moticias.ghost.io o https://moticias.com)
 y GHOST_ADMIN_KEY (clave de una integración personalizada de Ghost, formato id:secret).
@@ -13,7 +14,11 @@ Vertical: --vertical movilidad (lee verticals/<id>.json para secciones y etiquet
 Qué hace con cada pieza de data/articles/<id>.json:
 - Construye el HTML del post: respuesta directa (summary), cuerpo (body_md → HTML sencillo), cifras clave, cronología,
   guía rápida (los cinco bloques), fuentes con fechas, recuadro de trazabilidad y declaración de intereses si procede.
-- Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section>, subsector, tags), autor por defecto,
+- Firma (verticals/<id>.json → editorial.ghost_authors): «G. Jordan» → usuario g-jordan, «Rainer» → rainer. Si el
+  usuario de G. Jordan no existe en Ghost (ni por slug ni por nombre), la pieza sale a nombre de Rainer y se avisa.
+- Estado: --status published publica solo las piezas con risk «rutinaria»; las críticas (risk «critica» o status
+  «pendiente») y los borradores se suben o actualizan siempre como draft, a la espera del director.
+- Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section>, subsector, tags), autor según la firma,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
 - Crea o actualiza el post por slug (busca antes con GET /posts/slug/<slug>/) y guarda el resultado en
@@ -168,20 +173,93 @@ def build_post(a, vertical, base_url):
     return post
 
 
+# ---------- firma y estado ----------
+def is_critical(art):
+    return art.get("risk") == "critica" or art.get("status") in ("pendiente", "borrador")
+
+
+def target_status(art, requested):
+    """Las críticas y los borradores nunca se publican desde aquí: esperan al director."""
+    return "draft" if is_critical(art) else requested
+
+
+def resolve_authors(vertical, base_url, token):
+    """Devuelve ({firma: slug de Ghost}, avisos). Busca cada usuario por slug y, si no, por nombre."""
+    ed = vertical.get("editorial", {})
+    wanted = ed.get("ghost_authors", {})
+    director = ed.get("director", "Rainer")
+    st, res = api("GET", "%s/ghost/api/admin/users/?limit=all&fields=id,name,slug" % base_url, token)
+    users = res.get("users", []) if st == 200 else []
+    by_slug = {u["slug"]: u["slug"] for u in users}
+    by_name = {u["name"].strip().lower(): u["slug"] for u in users}
+    out, warn = {}, []
+    for sig, slug in wanted.items():
+        found = by_slug.get(slug) or by_name.get(sig.strip().lower())
+        if found and found != slug:
+            warn.append("El usuario «%s» existe en Ghost con slug «%s», no «%s»: se usa «%s»." % (sig, found, slug, found))
+        out[sig] = found
+    dslug = out.get(director)
+    for sig in wanted:
+        if not out[sig]:
+            warn.append("El usuario «%s» (%s) no existe en Ghost: sus piezas salen a nombre de %s." % (sig, wanted[sig], director))
+            out[sig] = dslug
+    return out, warn
+
+
+def author_slug(art, authors, vertical):
+    ed = vertical.get("editorial", {})
+    sig = art.get("author")
+    if sig not in authors:
+        sig = ed.get("director") if is_critical(art) else ed.get("default_author")
+    return authors.get(sig)
+
+
 # ---------- publicación ----------
-def upsert(post, status, base_url, token):
+def upsert(post, status, base_url, token, kind="posts"):
     post = dict(post, status=status)
-    st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,updated_at" % (base_url, post["slug"]), token)
-    if st == 200 and found.get("posts"):
-        pid = found["posts"][0]["id"]
-        post["updated_at"] = found["posts"][0]["updated_at"]
-        st, res = api("PUT", "%s/ghost/api/admin/posts/%s/?source=html" % (base_url, pid), token, {"posts": [post]})
+    st, found = api("GET", "%s/ghost/api/admin/%s/slug/%s/?fields=id,updated_at" % (base_url, kind, post["slug"]), token)
+    if st == 200 and found.get(kind):
+        pid = found[kind][0]["id"]
+        post["updated_at"] = found[kind][0]["updated_at"]
+        st, res = api("PUT", "%s/ghost/api/admin/%s/%s/?source=html" % (base_url, kind, pid), token, {kind: [post]})
     else:
-        st, res = api("POST", "%s/ghost/api/admin/posts/?source=html" % base_url, token, {"posts": [post]})
+        st, res = api("POST", "%s/ghost/api/admin/%s/?source=html" % (base_url, kind), token, {kind: [post]})
     if st not in (200, 201):
         return None, res
-    p = res["posts"][0]
-    return {"ghost_id": p["id"], "url": p.get("url"), "status": p.get("status"), "updated_at": p.get("updated_at")}, None
+    p = res[kind][0]
+    out = {"ghost_id": p["id"], "url": p.get("url"), "status": p.get("status"), "updated_at": p.get("updated_at")}
+    if p.get("status") != "published" and p.get("uuid"):
+        out["preview_url"] = p.get("url") or "%s/p/%s/" % (base_url, p["uuid"])
+    return out, None
+
+
+def publish_pages(a, vertical, base_url, token):
+    """Páginas fijas (aviso legal, privacidad, cookies, cómo trabajamos): data/paginas/<slug>.json, siempre en borrador."""
+    outdir = os.path.join(ROOT, "work", "ghost", "paginas")
+    os.makedirs(outdir, exist_ok=True)
+    authors, warn = ({}, []) if a.dry_run else resolve_authors(vertical, base_url, token)
+    director = vertical.get("editorial", {}).get("director", "Rainer")
+    ok, bad = [], []
+    for p in sorted(glob.glob(os.path.join(ROOT, "data", "paginas", "*.json"))):
+        pg = json.load(open(p, encoding="utf-8"))
+        if a.ids and pg["slug"] not in a.ids:
+            continue
+        page = {"title": pg["title"], "slug": pg["slug"], "html": md_to_html(pg["body_md"]),
+                "custom_excerpt": pg.get("summary", "")[:300], "meta_description": pg.get("summary", "")[:500]}
+        if authors.get(director):
+            page["authors"] = [{"slug": authors[director]}]
+        if a.dry_run:
+            open(os.path.join(outdir, pg["slug"] + ".html"), "w", encoding="utf-8").write(page["html"])
+            ok.append({"slug": pg["slug"]})
+            continue
+        res, err = upsert(page, "draft", base_url, token, kind="pages")
+        if err:
+            bad.append((pg["slug"], err))
+        else:
+            res["slug"] = pg["slug"]
+            ok.append(res)
+            json.dump(res, open(os.path.join(outdir, pg["slug"] + ".json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(json.dumps({"modo": "prueba" if a.dry_run else "draft", "paginas": ok, "errores": bad, "avisos": warn}, ensure_ascii=False, indent=1))
 
 
 def main():
@@ -192,8 +270,18 @@ def main():
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--status", default="draft", choices=["draft", "published"])
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--pages", action="store_true")
     a = ap.parse_args()
     vertical = json.load(open(os.path.join(ROOT, "verticals", a.vertical + ".json"), encoding="utf-8"))
+    if a.pages:
+        base_url = os.environ.get("GHOST_URL", "https://%s" % vertical.get("domain", "")).rstrip("/")
+        token = None
+        if not a.dry_run:
+            key = os.environ.get("GHOST_ADMIN_KEY")
+            if not key or ":" not in key:
+                sys.exit("Falta GHOST_ADMIN_KEY (id:secret) en el entorno; usa --dry-run para probar sin Ghost")
+            token = ghost_token(key)
+        return publish_pages(a, vertical, base_url, token)
     arts = []
     for p in sorted(glob.glob(os.path.join(ROOT, "data", "articles", "*.json"))):
         art = json.load(open(p, encoding="utf-8"))
@@ -202,8 +290,6 @@ def main():
         if a.date and art.get("date") != a.date:
             continue
         if not (a.ids or a.date or a.all):
-            continue
-        if art.get("status") == "borrador" and a.status == "published":
             continue
         arts.append(art)
     if not arts:
@@ -217,9 +303,16 @@ def main():
         if not key or ":" not in key:
             sys.exit("Falta GHOST_ADMIN_KEY (id:secret) en el entorno; usa --dry-run para probar sin Ghost")
         token = ghost_token(key)
-    ok, bad = 0, []
+    tok_t = time.time()
+    authors, warn = resolve_authors(vertical, base_url, token) if token else (dict(vertical.get("editorial", {}).get("ghost_authors", {})), [])
+    ok, bad, counts = 0, [], {}
     for art in arts:
         post = build_post(art, vertical, base_url)
+        slug = author_slug(art, authors, vertical)
+        if slug:
+            post["authors"] = [{"slug": slug}]
+        status = target_status(art, a.status)
+        counts[status] = counts.get(status, 0) + 1
         if a.dry_run:
             with open(os.path.join(outdir, art["id"] + ".html"), "w", encoding="utf-8") as fh:
                 fh.write(post["html"])
@@ -227,7 +320,9 @@ def main():
                 json.dump({k: v for k, v in post.items() if k != "html"}, fh, ensure_ascii=False, indent=1)
             ok += 1
             continue
-        res, err = upsert(post, a.status, base_url, token)
+        if time.time() - tok_t > 240:
+            token, tok_t = ghost_token(key), time.time()
+        res, err = upsert(post, status, base_url, token)
         if err:
             bad.append((art["id"], err))
         else:
@@ -235,7 +330,8 @@ def main():
             with open(os.path.join(outdir, art["id"] + ".json"), "w", encoding="utf-8") as fh:
                 json.dump(res, fh, ensure_ascii=False, indent=1)
         time.sleep(0.5)
-    print(json.dumps({"modo": "prueba" if a.dry_run else a.status, "piezas": len(arts), "ok": ok, "errores": bad}, ensure_ascii=False))
+    print(json.dumps({"modo": "prueba" if a.dry_run else a.status, "piezas": len(arts), "por_estado": counts, "ok": ok,
+                      "errores": bad, "avisos": warn}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

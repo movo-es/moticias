@@ -53,6 +53,8 @@
  "published_at": "2026-11-05T07:11:00+01:00",
  "published_time": "07:11",
  "relevance": "ALTA",
+ "review_note": "Análisis del director: firma Rainer y requiere su aprobación",
+ "risk": "critica",
  "scope": "Regulación y gobernanza",
  "section": "analisis",
  "sources": [
@@ -153,6 +155,7 @@
    "url": "https://www.railin.net/es/noticias/flash/luis-pedro-marco-de-la-pena-dimite-adif/"
   }
  ],
+ "status": "pendiente",
  "subsector": "transversal",
  "subtitle": "El Real Decreto 975/2026 confía Transportes a Carlos Cuerpo por suplencia. En veinticinco días vencen un tope de precios y una audiencia pública, hay seis jornadas de huelga y el administrador de la red no tiene presidente",
  "summary": "La suplencia de Carlos Cuerpo al frente de Transportes es impecable en derecho y corta para lo que tiene delante. Hasta el 29 de noviembre vencen el tope de precios de Urda y la audiencia del reglamento ferroviario, y Adif espera presidente. Tres decisiones no admiten espera; una cuarta no debería tomarse ahora.",

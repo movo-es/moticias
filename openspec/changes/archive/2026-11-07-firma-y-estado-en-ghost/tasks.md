@@ -1,0 +1,7 @@
+- [x] Parámetros de firma y estado en el vertical
+- [x] Publicador: autor por firma, críticas en borrador, páginas fijas
+- [x] Clasificar y firmar las 74 piezas existentes
+- [x] Republicar en Ghost: 62 publicadas, 12 en borrador; verificado por API
+- [x] Cuatro páginas legales en borrador
+- [x] Documentación y paso en la edición diaria
+- [ ] Slug `g-jordan` en Ghost (lo cambia Rainer en el panel)

@@ -21,6 +21,8 @@
  "published_at": "2026-11-04T07:30:00+01:00",
  "published_time": "07:30",
  "relevance": "ALTA",
+ "review_note": "Análisis del director: firma Rainer y requiere su aprobación",
+ "risk": "critica",
  "scope": "ferrocarril",
  "section": "regulacion",
  "sources": [
@@ -121,6 +123,7 @@
    "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261027/renfe-relanza-lotes-concurso-crear-empresa-autobuses-reves-judicial/1003744437239_0.html"
   }
  ],
+ "status": "pendiente",
  "subsector": "ferrocarril",
  "subtitle": "Dos accidentes en nueve meses, 170 fallos del LZB en un mismo corredor y una consigna de velocidad anulada en horas describen una alta velocidad que se liberalizó antes de darse una gobernanza",
  "summary": "El choque de Urda no se explica solo por una señal. Tres operadores comparten el corredor más antiguo de la red con un sistema de 1992, sin una mesa común donde decidir las reglas de operación degradada; el plan de ocho medidas llega después y la dimisión del ministro deja su ejecución en manos de nadie. El análisis recorre la línea, la regla, los operadores, el regulador, el dinero, la plantilla, la política y el pasajero, y termina con tres cosas que no necesitan una ley.",

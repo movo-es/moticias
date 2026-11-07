@@ -40,7 +40,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado). Cambio en curso: `plataforma-v1` (sala de redacción, suscripciones, CRM, promoción, sensores, verticales).
 - `verticals/` — configuración de cada vertical (`movilidad.json` = MOTICIAS; `turismo.json` = «viajar en grupo», previsto). Nada específico de un vertical va en el código.
 - `supabase/migrations/` — esquema de la plataforma (CRM, leads, campañas, señales, asesor).
-- `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`, `campanas/` (campañas temáticas; informes en `docs/campanas/`).
+- `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`, `campanas/` (campañas temáticas; informes en `docs/campanas/`), `paginas/` (aviso legal, privacidad, cookies, cómo trabajamos).
 - `portal/` — código y datos del artefacto MOTICIAS; `portal/img/` las fotos con `credits.json`.
 - `hemeroteca/` — código y `data/` de la Hemeroteca MOTICIAS.
 - `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`.
@@ -59,4 +59,4 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 ## Estado (7 de noviembre de 2026)
 
-Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) elegido para moticias.com; cuenta creada, dominio y Admin API pendientes (`src/ghost_publish.py` listo, probado en seco). Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`; primera campaña temática «Movilidad al trabajo · PMST» (10-11 → 19-12-2026) en `data/campanas/`. Pendientes principales en `docs/plan-moticias-com.md § 9`.
+Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) activo para moticias.com (`src/ghost_publish.py`, regla de firma y estado en `docs/firma-y-publicacion.md`): 62 piezas rutinarias publicadas con firma G. Jordan, 12 críticas, análisis y reportajes en borrador a nombre de Rainer; páginas legales (`data/paginas/`) en borrador hasta su orden; el sitio sigue en modo privado. Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`; primera campaña temática «Movilidad al trabajo · PMST» (10-11 → 19-12-2026) en `data/campanas/`. Pendientes principales en `docs/plan-moticias-com.md § 9`.

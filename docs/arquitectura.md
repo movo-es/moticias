@@ -38,7 +38,7 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 - **Proyecto de Claude «moticias.com con M de Movilidad»**: pasa a ser espejo de lectura. Sus documentos `moticias/*` ya no se editan; cuando cambie algo aquí se copia allí (o se enlaza). El archivo histórico se conserva.
 - **Artefacto MOTICIAS (portal)** y **Hemeroteca**: siguen funcionando y recibiendo la edición diaria hasta que Ghost esté listo; su contenido se refleja en `data/` y `hemeroteca/data/`.
 - **Tarea programada «MOTICIAS · edición diaria»**: desde el 7-11-2026 clona este repositorio y ejecuta `/edicion-diaria` (con `project_read` del proyecto de Claude como respaldo si no puede clonar). La tarea «asesor de visibilidad y credibilidad» corre los lunes a las 09:17.
-- **Ghost(Pro)**: destino de publicación de moticias.com (cuenta creada el 7-11-2026). El publicador (`src/ghost_publish.py`) se añade por OpenSpec cuando el dominio y la clave de API estén listos.
+- **Ghost(Pro)**: destino de publicación de moticias.com (cuenta creada el 7-11-2026). Publicador `src/ghost_publish.py` activo desde el 7-11-2026 (firma y estado: `docs/firma-y-publicacion.md`); páginas fijas en `data/paginas/`.
 
 ## 4. Convenciones
 
