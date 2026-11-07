@@ -1,0 +1,172 @@
+{
+ "actors": "La Dirección General de Transporte por Carretera y Ferrocarril, con Elena María Atance Herreros al frente; los centros de formación autorizados para la cualificación inicial y la formación continua (CAP); los Servicios de Inspección de Transporte Terrestre; y las empresas de autobús y camión cuyos conductores deben renovar el certificado cada cinco años.",
+ "author": "Redacción",
+ "body_md": "La Dirección General de Transporte por Carretera y Ferrocarril ha fijado las reglas técnicas del fichaje en los centros de formación de conductores profesionales (CAP) tras la retirada de la huella dactilar obligatoria. La resolución de 23 de octubre de 2026, firmada por la directora general, Elena María Atance Herreros, salió en el BOE del 29 de octubre (BOE-A-2026-22676). Exige un registro por alumno y periodo formativo y un fichero diario de asistencia remitido al Ministerio el siguiente día hábil.\n\n## Los hechos\n\nLa resolución desarrolla el apartado 4.c) del anexo II del Real Decreto 284/2021, en la redacción que le dio el Real Decreto 487/2026, de 17 de junio. Ese apartado obliga a los centros a disponer de un control de acceso «a través de partes de firmas u otros procedimientos» compatibles con la protección de datos, en aula, en aula virtual y a bordo del vehículo. La Dirección General concreta ahora qué debe hacer ese sistema.\n\n**El registro.** Cada alumno ficha la hora de inicio y fin de cada periodo formativo de la jornada, no solo de la jornada completa. Los fichajes se agrupan por curso con cuatro datos: identificador del centro, código del curso, fecha y horas de cada periodo e identificación del alumno.\n\n**El fichero.** Texto plano (.txt), codificación ISO-8859-15, una línea por cada control con número de autorización del centro (10 posiciones), código del curso (10), NIF o NIE (9), fecha, hora, tipo de control —E de entrada, S de salida— y 100 caracteres de observaciones. Si el alumno asiste a varios periodos separados por pausas, va una línea por periodo. Se admite una línea final de hasta 1.000 caracteres con observaciones generales.\n\n**La remisión.** Por la aplicación «Gestión de la formación de los conductores profesionales (CAP)» de la [sede electrónica](https://sede.transportes.gob.es/areas-actividad/transporte-terrestre/gestion-formacion-conductores-profesionales-cap) del Ministerio, el día hábil siguiente a la jornada lectiva. Si hay incidencias técnicas o la aplicación no está disponible, el plazo se amplía a 48 horas, siempre que la incidencia esté justificada y los datos registrados. El centro declara expresamente que la información es veraz y procede de su sistema.\n\n**La conservación.** Dos años, a disposición de los Servicios de Inspección de Transporte, que deben poder comprobar el funcionamiento del sistema, contrastar en el momento los fichajes con los alumnos presentes y, si el sistema es informático, exportar los registros en el formato del anexo.\n\n## El contexto\n\nEl fichaje biométrico llegó en 2019. El Real Decreto 70/2019 lo introdujo en el régimen anterior y la resolución de 23 de julio de 2020 de la entonces Dirección General de Transporte Terrestre ([BOE-A-2020-9535](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2020-9535)) fijó sus características, con huella o imagen facial, hora sincronizada con el Real Instituto y Observatorio de la Armada y obligación de tenerlo instalado el 1 de marzo de 2021. Su preámbulo sostenía que la biometría imposibilitaba la suplantación de alumnos. Una resolución de 14 de abril de 2021 ([BOE-A-2021-6360](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-6360)) permitió enviar al día hábil siguiente los ficheros de cursos en fin de semana o festivo. El [Real Decreto 284/2021](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-6624) mantuvo la exigencia biométrica en su anexo II.\n\nEl giro lo provocó la Agencia Española de Protección de Datos. Su guía sobre control de presencia mediante sistemas biométricos, difundida en noviembre de 2023, calificó estos tratamientos de alto riesgo, negó que el consentimiento sirva de base fuera del ámbito laboral e impuso una evaluación de impacto previa, según recogió [El Derecho](https://elderecho.com/la-aepd-fija-los-criterios-de-uso-de-sistemas-biometricos). El preámbulo del Real Decreto 487/2026 lo dice sin rodeos: elimina el uso obligatorio de sistemas biométricos «tras la fijación de criterios» por la AEPD y opta por la alternativa menos restrictiva, invocando el principio de minimización del artículo 5.1.c) del Reglamento (UE) 2016/679.\n\nEl riesgo que se quería cubrir sigue ahí. En abril de 2024 la Junta de Extremadura y el GIAT de la Guardia Civil desarticularon en Almendralejo, en la operación Testa, un esquema de cursos CAP sin alumnos presentes, con al menos 50 inscritos y documentos que simulaban la asistencia, tras una denuncia de la asociación CECAP, según [Moncloa.com](https://www.moncloa.com/2024/04/14/cazan-autoescuela-cursos-falsos-2547717). El caso es anterior a la retirada de la huella: el sistema biométrico tampoco lo impidió.\n\n## El marco legal\n\nEl Real Decreto 487/2026 ([BOE-A-2026-13203](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-13203)) se publicó el 18 de junio de 2026 y entró en vigor a los tres meses, el 18 de septiembre. Incorpora la Directiva (UE) 2022/2561, que codifica la normativa europea de cualificación inicial y formación continua, y se dicta al amparo del artículo 149.1.21.ª de la Constitución y de la disposición adicional séptima de la Ley 16/1987, de Ordenación de los Transportes Terrestres. Su disposición derogatoria única suprimió la resolución biométrica de 2020.\n\nEntre el 18 de septiembre y el 29 de octubre los centros tuvieron la obligación de controlar la asistencia sin especificación técnica vigente. La nueva resolución cierra ese hueco, pero no incluye fecha de entrada en vigor, periodo de adaptación ni pie de recursos. La de 2020 dio siete meses para instalar los equipos. Ahora no consta plazo alguno.\n\nEl Real Decreto 487/2026 endurece el resto del control. El nuevo artículo 24 exige en aula virtual cámara permanentemente encendida, registro automático de conexiones conservado dos años y acceso en tiempo real de la Inspección. El artículo 23 permite impartir por esa vía hasta 166 horas de la cualificación inicial ordinaria y 92 de la acelerada. La inasistencia del 5 % o más de las horas obliga a excluir al alumno, salvo recuperación autorizada. Y el nuevo artículo 18 permite expulsar del examen a quien use dispositivos de intercomunicación, con un año sin poder volver a presentarse.\n\n## Qué cambia para…\n\n**Los centros CAP.** Pueden abandonar los lectores biométricos y usar hojas de firmas, tarjetas, aplicaciones o cualquier medio que cumpla la protección de datos. A cambio, el control es más fino —por periodo, no por jornada—, la conservación pasa de un año a dos y quien use papel debe transcribirlo cada día al fichero. Para un centro pequeño con partes manuscritos, eso es trabajo administrativo diario.\n\n**Los proveedores de software.** El formato es un fichero de longitud fija heredado casi literalmente del de 2020; la adaptación es menor para quien ya lo generaba. Desaparece la sincronización horaria con el Observatorio de la Armada.\n\n**Los operadores de autobús y mercancías.** La validez del CAP de sus conductores depende de que el curso sea regular. La formación continua exige 35 horas cada cinco años, según el artículo 7 del Real Decreto 284/2021. Un control menos intrusivo pero más trazable reduce el riesgo de certificados impugnables en una inspección.\n\n**La Inspección.** Gana acceso a los datos al día siguiente y capacidad de contraste en el aula. Pierde la prueba biométrica de identidad: frente a la suplantación, la garantía vuelve a ser la presencia del inspector.\n\n## El calendario\n\n- 11 de agosto de 2020: BOE publica la resolución de control biométrico.\n- 1 de marzo de 2021: fecha límite para instalar los sistemas biométricos.\n- 24 de abril de 2021: BOE publica el Real Decreto 284/2021.\n- 18 de junio de 2026: BOE publica el Real Decreto 487/2026.\n- 18 de septiembre de 2026: entra en vigor el Real Decreto 487/2026 y decae la resolución de 2020.\n- 29 de octubre de 2026: BOE publica la resolución de 23 de octubre.\n\n## Lo que hay que vigilar\n\nDos incógnitas. La primera, la exigibilidad: sin fecha expresa, la regla supletoria del artículo 2.1 del Código Civil situaría la vigencia veinte días después de la publicación, el 18 de noviembre, pero la Dirección General no lo ha aclarado y las asociaciones de centros necesitarán un criterio de la Inspección antes de que se levanten actas. La segunda, la formación a bordo del vehículo: la resolución exige fichar cada periodo también allí, pero no dice cómo se acredita la presencia en una cabina en ruta sin biometría ni geolocalización.",
+ "date": "2026-11-04",
+ "event_date": "2026-10-29",
+ "featured": 0,
+ "id": "control-acceso-centros-formacion-cap-resolucion-dgtcf",
+ "image": {
+  "alt": "Autocar Irizar plateado y azul circulando por una carretera",
+  "credit": "sludgegulper",
+  "license": "CC BY-SA 2.0",
+  "orig_src": "img/irizar-fabrica.jpg",
+  "source": "https://www.flickr.com/photos/28179929@N08/3959363253",
+  "src": "img/irizar-fabrica.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Norma",
+   "source": "BOE núm. 269, 29-10-2026",
+   "value": "Resolución de 23-10-2026 de la DGTCF (BOE-A-2026-22676)"
+  },
+  {
+   "label": "Plazo de remisión del fichero de asistencia",
+   "source": "BOE-A-2026-22676, apartado único.3, 29-10-2026",
+   "value": "Día hábil siguiente; 48 horas con incidencia justificada"
+  },
+  {
+   "label": "Conservación de registros",
+   "source": "BOE-A-2026-22676 y BOE-A-2020-9535",
+   "value": "2 años (1 año en la resolución de 2020)"
+  },
+  {
+   "label": "Formato del fichero",
+   "source": "BOE-A-2026-22676, anexo, 29-10-2026",
+   "value": "Texto plano .txt, ISO-8859-15, 148 posiciones por línea"
+  },
+  {
+   "label": "Entrada en vigor del RD 487/2026",
+   "source": "BOE-A-2026-13203, disposición final tercera, 18-06-2026",
+   "value": "18-09-2026 (tres meses tras su publicación)"
+  },
+  {
+   "label": "Aula virtual en cualificación inicial",
+   "source": "RD 284/2021, art. 23, redacción del RD 487/2026",
+   "value": "Hasta 166 h (ordinaria) y 92 h (acelerada)"
+  },
+  {
+   "label": "Formación continua",
+   "source": "RD 284/2021, art. 7.2, BOE-A-2021-6624",
+   "value": "35 horas cada cinco años"
+  }
+ ],
+ "key_fact": "Fichero de asistencia por alumno y periodo, remitido el siguiente día hábil y conservado dos años",
+ "kicker": "Formación de conductores · Transporte por carretera",
+ "kind": "noticia",
+ "next": "Los centros deben adaptar sus sistemas al formato del anexo; la remisión se hace por la aplicación CAP que ya existe en la sede electrónica del Ministerio. La resolución no fija entrada en vigor: si se aplica la regla supletoria del Código Civil, sería exigible desde el 18 de noviembre de 2026, extremo que la Dirección General no ha aclarado. Queda pendiente cómo se acredita la asistencia en la formación a bordo del vehículo.",
+ "published_at": "2026-11-04T07:30:00+01:00",
+ "published_time": "07:30",
+ "relevance": "MEDIA",
+ "relevance_for": "Centros de formación CAP y autoescuelas con autorización, proveedores de software de gestión académica, departamentos de recursos humanos de operadores de autobús y mercancías, y la Inspección de Transporte.",
+ "revised_at": "2026-11-04T16:25:00+01:00",
+ "section": "regulacion",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-10-29",
+   "title": "BOE-A-2026-22676. Resolución de 23 de octubre de 2026, de la DGTCF, sobre sistemas de control de acceso en los centros de formación de conductores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-22676"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-06-18",
+   "title": "BOE-A-2026-13203. Real Decreto 487/2026, de 17 de junio, por el que se modifica el Real Decreto 284/2021",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-13203"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2021-04-24",
+   "title": "BOE-A-2021-6624. Real Decreto 284/2021, de 20 de abril, cualificación inicial y formación continua de los conductores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-6624"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2020-08-11",
+   "title": "BOE-A-2020-9535. Resolución de 23 de julio de 2020, de la DGTT, sistemas de control biométrico en los centros de formación de conductores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2020-9535"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2021-04-21",
+   "title": "BOE-A-2021-6360. Resolución de 14 de abril de 2021, de la DGTT, remisión de ficheros de asistencia de los sistemas de control biométrico",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-6360"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Ministerio de Transportes y Movilidad Sostenible (sede electrónica)",
+   "published": "2026-10-29",
+   "title": "Gestión de la formación de los conductores profesionales (CAP)",
+   "url": "https://sede.transportes.gob.es/areas-actividad/transporte-terrestre/gestion-formacion-conductores-profesionales-cap"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Derecho",
+   "published": "2023-11-23",
+   "title": "La AEPD fija los criterios de uso de sistemas biométricos",
+   "url": "https://elderecho.com/la-aepd-fija-los-criterios-de-uso-de-sistemas-biometricos"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Moncloa.com",
+   "published": "2024-04-14",
+   "title": "Cazan a una autoescuela por dar cursos falsos para camioneros",
+   "url": "https://www.moncloa.com/2024/04/14/cazan-autoescuela-cursos-falsos-2547717"
+  }
+ ],
+ "subsector": "autobús",
+ "subtitle": "Una resolución de la Dirección General de Transporte por Carretera y Ferrocarril concreta el registro diario de asistencia y el fichero que habrá que remitir a la Inspección",
+ "summary": "La Dirección General de Transporte por Carretera y Ferrocarril publicó el 29 de octubre en el BOE la resolución que fija los requisitos técnicos del control de asistencia en los centros CAP tras suprimirse la huella obligatoria. Desarrolla el anexo II.4.c) del Real Decreto 284/2021, reformado por el Real Decreto 487/2026, en vigor desde el 18 de septiembre, que admite partes de firmas u otros sistemas. Exige registrar cada periodo formativo por alumno, remitir un fichero de asistencia al Ministerio el siguiente día hábil y conservar los registros dos años a disposición de la Inspección. No fija fecha de entrada en vigor ni plazo de adaptación.",
+ "tags": [
+  "autobús"
+ ],
+ "timeline": [
+  {
+   "date": "2020-08-11",
+   "text": "BOE publica la resolución de 23-07-2020 sobre control biométrico en centros CAP"
+  },
+  {
+   "date": "2021-03-01",
+   "text": "Fecha límite para disponer de sistemas biométricos"
+  },
+  {
+   "date": "2021-04-24",
+   "text": "BOE publica el Real Decreto 284/2021"
+  },
+  {
+   "date": "2023-11",
+   "text": "La AEPD publica su guía sobre control de presencia mediante sistemas biométricos"
+  },
+  {
+   "date": "2024-04",
+   "text": "Operación Testa contra cursos CAP sin asistencia en Almendralejo"
+  },
+  {
+   "date": "2026-06-18",
+   "text": "BOE publica el Real Decreto 487/2026, que suprime la biometría obligatoria"
+  },
+  {
+   "date": "2026-09-18",
+   "text": "Entra en vigor el Real Decreto 487/2026; queda derogada la resolución de 2020"
+  },
+  {
+   "date": "2026-10-29",
+   "text": "BOE publica la resolución de 23-10-2026 sobre sistemas de control de acceso"
+  }
+ ],
+ "title": "Transportes fija cómo deben fichar los alumnos del CAP en los centros de formación",
+ "why": "La resolución cierra el vacío abierto el 18 de septiembre, cuando el Real Decreto 487/2026 derogó el control biométrico obligatorio por los criterios de la Agencia Española de Protección de Datos sin que hubiera especificación técnica sustitutiva. El modelo pasa de identificar al alumno por la huella a hacer trazable su asistencia: fichaje por periodo, envío diario y dos años de conservación. Para los operadores, cuyos conductores necesitan 35 horas de formación continua cada cinco años, la validez del CAP depende de que ese control resista una inspección."
+}

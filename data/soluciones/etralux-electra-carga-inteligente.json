@@ -1,0 +1,61 @@
+{
+ "body_md": "**Qué hace.** ELECTRA es el sistema de carga inteligente de ETRALUX, empresa de Grupo ETRA. Distribuye la energía disponible entre los autobuses conectados según la prioridad de salida de cada uno, recorta los picos de potencia (*peak shaving*) para reducir la potencia contratada y desplaza la carga a los periodos de electricidad más barata.\n\n**Cómo se integra.** La planificación de la carga se enlaza con el Sistema de Ayuda a la Explotación (SAE), de modo que la hora de salida de cada vehículo determina cuándo y cuánto carga. Muestra en tiempo real el estado de cada punto y ofrece al conductor datos de batería y temperatura.\n\n**Para quién encaja.** Operadores urbanos con cocheras grandes y cargadores de varias marcas. En Fuencarral (EMT Madrid) gestiona una infraestructura de 20 puntos de carga y 20 pantógrafos de cuatro modelos distintos, pensada para que los autobuses salgan cargados y climatizados sin intervención humana.\n\n**Límites y requisitos.** El contrato de Fuencarral lo ejecutó una UTE de Endesa X y Etralux, es decir, combina obra eléctrica y software. EMT lo plantea como modelo para el resto de sus centros, empezando por Las Tablas y La Elipa. Los datos de funcionamiento publicados proceden del operador y del proveedor; no constan evaluaciones independientes.",
+ "category": "Electrificación y energía",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "EMT Madrid",
+   "place": "Madrid (Centro de Operaciones de Fuencarral)",
+   "source_url": "https://diario.madrid.es/blog/notas-de-prensa/emt-madrid-avanza-en-su-estrategia-de-electrificacion-con-la-nueva-carga-inteligente-para-autobuses/",
+   "what": "Carga automatizada de 20 autobuses eléctricos con 20 puntos de carga; contrato de 5.094.169 euros sin IVA adjudicado a la UTE Endesa X–Etralux en 2022, pruebas hasta septiembre de 2024 y presentación en marzo de 2025.",
+   "year": "2025"
+  }
+ ],
+ "featured": true,
+ "id": "etralux-electra-carga-inteligente",
+ "modes": [
+  "tierra"
+ ],
+ "name": "ELECTRA",
+ "priority": 2,
+ "provider": "ETRALUX (Grupo ETRA)",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Ayuntamiento de Madrid (Diario de Madrid)",
+   "published": "2025-03-18",
+   "title": "EMT Madrid avanza en su estrategia de electrificación con la nueva carga inteligente para autobuses",
+   "url": "https://diario.madrid.es/blog/notas-de-prensa/emt-madrid-avanza-en-su-estrategia-de-electrificacion-con-la-nueva-carga-inteligente-para-autobuses/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "ESMARTCITY",
+   "published": "2024-10-03",
+   "title": "Recarga inteligente de autobuses eléctricos de EMT Madrid con el sistema ELECTRA de ETRALUX",
+   "url": "https://www.esmartcity.es/2024/10/03/recarga-inteligente-autobuses-electricos-emt-madrid-con-sistema-electra-etralux"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "ESMARTCITY",
+   "published": "2023-01-31",
+   "title": "La solución ELECTRA de ETRA permite la recarga inteligente de flotas de autobuses eléctricos",
+   "url": "https://esmartcity.es/2023/01/31/solucion-electra-etra-permite-recarga-inteligente-flotas-autobuses-electricos"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Sistema de gestión de carga para cocheras de autobuses eléctricos que reparte la potencia disponible según las salidas programadas y la tarifa eléctrica, con el objetivo de automatizar la carga sin intervención manual.",
+ "tags": [
+  "autobús eléctrico",
+  "carga inteligente",
+  "cocheras",
+  "peak shaving",
+  "EMT Madrid"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.grupoetra.com/soluciones/alumbrado-y-energia/",
+ "verified_at": "2026-11-04"
+}

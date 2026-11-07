@@ -1,0 +1,69 @@
+{
+ "body_md": "**Qué hace.** Shotl es una plataforma de software para servicios a la demanda y de ruta fija. El viajero reserva por app, web o teléfono y sigue el vehículo en tiempo real; el conductor recibe en su app las recogidas y los cambios de ruta; el operador supervisa la flota y define las reglas del servicio desde un panel web.\n\n**Cómo se integra.** Dispone de API para conectar con planificadores de viaje, aplicaciones MaaS y datos GTFS, y admite marca blanca con la imagen del operador. Las tarifas son configurables, con pago en la app o a bordo.\n\n**Para quién encaja.** Ayuntamientos, consejos comarcales y operadores que atienden zonas de baja densidad o franjas con poca demanda. En la Alta Segarra (Anoia), el piloto enlazó siete municipios con Igualada en un área de 94 km² y 64 paradas activas, y el servicio continuó tras la prueba. En Vallirana se combinó ruta fija en hora punta con servicio a demanda en horas valle.\n\n**Límites y requisitos.** Necesita un operador con vehículos y conductores: Shotl aporta la tecnología, no el servicio. El volumen del piloto comarcal fue reducido (637 pasajeros), algo habitual en zonas rurales que conviene tener presente al dimensionar el contrato. Las cifras de Vallirana proceden del proveedor.",
+ "category": "Transporte a la demanda",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Municipios de la Alta Segarra (marca Clic.cat)",
+   "place": "Alta Segarra e Igualada (Barcelona)",
+   "source_url": "https://www.accio.gencat.cat/ca/detalls/noticia/LAlta-Segarra-assegura-la-continuitat-del-servei-de-transport-public-a-demanda-i-millora-la-mobilitat-en-set-municipis",
+   "what": "Piloto de transporte a la demanda en siete municipios, con 537 viajes y 637 pasajeros; en febrero de 2022 se anunció la continuidad del servicio.",
+   "year": "2022"
+  },
+  {
+   "client": "Ayuntamiento de Vallirana",
+   "place": "Vallirana (Barcelona)",
+   "source_url": "https://solarimpulse.com/solutions-explorer/implementation-stories/shotl-adopted-by-city-of-vallirana-spain-to-revolutionize-urban-bus-transportation",
+   "what": "Sistema híbrido: rutas fijas en hora punta y servicio a demanda en horas valle.",
+   "year": "2019"
+  }
+ ],
+ "featured": false,
+ "id": "shotl-transporte-demanda",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Shotl",
+ "priority": 4,
+ "provider": "Shotl Transportation",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "ACCIÓ – Generalitat de Catalunya",
+   "published": "2022-02-07",
+   "title": "L'Alta Segarra assegura la continuïtat del servei de transport públic a demanda i millora la mobilitat en set municipis",
+   "url": "https://www.accio.gencat.cat/ca/detalls/noticia/LAlta-Segarra-assegura-la-continuitat-del-servei-de-transport-public-a-demanda-i-millora-la-mobilitat-en-set-municipis"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Solar Impulse Foundation",
+   "published": "",
+   "title": "Shotl adopted by city of Vallirana, Spain",
+   "url": "https://solarimpulse.com/solutions-explorer/implementation-stories/shotl-adopted-by-city-of-vallirana-spain-to-revolutionize-urban-bus-transportation"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Shotl",
+   "published": "",
+   "title": "Shotl – On-demand and fixed-route transport platform",
+   "url": "https://www.shotl.com/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Plataforma para planificar y explotar transporte a la demanda y servicios de ruta fija, con app de reserva para el viajero, app de conductor y panel de operaciones para supervisar y fijar reglas de servicio.",
+ "tags": [
+  "TAD",
+  "zonas rurales",
+  "baja densidad",
+  "app de reserva",
+  "API",
+  "GTFS"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.shotl.com/",
+ "verified_at": "2026-11-04"
+}

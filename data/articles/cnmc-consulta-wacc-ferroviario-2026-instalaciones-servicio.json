@@ -1,0 +1,203 @@
+{
+ "actors": "La Dirección de Transportes y del Sector Postal de la CNMC instruye el expediente. Afecta a Adif y Adif Alta Velocidad como principales explotadores de instalaciones de servicio, a Renfe Mercancías, Renfe Viajeros y los operadores privados que pagan esas tarifas, y a los titulares privados de terminales y talleres. Las aportaciones se presentan en la sede electrónica de la CNMC, dirigidas a la Secretaría del Consejo.",
+ "author": "Redacción",
+ "authority": "Comisión Nacional de los Mercados y la Competencia (CNMC)",
+ "body_md": "La CNMC propone rebajar por primera vez el beneficio razonable que admite en los precios de estaciones, terminales de mercancías y talleres ferroviarios: el 7,20 % antes de impuestos para las instalaciones de Renfe, el 7,50 % para las de Adif y Adif Alta Velocidad y el 8,05 % para el resto de explotadores. El documento del expediente STP/DTSP/056/26 está en consulta pública desde el 13 de octubre de 2026 y admite observaciones hasta el 16 de noviembre; la decisión corresponde a la Sala de Supervisión Regulatoria.\n\n## Los hechos\n\nLa Dirección de Transportes y del Sector Postal publicó el 13 de octubre la [consulta «WACC ferroviario 2026»](https://www.cnmc.es/consultas-publicas/transporte/consulta-publica-wacc-ferroviario-2026), acompañada de un documento de siete páginas con el cálculo. Su objeto es la actualización anual de la referencia de beneficio razonable prevista en la Comunicación de la CNMC de 26 de julio de 2022 sobre la orientación a costes de los precios en instalaciones de servicio ferroviarias.\n\nLa propuesta sustituye a la fijada por la Resolución de 20 de noviembre de 2025 (STP/DTSP/062/25): 7,33 % para Renfe, 7,73 % para Adif y 8,17 % para el resto. Las tres referencias bajan: 0,13 puntos la de Renfe, 0,23 la de Adif y 0,12 la de los explotadores privados. Las observaciones se presentan en la sede electrónica, dirigidas a la Secretaría del Consejo con el número de expediente, y serán públicas salvo que se pida lo contrario.\n\n## El método\n\n**La fórmula.** La CNMC asimila el beneficio razonable al coste medio ponderado del capital (WACC) y lo calcula con el modelo CAPM. Todos los parámetros se toman sobre una ventana de cinco años, ahora del 1 de enero de 2021 al 31 de diciembre de 2025. El resultado después de impuestos se eleva a antes de impuestos dividiéndolo por uno menos el tipo nominal del impuesto de sociedades, el 25 % según la OCDE.\n\n**Los parámetros comunes.** La tasa libre de riesgo, media del bono español a diez años según Eurostat, sube del 1,91 % al 2,47 %. La prima de riesgo de mercado, tomada del informe anual del BEREC, pasa del 5,96 % al 6,15 %. El apalancamiento medio de las comparables baja del 44,97 % al 43,37 %.\n\n**La beta.** Es la variable que explica la rebaja. La beta desapalancada media cae de 0,70 a 0,60 y la reapalancada de 1,25 a 1,03. El documento atribuye el descenso a que la ventana incorpora 2025 y excluye 2020, un año de gran volatilidad. Con ello, el coste de los recursos propios baja del 9,37 % al 8,81 %, pese a la subida del bono.\n\n**La muestra.** Las comparables son siete cotizadas del índice STOXX Europe TMI, las mismas que en la revisión anterior: ACS, Eiffage, Ferrovial, Vinci, Getlink, Maersk y PKP Cargo. Solo dos tienen actividad ferroviaria directa, Getlink y PKP Cargo; de las otras cinco, cuatro son concesionarias de infraestructuras y una es naviera. La beta de las instalaciones ferroviarias españolas depende, por tanto, de cómo cotizan en bolsa las autopistas y la logística marítima.\n\n**La deuda.** Es el único parámetro que distingue entre explotadores. Para Adif y Adif Alta Velocidad se toma la media de sus tipos de interés en las cuentas de 2021-2025: 1,96 %. Para Renfe, el 1,26 %. Para el resto, la media de tres series del Banco de España de nuevas operaciones de crédito a sociedades no financieras: 3,23 %, frente al 2,89 % de 2025. El Pleno modificó el 28 de enero de 2025 el párrafo 78 de la Comunicación para fijar esa fuente; la consulta de 2023 usaba aún la encuesta del Banco Central Europeo.\n\n## El marco legal\n\nEl artículo 101 de la Ley 38/2015 del Sector Ferroviario dispone que los precios por el acceso a una instalación de servicio y por los servicios básicos «no podrán superar el coste de su prestación más un beneficio razonable». La misma regla se aplica a los servicios complementarios y auxiliares cuando solo hay un proveedor. El artículo 42 enumera las instalaciones: estaciones de viajeros, terminales de carga, estaciones de clasificación, vías de apartado, instalaciones de mantenimiento, de lavado, de suministro de combustible, cambiadores de ejes, entre otras.\n\nLa CNMC actúa con base en los artículos 11 y 12.1.f) de la Ley 3/2013, que le encargan velar por que los precios de los explotadores no sean discriminatorios y corregir distorsiones. La Comunicación de 2022, publicada en el BOE el 2 de septiembre de 2022, no impone tarifas. Cada explotador fija las suyas; la CNMC concluye que están orientadas a costes si, según cuentas aprobadas y auditadas, los ingresos medios de los tres ejercicios anteriores no superan los costes más el beneficio razonable. La resolución que cierre el expediente agota la vía administrativa y es recurrible ante la Audiencia Nacional en dos meses.\n\n## Las cifras\n\n- WACC antes de impuestos propuesto: Renfe 7,20 %, Adif y Adif AV 7,50 %, resto 8,05 % (STP/DTSP/056/26).\n- WACC vigente: 7,33 %, 7,73 % y 8,17 % (Resolución de 20-11-2025).\n- Valores de 2024: 6,88 %, 7,33 % y 7,52 % (Resolución de 15-11-2024).\n- Propuesta de 2023: 6,22 %, 6,58 % y 6,68 % (consulta STP/DTSP/007/23).\n- Tasa libre de riesgo: 2,47 %; prima de mercado: 6,15 %; beta reapalancada: 1,03.\n- Coste de la deuda: Renfe 1,26 %, Adif 1,96 %, resto 3,23 %.\n\n## Los actores\n\nLa Sala de Supervisión Regulatoria, presidida por Ángel García Castillejo, firmó la resolución de 2025 y es el órgano competente para la de 2026. Adif y Adif Alta Velocidad explotan estaciones y terminales de la Red Ferroviaria de Interés General; Renfe, a través de Renfe Mantenimiento, los talleres a los que piden acceso Ouigo e Iryo.\n\nLa participación ha sido mínima. En 2025 solo Renfe presentó un escrito, el 12 de noviembre, para actualizar el coste de su deuda con las cuentas de 2024; ningún operador alegó. La página de la consulta de 2026 no muestra aportaciones a 4 de noviembre.\n\n## Qué cambia para…\n\n**Los operadores entrantes.** Ouigo e Iryo pagan a Renfe por usar talleres y a Adif por estaciones. Una referencia más baja estrecha el margen que la CNMC tolera en esos precios cuando revise las cuentas. La rebaja es pequeña, pero es la primera desde que existe la serie.\n\n**Los explotadores privados.** Terminales intermodales y talleres de titularidad privada tendrán el umbral más alto, 8,05 %, por su mayor coste de deuda. Para un inversor en una terminal, la cifra marca la rentabilidad sobre el capital que el regulador considera razonable si el servicio queda sometido a orientación a costes.\n\n**Los conflictos abiertos.** La CNMC estimó en octubre la reclamación de Ouigo sobre el acceso a los talleres de Fuencarral, Cerro Negro y Can Tunis, y Renfe anunció recurso ante la Audiencia Nacional, según Merca2. El acceso y el precio van por vías distintas, pero cuando la disputa llegue a la tarifa, el WACC aprobado será la vara de medir.\n\n## El calendario\n\n- 26-07-2022: Comunicación de la CNMC sobre orientación a costes.\n- 02-09-2022: publicación de la Comunicación en el BOE.\n- 15-11-2024: resolución con el WACC de 2024.\n- 28-01-2025: el Pleno modifica el párrafo 78 de la Comunicación.\n- 20-11-2025: resolución con el WACC de 2025.\n- 13-10-2026: apertura de la consulta del WACC de 2026.\n- 16-11-2026: fin del plazo de observaciones.\n- Noviembre-diciembre de 2026: resolución de la Sala, si se repite el calendario de 2024 y 2025.\n\n## Lo que hay que vigilar\n\n**Las alegaciones.** Si ningún operador alega por tercer año, la propuesta se aprobará sin cambios salvo ajustes por cuentas anuales. Un escrito de Ouigo, Iryo o de los operadores de mercancías sobre la muestra de comparables sería el primero desde 2022.\n\n**La muestra.** Que la beta ferroviaria española se calcule con constructoras, una naviera y dos ferroviarias es una debilidad del método que nadie ha impugnado. Su revisión exigiría modificar la Comunicación, no solo actualizarla.\n\n**La aplicación.** La referencia solo produce efectos cuando la CNMC revisa cuentas de un explotador. La primera revisión que use el 7,20 % de Renfe sobre sus talleres dirá si la rebaja tiene consecuencias económicas.",
+ "date": "2026-11-04",
+ "deadline": "2026-11-16",
+ "doc_ref": "Expediente CNMC STP/DTSP/056/26",
+ "event_date": "2026-10-13",
+ "featured": 0,
+ "geo": {
+  "lat": 40.4168,
+  "lon": -3.7038,
+  "place": "Madrid"
+ },
+ "id": "cnmc-consulta-wacc-ferroviario-2026-instalaciones-servicio",
+ "image": {
+  "alt": "Edificio de varias plantas envuelto en una celosía de lamas de color óxido tras unos árboles",
+  "credit": "Enric",
+  "license": "CC BY-SA 4.0",
+  "orig_src": "img/cnmc-sede-barcelona.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:080_Edifici_CNMC,_c._Bol%C3%ADvia,_56_(Barcelona),_des_del_c._Badajoz.jpg",
+  "src": "img/cnmc-sede-barcelona.jpg"
+ },
+ "key_data": [
+  {
+   "label": "WACC antes de impuestos propuesto 2026",
+   "source": "CNMC, STP/DTSP/056/26, 13-10-2026",
+   "value": "Renfe 7,20 %; Adif y Adif AV 7,50 %; resto 8,05 %"
+  },
+  {
+   "label": "WACC vigente (2025)",
+   "source": "Resolución CNMC STP/DTSP/062/25, 20-11-2025",
+   "value": "Renfe 7,33 %; Adif 7,73 %; resto 8,17 %"
+  },
+  {
+   "label": "Plazo de observaciones",
+   "source": "CNMC, página de la consulta, 13-10-2026",
+   "value": "Del 13-10-2026 al 16-11-2026"
+  },
+  {
+   "label": "Beta desapalancada",
+   "source": "CNMC, STP/DTSP/056/26, tabla 3",
+   "value": "0,60 (0,70 en 2025; −14,56 %)"
+  },
+  {
+   "label": "Tasa libre de riesgo",
+   "source": "CNMC, STP/DTSP/056/26, tabla 3",
+   "value": "2,47 % (1,91 % en 2025)"
+  },
+  {
+   "label": "Coste de la deuda",
+   "source": "CNMC, STP/DTSP/056/26, tabla 3",
+   "value": "Renfe 1,26 %; Adif 1,96 %; resto 3,23 %"
+  },
+  {
+   "label": "Coste de los recursos propios",
+   "source": "CNMC, STP/DTSP/056/26, tabla 3",
+   "value": "8,81 % (9,37 % en 2025)"
+  },
+  {
+   "label": "Base legal",
+   "source": "BOE-A-2015-10440, texto consolidado",
+   "value": "Art. 101 Ley 38/2015: precio máximo = coste + beneficio razonable"
+  }
+ ],
+ "key_fact": "WACC propuesto antes de impuestos: 7,20 % Renfe, 7,50 % Adif, 8,05 % resto (vigente: 7,33 %, 7,73 % y 8,17 %)",
+ "kicker": "Regulación económica · Ferrocarril",
+ "kind": "noticia",
+ "next": "El plazo de observaciones termina el 16 de noviembre de 2026 y las aportaciones serán públicas salvo indicación contraria. La Sala de Supervisión Regulatoria aprobará la referencia definitiva; en 2024 y 2025 lo hizo en noviembre. La resolución es recurrible ante la Audiencia Nacional. No fija tarifas: cada explotador decide las suyas y la CNMC usa el WACC para supervisarlas a posteriori.",
+ "published_at": "2026-11-04T07:30:00+01:00",
+ "published_time": "07:30",
+ "reg_kind": "consulta",
+ "relevance": "MEDIA",
+ "relevance_for": "Empresas ferroviarias de viajeros y mercancías; explotadores de instalaciones de servicio, públicos y privados; inversores en terminales intermodales y talleres; asesores financieros que preparan planes de negocio ferroviarios y modelos de acceso a la red.",
+ "revised_at": "2026-11-04T16:25:00+01:00",
+ "section": "regulacion",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2026-10-13",
+   "title": "Consulta pública WACC ferroviario 2026",
+   "url": "https://www.cnmc.es/consultas-publicas/transporte/consulta-publica-wacc-ferroviario-2026"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2026-10-13",
+   "title": "STP/DTSP/056/26. Consulta pública relativa a la actualización (2026) de la referencia de beneficio razonable",
+   "url": "https://www.cnmc.es/sites/default/files/editor_contenidos/Transportes/Ferroviario/1_STP_DTSP_056_26_Wacc2026_instalaciones_de_servicio_ferroviario.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2025-11-20",
+   "title": "Resolución por la que se actualiza (2025) la referencia de beneficio razonable (STP/DTSP/062/25)",
+   "url": "https://www.cnmc.es/sites/default/files/6287569.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2025-12-04",
+   "title": "Nota de prensa: la CNMC aprueba el beneficio razonable de las instalaciones de servicio ferroviarias",
+   "url": "https://cnmc.es/prensa/beneficio-instalaciones-ferroviarias-20251204"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2023",
+   "title": "STP/DTSP/007/23. Consulta pública sobre la determinación del WACC de las instalaciones de servicio ferroviarias",
+   "url": "https://www.cnmc.es/sites/default/files/editor_contenidos/Transportes/1_STP_DTSP_007_23_CP_WACC%202023%20def.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2024-10-01",
+   "title": "Nota de prensa: la CNMC somete a consulta pública el cálculo del beneficio razonable (2024)",
+   "url": "https://www.cnmc.es/sites/default/files/editor_contenidos/Notas%20de%20prensa/2024/20241001_NP_Audiencia%20P%C3%BAblica%20WACC_.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "CNMC",
+   "published": "2022-03-22",
+   "title": "Nota de prensa: proyecto de Comunicación sobre precios en instalaciones de servicio ferroviarias",
+   "url": "https://www.cnmc.es/prensa/comunicacion-instalaciones-ferroviarias-20220322"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2015-09-30",
+   "title": "Ley 38/2015, de 29 de septiembre, del sector ferroviario (texto consolidado, arts. 42 y 101)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10440"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Merca2",
+   "published": "2026-10-21",
+   "title": "La CNMC obliga a Renfe a abrir Fuencarral, Cerro Negro y Can Tunis a Ouigo y Renfe recurre ante la Audiencia Nacional",
+   "url": "https://www.merca2.es/2026/10/21/cnmc-talleres-renfe-ouigo-2478046/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Bolsamanía (Europa Press)",
+   "published": "2025-12-04",
+   "title": "La CNMC sube las tarifas máximas que Renfe podrá cobrar a Ouigo por el uso de sus talleres",
+   "url": "https://www.bolsamania.com/noticias/empresas/economiatransportes--la-cnmc-sube-las-tarifas-maximas-que-renfe-podra-cobrar-a-ouigo-por-el-uso-de-sus-talleres--21327469.html"
+  }
+ ],
+ "subsector": "ferrocarril",
+ "subtitle": "El expediente STP/DTSP/056/26 propone rebajar por primera vez la referencia: 7,20 % para Renfe, 7,50 % para Adif y 8,05 % para el resto de explotadores de estaciones, terminales y talleres; observaciones hasta el 16 de noviembre",
+ "summary": "La CNMC tiene en consulta, del 13 de octubre al 16 de noviembre de 2026, la actualización del beneficio razonable que admite en los precios de las instalaciones de servicio ferroviarias (expediente STP/DTSP/056/26). Propone un WACC antes de impuestos del 7,20 % para Renfe, el 7,50 % para Adif y Adif AV y el 8,05 % para el resto, frente al 7,33 %, 7,73 % y 8,17 % vigentes desde noviembre de 2025. Es la primera rebaja de la serie y se debe a la caída de la beta de las comparables, que compensa la subida del bono español. La referencia aplica el artículo 101 de la Ley 38/2015.",
+ "tags": [
+  "ferrocarril",
+  "consulta abierta"
+ ],
+ "timeline": [
+  {
+   "date": "2022-07-26",
+   "text": "La CNMC aprueba la Comunicación sobre orientación a costes de los precios en instalaciones de servicio"
+  },
+  {
+   "date": "2022-09-02",
+   "text": "Publicación de la Comunicación en el BOE"
+  },
+  {
+   "date": "2024-11-15",
+   "text": "Resolución del WACC 2024: 6,88 %, 7,33 % y 7,52 %"
+  },
+  {
+   "date": "2025-01-28",
+   "text": "El Pleno modifica el párrafo 78 de la Comunicación (coste de la deuda del resto de explotadores)"
+  },
+  {
+   "date": "2025-11-20",
+   "text": "Resolución del WACC 2025: 7,33 %, 7,73 % y 8,17 %"
+  },
+  {
+   "date": "2026-10-13",
+   "text": "Apertura de la consulta pública del WACC 2026"
+  },
+  {
+   "date": "2026-11-16",
+   "text": "Fin del plazo de observaciones"
+  },
+  {
+   "date": "2026-12",
+   "text": "Resolución previsible de la Sala de Supervisión Regulatoria (sin fecha publicada)"
+  }
+ ],
+ "title": "La CNMC consulta la referencia de beneficio razonable para instalaciones ferroviarias",
+ "why": "El WACC es la vara con la que la CNMC comprueba, sobre las cuentas de los tres ejercicios anteriores, si los precios de estaciones, terminales y talleres superan el coste más un beneficio razonable, como exige el artículo 101 de la Ley 38/2015. Tras dos subidas consecutivas, la propuesta de 2026 baja las tres referencias entre 0,12 y 0,23 puntos. Afecta a los precios que Renfe Mantenimiento cobra a Ouigo e Iryo por sus talleres, en plena serie de conflictos de acceso resueltos por la CNMC."
+}

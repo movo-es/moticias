@@ -1,0 +1,77 @@
+{
+ "body_md": "**Qué hace.** El SAE de GMV forma parte de su suite ITS para transporte de viajeros. Combina equipos embarcados, comunicaciones y un centro de control para regular el servicio, gestionar alarmas y explotar datos. Es modular: admite CCTV, conteo de pasajeros, conducción eficiente y prioridad semafórica, en un mismo equipo o por separado.\n\n**Cómo se integra.** En la versión multiflota, una autoridad da servicio a varios concesionarios con un sistema común. En el contrato de la ATM de Barcelona, la información se exporta a otros sistemas con los estándares SIRI y GTFS, lo que permite el intercambio con el AMB.\n\n**Para quién encaja.** Autoridades de transporte metropolitano y consorcios que coordinan muchos operadores, y concesionarios urbanos que necesitan SAE y validación en un mismo suministro, como TCC en la comarca de Pamplona.\n\n**Límites y requisitos.** Es un proyecto de suministro, instalación y mantenimiento de varios años, no un servicio de alta inmediata. En Barcelona se ofrecen dos niveles de equipamiento según cada operador; el avanzado añade CCTV y conteo. GMV ya suministraba el SAE anterior de la ATM desde 2001. Las fuentes consultadas no detallan el calendario de puesta en servicio de los 916 autobuses.",
+ "category": "Operación y SAE",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Autoritat del Transport Metropolità (ATM) de Barcelona",
+   "place": "Área de Barcelona",
+   "source_url": "https://www.gmv.com/es-es/comunicacion/noticias/atm-adjudica-gmv-el-nuevo-sistema-de-ayuda-la-explotacion-e-informacion",
+   "what": "Contrato de más de 7 millones de euros para el SAEi multiflota en 916 autobuses de 27 operadores, con exportación de datos SIRI y GTFS.",
+   "year": "2022"
+  },
+  {
+   "client": "TCC, concesionaria del Transporte Urbano Comarcal",
+   "place": "Comarca de Pamplona",
+   "source_url": "https://www.gmv.com/es-es/comunicacion/noticias/gmv-moderniza-el-transporte-urbano-comarcal-de-pamplona",
+   "what": "SAEI, comunicaciones y venta y validación embarcada en 150 autobuses, 35 líneas diurnas y nocturnas y 541 paradas.",
+   "year": "2019"
+  }
+ ],
+ "featured": true,
+ "id": "gmv-sae-multiflota",
+ "modes": [
+  "tierra"
+ ],
+ "name": "SAE / SAEi (Sistema de Ayuda a la Explotación e Información)",
+ "priority": 3,
+ "provider": "GMV",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "GMV",
+   "published": "2022-12-02",
+   "title": "ATM adjudica a GMV el nuevo sistema de ayuda a la explotación e información",
+   "url": "https://www.gmv.com/es-es/comunicacion/noticias/atm-adjudica-gmv-el-nuevo-sistema-de-ayuda-la-explotacion-e-informacion"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "GMV",
+   "published": "2022-12-09",
+   "title": "GMV i ATM presenten el nou SAEi al sistema metropolità de transport públic",
+   "url": "https://www.gmv.com/ca-es/comunicacio/noticies/gmv-i-atm-presenten-el-nou-saei-al-sistema-metropolita-de-transport-public-de"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "ITS International",
+   "published": "2022-12-05",
+   "title": "€7m Barcelona bus deal for GMV",
+   "url": "https://d10dev.itsinternational.com/its4/news/eu7m-barcelona-bus-deal-gmv?page=223"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "GMV",
+   "published": "2019-01-08",
+   "title": "GMV moderniza el transporte urbano comarcal de Pamplona",
+   "url": "https://www.gmv.com/es-es/comunicacion/noticias/gmv-moderniza-el-transporte-urbano-comarcal-de-pamplona"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Sistema de ayuda a la explotación e información multiflota y multioperador: localiza los autobuses, supervisa el servicio en tiempo real y alimenta la información al viajero, con opción de videovigilancia y conteo de pasajeros.",
+ "tags": [
+  "SAE",
+  "CAD/AVL",
+  "multioperador",
+  "SIRI",
+  "GTFS",
+  "ATM Barcelona"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.gmv.com/es-es/productos/sistemas-inteligentes-transporte/sae",
+ "verified_at": "2026-11-04"
+}

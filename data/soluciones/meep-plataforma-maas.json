@@ -1,0 +1,69 @@
+{
+ "body_md": "**Qué hace.** Meep, empresa con sede en Madrid, desarrolla aplicaciones de movilidad como servicio (MaaS) de marca blanca y un conjunto de API y SDK modulares para añadir funciones MaaS a apps o sistemas de gestión existentes. Ofrece además una capa de inteligencia de negocio y analítica predictiva para operadores y administraciones.\n\n**Cómo se integra.** La plataforma, en la nube, se conecta por API con los sistemas de cada operador. En el caso de Alsa, la app Mobi4U muestra las llegadas en tiempo real por parada, avisa de incidencias, planifica rutas según tiempo, coste o impacto ambiental e incorpora la venta digital de billetes y el programa de fidelización Alsa Plus.\n\n**Para quién encaja.** Operadores presentes en varias ciudades que quieren una sola app, y administraciones que buscan integrar transporte público y compartido. Alsa lanzó Mobi4U en octubre de 2021; el caso publicado por MaaS Alliance enumera trece ámbitos, entre ellos Asturias, Galicia, Granada, Jaén y Rabat, con pago por QR activo en Jaén.\n\n**Límites y requisitos.** La utilidad depende de que cada operador abra datos y venta por API. Las fuentes no publican cifras de uso. El proveedor presenta también proyectos en Malta, Zaragoza y Sevilla, sin fecha en su web.",
+ "category": "Datos y planificación",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Alsa (app Mobi4U)",
+   "place": "Trece ámbitos en España y Marruecos (Asturias, Cantabria, Galicia, Madrid, Granada, Jaén, Rabat, entre otros)",
+   "source_url": "https://maas-alliance.eu/wp-content/uploads/2023/03/Case-Study-Alsa-Mobi4U-EN.pdf",
+   "what": "Lanzamiento en octubre de 2021 de la app MaaS de Alsa sobre la plataforma de Meep, con pago por QR en Jaén.",
+   "year": "2021"
+  }
+ ],
+ "featured": false,
+ "id": "meep-plataforma-maas",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Meep (plataforma MaaS)",
+ "priority": 12,
+ "provider": "Meep",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "MaaS Alliance",
+   "published": "",
+   "title": "Case Study: Alsa Mobi4U",
+   "url": "https://maas-alliance.eu/wp-content/uploads/2023/03/Case-Study-Alsa-Mobi4U-EN.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Alsa",
+   "published": "",
+   "title": "Descarga Mobi4U",
+   "url": "https://www.alsa.com/mobi4u-download"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "EU-Startups",
+   "published": "",
+   "title": "Madrid-based Meep lands €4 million to expand its mobility app to the US, Latin America and across Europe",
+   "url": "https://www.eu-startups.com/2021/01/madrid-based-meep-lands-e4-million-to-expand-its-mobility-app-to-the-us-latin-america-and-across-europe/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Meep",
+   "published": "",
+   "title": "Meep",
+   "url": "https://www.meep.app/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Plataforma MaaS de marca blanca y kit de API y SDK que reúne en una app la planificación multimodal, la información en tiempo real y la venta de títulos de distintos operadores públicos y privados.",
+ "tags": [
+  "MaaS",
+  "multimodalidad",
+  "API",
+  "marca blanca",
+  "tiempo real"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.meep.app/",
+ "verified_at": "2026-11-04"
+}

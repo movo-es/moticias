@@ -1,0 +1,68 @@
+{
+ "body_md": "**Qué hace.** NaviLens es un sistema de señalética basado en códigos de colores que la cámara del teléfono detecta a distancia, en movimiento y con un ángulo de captura de 160 grados. La app NaviLens guía a personas con discapacidad visual mediante audio y vibración; NaviLens GO muestra la información al público general en realidad aumentada. Según el proveedor, el contenido se lee en el idioma del dispositivo.\n\n**Cómo se integra.** Los códigos son etiquetas impresas que se incorporan a la señalética existente y no necesitan alimentación eléctrica. En paradas de autobús se enlazan con los datos de líneas y tiempos de espera en tiempo real. EMT Madrid coloca cuatro códigos por marquesina y uno en cada cara de los postes.\n\n**Para quién encaja.** Operadores y autoridades que deben mejorar la accesibilidad de la información sin obra civil. EMT Madrid lo extendió a 5.540 paradas en 2023 y el Consorcio Regional de Transportes de Madrid planificó en 2021 cubrir más de 7.300 paradas interurbanas a un ritmo de unos 1.500 códigos al año.\n\n**Límites y requisitos.** El viajero necesita un smartphone con la aplicación instalada. La utilidad depende de que los datos de tiempo real asociados a cada código estén actualizados.",
+ "category": "Información al viajero",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "EMT Madrid",
+   "place": "Madrid",
+   "source_url": "https://diario.madrid.es/blog/notas-de-prensa/la-emt-instala-codigos-navilens-en-sus-paradas-para-mejorar-la-autonomia-de-los-usuarios-ciegos-y-con-discapacidad-visual/",
+   "what": "Códigos en 5.540 paradas (4.499 marquesinas y 1.041 postes), unas 20.000 etiquetas.",
+   "year": "2023"
+  },
+  {
+   "client": "Consorcio Regional de Transportes de Madrid",
+   "place": "Comunidad de Madrid (179 municipios)",
+   "source_url": "https://crtm.es/comunicacion/sala-de-prensa/noticias/archivo/16102021-la-comunidad-de-madrid-implantara-de-forma-masiva-el-sistema-de-informacion-navilens-en-las-paradas-de-autobus/?lang=es",
+   "what": "Inicio de la implantación masiva en paradas de autobús interurbano, con objetivo de más de 7.300 paradas.",
+   "year": "2021"
+  }
+ ],
+ "featured": false,
+ "id": "navilens-informacion-accesible",
+ "modes": [
+  "tierra"
+ ],
+ "name": "NaviLens",
+ "priority": 7,
+ "provider": "NaviLens",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Ayuntamiento de Madrid (Diario de Madrid)",
+   "published": "2023-03-21",
+   "title": "La EMT instala códigos NaviLens en sus paradas para mejorar la autonomía de los usuarios ciegos y con discapacidad visual",
+   "url": "https://diario.madrid.es/blog/notas-de-prensa/la-emt-instala-codigos-navilens-en-sus-paradas-para-mejorar-la-autonomia-de-los-usuarios-ciegos-y-con-discapacidad-visual/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Consorcio Regional de Transportes de Madrid",
+   "published": "2021-10-16",
+   "title": "La Comunidad de Madrid implantará de forma masiva el sistema de información NaviLens en las paradas de autobús",
+   "url": "https://crtm.es/comunicacion/sala-de-prensa/noticias/archivo/16102021-la-comunidad-de-madrid-implantara-de-forma-masiva-el-sistema-de-informacion-navilens-en-las-paradas-de-autobus/?lang=es"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "NaviLens",
+   "published": "",
+   "title": "NaviLens",
+   "url": "https://www.navilens.com/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Códigos visuales que el móvil lee a distancia y sin enfocar para ofrecer por voz la información de la parada o la estación, pensados sobre todo para personas ciegas o con baja visión.",
+ "tags": [
+  "accesibilidad",
+  "discapacidad visual",
+  "paradas",
+  "información en tiempo real",
+  "señalética"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.navilens.com/",
+ "verified_at": "2026-11-04"
+}

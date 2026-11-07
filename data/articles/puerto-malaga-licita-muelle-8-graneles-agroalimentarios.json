@@ -1,0 +1,123 @@
+{
+ "actors": "Consejo de Ministros, que autoriza la licitación a propuesta del Ministerio de Transportes; Autoridad Portuaria de Málaga, promotora y contratante; Puertos del Estado, que pactó el plan de inversiones 2026-2030; operadores de la terminal del muelle 9 y estibadores de graneles; constructoras de obra marítima que concurran.",
+ "author": "Redacción",
+ "body_md": "El puerto de Málaga licitará la obra que cambiará el frente de su dársena pesquera. El Consejo de Ministros autorizó el 3 de noviembre la licitación de la prolongación del muelle 9 y el relleno del muelle 8, por unos 48,4 millones de euros sin IVA, para crear un nuevo muelle y una explanada polivalente orientados al granel sólido agroalimentario.\n\n## Los hechos\n\nSegún la [referencia del Consejo de Ministros](https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261103-referencia-rueda-de-prensa-ministros.aspx), la actuación desarrolla dos alineaciones de muelle con cajones de hormigón armado. El muelle 9 se prolonga unos 87 metros, lo que permitirá a la terminal atender a dos buques portacontenedores de forma simultánea. El nuevo muelle 8 tendrá unos 263 metros de longitud.\n\nLa obra suma más de 70.000 m² de superficie de almacenamiento. Incluye la demolición de los espigones Norte y Sur de la dársena pesquera y de parte del dique de Poniente, y la retirada del espaldón del actual muelle-dique de Poniente y de parte de la escollera que cierra por el norte la explanada del muelle 9.\n\n[El Mercantil](https://elmercantil.com/2026/11/03/el-gobierno-autoriza-la-ampliacion-de-la-capacidad-de-graneles-en-el-puerto-de-malaga/) sitúa el plazo de ejecución en 27 meses. La referencia oficial no lo recoge.\n\n## El contexto\n\n**El granel.** El Gobierno justifica la obra por el incremento del granel sólido en Málaga y, en concreto, por la operativa agroalimentaria y sus previsiones de crecimiento. La referencia no aporta cifras de tráfico del puerto. En el conjunto del sistema, el granel sólido sumó 60,1 millones de toneladas entre enero y septiembre, un 0,3 % menos que un año antes, según [Puertos del Estado](https://www.puertos.es/comunicacion/los-puertos-de-interes-general-movieron-mas-de-420-millones-de-toneladas-de-mercancias-hasta-septiembre). Málaga apuesta por un segmento que a escala nacional está estancado.\n\n**El dinero.** La actuación está en el plan de inversiones 2026-2030 de la Autoridad Portuaria de Málaga, pactado con Puertos del Estado, bajo la línea «Cerramiento dársena pesquera y nuevo muelle nº8». El plan Horizonte 2030 del sistema portuario prevé más de 130 millones de euros en Málaga. Para el conjunto de puertos del Estado, [Puertos del Estado](https://www.puertos.es/comunicacion/celebracion-de-la-reunion-anual-del-sistema-portuario-de-titularidad-estatal) cifra la inversión prevista en más de 1.500 millones en 2027 y más de 7.000 millones hasta 2030.\n\n## El marco legal\n\nLa obra se ejecuta en dominio público portuario bajo el texto refundido de la Ley de Puertos del Estado y de la Marina Mercante (Real Decreto Legislativo 2/2011). Por su importe, superior a 12 millones de euros, el contrato necesita autorización previa del Consejo de Ministros conforme a la Ley 9/2017 de Contratos del Sector Público. El paso siguiente es el anuncio de licitación de la Autoridad Portuaria.\n\n## Lo que hay que vigilar\n\n**La licitación.** Presupuesto definitivo, plazo de presentación de ofertas y criterios de adjudicación, que la Autoridad Portuaria aún no ha publicado.\n\n**La explotación.** Quién operará la nueva explanada y en qué régimen: la referencia habla de explanada polivalente, sin concretar si se otorgará en concesión ni a qué terminal se vinculará.\n\n**La convivencia con la pesca.** La obra demuele los espigones de la dársena pesquera. La referencia no detalla cómo se reubica la actividad pesquera durante y después de los trabajos.",
+ "date": "2026-11-04",
+ "event_date": "2026-11-03",
+ "featured": 0,
+ "geo": {
+  "lat": 36.712,
+  "lon": -4.417,
+  "place": "Puerto de Málaga"
+ },
+ "id": "puerto-malaga-licita-muelle-8-graneles-agroalimentarios",
+ "image": {
+  "alt": "Vista panorámica del puerto de Málaga con dársenas, grúas de contenedores y un crucero",
+  "credit": "Marku85",
+  "license": "CC BY-SA 2.0",
+  "orig_src": "img/puerto-malaga-muelles.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Port_of_Malaga.jpg",
+  "src": "img/puerto-malaga-muelles.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Importe autorizado",
+   "source": "Referencia del Consejo de Ministros, 03-11-2026",
+   "value": "48,4 M€ (IVA no incluido)"
+  },
+  {
+   "label": "Prolongación del muelle 9",
+   "source": "Referencia del Consejo de Ministros, 03-11-2026",
+   "value": "87 m"
+  },
+  {
+   "label": "Longitud del nuevo muelle 8",
+   "source": "Referencia del Consejo de Ministros, 03-11-2026",
+   "value": "263 m"
+  },
+  {
+   "label": "Superficie adicional",
+   "source": "Referencia del Consejo de Ministros, 03-11-2026",
+   "value": "Más de 70.000 m²"
+  },
+  {
+   "label": "Plazo de ejecución",
+   "source": "El Mercantil, 03-11-2026",
+   "value": "27 meses"
+  },
+  {
+   "label": "Inversión Horizonte 2030 en Málaga",
+   "source": "Referencia del Consejo de Ministros, 03-11-2026",
+   "value": "Más de 130 M€"
+  }
+ ],
+ "key_fact": "48,4 M€ (IVA no incluido)",
+ "kicker": "Infraestructura portuaria · Puertos",
+ "kind": "noticia",
+ "next": "La Autoridad Portuaria debe publicar el anuncio de licitación con presupuesto, plazo de ofertas y criterios. El Mercantil cifra en 27 meses el plazo de ejecución, dato que no figura en la referencia oficial. La adjudicación y el inicio de obra fijarán cuándo entra en servicio el nuevo atraque.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "ALTA",
+ "relevance_for": "Operadores de graneles sólidos y agroalimentarios, estibadoras y terminales del puerto de Málaga, navieras de contenedores con escala en Málaga, importadores de cereales y piensos del sur peninsular, constructoras de obra marítima.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "La Moncloa",
+   "published": "2026-11-03",
+   "title": "Referencia del Consejo de Ministros de 3 de noviembre de 2026",
+   "url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261103-referencia-rueda-de-prensa-ministros.aspx"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Puertos del Estado",
+   "published": "2026-10-22",
+   "title": "Los puertos de interés general movieron más de 420 millones de toneladas de mercancías hasta septiembre",
+   "url": "https://www.puertos.es/comunicacion/los-puertos-de-interes-general-movieron-mas-de-420-millones-de-toneladas-de-mercancias-hasta-septiembre"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Puertos del Estado",
+   "published": "2026-09-22",
+   "title": "Celebración de la reunión anual del sistema portuario de titularidad estatal",
+   "url": "https://www.puertos.es/comunicacion/celebracion-de-la-reunion-anual-del-sistema-portuario-de-titularidad-estatal"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-11-03",
+   "title": "El Gobierno autoriza la ampliación de la capacidad de graneles en el puerto de Málaga",
+   "url": "https://elmercantil.com/2026/11/03/el-gobierno-autoriza-la-ampliacion-de-la-capacidad-de-graneles-en-el-puerto-de-malaga/"
+  }
+ ],
+ "subsector": "puertos",
+ "subtitle": "El Consejo de Ministros autoriza la prolongación del muelle 9 y el relleno de la dársena pesquera para crear el muelle 8 y más de 70.000 m² de explanada",
+ "summary": "El Consejo de Ministros autorizó el 3 de noviembre la licitación de las obras de prolongación del muelle 9 y relleno del muelle 8 del puerto de Málaga, por unos 48,4 millones de euros sin IVA. El proyecto alarga unos 87 metros el muelle 9 —para atender dos portacontenedores a la vez—, crea un muelle 8 de unos 263 metros y añade más de 70.000 m² de superficie. El objetivo declarado es absorber el crecimiento del granel sólido agroalimentario. La obra figura en el plan de inversiones 2026-2030 de la Autoridad Portuaria.",
+ "tags": [
+  "logística",
+  "puertos",
+  "graneles sólidos",
+  "agroalimentario",
+  "puerto de Málaga",
+  "contratación pública"
+ ],
+ "timeline": [
+  {
+   "date": "2026-09-22",
+   "text": "Puertos del Estado cifra en más de 1.500 millones la inversión portuaria prevista para 2027"
+  },
+  {
+   "date": "2026-10-22",
+   "text": "Puertos del Estado publica el tráfico hasta septiembre: el granel sólido cae un 0,3 %"
+  },
+  {
+   "date": "2026-11-03",
+   "text": "El Consejo de Ministros autoriza la licitación de los muelles 8 y 9"
+  }
+ ],
+ "title": "Málaga licitará por 48,4 millones un nuevo muelle para graneles agroalimentarios",
+ "why": "Málaga apuesta por el granel agroalimentario como segmento de crecimiento y reordena la dársena pesquera para ganar línea de atraque y superficie."
+}

@@ -1,0 +1,135 @@
+{
+ "actors": "Federal Express Corporation (FedEx, cotizada en la Bolsa de Nueva York), con María José Palacios como responsable de hubs y gateways en Iberia; Aena, gestor del Centro de Carga Aérea de Madrid-Barajas; Agencia Tributaria, autoridad aduanera del depósito temporal; clientes exportadores e importadores.",
+ "author": "Redacción",
+ "body_md": "FedEx ha terminado la modernización de su segunda instalación con acceso directo a pista en el aeropuerto Adolfo Suárez Madrid-Barajas. Con la nave que ya operaba, la compañía supera los 4.500 m² de superficie operativa en la zona de carga, según su [nota de prensa](https://newsroom.fedex.com/newsroom/europe-english/fedex-boosts-madrid-barajas-operational-capacity-to-support-trade-ahead-of-peak-season) del 4 de noviembre. La ampliación llega a las puertas de la temporada alta de envíos.\n\n## Los hechos\n\nLa instalación renovada añade 1.550 m² de almacén operativo en primera línea y 913 m² de oficinas técnicas y administrativas. Incorpora cuatro muelles para tráiler, una plataforma de rodillos capaz de manejar hasta 14 contenedores de carga aérea y una zona de almacenamiento de alta densidad para 5.700 bultos.\n\nCuenta con clasificación automática, equipos de pesaje y cubicaje, inspección por rayos X y un almacén de depósito temporal, el recinto aduanero autorizado en el que las mercancías esperan a completar el despacho. La reforma incluyó la renovación de la instalación eléctrica, la protección contra incendios y la seguridad física.\n\n**El modelo.** FedEx centralizará en Madrid los envíos exprés y económicos con Canarias, territorio que, fuera del ámbito del IVA de la Unión, obliga a trámites aduaneros en sus intercambios con la Península. También amplía la consolidación de envíos económicos de la UE hacia Latinoamérica y Estados Unidos y la carga pesada prioritaria que exige conexión directa a pista. [El Mercantil](https://elmercantil.com/2026/11/04/fedex-moderniza-sus-instalaciones-en-barajas-para-la-temporada-alta-de-envios/) y [Logística Profesional](https://www.logisticaprofesional.com/texto-diario/mostrar/6077806/fedex-renueva-instalaciones-aeropuerto-madrid-agilizar-flujos-transfronterizos) recogen los mismos datos.\n\nLa compañía no ha publicado el importe de la inversión ni la plantilla adscrita.\n\n## El contexto\n\n**La carga de Madrid.** Barajas movió 62.417 toneladas de mercancía en septiembre, un 13,1 % menos que un año antes, según las [estadísticas de Aena](https://www.aena.es/doc/detalleprensa/261013-aena-estadisticas-septiembre.pdf). Barcelona-El Prat creció un 6,9 %, Zaragoza un 6,8 % y Vitoria un 12,5 %. La red de Aena en España transportó 111.822 toneladas en el mes, un 5,7 % menos, y 989.990 toneladas entre enero y septiembre, un 0,9 % más.\n\n**El Centro de Carga.** La inversión de FedEx coincide con otras en el mismo recinto. SAASA, filial de Andino Inversiones Global, inició en octubre las obras de una terminal de segunda línea en la parcela M-15, en concesión de Aena por 30 años, con unos 3.000 m² de nave, capacidad para 30.000 toneladas anuales y una inversión superior a 3,6 millones de euros, según [Diario del Puerto](https://www.diariodelpuerto.com/aereo/saasa-inicia-las-obras-de-su-terminal-de-2-linea-en-barajas-IP26831801).\n\n## Qué cambia para…\n\n**Los cargadores.** Más capacidad exprés con despacho en el propio recinto acorta tiempos de tránsito en Madrid, sobre todo en los flujos con Canarias. La compañía no ha publicado nuevas frecuencias de vuelo.\n\n**El Centro de Carga.** Con FedEx y SAASA, el recinto suma capacidad privada de almacén y despacho mientras el volumen de Barajas retrocede. Desde el 1 de noviembre, además, cada línea de declaración de comercio electrónico importado que se despacha en estos depósitos paga la nueva tasa europea de 2 euros.\n\n## Lo que hay que vigilar\n\nLas estadísticas de octubre de Aena, que dirán si la caída de Barajas en septiembre es puntual. El rendimiento de la nave en el pico de fin de año. Y la entrada en servicio de la terminal de SAASA, prevista en unos 12 meses desde el inicio de obras.",
+ "date": "2026-11-04",
+ "event_date": "2026-11-04",
+ "featured": 0,
+ "geo": {
+  "lat": 40.4839,
+  "lon": -3.568,
+  "place": "Aeropuerto Adolfo Suárez Madrid-Barajas"
+ },
+ "id": "fedex-amplia-instalaciones-carga-aerea-madrid-barajas",
+ "image": {
+  "alt": "Avión carguero Airbus A300 de FedEx rodando con la terminal T4 de Barajas al fondo",
+  "credit": "Maarten Visser",
+  "license": "CC BY-SA 2.0",
+  "orig_src": "img/fedex-a300-madrid-barajas.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:N725FD_A300-600F_Fedex_(4606081603)_(2).jpg",
+  "src": "img/fedex-a300-madrid-barajas.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Superficie operativa total de FedEx en la zona de carga",
+   "source": "FedEx, 04-11-2026",
+   "value": "Más de 4.500 m²"
+  },
+  {
+   "label": "Nuevo almacén en primera línea",
+   "source": "FedEx, 04-11-2026",
+   "value": "1.550 m²"
+  },
+  {
+   "label": "Capacidad de almacenamiento",
+   "source": "FedEx, 04-11-2026",
+   "value": "5.700 bultos"
+  },
+  {
+   "label": "Plataforma de rodillos",
+   "source": "FedEx, 04-11-2026",
+   "value": "Hasta 14 contenedores aéreos"
+  },
+  {
+   "label": "Carga de Madrid-Barajas en septiembre",
+   "source": "Aena, 13-10-2026",
+   "value": "62.417 t (−13,1 %)"
+  },
+  {
+   "label": "Carga de la red de Aena, enero-septiembre",
+   "source": "Aena, 13-10-2026",
+   "value": "989.990 t (+0,9 %)"
+  }
+ ],
+ "key_fact": "Más de 4.500 m² operativos en zona de carga",
+ "kicker": "Terminales de carga · Carga aérea",
+ "kind": "noticia",
+ "next": "La instalación tiene que demostrar su capacidad en la temporada alta de fin de año. En el mismo Centro de Carga, SAASA construye una terminal de segunda línea de 30.000 toneladas anuales. Los datos de carga de octubre de Aena dirán si la caída de Madrid se corrige.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "MEDIA",
+ "relevance_for": "Transitarios y agentes de carga aérea de Madrid, exportadores con envíos urgentes a Latinoamérica y Estados Unidos, empresas con flujos con Canarias, agentes de aduanas y operadores de handling del Centro de Carga Aérea de Barajas.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "FedEx (NYSE: FDX)",
+   "published": "2026-11-04",
+   "title": "FedEx Boosts Madrid-Barajas Operational Capacity to Support Trade Ahead of Peak Season",
+   "url": "https://newsroom.fedex.com/newsroom/europe-english/fedex-boosts-madrid-barajas-operational-capacity-to-support-trade-ahead-of-peak-season"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Aena",
+   "published": "2026-10-13",
+   "title": "Estadísticas de tráfico de septiembre de 2026",
+   "url": "https://www.aena.es/doc/detalleprensa/261013-aena-estadisticas-septiembre.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-11-04",
+   "title": "FedEx moderniza sus instalaciones en Barajas para la temporada alta de envíos",
+   "url": "https://elmercantil.com/2026/11/04/fedex-moderniza-sus-instalaciones-en-barajas-para-la-temporada-alta-de-envios/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Logística Profesional",
+   "published": "2026-11-04",
+   "title": "FedEx renueva sus instalaciones en el aeropuerto de Madrid para agilizar los flujos transfronterizos",
+   "url": "https://www.logisticaprofesional.com/texto-diario/mostrar/6077806/fedex-renueva-instalaciones-aeropuerto-madrid-agilizar-flujos-transfronterizos"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Diario del Puerto",
+   "published": "2026-10-23",
+   "title": "SAASA inicia las obras de su terminal de 2ª línea en Barajas",
+   "url": "https://www.diariodelpuerto.com/aereo/saasa-inicia-las-obras-de-su-terminal-de-2-linea-en-barajas-IP26831801"
+  }
+ ],
+ "subsector": "carga aérea",
+ "subtitle": "La segunda nave con acceso a pista suma 1.550 m² de almacén, cuatro muelles para tráiler y un depósito temporal aduanero, y centraliza los envíos con Canarias",
+ "summary": "FedEx completó la modernización de su segunda instalación con acceso directo a pista en el aeropuerto Adolfo Suárez Madrid-Barajas, según comunicó el 4 de noviembre. Con la existente, su superficie operativa en la zona de carga supera los 4.500 m². La nave añade 1.550 m² de almacén y 913 m² de oficinas, cuatro muelles para tráiler, una plataforma de rodillos para 14 contenedores aéreos, espacio para 5.700 bultos y un almacén de depósito temporal. Centralizará los flujos exprés y económicos con Canarias y la consolidación de envíos hacia Latinoamérica y Estados Unidos.",
+ "tags": [
+  "logística",
+  "carga aérea",
+  "Madrid-Barajas",
+  "paquetería exprés",
+  "aduanas",
+  "FedEx"
+ ],
+ "timeline": [
+  {
+   "date": "2026-10-13",
+   "text": "Aena publica la carga de septiembre: Madrid-Barajas cae un 13,1 %"
+  },
+  {
+   "date": "2026-10-23",
+   "text": "SAASA inicia las obras de su terminal de segunda línea en Barajas"
+  },
+  {
+   "date": "2026-11-01",
+   "text": "Entra en aplicación la tasa europea de 2 euros a las importaciones de comercio electrónico"
+  },
+  {
+   "date": "2026-11-04",
+   "text": "FedEx anuncia la modernización de su segunda instalación en Barajas"
+  }
+ ],
+ "title": "FedEx amplía a más de 4.500 m² su superficie en la zona de carga de Barajas",
+ "why": "Refuerza la capacidad exprés de Barajas en un momento en que su carga cae: el aeropuerto movió 62.417 toneladas en septiembre, un 13,1 % menos. La apuesta por el despacho aduanero propio llega cuando la UE endurece el coste de las importaciones de bajo valor."
+}

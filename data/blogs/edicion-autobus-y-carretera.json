@@ -1,0 +1,56 @@
+{
+ "accent": "#4f6f3a",
+ "author": "Redacción de MOTICIAS",
+ "author_role": "Edición a medida",
+ "contact_email": "",
+ "contact_text": "La adaptamos a tu marca y a tus temas, y la enviamos cada mañana como página propia o por correo.",
+ "contact_title": "¿Quieres una edición como esta para tu organización?",
+ "cover": {
+  "alt": "",
+  "assetId": "",
+  "credit": "DONOSTIA KULTURA",
+  "license": "CC BY-SA 2.0",
+  "source": "https://www.flickr.com/photos/43860468@N02/23463071659",
+  "src": "img/estacion-autobuses.jpg"
+ },
+ "created_at": "2026-11-04T18:00:00+01:00",
+ "cta_text": "",
+ "cta_url": "",
+ "description": "Plantilla de versión personalizada para una asociación del sector.",
+ "feed_limit": 12,
+ "feed_title": "La selección de hoy",
+ "filters": {
+  "keywords": [],
+  "kinds": [],
+  "modos": [
+   "tierra"
+  ],
+  "sections": [],
+  "subsectors": [
+   "autobús",
+   "carretera"
+  ]
+ },
+ "id": "edicion-autobus-y-carretera",
+ "intro_md": "Selección diaria preparada para empresas de transporte de viajeros por carretera: **mapa concesional, contratos públicos, cambios normativos y fechas límite**. Esta es una plantilla: al adaptarla a un cliente se cambian el nombre, el color, el logotipo y los filtros.",
+ "layout": "boletin",
+ "logo_text": "AC",
+ "modules": {
+  "boletines": true,
+  "contacto": true,
+  "feed": true,
+  "plazos": true,
+  "posts": true
+ },
+ "name": "Edición Autobús y Carretera",
+ "notes": "Plantilla de ejemplo. Para un cliente: duplicar los ajustes, cambiar marca y filtros, mantener «solo con enlace» y enviar la versión boletín.",
+ "order": 5,
+ "pinned_id": null,
+ "posts_title": "Comunicados de la asociación",
+ "slug": "edicion-autobus-y-carretera",
+ "status": "publicado",
+ "tagline": "Concesiones, contratos, normativa y plazos del transporte de viajeros por carretera",
+ "type": "asociacion",
+ "updated_at": "2026-11-04T18:00:00+01:00",
+ "visibility": "oculto"
+}

@@ -1,0 +1,147 @@
+{
+ "actors": "Autoridad Portuaria de Huelva (presidente, Manuel Alberto Santana Martínez), cuyo consejo de administración otorgó la concesión el 16 de septiembre; Zal Huelva, S.A., concesionaria; Puertos del Estado, que pactó el plan de inversiones; Consejo de Ministros, que autorizó en septiembre la licitación de la urbanización de los terrenos.",
+ "author": "Redacción",
+ "body_md": "La zona de actividades logísticas del puerto de Huelva ya tiene concesionario con título publicado. El BOE del 27 de octubre recoge el [anuncio de la Autoridad Portuaria de Huelva](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-35109) por el que se otorga a Zal Huelva, S.A. una concesión de 50 años sobre 147.777 m² del polígono de la Punta del Sebo para construir y explotar la ZAL.\n\n## Los hechos\n\nEl consejo de administración de la Autoridad Portuaria acordó el otorgamiento en su sesión del 16 de septiembre, al amparo del artículo 30.5.n del texto refundido de la Ley de Puertos del Estado y de la Marina Mercante. El anuncio lo firma el 15 de octubre el presidente, Manuel Alberto Santana Martínez.\n\n## Las cifras\n\nLa tasa de ocupación es de 275.101,66 euros al año. La de actividad se calcula sobre volúmenes de negocio y porcentajes ofertados por el adjudicatario del concurso:\n\n- Años 1 y 2: sin actividad, reservados a comercialización y construcción de la fase 1.\n- Año 3: 1.073.700 euros de negocio, al 1,7425 %.\n- Año 5: 2.518.680 euros, al 2,2092 %.\n- Años 6 a 15: 2.942.408 euros, al 1,8911 %.\n- Años 36 a 50: 5.404.346 euros, al 1,0296 %.\n\nLa escala ofertada sube el negocio y baja el porcentaje con el tiempo. El concesionario asume el riesgo de comercialización desde el primer día.\n\n## El contexto\n\nEl expediente pasó por información pública en julio. El [anuncio del BOE del 22 de julio](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-24878) describía una solicitud de unos 140.051 m². El título otorgado alcanza 147.777 m². Ninguno de los dos anuncios explica la diferencia.\n\nEl concurso viene de lejos. [El Mercantil](https://elmercantil.com/2024/02/22/inversiones-onuba-y-alvores-developments-desarrollaran-y-explotaran-la-zal-de-huelva/) informó en febrero de 2024 de la adjudicación de la ZAL a la única oferta presentada, la de Inversiones Onuba y Alvores Developments, con una primera fase de unos 158.000 m². En septiembre de 2025, el mismo medio publicó que el consejo aprobó la participación del puerto en la sociedad que construirá y explotará la zona. El BOE no detalla el accionariado de Zal Huelva, S.A.\n\n**La urbanización.** El Consejo de Ministros autorizó a finales de septiembre la licitación del acondicionamiento y urbanización de la Punta del Sebo por más de 20 millones de euros sin IVA, con fondos propios del puerto, según la [Autoridad Portuaria de Huelva](https://www.puertohuelva.com/2026/09/30/puerto-de-huelva-y-ayuntamiento-celebran-la-autorizacion-del-consejo-de-ministros-para-licitar-las-obras-de-urbanizacion-de-la-zal/). Incluye red viaria, abastecimiento, saneamiento, electricidad, telecomunicaciones y tratamiento ambiental del suelo.\n\n## El marco legal\n\nEl texto refundido aprobado por el Real Decreto Legislativo 2/2011 fija en 50 años el plazo máximo de las concesiones demaniales portuarias. Huelva lo agota. Las tasas de ocupación y de actividad son las que regula esa misma ley para el uso privativo del dominio público portuario.\n\n## Lo que hay que vigilar\n\nEl calendario de la urbanización pública, de la que depende que el concesionario pueda construir: la licitación está autorizada, pero no adjudicada. La primera fase constructiva, que debe estar comercializada antes del tercer año para generar la tasa de actividad comprometida. Y la composición de Zal Huelva, S.A., que el anuncio no aclara.",
+ "date": "2026-11-04",
+ "event_date": "2026-10-27",
+ "featured": 0,
+ "geo": {
+  "lat": 37.215,
+  "lon": -6.94,
+  "place": "Punta del Sebo, Huelva"
+ },
+ "id": "huelva-otorga-concesion-50-anos-zal-punta-del-sebo",
+ "image": {
+  "alt": "Grúas amarillas, barcos y naves del puerto de Huelva al otro lado de la ría",
+  "credit": "Jose A.",
+  "license": "CC BY 2.0",
+  "orig_src": "img/puerto-huelva-instalaciones.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Puerto_de_Huelva_-_instalaciones.jpg",
+  "src": "img/puerto-huelva-instalaciones.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Superficie concesionada",
+   "source": "BOE-B-2026-35109, 27-10-2026",
+   "value": "147.777 m²"
+  },
+  {
+   "label": "Plazo",
+   "source": "BOE-B-2026-35109, 27-10-2026",
+   "value": "50 años"
+  },
+  {
+   "label": "Tasa de ocupación",
+   "source": "BOE-B-2026-35109, 27-10-2026",
+   "value": "275.101,66 €/año"
+  },
+  {
+   "label": "Negocio ofertado años 36 a 50",
+   "source": "BOE-B-2026-35109, 27-10-2026",
+   "value": "5.404.346 €/año al 1,0296 %"
+  },
+  {
+   "label": "Superficie en información pública",
+   "source": "BOE-B-2026-24878, 22-07-2026",
+   "value": "140.051 m²"
+  },
+  {
+   "label": "Urbanización autorizada",
+   "source": "Autoridad Portuaria de Huelva, 30-09-2026",
+   "value": "Más de 20 M€ (IVA no incluido)"
+  }
+ ],
+ "key_fact": "147.777 m² durante 50 años",
+ "kicker": "Concesiones portuarias · Puertos",
+ "kind": "noticia",
+ "next": "La Autoridad Portuaria debe licitar y adjudicar la urbanización de los terrenos, autorizada por el Consejo de Ministros con más de 20 millones. El concesionario tiene dos años de carencia de actividad para comercializar y construir la primera fase; la tasa de actividad empieza a contar en el tercer año.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "MEDIA",
+ "relevance_for": "Promotores inmologísticos, operadores logísticos y transitarios con tráfico por Huelva, empresas agroalimentarias e industriales del entorno, Autoridad Portuaria y Ayuntamiento de Huelva.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-10-27",
+   "title": "Anuncio de la Autoridad Portuaria de Huelva, referente al otorgamiento de una concesión administrativa a Zal Huelva, S.A. (Expediente 001684)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-35109"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-07-22",
+   "title": "Anuncio de la Autoridad Portuaria de Huelva relativo al trámite de información pública de la solicitud de una concesión administrativa, por parte de Zal Huelva, S.A.",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-24878"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Autoridad Portuaria de Huelva",
+   "published": "2026-09-30",
+   "title": "Puerto de Huelva y Ayuntamiento celebran la autorización del Consejo de Ministros para licitar las obras de urbanización de la ZAL",
+   "url": "https://www.puertohuelva.com/2026/09/30/puerto-de-huelva-y-ayuntamiento-celebran-la-autorizacion-del-consejo-de-ministros-para-licitar-las-obras-de-urbanizacion-de-la-zal/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-09-29",
+   "title": "El Gobierno da luz verde al desarrollo de la ZAL del puerto de Huelva por más de 20 millones",
+   "url": "https://elmercantil.com/2026/09/29/el-gobierno-da-luz-verde-al-desarrollo-de-la-zal-del-puerto-de-huelva-por-mas-de-20-millones/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2025-09-18",
+   "title": "El puerto de Huelva aprueba su participación en la futura sociedad gestora de la ZAL",
+   "url": "https://elmercantil.com/2025/09/18/el-puerto-de-huelva-aprueba-su-participacion-en-la-futura-sociedad-gestora-de-la-zal/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2024-02-22",
+   "title": "Inversiones Onuba y Alvores Developments desarrollarán y explotarán la ZAL de Huelva",
+   "url": "https://elmercantil.com/2024/02/22/inversiones-onuba-y-alvores-developments-desarrollaran-y-explotaran-la-zal-de-huelva/"
+  }
+ ],
+ "subsector": "puertos",
+ "subtitle": "El BOE publica las condiciones: 147.777 m² en la Punta del Sebo, tasa de ocupación de 275.101,66 euros al año y tasa de actividad ligada al negocio ofertado",
+ "summary": "El BOE publicó el 27 de octubre el otorgamiento por la Autoridad Portuaria de Huelva de una concesión a Zal Huelva, S.A. para construir y explotar la zona de actividades logísticas del puerto en el polígono de la Punta del Sebo. La concesión ocupa 147.777 m², dura 50 años y paga una tasa de ocupación de 275.101,66 euros anuales más una tasa de actividad sobre el volumen de negocio ofertado. Los dos primeros años, sin actividad, se reservan a la comercialización y a la construcción de la primera fase.",
+ "tags": [
+  "logística",
+  "puertos",
+  "concesiones portuarias",
+  "ZAL",
+  "puerto de Huelva",
+  "inmologística"
+ ],
+ "timeline": [
+  {
+   "date": "2024-02-22",
+   "text": "Adjudicación del concurso de la ZAL a Inversiones Onuba y Alvores Developments, según El Mercantil"
+  },
+  {
+   "date": "2026-07-22",
+   "text": "Información pública de la solicitud de concesión de Zal Huelva, S.A. en el BOE"
+  },
+  {
+   "date": "2026-09-16",
+   "text": "El consejo de administración de la Autoridad Portuaria otorga la concesión"
+  },
+  {
+   "date": "2026-09-29",
+   "text": "El Consejo de Ministros autoriza la licitación de la urbanización de la Punta del Sebo"
+  },
+  {
+   "date": "2026-10-27",
+   "text": "El BOE publica el otorgamiento de la concesión"
+  }
+ ],
+ "title": "El puerto de Huelva otorga a Zal Huelva una concesión de 50 años para su zona de actividades logísticas",
+ "why": "Da soporte jurídico estable a la ZAL de Huelva tras años de concurso y marca las condiciones económicas que el concesionario asume durante medio siglo. Es la pieza privada que debe acompañar la urbanización pública de la Punta del Sebo."
+}

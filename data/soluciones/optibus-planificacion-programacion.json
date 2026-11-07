@@ -1,0 +1,54 @@
+{
+ "body_md": "**Qué hace.** Optibus agrupa en una plataforma en la nube los módulos de planificación de red, programación de vehículos y servicios de conductor (*scheduling*), cuadrantes (*rostering*) y operación diaria: asignación, despacho y nómina. Incluye además herramientas de control y monitorización e información al viajero.\n\n**Cómo se integra.** Se contrata por módulos. Un operador puede empezar por la planificación y la programación y añadir después cuadrantes u operación. La facilidad para migrar los datos existentes fue uno de los motivos que citó Global para elegirla.\n\n**Para quién encaja.** Operadores interurbanos y urbanos con redes extensas, autoridades y consultoras que necesitan comparar escenarios y medir el efecto de cada cambio en los indicadores de servicio. En Gran Canaria, Global (Salcai Utinsa) la adoptó en 2022 para una red de 121 líneas y más de 340 autobuses que hasta entonces se programaba con procesos manuales.\n\n**Límites y requisitos.** Los resultados de la optimización dependen de la calidad de los datos de red, los tiempos de recorrido y las reglas laborales que se carguen. Las referencias sobre Gran Canaria proceden del propio proveedor y no incluyen resultados medidos tras la implantación.",
+ "category": "Operación y SAE",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Global (Salcai Utinsa)",
+   "place": "Gran Canaria",
+   "source_url": "https://blog.optibus.com/global-optimizes-passenger-transportation-in-gran-canaria-spain-with-optibus",
+   "what": "Uso de los módulos de planificación y programación en una red de 121 líneas, más de 340 autobuses y unos 27 millones de kilómetros al año.",
+   "year": "2022"
+  }
+ ],
+ "featured": false,
+ "id": "optibus-planificacion-programacion",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Optibus",
+ "priority": 6,
+ "provider": "Optibus",
+ "provider_country": "Israel",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Optibus",
+   "published": "2022-06-02",
+   "title": "GLOBAL optimizes passenger transportation in Gran Canaria, Spain with Optibus",
+   "url": "https://blog.optibus.com/global-optimizes-passenger-transportation-in-gran-canaria-spain-with-optibus"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Future Transport-News",
+   "published": "2022-06-06",
+   "title": "GLOBAL Optimizes Passenger Transportation in Gran Canaria, Spain with Optibus",
+   "url": "https://futuretransport-news.com/global-optimizes-passenger-transportation-with-optibus"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Plataforma en la nube para planificar redes, programar vehículos y servicios de conductor, elaborar cuadrantes y gestionar la operación diaria del transporte público por carretera.",
+ "tags": [
+  "planificación",
+  "programación de servicios",
+  "turnos",
+  "cuadrantes",
+  "interurbano",
+  "Canarias"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://optibus.com/",
+ "verified_at": "2026-11-04"
+}

@@ -1,0 +1,62 @@
+{
+ "body_md": "**Qué hace.** Urbalis es la gama CBTC de Alstom para señalización urbana. El control se basa en la comunicación continua entre el tren y los equipos de vía, lo que permite reducir intervalos y automatizar la conducción. La versión Urbalis Fluence traslada al tren parte de las funciones de control. Según Alstom, la familia Urbalis funciona en 190 líneas de metro de 32 países, 67 de ellas sin conductor.\n\n**Cómo se integra.** En la línea 6 de Metro de Madrid, Alstom sustituirá el CBTC actual —el Cityflo 650 desarrollado por Bombardier Transportation, hoy integrada en Alstom, que solo admite GoA2— por Urbalis, con nuevos enclavamientos electrónicos y un nuevo sistema de supervisión automática de trenes (ATS). El objetivo es GoA4 en la primera línea sin conductor de la red.\n\n**Para quién encaja.** Explotadores de metro que modernizan la señalización en líneas en servicio o preparan la automatización integral. La línea 6 es circular, con 23,5 km, 28 estaciones y unos 400.000 viajeros diarios.\n\n**Límites y requisitos.** La migración se ejecuta sobre una línea en explotación y debe ser compatible con los nuevos trenes sin conductor. El contrato se firmó en enero de 2025; las fuentes no publican importe ni fecha de puesta en servicio.",
+ "category": "Seguridad y mantenimiento",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Metro de Madrid",
+   "place": "Línea 6, Madrid",
+   "source_url": "https://www.alstom.com/es/press-releases-news/2025/1/alstom-espana-firma-un-contrato-para-desarrollar-la-primera-linea-sin-conductor-de-metro-de-madrid",
+   "what": "Contrato para sustituir el CBTC Cityflo 650 (GoA2) por Urbalis con nuevo ATS y enclavamientos, con vistas a la operación sin conductor (GoA4).",
+   "year": "2025"
+  }
+ ],
+ "featured": false,
+ "id": "alstom-urbalis-cbtc",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Urbalis (CBTC)",
+ "priority": 11,
+ "provider": "Alstom",
+ "provider_country": "Francia",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Alstom",
+   "published": "2025-01-20",
+   "title": "Alstom España firma un contrato para desarrollar la primera línea sin conductor de Metro de Madrid",
+   "url": "https://www.alstom.com/es/press-releases-news/2025/1/alstom-espana-firma-un-contrato-para-desarrollar-la-primera-linea-sin-conductor-de-metro-de-madrid"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Trenvista",
+   "published": "2025-01-20",
+   "title": "Alstom to modernise the CBTC on Metro de Madrid line 6 to allow driverless operation",
+   "url": "https://www.trenvista.net/en/news/flash/alstom-to-modernise-the-cbtc-on-metro-de-madrid-line-6-to-allow-driverless-operation/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Alstom",
+   "published": "",
+   "title": "Urbalis Fluence: Train-centric CBTC",
+   "url": "https://www.alstom.com/solutions/signalling/urban-signalling/urbalis-fluence-train-centric-cbtc"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Familia de sistemas de señalización CBTC para metro que controla la marcha de los trenes mediante comunicación continua tren-vía y permite pasar de conducción automática con conductor (GoA2) a operación sin conductor (GoA4).",
+ "tags": [
+  "CBTC",
+  "señalización",
+  "metro",
+  "GoA4",
+  "automatización",
+  "Metro de Madrid"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.alstom.com/solutions/signalling/urban-signalling/urbalis-fluence-train-centric-cbtc",
+ "verified_at": "2026-11-04"
+}

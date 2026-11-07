@@ -1,0 +1,138 @@
+{
+ "actors": "Comisión Europea (DG TAXUD), que fijó el importe por acto delegado; Consejo de la UE, autor del derecho temporal de 3 euros; Agencia Tributaria, que recauda en España; plataformas de comercio electrónico extracomunitarias, titulares IOSS y representantes aduaneros, deudores de la tasa; operadores exprés y de carga aérea; UNO, patronal logística.",
+ "author": "Redacción",
+ "body_md": "La importación de comercio electrónico en la UE tiene desde el 1 de noviembre un segundo peaje fijo. Las mercancías vendidas a distancia desde fuera de la Unión pagan una tasa de gestión de la Unión de 2 euros por artículo, que se suma al derecho de aduana temporal de 3 euros vigente desde julio. Para la paquetería exprés y la carga aérea que alimentan ese tráfico, el modelo de envío directo desde Asia pierde margen.\n\n## Los hechos\n\nLa tasa está creada en el artículo 20 del Reglamento (UE) 2026/2108, el nuevo código aduanero de la Unión, y su importe lo fija el Reglamento Delegado (UE) 2026/2152, según la [página de la reforma aduanera de la Comisión Europea](https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en). La reforma entró en vigor el 21 de septiembre.\n\nLa [guía de la Comisión](https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf), en su versión de 5 de octubre, precisa el funcionamiento. El importe es fijo, con independencia del valor, y alcanza también a los envíos de más de 150 euros. Artículo es el conjunto de bienes con la misma clasificación arancelaria, descripción y, en su caso, origen: en la práctica, se cobra por línea de declaración.\n\n**El deudor.** Paga el declarante: primero el titular de la ventanilla IOSS, después el usuario de las modalidades especiales y luego el representante indirecto del importador. La deuda nace al admitirse la declaración y no se devuelve aunque las mercancías no lleguen a despacharse. Se activa con el código TARIC Y126 en las declaraciones H1, H6 y H7.\n\n## El contexto\n\n**El primer cargo.** El Reglamento (UE) 2026/382 del Consejo, de 11 de febrero, suprimió la franquicia para envíos de hasta 150 euros y la sustituyó, del 1 de julio de 2026 al 1 de julio de 2028, por un derecho de 3 euros por artículo, según la misma guía.\n\n**El efecto.** Según la patronal UNO, citada por [Cadena de Suministro](https://www.cadenadesuministro.es/logistica/nueva-tasa-2-euros-productos-extracomunitarios-bajo-valor-transforma-modelos-distribucion-plataformas-asiaticas_1519422_102.html), los volúmenes de este modelo cayeron entre un 30 % y un 50 % tras el primer cargo, según la plataforma, y la entrada de paquetes de bajo valor de plataformas extracomunitarias bajó un 64 % en el conjunto de la UE.\n\n**España.** UNO calcula que en 2025 entraron unos 180 millones de paquetes procedentes directamente de China y que cerca del 34 % de las compras en línea de los españoles fueron a plataformas asiáticas. Con datos del BCE, el 69 % de los consumidores españoles ha comprado en ellas alguna vez, frente al 43 % de los franceses y el 40 % de los alemanes. En carga aérea, la red de Aena en España movió 989.990 toneladas entre enero y septiembre, un 0,9 % más, según sus [estadísticas de septiembre](https://www.aena.es/doc/detalleprensa/261013-aena-estadisticas-septiembre.pdf); Aena no desglosa la paquetería de comercio electrónico.\n\n## Qué cambia para…\n\n**Los operadores exprés y de carga.** Cada línea de declaración lleva un coste fijo irrecuperable. La consolidación de envíos y el almacén aduanero en la UE ganan frente al paquete individual.\n\n**España como destino logístico.** Las plataformas asiáticas abren almacenes en Europa, por ahora en Polonia o Hungría. UNO pide suelo logístico en plazos competitivos, suministro eléctrico, más medios en los servicios de inspección en frontera y una estrategia aeroportuaria a largo plazo, según [Logística Profesional](https://www.logisticaprofesional.com/texto-diario/mostrar/6075906/entrada-tasa-europea-e-commerce-puede-consolidar-espana-como-hub-logistico-europeo-plataformas-asiaticas).\n\n## Lo que hay que vigilar\n\nLa campaña de Navidad, primera con los dos cargos acumulados. La evaluación que la Comisión debe hacer antes del 1 de diciembre de 2027 sobre si el centro de datos aduaneros del comercio electrónico estará operativo el 1 de julio de 2028, fecha en que expira el derecho de 3 euros. Y si alguna plataforma concreta su anunciado interés por instalarse en España.",
+ "date": "2026-11-04",
+ "event_date": "2026-11-01",
+ "featured": 0,
+ "id": "ue-tasa-gestion-2-euros-importaciones-comercio-electronico",
+ "image": {
+  "alt": "Plataforma elevadora cargando un contenedor aéreo ULD en la bodega de un avión de pasajeros",
+  "credit": "Jamesshliu",
+  "license": "CC BY-SA 3.0",
+  "orig_src": "img/carga-aerea-uld-cargador.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Aircraft_cargo_(ULD)_loader_in_operaton.jpg",
+  "src": "img/carga-aerea-uld-cargador.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Tasa de gestión de la Unión",
+   "source": "Comisión Europea, guía de 05-10-2026",
+   "value": "2 € por artículo"
+  },
+  {
+   "label": "Aplicación",
+   "source": "Comisión Europea, página de la reforma aduanera",
+   "value": "Desde el 1-11-2026"
+  },
+  {
+   "label": "Derecho temporal",
+   "source": "Reglamento (UE) 2026/382; guía de la Comisión, 05-10-2026",
+   "value": "3 € por artículo, 1-7-2026 a 1-7-2028"
+  },
+  {
+   "label": "Paquetes directos de China a España en 2025",
+   "source": "UNO, vía Cadena de Suministro, 04-11-2026",
+   "value": "Unos 180 millones"
+  },
+  {
+   "label": "Caída de paquetes de bajo valor en la UE",
+   "source": "UNO, vía Logística Profesional, 03-11-2026",
+   "value": "64 %"
+  },
+  {
+   "label": "Carga aérea en la red de Aena, enero-septiembre",
+   "source": "Aena, 13-10-2026",
+   "value": "989.990 t (+0,9 %)"
+  }
+ ],
+ "key_fact": "2 € por artículo desde el 1-11-2026",
+ "kicker": "Aduanas · Carga aérea y paquetería exprés",
+ "kind": "noticia",
+ "next": "El derecho temporal de 3 euros expira el 1 de julio de 2028, cuando debe estar operativo el centro de datos aduaneros del comercio electrónico. La Comisión debe evaluar antes del 1 de diciembre de 2027 si llegará a tiempo. La campaña de Navidad será la primera prueba del efecto acumulado de ambos cargos.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "ALTA",
+ "relevance_for": "Operadores exprés y de paquetería, agentes de carga aérea y handling, representantes aduaneros, plataformas de comercio electrónico, promotores de almacenes aduaneros y gestores de aeropuertos de carga.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Comisión Europea (DG TAXUD)",
+   "published": "2026-10-07",
+   "title": "EU Customs Reform",
+   "url": "https://taxation-customs.ec.europa.eu/customs/eu-customs-reform_en"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Comisión Europea (DG TAXUD)",
+   "published": "2026-10-05",
+   "title": "Customs guidance on the EUR 3 customs duty and the Union handling fee",
+   "url": "https://taxation-customs.ec.europa.eu/document/download/053e5b4e-f0be-4f20-9a23-3e3b659a6676_en?filename=Customs%20Guidance%20on%20EUR%203%20customs%20duty.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Aena",
+   "published": "2026-10-13",
+   "title": "Estadísticas de tráfico de septiembre de 2026",
+   "url": "https://www.aena.es/doc/detalleprensa/261013-aena-estadisticas-septiembre.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Cadena de Suministro",
+   "published": "2026-11-04",
+   "title": "La nueva tasa de 2 euros a productos extracomunitarios de bajo valor transforma los modelos de distribución de las plataformas asiáticas",
+   "url": "https://www.cadenadesuministro.es/logistica/nueva-tasa-2-euros-productos-extracomunitarios-bajo-valor-transforma-modelos-distribucion-plataformas-asiaticas_1519422_102.html"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Logística Profesional",
+   "published": "2026-11-03",
+   "title": "La entrada de la tasa europea al e-commerce puede consolidar a España como un hub logístico europeo para las plataformas asiáticas",
+   "url": "https://www.logisticaprofesional.com/texto-diario/mostrar/6075906/entrada-tasa-europea-e-commerce-puede-consolidar-espana-como-hub-logistico-europeo-plataformas-asiaticas"
+  }
+ ],
+ "subsector": "carga aérea",
+ "subtitle": "La tasa de gestión de la Unión se suma al derecho temporal de 3 euros vigente desde julio; la patronal UNO pide una estrategia aeroportuaria para captar los almacenes que las plataformas asiáticas trasladan a Europa",
+ "summary": "Desde el 1 de noviembre, las mercancías importadas en la UE mediante ventas a distancia pagan una tasa de gestión de la Unión de 2 euros por artículo, entendido como cada grupo de bienes con la misma clasificación arancelaria, descripción y origen. La paga el declarante, no se devuelve y se aplica cualquiera que sea el valor del envío. Se suma al derecho de aduana temporal de 3 euros por artículo que rige desde el 1 de julio para envíos de hasta 150 euros. España recibió en 2025 unos 180 millones de paquetes directos de China, según UNO.",
+ "tags": [
+  "logística",
+  "carga aérea",
+  "aduanas",
+  "comercio electrónico",
+  "Unión Europea",
+  "paquetería exprés"
+ ],
+ "timeline": [
+  {
+   "date": "2026-02-11",
+   "text": "El Consejo aprueba el Reglamento (UE) 2026/382, que suprime la franquicia de 150 euros"
+  },
+  {
+   "date": "2026-07-01",
+   "text": "Empieza a aplicarse el derecho temporal de 3 euros por artículo"
+  },
+  {
+   "date": "2026-09-21",
+   "text": "Entra en vigor la reforma aduanera de la UE (Reglamento (UE) 2026/2108)"
+  },
+  {
+   "date": "2026-11-01",
+   "text": "Empieza a aplicarse la tasa de gestión de la Unión de 2 euros"
+  },
+  {
+   "date": "2027-12-01",
+   "text": "Fecha límite de la Comisión para evaluar si el centro de datos aduaneros estará operativo en 2028"
+  },
+  {
+   "date": "2028-07-01",
+   "text": "Expira el derecho temporal de 3 euros; despliegue previsto del centro de datos del comercio electrónico"
+  }
+ ],
+ "title": "La UE cobra desde el 1 de noviembre 2 euros por artículo a las importaciones del comercio electrónico",
+ "why": "Encarece de forma estructural el envío directo de paquetes de bajo valor desde fuera de la UE y premia el almacén dentro de la Unión. España compite con Polonia o Hungría por atraer esos almacenes, según la patronal UNO."
+}

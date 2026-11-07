@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>MOTICIAS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="MOTICIAS, con M de Movilidad. Información profesional sobre transporte de personas por tierra, mar y aire: regulación, licitaciones, análisis y datos. España y Unión Europea.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      <span><span class="dot"></span><span id="top-date">Edición en preparación</span></span>
+      <span class="edition hide-m" id="top-edition"></span>
+    </div>
+    <div class="right">
+      <span class="hide-m" id="top-close"></span>
+      <a class="btn" href="#fuentes">Cómo trabajamos</a>
+      <button type="button" class="admin hidden" id="btn-admin-top">Administrar</button>
+    </div>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <div>
+        <div class="wordmark"><a href="#portada" id="home-link"><span class="m">M</span>OTICIAS</a></div>
+        <div class="tagline">con M de Movilidad · transporte de personas por tierra, mar y aire</div>
+      </div>
+      <div class="side" id="brand-side">
+        <b>Información profesional para quien decide.</b><br>
+        Regulación, contratos, redes y datos. Fuentes primarias, fechadas y enlazadas.
+      </div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Secciones">
+      <a href="#portada" data-sec="portada" class="active">Portada</a>
+      <a href="#tierra" data-sec="tierra">Tierra</a>
+      <a href="#mar" data-sec="mar">Mar</a>
+      <a href="#aire" data-sec="aire">Aire</a>
+      <a href="#logistica" data-sec="logistica">Logística</a>
+      <a href="#regulacion" data-sec="regulacion">Regulación</a>
+      <a href="#licitaciones" data-sec="licitaciones">Licitaciones</a>
+      <a href="#pronto" data-sec="pronto">Sucederá pronto</a>
+      <a href="#tecnologia" data-sec="tecnologia">Tecnología</a>
+      <a href="#analisis" data-sec="analisis">Análisis</a>
+      <a href="#blogs" data-sec="blogs">Blogs</a>
+    </nav>
+  </div>
+</header>
+
+<div class="ticker" id="ticker" hidden>
+  <div class="wrap">
+    <div class="label">BOE hoy</div>
+    <div class="track"><div class="reel" id="ticker-reel"></div></div>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap" style="padding:40px 0">
+    <div class="skeleton" style="height:520px"></div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="wordmark"><span class="m">M</span>OTICIAS</div>
+        <p style="margin-top:10px;max-width:46ch">Curación profesional de información sobre movilidad y transporte de personas. Regulación como eje, transporte como sistema, selección rigurosa.</p>
+        <p class="credits" id="footer-credits"></p>
+      </div>
+      <div>
+        <h5>Secciones</h5>
+        <p><a href="#tierra">Tierra</a><br><a href="#mar">Mar</a><br><a href="#aire">Aire</a><br><a href="#regulacion">Regulación</a><br><a href="#logistica">Logística</a><br><a href="#licitaciones">Licitaciones</a><br><a href="#pronto">Sucederá pronto</a><br><a href="#tecnologia">Soluciones tecnológicas</a><br><a href="#analisis">Análisis</a><br><a href="#datos">Datos</a><br><a href="#blogs">Blogs y ediciones</a></p>
+      </div>
+      <div>
+        <h5>Sobre la cabecera</h5>
+        <p><a href="#fuentes">Fuentes y método</a><br><a href="#fuentes">Política de correcciones</a><br><a href="#anunciate">Anúnciate y patrocina</a><br><a href="#blogs">Ediciones a medida</a><br>Dirección editorial: Rainer</p>
+      </div>
+    </div>
+    <div class="end">
+      <span id="footer-end">FIN DE EDICIÓN</span>
+      <span>moticias.com · prototipo privado</span>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="admin-fab" id="admin-fab">⚙ Administrar</button>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="scrim" id="drawer-scrim"></div>
+  <div class="panel" role="dialog" aria-label="Administración">
+    <header>
+      <div>
+        <h2>Administración</h2>
+        <div class="who" id="admin-who">Superadministrador</div>
+      </div>
+      <button type="button" id="drawer-close">Cerrar</button>
+    </header>
+    <div class="tabs" id="admin-tabs">
+      <button type="button" data-tab="piezas" class="on">Piezas</button>
+      <button type="button" data-tab="edicion">Edición</button>
+      <button type="button" data-tab="boletines">Boletines</button>
+      <button type="button" data-tab="agenda">Agenda</button>
+      <button type="button" data-tab="blogs">Blogs</button>
+      <button type="button" data-tab="tecnologia">Tecnología</button>
+      <button type="button" data-tab="publicidad">Publicidad</button>
+    </div>
+    <div class="content" id="admin-content"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="spain.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

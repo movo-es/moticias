@@ -1,0 +1,61 @@
+{
+ "body_md": "**Qué hace.** Littlepay presta la capa de procesamiento de pagos abiertos (cEMV) para operadores de transporte: recibe las validaciones con tarjeta bancaria o monedero móvil, calcula la tarifa y aplica topes de gasto (*fare capping*). El viajero no tiene que comprar un título antes de subir.\n\n**Cómo se integra.** No fabrica validadoras: se conecta con los equipos embarcados o de acceso de otros proveedores y con un adquirente bancario. En el Metro de Lisboa, Indra se encarga de la validación en los dispositivos y Cybersource y Unicre de la adquirencia local.\n\n**Para quién encaja.** Operadores y autoridades que quieren añadir el pago con tarjeta bancaria a su sistema tarifario sin sustituir toda la infraestructura. En Lisboa cubre las 56 estaciones de las cuatro líneas, con 1,50 euros por viaje y un tope diario de 6,50 euros, equivalente al billete de día. El proveedor declara trabajar con más de 400 operadores en más de 30 países.\n\n**Límites y requisitos.** Exige validadoras certificadas para EMV y un acuerdo con el adquirente. Los abonos nominativos y los descuentos sociales no forman parte de lo descrito en las fuentes y deben resolverse en el sistema tarifario del operador.",
+ "category": "Billetaje y pago",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Metro de Lisboa",
+   "place": "Lisboa (Portugal)",
+   "source_url": "https://littlepay.com/lisbon-metro-introduces-contactless-bank-card-payments-with-transit-payments-specialist-littlepay/",
+   "what": "Pago con tarjeta bancaria y móvil en las 56 estaciones y cuatro líneas, con tope diario de 6,50 euros.",
+   "year": "2023"
+  }
+ ],
+ "featured": false,
+ "id": "littlepay-pago-emv",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Littlepay Contactless",
+ "priority": 8,
+ "provider": "Littlepay",
+ "provider_country": "Reino Unido",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Littlepay",
+   "published": "2023-06-28",
+   "title": "Lisbon Metro introduces contactless bank card payments with transit payments specialist Littlepay",
+   "url": "https://littlepay.com/lisbon-metro-introduces-contactless-bank-card-payments-with-transit-payments-specialist-littlepay/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Seamless Xtra",
+   "published": "2023-06-30",
+   "title": "Lisbon Metro introduces contactless bank card payments with Littlepay",
+   "url": "https://seamlessxtra.com/lisbon-metro-introduces-contactless-bank-card-payments-with-littlepay/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Littlepay",
+   "published": "",
+   "title": "About Littlepay",
+   "url": "https://littlepay.com/about/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Servicio de pago sin contacto con tarjeta bancaria y móvil para transporte público: el viajero valida con su tarjeta y el sistema calcula la tarifa y aplica topes de gasto diarios.",
+ "tags": [
+  "EMV",
+  "pago sin contacto",
+  "tarjeta bancaria",
+  "fare capping",
+  "metro"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://littlepay.com/",
+ "verified_at": "2026-11-04"
+}

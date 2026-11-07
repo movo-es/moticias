@@ -1,0 +1,61 @@
+{
+ "body_md": "**Qué hace.** Padam Mobility, con sede en París y perteneciente a Siemens Mobility, desarrolla software de transporte a la demanda (TAD) y de transporte adaptado para personas con movilidad reducida. Los algoritmos calculan rutas y agrupan viajes según las reservas recibidas, de modo que el servicio solo circula cuando hay demanda.\n\n**Cómo se integra.** Se implanta como sistema único de reserva y gestión para la autoridad, con independencia de los operadores que presten el servicio en cada zona. En Île-de-France Mobilités unifica la experiencia del usuario en toda la red de TAD; en 2021, el 95 % de las reservas se hacía por la app.\n\n**Para quién encaja.** Autoridades regionales que ordenan muchos servicios zonales con distintos operadores y quieren un único canal de reserva. La red TAD de Île-de-France funciona con Padam desde 2018 y en 2023 superaba las 40 zonas y los 123 vehículos. El proveedor también cita servicios en Bristol, Orleans y la región de Ingolstadt.\n\n**Límites y requisitos.** Las fuentes consultadas no recogen implantaciones en España; sus referencias están en Francia, Alemania y Reino Unido. Para una licitación española conviene verificar soporte local, idioma de las apps y compatibilidad con los sistemas de billetaje del consorcio.",
+ "category": "Transporte a la demanda",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Île-de-France Mobilités",
+   "place": "Región de París (Francia)",
+   "source_url": "https://www.hacon.de/en/news/meldungen/success-story-padam/",
+   "what": "Sistema único de reserva y gestión de la red TAD, con más de 40 zonas y 123 vehículos en 2023.",
+   "year": "2018"
+  }
+ ],
+ "featured": false,
+ "id": "padam-mobility-tad",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Padam Mobility (TAD y transporte adaptado)",
+ "priority": 14,
+ "provider": "Padam Mobility (Siemens Mobility)",
+ "provider_country": "Francia",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Hacon (Siemens Mobility)",
+   "published": "2023-07-20",
+   "title": "Padam Mobility achieves 5 million trips in just four years",
+   "url": "https://www.hacon.de/en/news/meldungen/success-story-padam/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Intelligent Transport",
+   "published": "2021-01-19",
+   "title": "Running the world's largest demand-responsive transport system around Paris",
+   "url": "https://www.intelligenttransport.com/?p=114786"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Padam Mobility",
+   "published": "",
+   "title": "Padam Mobility",
+   "url": "https://www.padam-mobility.com/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Software de transporte a la demanda y de transporte adaptado para personas con movilidad reducida que optimiza rutas y ocupación según las reservas, con app de viajero, app de conductor y herramientas de explotación.",
+ "tags": [
+  "TAD",
+  "transporte adaptado",
+  "PMR",
+  "autoridad regional",
+  "Île-de-France"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.padam-mobility.com/",
+ "verified_at": "2026-11-04"
+}

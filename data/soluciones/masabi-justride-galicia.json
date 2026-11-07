@@ -1,0 +1,69 @@
+{
+ "body_md": "**Qué hace.** Justride es la plataforma de billetaje de Masabi. Funciona como sistema basado en cuenta (*account-based ticketing*): el título no reside en el soporte, sino en una cuenta en la nube, lo que admite pago por uso y prepago. El catálogo del proveedor incluye pagos abiertos con tarjeta bancaria sin contacto (cEMV).\n\n**Cómo se integra.** Se ofrece como servicio y como SDK para incorporar la venta y la validación en aplicaciones de terceros. En Galicia, la app MoBT de la Xunta está construida sobre el SDK de Justride; Plexus Tech actúa como integrador y la validación a bordo corre a cargo de fabricantes de equipos externos.\n\n**Para quién encaja.** Autoridades regionales o consorcios con muchos concesionarios que necesitan un sistema común de cobro sin sustituir de golpe toda la validación embarcada. En Galicia el objetivo es reunir a más de 120 operadores.\n\n**Límites y requisitos.** Requiere un integrador local y validadores compatibles en cada vehículo. En el despliegue gallego el pago se hace con el móvil desde un monedero virtual; las fuentes consultadas sitúan el pago con tarjeta bancaria y las tarjetas inteligentes en fases posteriores, no como funciones ya activas. La Xunta prevé cubrir todos los desplazamientos interurbanos a finales de 2026.",
+ "category": "Billetaje y pago",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Xunta de Galicia (Plataforma Galega de Mobilidade, MoBT)",
+   "place": "Galicia",
+   "source_url": "https://www.masabi.com/2025/10/06/xunta-de-galicia-launches-spains-first-regional-account-based-ticketing-multi-operator-system-in-partnership-with-masabi-and-plexus-tech/",
+   "what": "Piloto desde julio de 2025 con el operador Rías Baixas (Santiago de Compostela, Deza y A Coruña–Lugo) y ampliación en octubre a servicios de 26 municipios.",
+   "year": "2025"
+  },
+  {
+   "client": "Xunta de Galicia",
+   "place": "Galicia",
+   "source_url": "https://www.xunta.gal/notas-de-prensa/-/nova/023626/plataforma-gallega-movilidad-mobt-impulsada-por-xunta-esta-activa-32-contratos",
+   "what": "Sistema activo en 32 contratos de transporte interurbano, en torno al 50 % de los desplazamientos, con más de 6.000 usuarios registrados hasta marzo de 2026.",
+   "year": "2026"
+  }
+ ],
+ "featured": true,
+ "id": "masabi-justride-galicia",
+ "modes": [
+  "tierra"
+ ],
+ "name": "Justride",
+ "priority": 1,
+ "provider": "Masabi",
+ "provider_country": "Reino Unido",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Masabi",
+   "published": "2025-10-06",
+   "title": "Xunta de Galicia launches Spain's first regional account-based ticketing multi-operator system in partnership with Masabi and Plexus Tech",
+   "url": "https://www.masabi.com/2025/10/06/xunta-de-galicia-launches-spains-first-regional-account-based-ticketing-multi-operator-system-in-partnership-with-masabi-and-plexus-tech/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Xunta de Galicia",
+   "published": "2026-04-20",
+   "title": "La Plataforma Gallega de Movilidad MoBT impulsada por la Xunta está activa en 32 contratos",
+   "url": "https://www.xunta.gal/notas-de-prensa/-/nova/023626/plataforma-gallega-movilidad-mobt-impulsada-por-xunta-esta-activa-32-contratos"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Masabi",
+   "published": "2026-05-11",
+   "title": "Spain's first regional account-based ticketing system now live across 50% of Galicia's transport network",
+   "url": "https://www.masabi.com/2026/05/11/spains-first-regional-account-based-ticketing-system-now-live-across-50-of-galicias-transport-network-2/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Plataforma de billetaje basado en cuenta que permite comprar y validar títulos con el móvil y aplicar tarifas por uso, con varios operadores integrados en un único sistema de cobro.",
+ "tags": [
+  "ABT",
+  "billetaje basado en cuenta",
+  "pago móvil",
+  "multioperador",
+  "Galicia",
+  "transporte interurbano"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.masabi.com/justride/",
+ "verified_at": "2026-11-04"
+}

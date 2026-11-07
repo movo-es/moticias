@@ -1,0 +1,218 @@
+{
+ "actors": "Renfe Viajeros y su presidente, Álvaro Fernández Heredia; Adif, gestor de la infraestructura; la Agencia Estatal de Seguridad Ferroviaria (AESF), competente para los protocolos; la AITAT, autoridad independiente de investigación; el Tribunal de Instancia de Orgaz, que custodia los registradores; y Semaf e Iryo, que han pedido a la AESF cambiar las reglas de la operación degradada.",
+ "author": "Redacción",
+ "body_md": "Renfe Viajeros dejó sin efecto el 1 de noviembre de 2026, por correo interno, la consigna CR-V n.º 32/2026, que obligaba a sus maquinistas a detenerse y seguir en marcha a la vista a un máximo de 40 km/h al perder la transmisión del LZB en la línea de alta velocidad Madrid–Sevilla. La instrucción se había conocido el 31 de octubre, tres días después del alcance de Urda (Toledo), con 69 muertos según el balance provisional de la AITAT. Renfe sostiene que era una propuesta técnica pendiente de autorización.\n\n## Los hechos\n\n**La consigna.** Según el documento al que accedió El País y que resumió Demócrata, la CR-V 32/2026 regulaba la actuación ante pérdidas de transmisión del LZB en la LAV Madrid–Sevilla, con efectos desde el 1 de noviembre y sin caducidad. Ante un bloqueo parcial del sistema, el maquinista debía detener el tren y esperar el telefonema LZB3 del responsable de circulación; antes de aceptarlo, pedir al centro de regulación y control (CRC) la confirmación de que el suyo era el único tren en el cantón; después, avanzar en marcha a la vista, sin superar 40 km/h, hasta la señal indicada en el telefonema. No afectaba al bloqueo total, con procedimientos distintos.\n\n**La anulación.** The Objective publicó el 2 de noviembre el correo con el que la Jefatura de Seguridad en la Circulación y Autoprotección de Servicios Públicos de Andalucía, de Renfe Viajeros, comunicó que la instrucción quedaba sin efecto. Según el mismo medio, la regla se adoptó sin Adif ni la Agencia Estatal de Seguridad Ferroviaria (AESF) y solo vinculaba a los trenes de Renfe, no a los de Iryo ni Ouigo. Renfe respondió que el documento estaba en evaluación en comités especializados, que no era una directriz vinculante y que no estaba en vigor a falta de las autorizaciones de seguridad preceptivas. La fecha de emisión no consta y Renfe no ha publicado comunicado en su web.\n\n## El contexto\n\nLa nota informativa de la AITAT del 29 de octubre fija la secuencia conocida. A las 8:31 del 28 de octubre se averió el LZB y la circulación pasó al modo degradado de bloqueo de señalización lateral (BSL). A las 8:53, en el PK 118+800 de la vía 2, a la entrada de la estación de Urda, el AVE 2080 (rama Siemens 103.006, 379 viajeros y 7 tripulantes) alcanzó al Iryo 6076 (rama Hitachi ETR1000 109.015, 147 viajeros y 5 tripulantes), detenido ante la señal E242. La velocidad de impacto se estima entre 160 y 200 km/h; la cifra exacta saldrá del registrador jurídico, custodiado por la Guardia Civil hasta el volcado que autorice el Tribunal de Instancia de Orgaz. Según los indicios, las barreras de mitigación no llegaron a actuar. La AITAT mantiene abiertas todas las hipótesis y «en ningún caso buscará determinar culpas o responsabilidades».\n\nEl registro interno de Adif, publicado por El País y recogido por Euronews, anota cuatro anomalías simultáneas desde las 8:30: caída de la central LZB de Urda, fallos de GSM-R, pérdidas en los circuitos de vía e interrupciones de tensión. Seis trenes quedaron parados.\n\n**Los fallos del LZB.** El ministro de Transportes, Óscar Puente, cifró el 30 de octubre en 170 las incidencias del LZB en el corredor entre el 1 de enero y el 28 de octubre, las calificó de estables y las situó dentro de la normalidad europea. El LZB opera en la línea desde 1992; el ERTMS nivel 2 debe sustituirlo en enero de 2027. El consejero delegado de Iryo, Fabrizio Favara, había advertido el 5 de octubre en el Senado de que las desconexiones del LZB inmovilizaban trenes y complicaban la reanudación de la marcha.\n\n## El marco legal\n\nEl Reglamento de Circulación Ferroviaria (RCF), aprobado por el Real Decreto 664/2015, de 17 de julio, reparte la documentación reglamentaria en tres niveles (artículo 1.2.1.1): especificaciones técnicas de la AESF; consignas, avisos y horarios del administrador de infraestructuras; y Libro de Normas y Libro de Itinerarios del Maquinista de cada empresa ferroviaria. En caso de discrepancia prevalece la AESF, después el administrador y por último la empresa. Una empresa ferroviaria puede endurecer las reglas para su personal dentro de su sistema de gestión de la seguridad (SGS), que el artículo 1.1.1.5 del RCF extiende a la operación degradada; pero ese SGS lo certifica la AESF conforme al artículo 66 de la Ley 38/2015, de 29 de septiembre, del Sector Ferroviario, y al Real Decreto 929/2020, de 27 de octubre. De ahí que Renfe aluda a autorizaciones pendientes.\n\nEl RCF define la marcha a la vista (artículo 1.5.1.4) como la obligación de regular la velocidad según la vía que el maquinista ve libre, de modo que pueda detenerse ante cualquier obstáculo o señal de parada; en los supuestos tasados, el límite es de 40 km/h. Las velocidades máximas son 300 km/h con LZB o ERTMS nivel 1 y 200 km/h con ASFA. La investigación técnica corresponde a la AITAT, creada por la Ley 2/2024, de 1 de agosto; es obligatoria en accidentes graves y no determina responsabilidades, que quedan para el juzgado de Orgaz. La AESF es la autoridad responsable de la seguridad en la Red Ferroviaria de Interés General (artículo 65 de la Ley 38/2015) y la única que puede cambiar las reglas de operación degradada para todos los operadores.\n\n## Los actores\n\n**Renfe Viajeros.** Su posición la ha transmitido el departamento de comunicación; no consta declaración de su presidente, Álvaro Fernández Heredia.\n\n**Semaf.** El sindicato de maquinistas pidió el 31 de octubre a la AESF, con carácter urgente, modificar la normativa del LZB y los aspectos equivalentes del ERTMS, e impedir que se autorice reanudar la marcha en régimen normal cuando pueda haber más de un tren en el mismo cantón de BSL.\n\n**Iryo.** Remitió una carta a la AESF para que reevalúe las condiciones de operación al perderse la supervisión del LZB, según Railway Gazette.\n\n**Adif y la AESF.** Ninguno de los dos ha hecho pública una posición sobre la consigna.\n\n**AICAPE.** La asociación de ingenieros de caminos reclamó una investigación técnica independiente y sostuvo que la seguridad ferroviaria es responsabilidad del sistema, no de decisiones individuales.\n\n## Qué cambia para…\n\n**Los operadores.** El plan que el Consejo de Ministros aprobó el 3 de noviembre impone que, en circulación degradada sin bloqueo automático, las decisiones del centro de control sean validadas al menos por un segundo controlador humano, y encarga a la AESF la revisión de la normativa. Hasta que concluyan esa revisión, la auditoría extraordinaria de la AESF —que actualiza la de noviembre de 2025— y la puesta en servicio del ERTMS nivel 2, previstas para comienzos de 2027, la línea operará con menos frecuencias. Renfe, Iryo y Ouigo quedan bajo las mismas reglas: la vía de una consigna propia se cerró en 24 horas.\n\n**Los maquinistas y los reguladores.** Si la AESF acoge la petición de Semaf, la marcha normal tras una caída del LZB dejará de autorizarse cuando pueda haber más de un tren en el cantón. El plan modifica además el artículo 38 del Real Decreto 929/2020 para adaptar los descansos de los controladores e introduce en los CRC libro electrónico de telefonemas, alertas automáticas y listas de comprobación.\n\n## El calendario\n\n- 2026-10-28: 8:31, avería del LZB y paso a BSL; 8:53, alcance en el PK 118+800 de la vía 2.\n- 2026-10-29: la AITAT publica su nota informativa a las 24 horas.\n- 2026-10-31: Semaf pide a la AESF modificar la normativa; se conoce la consigna CR-V 32/2026.\n- 2026-11-01: Renfe Viajeros deja sin efecto la consigna por correo interno.\n- 2026-11-03: el Consejo de Ministros aprueba el plan de ocho medidas para la alta velocidad.\n- Sin fecha publicada: volcado de los registradores, según fije el Tribunal de Instancia de Orgaz.\n- 2027-01: ERTMS nivel 2 en servicio y fin de la auditoría de la AESF, según el Ministerio y el ministro.\n- 2027-10: plazo orientativo de un año para el informe final de la AITAT.\n\n## Lo que hay que vigilar\n\n**Los registradores.** Falta la velocidad real del AVE 2080 y lo ocurrido en cabina antes del alcance. Solo lo darán los registradores, y el calendario lo marca el juzgado de Orgaz.\n\n**La norma de la AESF.** La agencia tiene sobre la mesa la petición de Semaf, la carta de Iryo y el mandato del Consejo de Ministros. Lo que decida sobre el BSL —si cabe autorizar marcha normal con más de un tren en un cantón— sustituirá a la regla que Renfe intentó aplicar por su cuenta. Sin plazo publicado.\n\n**La consigna misma.** Si la CR-V 32/2026 era una propuesta en evaluación, como dice Renfe, o una regla con fecha de efectos, como indican los documentos publicados, lo aclararán los comités de seguridad del operador y, en su caso, la AESF. La diferencia determina si un operador puede alterar por sí solo la operación degradada de una línea sin pasar por el administrador ni por el regulador.",
+ "date": "2026-11-04",
+ "event_date": "2026-11-01",
+ "featured": 0,
+ "geo": {
+  "lat": 39.4139,
+  "lon": -3.7128,
+  "place": "Urda (Toledo)"
+ },
+ "id": "renfe-consigna-lzb-40kmh-aitat-urda",
+ "image": {
+  "alt": "Dos trenes AVE serie 100 de Renfe en vías de la estación de Sevilla-Santa Justa",
+  "credit": "Savh",
+  "license": "CC BY-SA 3.0",
+  "orig_src": "img/ave-s100-santa-justa.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Renfe_AVE_S-100_Sevilla_Santa_Justa.JPG",
+  "src": "img/ave-s100-santa-justa.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Velocidad estimada del impacto",
+   "source": "Nota informativa AITAT, 29-10-2026",
+   "value": "Entre 160 y 200 km/h (pendiente del registrador jurídico)"
+  },
+  {
+   "label": "Ocupación de los trenes",
+   "source": "Nota informativa AITAT, 29-10-2026",
+   "value": "AVE 2080: 379 viajeros y 7 tripulantes; Iryo 6076: 147 viajeros y 5 tripulantes"
+  },
+  {
+   "label": "Balance provisional",
+   "source": "Nota informativa AITAT, 29-10-2026",
+   "value": "69 fallecidos y más de 200 heridos"
+  },
+  {
+   "label": "Límite de la consigna CR-V 32/2026",
+   "source": "Demócrata (documento publicado por El País), 31-10-2026",
+   "value": "Detención y marcha a la vista a máximo 40 km/h tras el telefonema LZB3, con efectos desde el 1-11-2026"
+  },
+  {
+   "label": "Incidencias del LZB en el corredor en 2026",
+   "source": "Óscar Puente, rueda de prensa del 30-10-2026 (Xataka)",
+   "value": "170 entre el 1 de enero y el 28 de octubre"
+  },
+  {
+   "label": "Velocidades máximas reglamentarias",
+   "source": "Reglamento de Circulación Ferroviaria, RD 664/2015",
+   "value": "300 km/h con LZB o ERTMS N1; 200 km/h con ASFA"
+  },
+  {
+   "label": "Plazo del informe final de la AITAT",
+   "source": "Nota informativa AITAT, 29-10-2026",
+   "value": "Un año, en principio"
+  },
+  {
+   "label": "Plan de seguridad del Gobierno",
+   "source": "Ministerio de Transportes, nota de prensa 03-11-2026",
+   "value": "8 medidas; validación por un segundo controlador en circulación degradada; menos frecuencias hasta comienzos de 2027"
+  }
+ ],
+ "key_fact": "Impacto estimado entre 160 y 200 km/h; 379 viajeros en el AVE 2080 y 147 en el Iryo 6076; la consigna de 40 km/h duró menos de 24 horas",
+ "kicker": "Investigación y protocolos · Ferrocarril",
+ "kind": "noticia",
+ "next": "La AITAT prevé su informe final en un plazo de un año y aún no ha accedido a los registradores, pendientes de las condiciones que fije el juzgado de Orgaz. La AESF debe revisar la normativa de operación degradada dentro del plan aprobado el 3 de noviembre, que impone validación por un segundo regulador. Semaf e Iryo esperan respuesta a su petición de prohibir autorizaciones a velocidad normal cuando varios trenes puedan ocupar un mismo cantón.",
+ "published_at": "2026-11-04T07:30:00+01:00",
+ "published_time": "07:30",
+ "relevance": "ALTA",
+ "relevance_for": "Maquinistas y reguladores de circulación, direcciones de seguridad de Renfe, Iryo y Ouigo, la AESF y Adif, fabricantes de sistemas de señalización, aseguradoras y despachos que preparan la vía penal y civil del accidente.",
+ "revised_at": "2026-11-04T16:25:00+01:00",
+ "section": "tierra",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "AITAT (Ministerio de Transportes)",
+   "published": "2026-10-29",
+   "title": "Nota informativa de la AITAT sobre el accidente de Urda a las 24 horas",
+   "url": "https://www.transportes.gob.es/recursos_mfom/nota-accidente-urda-24h.pdf"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Ministerio de Transportes y Movilidad Sostenible",
+   "published": "2026-11-03",
+   "title": "El Gobierno aprueba un plan para optimizar la seguridad de la alta velocidad",
+   "url": "https://www.transportes.gob.es/ministerio/comunicacion/sala-prensa/mar-03112026-1413"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2015-07-18",
+   "title": "Real Decreto 664/2015, de 17 de julio, por el que se aprueba el Reglamento de Circulación Ferroviaria (texto consolidado)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-8042"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2015-09-30",
+   "title": "Ley 38/2015, de 29 de septiembre, del sector ferroviario (texto consolidado)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10440"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2024-08-02",
+   "title": "Ley 2/2024, de 1 de agosto, de creación de la Autoridad Administrativa Independiente para la Investigación Técnica de Accidentes e Incidentes ferroviarios, marítimos y de aviación civil",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2024-15937"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "The Objective",
+   "published": "2026-11-02",
+   "title": "Renfe anula la consigna de reducir la velocidad cuando falle el LZB horas después de aprobarla",
+   "url": "https://theobjective.com/economia/transporte/2026-11-02/renfe-anula-consigna-velocidad-fallo-lz/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Railway Gazette International",
+   "published": "2026-11-03",
+   "title": "Renfe updates safety protocol as investigators analyse Urda collision",
+   "url": "https://www.railwaygazette.com/spain/2026/11/03/renfe-updates-safety-protocol-as-investigators-analyse-urda-collision/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Demócrata",
+   "published": "2026-10-31",
+   "title": "Renfe sets a maximum of 40 km/h in response to certain LZB failures on the Madrid-Seville line after Urda",
+   "url": "https://www.democrata.es/en/current-events/renfe-sets-a-maximum-of-40-km-h-in-response-to-certain-lzb-failures-on-the-madrid-seville-line-after-urda/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Demócrata",
+   "published": "2026-10-31",
+   "title": "Los maquinistas reclaman vetar la marcha normal tras un fallo del sistema LZB",
+   "url": "https://www.democrata.es/economia/los-maquinistas-reclaman-vetar-la-marcha-normal-tras-un-fallo-del-sistema-lzb/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Xataka",
+   "published": "2026-10-30",
+   "title": "Óscar Puente: el sistema LZB se ha caído 170 veces este año y está dentro de la normalidad europea",
+   "url": "https://www.xataka.com/movilidad/oscar-puente-ministro-transportes-sistema-lzb-se-ha-caido-170-veces-este-ano-esta-dentro-normalidad-europea"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Euronews",
+   "published": "2026-10-31",
+   "title": "Accidente de Urda: el registro de Adif recoge cuatro fallos técnicos antes de la colisión",
+   "url": "https://es.euronews.com/2026/10/31/accidente-urda-registro-adif-cuatro-fallos-tecnicos-colision"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "ESdiario",
+   "published": "2026-10-29",
+   "title": "El CEO de Iryo avisó en el Senado de los fallos del LZB 23 días antes del accidente de Urda",
+   "url": "https://www.esdiario.com/nacional/261029/201595/ceo-iryo-accidente-urda.html"
+  }
+ ],
+ "subsector": "ferrocarril",
+ "subtitle": "Renfe presenta la consigna CR-V 32/2026 como una propuesta técnica pendiente de autorización; según The Objective se dictó sin Adif ni la AESF y solo para sus trenes. La AITAT sitúa el impacto de Urda entre 160 y 200 km/h",
+ "summary": "Renfe Viajeros dejó sin efecto el 1 de noviembre, por correo interno, la consigna CR-V n.º 32/2026, conocida el 31 de octubre, que obligaba a sus maquinistas a detenerse y circular en marcha a la vista a un máximo de 40 km/h al perder la transmisión del LZB en la LAV Madrid–Sevilla. Renfe sostiene que era una propuesta técnica pendiente de autorización; según The Objective, se adoptó sin Adif ni la AESF y solo vinculaba a sus trenes. La nota de la AITAT del 29 de octubre fija la secuencia de Urda: avería del LZB a las 8:31, paso a BSL, Iryo 6076 detenido ante la señal E242 y alcance del AVE 2080 a las 8:53 a entre 160 y 200 km/h.",
+ "tags": [
+  "ferrocarril"
+ ],
+ "timeline": [
+  {
+   "date": "2026-10-05",
+   "text": "Fabrizio Favara (Iryo) advierte en el Senado de las desconexiones del LZB en el corredor Madrid–Andalucía"
+  },
+  {
+   "date": "2026-10-28",
+   "text": "8:31 avería del LZB y paso a BSL; 8:53 alcance del AVE 2080 al Iryo 6076 en el PK 118+800 de Urda"
+  },
+  {
+   "date": "2026-10-29",
+   "text": "La AITAT publica su nota informativa a las 24 horas"
+  },
+  {
+   "date": "2026-10-30",
+   "text": "Puente cifra en 170 las incidencias del LZB en el corredor en 2026"
+  },
+  {
+   "date": "2026-10-31",
+   "text": "Semaf pide a la AESF modificar la normativa de operación degradada; se conoce la consigna CR-V 32/2026 con efectos desde el 1 de noviembre"
+  },
+  {
+   "date": "2026-11-01",
+   "text": "Renfe Viajeros deja sin efecto la consigna por correo interno"
+  },
+  {
+   "date": "2026-11-03",
+   "text": "El Consejo de Ministros aprueba el plan de ocho medidas para la alta velocidad"
+  },
+  {
+   "date": "2027-01",
+   "text": "Puesta en servicio prevista del ERTMS nivel 2 en Madrid–Sevilla y fin de la auditoría extraordinaria de la AESF"
+  },
+  {
+   "date": "2027-10",
+   "text": "Plazo orientativo de un año para el informe final de la AITAT"
+  }
+ ],
+ "title": "Renfe anula en horas su consigna de 40 km/h ante fallos del LZB en plena investigación",
+ "why": "El episodio muestra la fractura de gobernanza del sistema: un operador difunde y retira en horas una regla de operación degradada que solo obligaba a sus trenes, al margen del gestor de infraestructura y del regulador, cuando el RCF reserva las consignas al administrador y la AESF certifica los sistemas de gestión de la seguridad. La nota de la AITAT confirma que ambos trenes compartían cantón bajo BSL y que, según los indicios, las barreras de mitigación no llegaron a actuar. Con 170 incidencias del LZB en el corredor en 2026 según el ministro, las reglas de operación degradada pasan a ser el núcleo regulatorio de la crisis."
+}

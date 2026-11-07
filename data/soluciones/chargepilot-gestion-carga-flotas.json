@@ -1,0 +1,70 @@
+{
+ "body_md": "**Qué hace.** ChargePilot gestiona la carga de flotas eléctricas en cochera: reparte la potencia disponible entre vehículos, evita superar la conexión a red y puede ajustar la carga al precio de la electricidad. Es independiente del fabricante del cargador y usa interfaces abiertas.\n\n**Cómo se integra.** En GVB, el operador de transporte público de Ámsterdam, se conecta mediante la interfaz VDV 463 con el sistema de gestión de cocheras de PSI Transcom y con el software de programación HASTUS de GIRO. Intercambia el nivel de batería a la llegada, la carga objetivo y las necesidades de preclimatización (VDV 261 e ISO 15118), y no depende de una conexión estable a internet.\n\n**Para quién encaja.** Operadores con varias cocheras y cargadores de distintas marcas, también flotas logísticas. GVB empezó en 2022 en el centro de carga de la estación central y lo extendió a otras seis cocheras, con el objetivo de cargar más de 159 autobuses en 190 puntos de corriente continua a finales de 2023.\n\n**Cambio de titular.** El producto lo desarrolló The Mobility House. Edenred completó en agosto de 2026 la compra de The Mobility House Solutions, que pasa a denominarse Edenred E-Mobility GmbH y mantiene la marca ChargePilot.\n\n**Límites.** Los ahorros anunciados en Ámsterdam proceden de estimaciones previas del proveedor.",
+ "category": "Electrificación y energía",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "GVB",
+   "place": "Ámsterdam (Países Bajos)",
+   "source_url": "https://www.mobilityhouse.com/int_en/our-company/newsroom/article/gvb-relies-on-the-mobility-house-to-meet-its-charging-management-needs",
+   "what": "Gestión de carga de más de 159 autobuses eléctricos en 190 puntos de corriente continua, desde la estación central (2022) y seis cocheras más.",
+   "year": "2023"
+  }
+ ],
+ "featured": false,
+ "id": "chargepilot-gestion-carga-flotas",
+ "modes": [
+  "tierra",
+  "logistica"
+ ],
+ "name": "ChargePilot",
+ "priority": 13,
+ "provider": "Edenred E-Mobility (antes The Mobility House Solutions)",
+ "provider_country": "Alemania",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "The Mobility House",
+   "published": "2023-05-30",
+   "title": "GVB relies on The Mobility House to meet its charging management needs",
+   "url": "https://www.mobilityhouse.com/int_en/our-company/newsroom/article/gvb-relies-on-the-mobility-house-to-meet-its-charging-management-needs"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Sustainable Bus",
+   "published": "2023-06-21",
+   "title": "Smart charging for e-buses: GVB relies on The Mobility House",
+   "url": "https://www.sustainable-bus.com/electric-bus/smart-charging-for-e-buses-gvb-relies-on-the-mobility-house/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "electrive",
+   "published": "2026-08-03",
+   "title": "Edenred completa la adquisición de The Mobility House Solutions",
+   "url": "https://www.electrive.com/es/2026/08/03/edenred-completa-la-adquisicion-de-mobility-house-solutions/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Edenred E-Mobility",
+   "published": "",
+   "title": "ChargePilot",
+   "url": "https://chargepilot.com/int_en/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Sistema de gestión de carga y energía, independiente del fabricante del cargador, que reparte la potencia en cocheras y centros de flota según el estado de batería, la hora de salida y los límites de la conexión a red.",
+ "tags": [
+  "autobús eléctrico",
+  "gestión de carga",
+  "cocheras",
+  "VDV 463",
+  "ISO 15118"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://chargepilot.com/int_en/",
+ "verified_at": "2026-11-04"
+}

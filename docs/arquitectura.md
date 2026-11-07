@@ -1,0 +1,50 @@
+# MOTICIAS · Arquitectura del conocimiento y del sistema (7 de noviembre de 2026)
+
+Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Todo lo que el sistema sabe —reglas, fuentes, contenido publicado, decisiones— está aquí, versionado. Lo que no está en el repositorio no existe para el sistema. Los demás sitios (artefactos de Claude, proyecto de Claude, memoria de Claude, Ghost) son salidas o ventanas de lectura.
+
+## 1. Dónde está cada cosa
+
+| Qué | Dónde | Quién lo cambia |
+|---|---|---|
+| Identidad, reglas de siempre, cómo trabajar | `CLAUDE.md` | Rainer, por cambio OpenSpec |
+| Manual operativo (modelo de datos, reglas, rutina) | `docs/manual-operativo.md` | cambio OpenSpec |
+| Estándar de cada reportaje (estructura, voz, prohibiciones) | `docs/estandar-profundidad.md` | cambio OpenSpec |
+| Texto de la rutina diaria | `docs/tarea-edicion-diaria.md` (invocada por `.claude/commands/edicion-diaria.md`) | cambio OpenSpec |
+| Inventario de fuentes y su estado | `docs/fuentes.md` (legible) y `portal/data/sources.json` (máquina) | la rutina, cada mañana, cuando detecta un cambio |
+| Benchmark y plan de negocio | `docs/benchmark-referencias.md`, `docs/plan-moticias-com.md` | Rainer |
+| Gestores del portal (blogs, publicidad, licitaciones, logística, tecnología) | `docs/gestores-portal.md` | cambio OpenSpec |
+| Registro de ediciones | `docs/ediciones.md` | la rutina, cada mañana |
+| Especificaciones vivas y cambios en curso | `openspec/` | Rainer y Claude Code, método OpenSpec |
+| Contenido publicado (piezas, boletines, plazos, ediciones, ajustes, blogs, anuncios, soluciones) | `data/<colección>/<id>.json` | la rutina (altas); Rainer (correcciones) |
+| Fotos con licencia y sus créditos | `portal/img/*.jpg`, `portal/img/credits.json` | la rutina |
+| Código del portal (artefacto) | `portal/` | cambio OpenSpec (hoy no se toca) |
+| Código y datos de la hemeroteca | `hemeroteca/` | código: OpenSpec; datos: la rutina |
+| Scripts | `src/` | cambio OpenSpec |
+| Trabajo temporal de una sesión | `work/` (ignorado por git) | nadie lo conserva |
+
+## 2. Las tres vías de actualización
+
+1. **La rutina diaria** (06:38, laborables). Escribe la edición en el portal, la hemeroteca y `data/`; añade una línea a `docs/ediciones.md`; anota en `docs/fuentes.md` toda fuente caída o cambiada; hace `git push`. Si algo falla, lo dice en el aviso y deja lo que tenga guardado.
+2. **Rainer, por chat o desde el móvil.** Una instrucción («a partir de ahora el análisis sale solo lunes y jueves») se convierte en un cambio OpenSpec: `openspec/changes/<nombre>/` con la propuesta, las specs afectadas y las tareas; se aplica (specs, docs, código, comando) y se archiva. Un cambio, todos los sitios a la vez.
+3. **Decisiones tomadas en conversación.** Si son reglas del sistema, van al repositorio como cambio OpenSpec. La memoria de Claude queda para lo personal (cómo escribe Rainer, qué prefiere), nunca para reglas operativas.
+
+## 3. Qué pasa con lo que ya existía
+
+- **Proyecto de Claude «moticias.com con M de Movilidad»**: pasa a ser espejo de lectura. Sus documentos `moticias/*` ya no se editan; cuando cambie algo aquí se copia allí (o se enlaza). El archivo histórico se conserva.
+- **Artefacto MOTICIAS (portal)** y **Hemeroteca**: siguen funcionando y recibiendo la edición diaria hasta que Ghost esté listo; su contenido se refleja en `data/` y `hemeroteca/data/`.
+- **Tarea programada en Cowork**: se sustituye por una tarea programada de Claude Code que clona este repositorio y ejecuta `/edicion-diaria`.
+- **Ghost(Pro)**: destino de publicación de moticias.com (cuenta creada el 7-11-2026). El publicador (`src/ghost_publish.py`) se añade por OpenSpec cuando el dominio y la clave de API estén listos.
+
+## 4. Convenciones
+
+- Un documento, un fichero: `data/<colección>/<id>.json`, JSON con `indent=1` y claves ordenadas, UTF-8 sin escapar acentos. El `id` es el nombre del fichero.
+- Fechas ISO (`AAAA-MM-DD`), horas en Europe/Madrid con zona (`2026-11-05T07:40:00+01:00`).
+- Nunca se borra contenido publicado; una corrección añade `revised_at` y una nota al final del cuerpo.
+- Los mensajes de commit de la rutina: `Edición nº N (AAAA-MM-DD)`. Los de cambios: el nombre del cambio OpenSpec.
+- Todo comando para copiar y pegar lleva delante el cambio de carpeta al proyecto (Rainer trabaja con varios repositorios a la vez).
+
+## 5. Reconstrucciones
+
+- Hemeroteca desde cero: `python3 -I src/hemeroteca_build.py full --db data --fallback portal/data/fallback.json --out work/hemeroteca-out --blobs portal/img`, y publicar los ficheros de `work/hemeroteca-out/files.json` en el artefacto.
+- `data/` desde la hemeroteca publicada: `python3 -I src/export_data.py`.
+- Barrido del BOE de un rango: `python3 -I src/boe_sweep.py --desde AAAA-MM-DD --hasta AAAA-MM-DD --json work/boe.json`.

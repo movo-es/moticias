@@ -1,0 +1,53 @@
+{
+ "body_md": "**Qué hace.** Posidonia Management es el sistema de gestión portuaria (PMS) de Prodevelop para autoridades portuarias. Cubre la escala del buque de principio a fin, las declaraciones sumarias de carga y descarga, la pesca fresca, las embarcaciones deportivas, el dominio público portuario, los servicios portuarios y la facturación, con cálculo automático de tasas y tarifas.\n\n**Cómo se integra.** Se parametriza para cada autoridad portuaria y se conecta con el ERP para la liquidación. Forma parte de la familia Posidonia, que incluye también el PCS de comunidad portuaria, Operations, Port CDM y soluciones para terminales. Puede instalarse en los servidores del puerto o contratarse como SaaS.\n\n**Para quién encaja.** Autoridades portuarias que necesitan unificar la gestión administrativa y la tramitación. La Autoridad Portuaria de Gijón, que ya lo usaba en local, migró en 2024 el PMS a la nube, alojado en AWS, algo más de un año después de hacer lo mismo con Posidonia PCS.\n\n**Límites y requisitos.** Es una herramienta de gestión interna; la coordinación con la comunidad logística corresponde al PCS. En la modalidad en la nube, el despliegue de Gijón cuenta con certificaciones ENS de nivel medio, ISO 20000 e ISO 27001, requisitos que un organismo público debe comprobar antes de contratar.",
+ "category": "Puertos y aeropuertos",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Autoridad Portuaria de Gijón",
+   "place": "Puerto de Gijón (Asturias)",
+   "source_url": "https://mundomaritimo.cl/noticias/puerto-de-gijon-lleva-su-port-management-system-a-la-nube-con-prodevelop-y-aws",
+   "what": "Migración de Posidonia Management de instalación local a SaaS en AWS, tras la migración previa de Posidonia PCS.",
+   "year": "2024"
+  }
+ ],
+ "featured": false,
+ "id": "prodevelop-posidonia-management",
+ "modes": [
+  "mar"
+ ],
+ "name": "Posidonia Management",
+ "priority": 10,
+ "provider": "Prodevelop",
+ "provider_country": "España",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "MundoMarítimo",
+   "published": "2024-05-30",
+   "title": "Puerto de Gijón lleva su Port Management System a la nube con Prodevelop y AWS",
+   "url": "https://mundomaritimo.cl/noticias/puerto-de-gijon-lleva-su-port-management-system-a-la-nube-con-prodevelop-y-aws"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Prodevelop",
+   "published": "",
+   "title": "Posidonia Management",
+   "url": "https://www.prodevelop.es/posidonia-management"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Sistema de gestión portuaria para autoridades portuarias: escalas, mercancías, dominio público, servicios portuarios y cálculo de tasas y tarifas, con integración con el ERP, instalable en local o como servicio en la nube.",
+ "tags": [
+  "PMS",
+  "autoridad portuaria",
+  "SaaS",
+  "digitalización portuaria",
+  "Gijón"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.prodevelop.es/posidonia-management",
+ "verified_at": "2026-11-04"
+}

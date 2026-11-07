@@ -1,0 +1,62 @@
+{
+ "body_md": "**Qué hace.** passify es una plataforma de coordinación digital del tráfico de camiones en terminales. Su sistema de citas (TAS) permite a las empresas de transporte reservar una franja concreta para cada camión. En TTI Algeciras cada cita es válida para una ventana de 30 minutos y una visita puede agrupar varias órdenes de transporte.\n\n**Cómo se integra.** La cita queda vinculada a la matrícula y se valida automáticamente en la puerta. Las órdenes de recogida y entrega siguen el circuito habitual; solo la reserva pasa a ser digital. La terminal configura el máximo de camiones por hora, las tolerancias de adelanto y retraso y franjas prioritarias o privadas, y puede ajustar la capacidad según los tiempos de proceso reales. Los paneles registran puntualidad, cancelaciones, ausencias y horas punta.\n\n**Para quién encaja.** Terminales de contenedores con congestión en puerta y empresas de transporte por carretera que operan en puerto. El registro de transportistas es gratuito.\n\n**Límites y requisitos.** Exige que la terminal integre el sistema con su operativa de puerta y que los transportistas adopten la reserva. Las fuentes no aportan todavía datos de reducción de esperas en Algeciras. Además de TTI Algeciras, el proveedor declara estar operativo en las terminales de HHLA en Hamburgo (CTT, CTB y CTA) y en EB Intermodal, en Oradea (Rumanía).",
+ "category": "Logística y carga",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "TTI Algeciras",
+   "place": "Puerto de la Bahía de Algeciras",
+   "source_url": "https://www.passifyapp.de/?p=2810",
+   "what": "Primera reserva de franjas horarias para camiones en una terminal de contenedores española, con citas de 30 minutos ligadas a la matrícula.",
+   "year": "2026"
+  }
+ ],
+ "featured": false,
+ "id": "passify-cita-previa-camiones",
+ "modes": [
+  "logistica",
+  "mar"
+ ],
+ "name": "passify TAS (sistema de cita previa para camiones)",
+ "priority": 5,
+ "provider": "passify",
+ "provider_country": "Alemania",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "passify",
+   "published": "2026-02-24",
+   "title": "First Spanish port introduces digital truck appointment system with passify",
+   "url": "https://www.passifyapp.de/?p=2810"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "MundoMarítimo",
+   "published": "2026-02-26",
+   "title": "TTI Algeciras de España implementa sistema de cita previa TAS para camiones",
+   "url": "https://mundomaritimo.cl/noticias/tti-algeciras-de-espana-implementa-sistema-de-cita-previa-tas-para-camiones"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Port Technology International",
+   "published": "",
+   "title": "Digital truck appointment by passify launches at TTI Algeciras",
+   "url": "https://www.porttechnology.org/news/smart-technologies-and-digitalisation/digital-truck-appointment-by-passify-launches-at-tti-algeciras/"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Sistema de cita previa para camiones en terminales de contenedores: los transportistas reservan franjas horarias vinculadas a la matrícula y la terminal valida la cita de forma automática a la llegada.",
+ "tags": [
+  "cita previa",
+  "TAS",
+  "terminal de contenedores",
+  "transporte por carretera",
+  "Algeciras"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://www.passifyapp.de/",
+ "verified_at": "2026-11-04"
+}

@@ -1,0 +1,61 @@
+{
+ "body_md": "**Qué hace.** KONUX ofrece software como servicio para supervisar el estado de desvíos y accionamientos de aguja. Sensores instalados en vía recogen datos que se analizan con modelos de aprendizaje automático para estimar el estado de los componentes y anticipar fallos. Según el proveedor, las averías de desvíos están entre las causas principales de retrasos y los accionamientos concentran la mayoría de ellas.\n\n**Cómo se integra.** Se contrata como servicio: el proveedor aporta los dispositivos IoT, la plataforma y los análisis, y el administrador de infraestructura decide con esa información cuándo y dónde enviar sus equipos de mantenimiento. La gama actual se presenta como KONUX Switch, junto con la plataforma de datos KONUX CoBrix; el contrato con Adif se anunció en 2024 con los nombres KONUX Switch y KONUX Point Machine Health.\n\n**Para quién encaja.** Administradores de infraestructura y operadores de redes con muchos aparatos de vía. Adif lo adjudicó en 2024, tras licitación pública, para 200 desvíos en servicio.\n\n**Límites y requisitos.** La reducción de retrasos de hasta un 40 % que cita KONUX es un objetivo del proveedor, no un resultado medido. Requiere acceso a vía para instalar sensores y una organización de mantenimiento capaz de actuar sobre las alertas.",
+ "category": "Seguridad y mantenimiento",
+ "deep_rev": 1,
+ "deployments": [
+  {
+   "client": "Adif",
+   "place": "Red ferroviaria española",
+   "source_url": "https://konux.com/?p=1691",
+   "what": "Servicio de monitorización de 200 desvíos en servicio, adjudicado por licitación pública.",
+   "year": "2024"
+  }
+ ],
+ "featured": false,
+ "id": "konux-switch-desvios",
+ "modes": [
+  "tierra"
+ ],
+ "name": "KONUX Switch",
+ "priority": 9,
+ "provider": "KONUX",
+ "provider_country": "Alemania",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "KONUX",
+   "published": "2024-03-20",
+   "title": "Spanish rail gets an infrastructure boost with switch monitoring from KONUX",
+   "url": "https://konux.com/?p=1691"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "RailTech.com",
+   "published": "",
+   "title": "Adif to use KONUX switch monitoring technology",
+   "url": "https://www.railtech.com/?p=43570"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Global Railway Review",
+   "published": "",
+   "title": "Spanish rail gets infrastructure boost with KONUX switch monitoring",
+   "url": "https://www.globalrailwayreview.com/spanish-rail-gets-infrastructure-boost-with-konux-switch-monitoring/317720.article"
+  }
+ ],
+ "status": "publicado",
+ "summary": "Monitorización de desvíos ferroviarios con sensores IoT y analítica predictiva para detectar la degradación de componentes y planificar el mantenimiento antes de que la avería afecte a la circulación.",
+ "tags": [
+  "mantenimiento predictivo",
+  "desvíos",
+  "IoT",
+  "ferrocarril",
+  "Adif"
+ ],
+ "updated_at": "2026-11-04T18:30:00+01:00",
+ "url": "https://konux.com/solutions/konux-switch/",
+ "verified_at": "2026-11-04"
+}

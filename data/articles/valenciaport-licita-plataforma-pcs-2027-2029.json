@@ -1,0 +1,130 @@
+{
+ "actors": "Autoridad Portuaria de València (APV), contratante y propietaria de la plataforma; empresas tecnológicas que concurran a la gestión técnica; comunidad portuaria usuaria: consignatarias, transitarias, terminales, transportistas, agentes de aduanas y organismos de inspección.",
+ "author": "Redacción",
+ "body_md": "La Autoridad Portuaria de València (APV) ha sacado a licitación la gestión y explotación técnica de ValenciaportPCS, la plataforma por la que intercambian información los agentes públicos y privados de la comunidad portuaria. Según la [nota de la APV](https://www.valenciaport.com/la-apv-saca-a-licitacion-su-plataforma-tecnologica-valenciaportpcs/) del 2 de noviembre, el presupuesto supera los 7,9 millones de euros y el plazo de ejecución es de 24 meses desde la adjudicación.\n\n## Los hechos\n\nEl adjudicatario gestionará la plataforma durante el periodo 2027-2029, que es el que regula el pliego. ValenciaportPCS ofrece más de 30 servicios transaccionales e informativos a más de 1.100 empresas y organismos públicos y permite completar procesos portuarios y logísticos con un único envío de datos.\n\nLa APV justifica el contrato en la complejidad de los flujos de información: cada movimiento de mercancía exige varias comunicaciones entre los miembros de la comunidad portuaria. La plataforma, añade, se adapta de forma continua a cambios legislativos y nuevas funcionalidades. [Cadena de Suministro](https://www.cadenadesuministro.es/transporte-maritimo/puerto-valencia-saca-licitacion-su-plataforma-valenciaportpcs_1519413_102.html) recoge los mismos datos.\n\n## Las cifras\n\nEl importe ha crecido en cada renovación. Los anuncios anteriores en el BOE permiten la comparación, con una salvedad: la APV habla ahora de presupuesto y los anuncios previos daban valor estimado, que no son magnitudes idénticas.\n\n- 2017-2018: valor estimado de 3.864.000 euros y presupuesto neto de 2.415.000 euros, 24 meses ([BOE, 31-12-2016](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2016-68144)).\n- Contrato licitado en 2019: valor estimado de 5.480.000 euros, 24 meses ([BOE, 13-11-2019](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2019-48510)).\n- 2027-2029: presupuesto de más de 7,9 millones, 24 meses (APV, 02-11-2026).\n\n**El tráfico.** El servicio da soporte a un puerto que movió 498.837 TEU en septiembre, un 5,48 % más, 4,2 millones de TEU en el acumulado del año, un 0,91 % menos, y 5.623.753 TEU en los últimos doce meses, según la [APV](https://www.valenciaport.com/valenciaport-impulsa-sus-exportaciones-en-septiembre/).\n\n## El marco legal\n\nEn 2016 la APV tramitó el contrato por procedimiento abierto bajo la Ley 31/2007 de sectores especiales, sustituida después por el Real Decreto-ley 3/2020. El código CPV de los contratos anteriores es el 72000000, servicios de tecnologías de la información. A 4 de noviembre, el anuncio de 2026 no figura en el BOE; la APV publica sus licitaciones en la Plataforma de Contratación del Sector Público.\n\n## Qué cambia para…\n\n**La comunidad portuaria.** Nada inmediato: el contrato garantiza la continuidad del servicio entre 2027 y 2029. El pliego puede, en cambio, fijar qué funciones nuevas se exigen al gestor, en un momento en que la reforma aduanera europea añade obligaciones de datos a las importaciones.\n\n**Los proveedores tecnológicos.** El importe duplica el valor estimado de 2017-2018, con la salvedad ya señalada sobre las magnitudes. La solvencia exigida y los criterios de adjudicación decidirán si concurre más de un licitador.\n\n## Lo que hay que vigilar\n\nEl anuncio en la Plataforma de Contratación, con plazo de ofertas y criterios. El número de licitadores y la baja de adjudicación. Y si el pliego contempla prórroga, como admitía el de 2016, o se cierra en los 24 meses.",
+ "date": "2026-11-04",
+ "event_date": "2026-11-02",
+ "featured": 0,
+ "geo": {
+  "lat": 39.445,
+  "lon": -0.318,
+  "place": "Puerto de València"
+ },
+ "id": "valenciaport-licita-plataforma-pcs-2027-2029",
+ "image": {
+  "alt": "Buque portacontenedores azul atracado bajo grúas pórtico en el puerto de Valencia",
+  "credit": "Niels Johannes",
+  "license": "CC BY-SA 4.0",
+  "orig_src": "img/puerto-valencia-portacontenedores.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Encounter_(IMO_9255775)_Valencia_2021.jpg",
+  "src": "img/puerto-valencia-portacontenedores.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Presupuesto",
+   "source": "Autoridad Portuaria de València, 02-11-2026",
+   "value": "Más de 7,9 M€"
+  },
+  {
+   "label": "Plazo de ejecución",
+   "source": "Autoridad Portuaria de València, 02-11-2026",
+   "value": "24 meses desde la adjudicación"
+  },
+  {
+   "label": "Usuarios",
+   "source": "Autoridad Portuaria de València, 02-11-2026",
+   "value": "Más de 1.100 empresas y organismos"
+  },
+  {
+   "label": "Servicios",
+   "source": "Autoridad Portuaria de València, 02-11-2026",
+   "value": "Más de 30"
+  },
+  {
+   "label": "Valor estimado del contrato de 2019",
+   "source": "BOE-B-2019-48510, 13-11-2019",
+   "value": "5.480.000 €"
+  }
+ ],
+ "key_fact": "Más de 7,9 M€ en 24 meses",
+ "kicker": "Digitalización portuaria · Puertos",
+ "kind": "noticia",
+ "next": "La APV debe publicar el anuncio con plazo de ofertas y criterios en la Plataforma de Contratación. La adjudicación tiene que llegar antes de 2027 para no romper la continuidad del servicio. El pliego definirá si la plataforma incorpora nuevas funciones obligatorias.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "MEDIA",
+ "relevance_for": "Consignatarios, transitarios, terminales y transportistas que operan en València, Sagunto y Gandia; integradores y proveedores de software portuario; otras autoridades portuarias con PCS propio.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Autoridad Portuaria de València",
+   "published": "2026-11-02",
+   "title": "La APV saca a licitación su plataforma tecnológica ValenciaportPCS por 7,9 millones de euros",
+   "url": "https://www.valenciaport.com/la-apv-saca-a-licitacion-su-plataforma-tecnologica-valenciaportpcs/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2019-11-13",
+   "title": "Anuncio de licitación de: Presidencia de la Autoridad Portuaria de Valencia. Objeto: Gestión Técnica y Explotación de ValenciaportPCS",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2019-48510"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2016-12-31",
+   "title": "Resolución de la Autoridad Portuaria de Valencia por la que se anuncia convocatoria de licitación para la contratación del servicio de Gestión técnica y explotación de ValenciaportPCS 2017-2018",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2016-68144"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "Autoridad Portuaria de València",
+   "published": "2026-10-22",
+   "title": "Valenciaport impulsa sus exportaciones en septiembre y aumenta un 5,48 % el tráfico de contenedores",
+   "url": "https://www.valenciaport.com/valenciaport-impulsa-sus-exportaciones-en-septiembre/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Cadena de Suministro",
+   "published": "2026-11-04",
+   "title": "El puerto de Valencia saca a licitación su plataforma ValenciaportPCS",
+   "url": "https://www.cadenadesuministro.es/transporte-maritimo/puerto-valencia-saca-licitacion-su-plataforma-valenciaportpcs_1519413_102.html"
+  }
+ ],
+ "subsector": "puertos",
+ "subtitle": "El contrato, de 24 meses, cubre la gestión técnica del sistema que conecta a más de 1.100 empresas y organismos de la comunidad portuaria",
+ "summary": "La Autoridad Portuaria de València sacó a licitación el 2 de noviembre la gestión y explotación técnica de ValenciaportPCS, la plataforma de intercambio de información entre los agentes públicos y privados de la comunidad portuaria. El presupuesto supera los 7,9 millones de euros y el plazo de ejecución es de 24 meses desde la adjudicación, para el periodo 2027-2029. La plataforma ofrece más de 30 servicios a más de 1.100 empresas y organismos. El contrato anterior, licitado en 2019, tenía un valor estimado de 5,48 millones para el mismo plazo.",
+ "tags": [
+  "logística",
+  "puertos",
+  "digitalización",
+  "port community system",
+  "Valenciaport",
+  "contratación pública"
+ ],
+ "timeline": [
+  {
+   "date": "2016-12-31",
+   "text": "El BOE publica la licitación de la gestión de ValenciaportPCS 2017-2018"
+  },
+  {
+   "date": "2019-11-13",
+   "text": "El BOE publica la licitación anterior, con valor estimado de 5,48 millones"
+  },
+  {
+   "date": "2026-10-22",
+   "text": "La APV publica el tráfico de septiembre: 498.837 TEU"
+  },
+  {
+   "date": "2026-11-02",
+   "text": "La APV anuncia la licitación de la gestión de ValenciaportPCS 2027-2029"
+  }
+ ],
+ "title": "Valencia licita por 7,9 millones la explotación de su plataforma ValenciaportPCS para 2027-2029",
+ "why": "El PCS es la columna digital de un puerto que gestiona más de 5,6 millones de TEU en doce meses: por él pasan escalas, mercancías y trámites. Quién lo gestione y con qué presupuesto condiciona la continuidad del servicio y su evolución normativa."
+}

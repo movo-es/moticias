@@ -1,0 +1,105 @@
+{
+ "actors": "Consejo de Ministros, que autoriza el gasto; Adif, como contratante y entidad encargada del mantenimiento (EEM) de las locomotoras; talleres y fabricantes de material rodante que concurran; empresas ferroviarias de mercancías que dependen de las maniobras en las terminales de Adif.",
+ "author": "Redacción",
+ "body_md": "Adif sacará a licitación el mantenimiento de las 54 locomotoras de la serie 310 que mueven trenes dentro de sus terminales de mercancías. El Consejo de Ministros autorizó el contrato el 27 de octubre, con un valor estimado de 30.587.000 euros, IVA excluido, según la [referencia oficial de la reunión](https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261027-referencia-rueda-de-prensa-ministros.aspx).\n\n## Los hechos\n\nEl objeto es el mantenimiento del material rodante motor que Adif destina a servicios logísticos. Las 54 locomotoras de la serie 310 prestan servicios de maniobras y de última milla en las terminales de transporte de mercancías e instalaciones relacionadas, y también trabajan para el mantenimiento de la infraestructura.\n\nEl contrato se divide en dos lotes. El primero agrupa 21 locomotoras de las terminales logísticas de las áreas territoriales Este, Centro y Sur. El segundo, 33 locomotoras de las áreas Noroeste, Norte y Noreste. La referencia del Gobierno no detalla duración, criterios de adjudicación ni fecha de publicación de los pliegos.\n\n## El contexto\n\n**La flota.** La referencia oficial añade que Adif dispone de otras 39 locomotoras de la serie 311 en terminales de mercancías. [El Mercantil](https://elmercantil.com/2026/10/27/adif-licita-un-nuevo-contrato-de-mantenimiento-de-locomotoras-para-servicios-logisticos/) da una cifra distinta: un parque de 97 locomotoras en centros logísticos, 43 de la serie 311 y 54 de la 310. El mismo medio cifra en 29 las locomotoras de Adif para mantenimiento de infraestructura y en 21 las que están en fabricación —seis de ancho estándar, 12 de ancho ibérico y tres de ancho métrico—. La discrepancia sobre la serie 311 no está aclarada.\n\n[Vía Libre](https://www.vialibre-ffe.com/noticias.asp?not=50664&cs=mate) recoge el mismo perímetro de 54 máquinas y dos lotes.\n\n## El marco legal\n\n**Autorización previa.** La Ley 9/2017 de Contratos del Sector Público exige autorización del Consejo de Ministros para los contratos cuyo valor estimado alcance 12 millones de euros, umbral que este supera con holgura.\n\n**Mantenimiento certificado.** Adif gestiona el mantenimiento de estas locomotoras como entidad encargada del mantenimiento, figura regulada en la Unión Europea por el Reglamento de Ejecución (UE) 2019/779. La entidad responde de que cada vehículo esté en condiciones seguras de circulación. El contrato externaliza la ejecución, no esa responsabilidad.\n\n## Qué cambia para…\n\n**Las empresas ferroviarias.** La disponibilidad de las locomotoras de maniobra determina los tiempos de formación y descomposición de trenes en las terminales de Adif. Un lote mal dimensionado o una adjudicación tardía se traduce en esperas en playa.\n\n**Los talleres.** La división en dos lotes geográficos abre la puerta a más de un adjudicatario y a licitadores de tamaño medio. Los requisitos de solvencia se conocerán con los pliegos.\n\n## Lo que hay que vigilar\n\nLa publicación del anuncio en la Plataforma de Contratación del Sector Público, con el plazo de ofertas y la duración del contrato. La aclaración del número real de locomotoras de la serie 311, que condiciona el alcance de futuros contratos. Y la llegada de las 21 locomotoras en fabricación, que El Mercantil atribuye a Adif sin fecha de entrega publicada.",
+ "date": "2026-11-04",
+ "event_date": "2026-10-27",
+ "featured": 0,
+ "id": "adif-licita-mantenimiento-54-locomotoras-serie-310-terminales",
+ "image": {
+  "alt": "Locomotora de maniobras 310-039 de Adif, de cabina roja y capó desgastado, en una vía",
+  "credit": "Philmarin",
+  "license": "CC BY-SA 3.0",
+  "orig_src": "img/adif-locomotora-310-039.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:Adif_310-039.3-1..JPG",
+  "src": "img/adif-locomotora-310-039.jpg"
+ },
+ "key_data": [
+  {
+   "label": "Valor estimado",
+   "source": "Referencia del Consejo de Ministros, 27-10-2026",
+   "value": "30.587.000 € (IVA excluido)"
+  },
+  {
+   "label": "Locomotoras serie 310",
+   "source": "Referencia del Consejo de Ministros, 27-10-2026",
+   "value": "54"
+  },
+  {
+   "label": "Lote 1 (Este, Centro, Sur)",
+   "source": "Referencia del Consejo de Ministros, 27-10-2026",
+   "value": "21 locomotoras"
+  },
+  {
+   "label": "Lote 2 (Noroeste, Norte, Noreste)",
+   "source": "Referencia del Consejo de Ministros, 27-10-2026",
+   "value": "33 locomotoras"
+  },
+  {
+   "label": "Locomotoras serie 311",
+   "source": "Consejo de Ministros 27-10-2026; El Mercantil 27-10-2026",
+   "value": "39 (Gobierno) / 43 (El Mercantil)"
+  }
+ ],
+ "key_fact": "30.587.000 € de valor estimado",
+ "kicker": "Material rodante · Ferrocarril de mercancías",
+ "kind": "noticia",
+ "next": "Adif debe publicar los pliegos y el anuncio de licitación con plazos de oferta. La adjudicación de los dos lotes marcará quién mantiene la flota en los próximos años. Queda por ver cómo se coordina con la incorporación de 21 locomotoras en fabricación.",
+ "published_at": "2026-11-04T17:30:00+01:00",
+ "relevance": "MEDIA",
+ "relevance_for": "Empresas ferroviarias de mercancías, operadores de terminales, talleres de mantenimiento de material rodante, cargadores que usan las terminales de Adif y responsables de contratación pública ferroviaria.",
+ "section": "logistica",
+ "sources": [
+  {
+   "accessed": "2026-11-04",
+   "kind": "oficial",
+   "outlet": "La Moncloa",
+   "published": "2026-10-27",
+   "title": "Referencia del Consejo de Ministros de 27 de octubre de 2026",
+   "url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261027-referencia-rueda-de-prensa-ministros.aspx"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-10-27",
+   "title": "Adif licita un nuevo contrato de mantenimiento de locomotoras para servicios logísticos",
+   "url": "https://elmercantil.com/2026/10/27/adif-licita-un-nuevo-contrato-de-mantenimiento-de-locomotoras-para-servicios-logisticos/"
+  },
+  {
+   "accessed": "2026-11-04",
+   "kind": "medios",
+   "outlet": "Vía Libre",
+   "published": "2026-10-28",
+   "title": "Licitado el mantenimiento de locomotoras de Adif destinadas a servicios logísticos",
+   "url": "https://www.vialibre-ffe.com/noticias.asp?not=50664&cs=mate"
+  }
+ ],
+ "subsector": "ferrocarril de mercancías",
+ "subtitle": "El Consejo de Ministros autoriza un contrato de 30,59 millones de valor estimado, en dos lotes, para la serie 310, que hace maniobras y última milla",
+ "summary": "El Consejo de Ministros autorizó el 27 de octubre a Adif a licitar el mantenimiento del material rodante motor que dedica a servicios logísticos, con un valor estimado de 30.587.000 euros sin IVA. El contrato cubre 54 locomotoras de la serie 310 que realizan maniobras y última milla en las terminales de mercancías y servicios para el mantenimiento de la infraestructura. Se divide en dos lotes: 21 máquinas para las áreas Este, Centro y Sur y 33 para Noroeste, Norte y Noreste. Adif actúa como entidad encargada del mantenimiento de esa flota.",
+ "tags": [
+  "logística",
+  "ferrocarril de mercancías",
+  "Adif",
+  "material rodante",
+  "terminales",
+  "contratación pública"
+ ],
+ "timeline": [
+  {
+   "date": "2026-10-27",
+   "text": "El Consejo de Ministros autoriza a Adif a licitar el contrato"
+  },
+  {
+   "date": "2026-10-27",
+   "text": "El Mercantil publica el detalle de la flota de Adif en centros logísticos"
+  },
+  {
+   "date": "2026-10-28",
+   "text": "Vía Libre informa de la licitación"
+  }
+ ],
+ "title": "Adif licita el mantenimiento de las 54 locomotoras de maniobras de sus terminales de mercancías",
+ "why": "Las locomotoras de maniobra de Adif hacen la última milla en sus terminales de mercancías: su disponibilidad condiciona cargas, descargas y formación de trenes en toda la red de terminales logísticas."
+}

@@ -1,0 +1,54 @@
+{
+ "accent": "#7a1f2b",
+ "author": "Rainer",
+ "author_role": "Director de MOTICIAS",
+ "contact_email": "",
+ "contact_text": "",
+ "contact_title": "",
+ "cover": {
+  "alt": "",
+  "assetId": "",
+  "credit": "Ivan Mlinaric",
+  "license": "CC BY 2.0",
+  "source": "https://www.flickr.com/photos/22399204@N08/4498421012",
+  "src": "img/ave-alta-velocidad.jpg"
+ },
+ "created_at": "2026-11-04T18:00:00+01:00",
+ "cta_text": "",
+ "cta_url": "",
+ "description": "Las piezas de fondo de MOTICIAS y las notas propias de su director.",
+ "feed_limit": 9,
+ "feed_title": "Análisis y reportajes",
+ "filters": {
+  "keywords": [],
+  "kinds": [
+   "analisis",
+   "reportaje"
+  ],
+  "modos": [],
+  "sections": [],
+  "subsectors": []
+ },
+ "id": "cuaderno-del-director",
+ "intro_md": "Este espacio reúne los **análisis y reportajes** de la cabecera y las entradas firmadas por su director. El hilo conductor es el de MOTICIAS: la regulación como eje, el transporte como sistema y una selección rigurosa de lo que de verdad cambia el sector.",
+ "layout": "revista",
+ "logo_text": "CD",
+ "modules": {
+  "boletines": false,
+  "contacto": false,
+  "feed": true,
+  "plazos": false,
+  "posts": true
+ },
+ "name": "Cuaderno del director",
+ "notes": "",
+ "order": 1,
+ "pinned_id": null,
+ "posts_title": "Entradas",
+ "slug": "cuaderno-del-director",
+ "status": "publicado",
+ "tagline": "Regulación, concesiones y el transporte de viajeros entendido como sistema",
+ "type": "blog",
+ "updated_at": "2026-11-04T18:00:00+01:00",
+ "visibility": "publico"
+}
