@@ -21,6 +21,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - Titular de MOTICIAS y responsable del tratamiento: Avionline S.L.
 - Modelos: barridos y escritura automática en Opus 5.5; el asesor semanal en Fable 5.1.
 - Fotos solo con licencia libre y crédito, del sujeto concreto, sin rostros reconocibles; nunca la misma foto dos veces en la misma página.
+- Campañas temáticas (`data/campanas/`): orientan la selección (palabras clave, cadencia, peso), nunca el tratamiento ni la firma; monetización señalizada y fuera del texto; la fecha gancho no se publica sin verificar en fuente primaria.
 - La investigación de un accidente se cita como investigación en curso.
 - No se toca el código del portal ni el de la hemeroteca fuera de un cambio OpenSpec.
 - Lectura web sin aprobaciones: WebFetch solo con URL que ya aparecen en la sesión; las APIs del BOE y de Openverse son la única excepción para scripts.
@@ -39,11 +40,11 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado). Cambio en curso: `plataforma-v1` (sala de redacción, suscripciones, CRM, promoción, sensores, verticales).
 - `verticals/` — configuración de cada vertical (`movilidad.json` = MOTICIAS; `turismo.json` = «viajar en grupo», previsto). Nada específico de un vertical va en el código.
 - `supabase/migrations/` — esquema de la plataforma (CRM, leads, campañas, señales, asesor).
-- `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`.
+- `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`, `campanas/` (campañas temáticas; informes en `docs/campanas/`).
 - `portal/` — código y datos del artefacto MOTICIAS; `portal/img/` las fotos con `credits.json`.
 - `hemeroteca/` — código y `data/` de la Hemeroteca MOTICIAS.
 - `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`.
-- `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`.
+- `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`, `campana-tematica`.
 - `work/` — temporal, ignorado por git.
 
 ## Tareas programadas (en la nube, cuenta de Rainer)
@@ -52,6 +53,10 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - «MOTICIAS · asesor de visibilidad y credibilidad» — lunes 09:17 — ejecuta `/consejo-visibilidad`.
 - Previstas: radar regulatorio (lunes), licitaciones de la semana (viernes), sensores de mediodía (13:30), promo-social (tras la edición).
 
+## Paso a Claude Code
+
+`docs/paso-a-code.md`: cómo abrir el repositorio en Claude Code, instalar OpenSpec y el orden de las entrevistas (una capacidad por cambio) para construir la plataforma v1.
+
 ## Estado (7 de noviembre de 2026)
 
-Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) elegido para moticias.com; cuenta creada, dominio y Admin API pendientes (`src/ghost_publish.py` listo, probado en seco). Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`. Pendientes principales en `docs/plan-moticias-com.md § 9`.
+Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) elegido para moticias.com; cuenta creada, dominio y Admin API pendientes (`src/ghost_publish.py` listo, probado en seco). Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`; primera campaña temática «Movilidad al trabajo · PMST» (10-11 → 19-12-2026) en `data/campanas/`. Pendientes principales en `docs/plan-moticias-com.md § 9`.

@@ -7,6 +7,7 @@ Eres la redacción de MOTICIAS (vertical $ARGUMENTS, por defecto `movilidad`). A
 1. **LinkedIn — análisis del día** (post de Rainer, 120–180 palabras): el dato clave en la primera línea, dos párrafos con el hecho y la consecuencia, cierre con lo que hay que vigilar y el enlace a la pieza. Sin promoción de soluciones del grupo.
 2. **LinkedIn — carrusel** (5–7 diapositivas, una frase y un dato por diapositiva) para la apertura o el reportaje de la semana.
 3. **Instagram** (3 ideas de imagen con texto de 1–2 líneas cada una y un pie de 60–90 palabras), solo con fotos del repositorio con licencia (`portal/img/`, crédito en `credits.json`).
-4. **Boletín**: asunto (≤ 60 caracteres) y pre-encabezado (≤ 90) del correo del día.
+4. **Campaña**: si hay una campaña temática `activa` (`data/campanas/`), un post de LinkedIn de campaña (100–150 palabras) que enlace a la última pieza con `campaign: <id>` y, una vez por semana, a la página pilar; sin mencionar la solución del grupo, salvo que la campaña sea `patrocinada`, en cuyo caso el post lleva la etiqueta «Campaña patrocinada por …».
+5. **Boletín**: asunto (≤ 60 caracteres) y pre-encabezado (≤ 90) del correo del día.
 
 Guarda todo en `docs/promo/AAAA-MM-DD.md`, commit y push. No publiques en ninguna red: son borradores que el director aprueba desde el móvil. Aviso de una línea con el enlace al fichero.

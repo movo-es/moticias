@@ -16,6 +16,7 @@ Orden pensado para que cada paso produzca valor por sí solo. Las casillas se ma
 - [ ] Publicar las 74 piezas existentes con `src/ghost_publish.py --all`; comprobar URL en subdirectorios, Schema.org, fuentes al pie, trazabilidad.
 - [ ] Añadir `llms.txt`, `robots`, sitemap y alta en Search Console y Publisher Center.
 - [ ] Integrar el publicador en `/edicion-diaria` (paso 7 quater).
+- [ ] Campaña piloto «Movilidad al trabajo · PMST» (`data/campanas/movilidad-al-trabajo-pmst.json`): verificar en el BOE la fecha del plazo (`hook.date_verified`), publicar la página pilar y el bloque de campaña en Ghost (etiqueta de sección + página), hueco lateral con `casa-movo-pmst`.
 
 ## Fase 2 · Sala de redacción mínima (aprobación desde el móvil)
 - [ ] Crear proyecto Supabase `moticias` y aplicar la migración 001 (tablas de `design.md`, RLS, roles).
@@ -29,7 +30,10 @@ Orden pensado para que cada paso produzca valor por sí solo. Las casillas se ma
 - [ ] Puntuación nocturna → `leads` por solución del grupo; `/crm` con filtros por segmento y exportación.
 - [ ] Alertas de licitaciones por comunidad y modo; calendario ICS de plazos.
 
-## Fase 4 · Promoción discreta y publicidad
+## Fase 4 · Promoción discreta, campañas y publicidad
+- [ ] `/campanas` y `/campanas/<id>` en la sala: plan frente a publicado, métricas, leads, botones Activar / Cerrar / Cambiar monetización; sincronización `data/campanas/` ↔ `campanas_tematicas`.
+- [ ] Comando `/campana-tematica` probado de punta a punta (alta, plan, creatividades, informe de cierre en `docs/campanas/`).
+- [ ] Etiqueta `campana_id` en eventos y leads; informe de cierre con resultados frente a `kpis`.
 - [ ] `relaciones_solucion` y huecos señalizados en Ghost (tema propio o inyección por API) según `docs/gestores-portal.md`.
 - [ ] `/anunciantes`: campañas, inventario de huecos, importes, UTM.
 - [ ] Ediciones a medida para tres asociaciones piloto (un mes gratis).

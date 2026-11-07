@@ -99,6 +99,29 @@ create table if not exists leads (
   updated_at timestamptz not null default now()
 );
 
+-- Campañas temáticas: plan editorial + solución + monetización + KPI sobre un tema con fecha.
+-- El JSON de data/campanas/<id>.json es la fuente de verdad del plan; aquí, estado y resultados.
+create table if not exists campanas_tematicas (
+  id text not null,
+  vertical_id text not null references verticals(id),
+  name text not null,
+  topic text,
+  hook_date date,
+  hook_verified boolean not null default false,
+  start_date date,
+  end_date date,
+  status text not null default 'prevista' check (status in ('prevista','activa','cerrada')),
+  segment_id text,
+  solution text,
+  monetization text not null default 'sin-publicidad' check (monetization in ('sin-publicidad','patrocinada','banner','mixta')),
+  sponsor_advertiser_id uuid,
+  kpis jsonb not null default '{}'::jsonb,
+  results jsonb not null default '{}'::jsonb,
+  owner text,
+  updated_at timestamptz not null default now(),
+  primary key (vertical_id, id)
+);
+
 create table if not exists advertisers (
   id uuid primary key default gen_random_uuid(),
   vertical_id text not null references verticals(id),
@@ -111,6 +134,7 @@ create table if not exists campaigns (
   id uuid primary key default gen_random_uuid(),
   vertical_id text not null references verticals(id),
   advertiser_id uuid references advertisers(id),
+  campana_id text,
   type text not null check (type in ('patrocinio','banner','contenido','edicion-a-medida','autopromocion')),
   name text not null,
   slots text[] not null default '{}',
@@ -169,6 +193,7 @@ create table if not exists senales (
   raw jsonb not null default '{}'::jsonb,
   used_by text[] not null default '{}'
 );
+alter table senales add column if not exists campana_id text;
 create index if not exists senales_at on senales (at desc);
 create index if not exists senales_entities on senales using gin (entities);
 
@@ -199,12 +224,25 @@ create table if not exists metrics_daily (
   primary key (vertical_id, day)
 );
 
+-- Etiqueta de campaña temática en lo que se mide de punta a punta.
+alter table editorial_items add column if not exists campana_id text;
+alter table events add column if not exists campana_id text;
+alter table leads add column if not exists campana_id text;
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'campanas_tematicas_sponsor_fk') then
+    alter table campanas_tematicas add constraint campanas_tematicas_sponsor_fk
+      foreign key (sponsor_advertiser_id) references advertisers(id);
+  end if;
+end $$;
+create index if not exists events_campana on events (campana_id) where campana_id is not null;
+create index if not exists leads_campana on leads (campana_id) where campana_id is not null;
+
 -- RLS: todo cerrado por defecto; las políticas por rol llegan en la migración 002 con la sala de redacción.
 do $$
 declare t text;
 begin
   for t in select unnest(array['verticals','profiles','editorial_items','organizations','contacts','interests','events','leads',
-                               'advertisers','campaigns','placements','relaciones_solucion','custom_editions','senales','advisor_items','metrics_daily'])
+                               'campanas_tematicas','advertisers','campaigns','placements','relaciones_solucion','custom_editions','senales','advisor_items','metrics_daily'])
   loop
     execute format('alter table %I enable row level security', t);
   end loop;

@@ -13,6 +13,7 @@ MOTICIAS produce ya contenido de referencia (74 piezas en tres ediciones), pero 
 3. **Suscripciones** en tres niveles más anunciante, con perfilado progresivo y consentimientos separados.
 4. **CRM y leads** en Supabase: contactos, organizaciones, intereses, señales de comportamiento, puntuación por segmento y por solución del grupo, anunciantes y campañas.
 5. **Promoción discreta y publicidad**: huecos señalizados (ya definidos en `docs/gestores-portal.md`), fichas de soluciones, casos, ediciones a medida, botón «Valorar con MOVO»; nunca en el texto editorial.
+5 bis. **Campañas temáticas**: gestor de campañas con tema, fecha gancho, plan editorial, peso en los barridos, solución asociada, monetización (sin publicidad, patrocinada, banner o mixta) y KPI, para trabajar a fondo un tema cuando se acerca un plazo y medir los leads que trae. Primera: «Movilidad al trabajo: la cuenta atrás de los PMST» (MOVO a los rezagados).
 6. **Sensores compartidos**: toda búsqueda de los agentes produce señales estructuradas en una tabla común (`senales`) que leen MOTICIAS, Amarantia y el hub Inteligencia de MOVO.
 7. **Asesor de visibilidad y credibilidad**: comando `/consejo-visibilidad` y tarea semanal (lunes 09:17) que entrega a editores y superadmins ideas e instrucciones priorizadas.
 8. **Verticales**: `verticals/<id>.json` con todo lo específico; el código lee la configuración.

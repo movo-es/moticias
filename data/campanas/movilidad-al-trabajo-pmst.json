@@ -1,0 +1,132 @@
+{
+ "id": "movilidad-al-trabajo-pmst",
+ "vertical_id": "movilidad",
+ "name": "Movilidad al trabajo: la cuenta atrás de los PMST",
+ "claim": "Lo que una empresa tiene que saber, decidir y presentar antes de que venza el plazo de su plan de movilidad sostenible al trabajo.",
+ "topic": "Planes de movilidad sostenible al trabajo (Ley 9/2025, art. 26)",
+ "keywords": [
+  "plan de movilidad sostenible al trabajo",
+  "PMST",
+  "Ley 9/2025",
+  "movilidad al trabajo",
+  "centros de trabajo de más de 200 personas",
+  "negociación colectiva movilidad",
+  "ayudas planes de movilidad",
+  "grandes centros de actividad",
+  "autobús de empresa",
+  "transporte colectivo de empresa",
+  "aparcamiento disuasorio",
+  "teletrabajo movilidad"
+ ],
+ "hook": {
+  "kind": "plazo",
+  "text": "Plazo para que empresas y entidades públicas con centros de más de 200 personas trabajadoras (o 100 por turno) dispongan de plan de movilidad sostenible al trabajo (Ley 9/2025, art. 26; plazo acortado por la modificación de marzo de 2026).",
+  "date": "2026-12-05",
+  "source_url": null,
+  "date_verified": false,
+  "verify_note": "Fecha tomada de notas de PwC y Legal Today (marzo 2026) que sitúan el plazo en el 5-12-2026 tras acortarse en doce meses. Antes de publicar nada con esta fecha: confirmar en el BOE (Ley 9/2025, de 3 de diciembre, BOE núm. 291 de 4-12-2025, art. 26 y disposición transitoria; y la norma de marzo de 2026 que acorta el plazo), anotar aquí source_url con el BOE-A exacto y poner date_verified: true."
+ },
+ "start": "2026-11-10",
+ "end": "2026-12-19",
+ "status": "activa",
+ "goal": "Llegar a las empresas y entidades públicas que aún no tienen plan (los rezagados) y a sus asesores laborales y de sostenibilidad, y ofrecerles MOVO para hacerlo a tiempo.",
+ "segment_id": "empresas-pmst",
+ "solution": "MOVO",
+ "monetization": "sin-publicidad",
+ "sponsor": "grupo",
+ "editorial_plan": [
+  {
+   "kind": "pilar",
+   "title": "Todo sobre los planes de movilidad sostenible al trabajo: quién, qué, cuándo y cómo",
+   "week": "2026-W46",
+   "status": "prevista"
+  },
+  {
+   "kind": "reportaje",
+   "title": "Qué exige exactamente el artículo 26 y qué pasa si no se cumple",
+   "week": "2026-W46",
+   "status": "prevista"
+  },
+  {
+   "kind": "datos-propios",
+   "title": "Cuántos centros de trabajo están obligados, por comunidad y sector (estimación con método)",
+   "week": "2026-W47",
+   "status": "prevista"
+  },
+  {
+   "kind": "reportaje",
+   "title": "Cómo lo están haciendo los que ya lo tienen: cinco planes publicados, comparados",
+   "week": "2026-W47",
+   "status": "prevista"
+  },
+  {
+   "kind": "radar",
+   "title": "Ayudas y convocatorias para financiar planes de movilidad al trabajo",
+   "week": "2026-W48",
+   "status": "prevista"
+  },
+  {
+   "kind": "reportaje",
+   "title": "La negociación con la representación de los trabajadores: calendario, contenido mínimo, errores",
+   "week": "2026-W48",
+   "status": "prevista"
+  },
+  {
+   "kind": "entrevista",
+   "title": "Voz de la Inspección o de la autoridad laboral sobre el control de los planes",
+   "week": "2026-W49",
+   "status": "prevista"
+  },
+  {
+   "kind": "cierre",
+   "title": "Qué pasa el día después del plazo: sanciones, seguimiento bianual, siguientes hitos",
+   "week": "2026-W49",
+   "status": "prevista"
+  }
+ ],
+ "cadence": {
+  "min_pieces_per_week": 2,
+  "weight": 3
+ },
+ "channels": [
+  "web",
+  "boletin",
+  "linkedin",
+  "edicion-a-medida"
+ ],
+ "creatives": {
+  "bloque_campana": {
+   "label": "Campaña · Movilidad al trabajo",
+   "sponsor_label": null
+  },
+  "huecos": [
+   {
+    "slot": "articulo-lateral",
+    "ad_id": "casa-movo-pmst",
+    "label": "Servicio de MOVO"
+   },
+   {
+    "slot": "boletin",
+    "ad_id": "casa-movo-pmst",
+    "label": "Servicio de MOVO"
+   }
+  ]
+ },
+ "cta": {
+  "label": "Comprobar si mi centro está obligado y qué me falta",
+  "url": "https://movo.es/pmst/",
+  "utm_campaign": "moticias-pmst-2026"
+ },
+ "kpis": {
+  "pieces": 8,
+  "reads": 4000,
+  "downloads": 150,
+  "signups": 120,
+  "leads_MOVO": 25,
+  "conversions": 5
+ },
+ "owner": "G. Jordan",
+ "review": null,
+ "created_at": "2026-11-07",
+ "notes": "Primera campaña temática. Antes de activar la pieza de cierre, verificar la fecha del plazo (hook.date_verified). Las piezas no mencionan MOVO: la relación la hace la plataforma en los huecos señalizados."
+}

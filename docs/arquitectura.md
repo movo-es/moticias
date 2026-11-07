@@ -18,6 +18,7 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | Configuración de cada vertical | `verticals/<id>.json` | cambio OpenSpec |
 | Esquema de la plataforma (CRM, señales, asesor) | `supabase/migrations/` | cambio OpenSpec |
 | Informes del asesor y borradores de promoción | `docs/asesor/`, `docs/promo/` | los agentes, cada semana / cada edición |
+| Campañas temáticas (plan, palabras clave, creatividades, KPI) e informes de cierre | `data/campanas/<id>.json`, `docs/campanas/` | `/campana-tematica` (Rainer o un editor); cierre: el agente |
 | Especificaciones vivas y cambios en curso | `openspec/` | Rainer y Claude Code, método OpenSpec |
 | Contenido publicado (piezas, boletines, plazos, ediciones, ajustes, blogs, anuncios, soluciones) | `data/<colección>/<id>.json` | la rutina (altas); Rainer (correcciones) |
 | Fotos con licencia y sus créditos | `portal/img/*.jpg`, `portal/img/credits.json` | la rutina |

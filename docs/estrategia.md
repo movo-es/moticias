@@ -30,7 +30,8 @@ Regla: la pieza editorial nunca cita a la solución del grupo como tal; la conex
 3. **Base de contactos**: «Quién decide» (cargos, organigramas, nombramientos) y, en privado, el CRM de lectores, suscriptores, anunciantes y leads.
 4. **Canales de solución**: fichas de soluciones verificables (ya existen 14), casos, ediciones a medida para asociaciones y empresas, patrocinios de sección, servicios de MOVO (valoración de licitaciones).
 5. **Suscripciones**: gratuita (lector), profesional (de pago, para un profesional), corporativa (de pago, para una empresa grande: usuarios múltiples, alertas, edición a medida, datos), anunciante/patrocinador.
-6. **Asesor permanente**: el sistema propone cada semana a editores y superadministradores ideas e instrucciones concretas para mejorar visibilidad y credibilidad (qué pieza pilar falta, qué dato propio publicar, qué fuente citar, qué asociación abordar, qué patrocinio ofrecer, qué canal abrir), con prioridad y esfuerzo.
+6. **Campañas temáticas**: cuando se acerca un plazo o un hecho (los PMST de la Ley 9/2025, una gran licitación, una transposición), el sistema trabaja ese tema a fondo durante unas semanas —pilar, reportajes, datos propios, radar, cierre— y pone la solución que lo resuelve delante de quien lo sufre, con o sin patrocinio y siempre señalizado. Cada campaña tiene plan, KPI y cierre; es la unidad en la que se mide si el contenido trae leads.
+7. **Asesor permanente**: el sistema propone cada semana a editores y superadministradores ideas e instrucciones concretas para mejorar visibilidad y credibilidad (qué pieza pilar falta, qué dato propio publicar, qué fuente citar, qué asociación abordar, qué patrocinio ofrecer, qué canal abrir), con prioridad y esfuerzo.
 
 ## 4. Modularidad: un motor, varios verticales
 
