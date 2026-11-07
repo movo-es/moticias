@@ -115,7 +115,7 @@
 
 <section class="block">
   <div class="wrap">
-    {{> "section-head" sec="" title="Cómo trabajamos" sub="método, firmas y correcciones" url="/como-trabajamos/"}}
+    {{#get "pages" filter="slug:como-trabajamos" fields="url" limit="1"}}{{#if pages}}{{#foreach pages}}{{> "section-head" sec="" title="Cómo trabajamos" sub="método, firmas y correcciones" url=url}}{{/foreach}}{{else}}{{> "section-head" sec="" title="Cómo trabajamos" sub="método, firmas y correcciones"}}{{/if}}{{/get}}
     <div class="method">
       <div><h3>Fuentes primarias</h3><p>Ninguna pieza se publica sin al menos una fuente primaria enlazada —BOE, DOUE, ministerios, reguladores, gestores—, con su fecha de publicación y la de consulta. La prensa sectorial ayuda a encontrar; nunca es fuente única.</p></div>
       <div><h3>Firmas e IA bajo supervisión</h3><p>Usamos inteligencia artificial para barrer boletines y preparar borradores, bajo reglas editoriales escritas. Las piezas rutinarias firma G. Jordan, redactor responsable; los análisis y las piezas críticas, el director, que las aprueba antes de publicarlas. Los errores se corrigen con nota fechada.</p></div>

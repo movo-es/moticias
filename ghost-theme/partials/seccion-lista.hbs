@@ -1,0 +1,17 @@
+{{#if posts}}
+<div class="mode-grid">
+  {{#foreach posts limit="1"}}
+  <article class="mode-lead {{primary_tag.slug}}">
+    {{> "thumb"}}
+    {{> "kicker"}}
+    <h2><a href="{{url}}">{{title}}</a></h2>
+    {{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}
+    {{> "meta" show_author=true}}
+  </article>
+  {{/foreach}}
+  <ul class="list">{{#foreach posts from="2" to="7"}}{{> "lista"}}{{/foreach}}</ul>
+</div>
+<div class="cards more-cards">{{#foreach posts from="8"}}{{> "card"}}{{/foreach}}</div>
+{{else}}
+<p class="empty">Los análisis del director y los reportajes se publican aquí cuando él los aprueba.</p>
+{{/if}}

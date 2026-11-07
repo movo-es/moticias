@@ -11,7 +11,7 @@
       {{/get}}
     </div>
     <div class="right">
-      <a class="btn hide-m" href="/como-trabajamos/">Cómo trabajamos</a>
+      {{#get "pages" filter="slug:como-trabajamos" fields="url" limit="1"}}{{#foreach pages}}<a class="btn hide-m" href="{{url}}">Cómo trabajamos</a>{{/foreach}}{{/get}}
       {{#if @site.members_enabled}}
         {{#if @member}}
           <a class="btn" href="#/portal/account">Mi cuenta</a>

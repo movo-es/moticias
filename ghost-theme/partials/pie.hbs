@@ -9,11 +9,11 @@
       </div>
       <div>
         <h5>Secciones</h5>
-        <p>{{#foreach @site.navigation}}<a href="{{url}}">{{label}}</a><br>{{/foreach}}</p>
+        <p><a href="{{@site.url}}/">Portada</a><br><a href="{{@site.url}}/tierra/">Tierra</a><br><a href="{{@site.url}}/mar/">Mar</a><br><a href="{{@site.url}}/aire/">Aire</a><br><a href="{{@site.url}}/regulacion/">Regulación</a><br><a href="{{@site.url}}/licitaciones/">Licitaciones</a><br><a href="{{@site.url}}/analisis/">Análisis</a><br><a href="{{@site.url}}/logistica/">Logística</a></p>
       </div>
       <div>
         <h5>Sobre la cabecera</h5>
-        <p>{{#foreach @site.secondary_navigation}}<a href="{{url}}">{{label}}</a><br>{{/foreach}}<a href="mailto:redaccion@moticias.com">redaccion@moticias.com</a></p>
+        <p>{{#get "pages" filter="slug:[como-trabajamos,aviso-legal,politica-de-privacidad,politica-de-cookies]" fields="title,url,slug" order="title asc" limit="4"}}{{#foreach pages}}<a href="{{url}}">{{title}}</a><br>{{/foreach}}{{/get}}<a href="mailto:redaccion@moticias.com">redaccion@moticias.com</a></p>
       </div>
     </div>
     <div class="end">

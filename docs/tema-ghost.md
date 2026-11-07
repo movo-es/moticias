@@ -48,9 +48,26 @@ cd ~/moticias && python3 -I src/ghost_theme_deploy.py --upload --activate
 
 Los dos necesitan `GHOST_URL` y `GHOST_ADMIN_KEY` en el entorno; nunca en el repositorio.
 
-## Lo que Ghost no deja hacer a la integración
+## Lo que Ghost no deja hacer a la integración, y cómo funciona mientras tanto
 
-Subir `routes.yaml`, subir redirecciones y cambiar el menú: devuelven 403 con la clave de API. Se hacen una vez a mano en el panel de Ghost.
+Subir `routes.yaml`, subir redirecciones y cambiar ajustes del sitio (menú, título, descripción, zona horaria, color) devuelven 403 con la clave de la integración. Mientras no haya un token de usuario, el sitio funciona en **modo «raíz»** (`verticals/movilidad.json` → `ghost.permalinks: "raiz"`), activo desde el 7-11-2026:
+
+- El **menú** lo pinta el tema (`partials/navigation.hbs`), no el ajuste de Ghost.
+- Las **secciones** `/tierra/`, `/mar/`, `/aire/`, `/regulacion/`, `/licitaciones/`, `/analisis/`, `/logistica/` son páginas de Ghost con la plantilla `custom-seccion` que crea `ghost_publish.py --setup`.
+- Las **piezas** viven en `/<slug>/`, y la página de la edición y el JSON-LD enlazan ahí.
+- Los enlaces a páginas legales solo aparecen cuando la página está publicada.
+
+Para pasar al **modo «sección»** (piezas en `/<sección>/<slug>/`): añadir `GHOST_STAFF_TOKEN` al entorno (Ghost → Ajustes → Staff → perfil del propietario → Staff access token), cambiar `permalinks` a `"seccion"` y ejecutar:
+
+```bash
+cd ~/moticias && python3 -I src/ghost_theme_deploy.py --routes --redirects
+```
+
+```bash
+cd ~/moticias && python3 -I src/ghost_publish.py --setup --all --status published --edition AAAA-MM-DD
+```
+
+Con el token, `--setup` deja además el título «MOTICIAS», la descripción, la zona horaria Europe/Madrid y el color de acento.
 
 ## Probar sin tocar moticias.com
 

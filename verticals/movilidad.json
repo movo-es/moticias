@@ -366,6 +366,8 @@
     "description": "Análisis reúne los textos de fondo de MOTICIAS: el análisis diario del director, Rainer, y los reportajes de investigación propia sobre el sistema, el dinero y la regla del transporte de personas en España. Cada texto se apoya en documentos primarios, declara los intereses del autor y termina con lo que hay que vigilar."
    }
   },
-  "home_answer": "MOTICIAS publica cada mañana laborable la edición del transporte de personas en España: normas del BOE y del DOUE, contratos, plazos y análisis, con fuente primaria enlazada y fecha en cada pieza. Es un medio profesional para decisores de operadores, administraciones, reguladores y consultoras."
+  "home_answer": "MOTICIAS publica cada mañana laborable la edición del transporte de personas en España: normas del BOE y del DOUE, contratos, plazos y análisis, con fuente primaria enlazada y fecha en cada pieza. Es un medio profesional para decisores de operadores, administraciones, reguladores y consultoras.",
+  "permalinks": "raiz",
+  "permalinks_note": "«raiz» mientras ghost/routes.yaml no esté subido en Ghost (las piezas viven en /<slug>/ y las secciones son páginas con la plantilla custom-seccion); al subirlo, «seccion» y volver a ejecutar ghost_publish.py --setup --all --status published --edition <última> (las páginas de sección pasan a borrador y mandan las colecciones)"
  }
 }

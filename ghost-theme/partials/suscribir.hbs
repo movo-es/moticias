@@ -10,7 +10,7 @@
     <button type="submit">Suscribirme</button>
     <p class="msg ok" data-members-success>Revisa tu correo: te hemos enviado un enlace para confirmar.</p>
     <p class="msg err" data-members-error></p>
-    <p class="legal">Al suscribirte aceptas la <a href="/politica-de-privacidad/">política de privacidad</a>. Responsable: Avionline S.L.</p>
+    <p class="legal">{{#get "pages" filter="slug:politica-de-privacidad" fields="url" limit="1"}}{{#foreach pages}}Al suscribirte aceptas la <a href="{{url}}">política de privacidad</a>. {{/foreach}}{{/get}}Responsable del tratamiento: Avionline S.L. (redaccion@moticias.com).</p>
   </form>
 </section>
 {{/unless}}{{/if}}

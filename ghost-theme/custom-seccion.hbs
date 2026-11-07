@@ -1,0 +1,23 @@
+{{!< default}}
+{{!-- Portada de sección como página de Ghost (/tierra/, /mar/…): funciona sin routes.yaml.
+     La página tiene el slug de la sección; la plantilla lee la etiqueta y las piezas por su slug. --}}
+{{#post}}
+{{#get "tags" filter="slug:{{slug}}" limit="1" fields="slug,name,description"}}{{#foreach tags}}
+<section class="section-intro {{slug}}">
+  <div class="wrap">
+    <h1>{{name}}</h1>
+    {{#if description}}<p class="answer">{{description}}</p>{{/if}}
+  </div>
+</section>
+{{/foreach}}{{/get}}
+<section class="block">
+  <div class="wrap">
+    {{#match slug "=" "analisis"}}
+      {{#get "posts" filter="tag:analisis,tag:hash-reportaje" limit="30" include="tags,authors"}}{{> "seccion-lista"}}{{/get}}
+    {{else}}
+      {{#get "posts" filter="primary_tag:{{slug}}+tag:-hash-reportaje" limit="30" include="tags,authors"}}{{> "seccion-lista"}}{{/get}}
+    {{/match}}
+  </div>
+</section>
+<section class="block ad-block"><div class="wrap">{{> "promo" slot="portada-medio"}}</div></section>
+{{/post}}

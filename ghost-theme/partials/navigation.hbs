@@ -1,1 +1,2 @@
-{{#foreach navigation}}<a href="{{url absolute="true"}}" class="nav-{{slug}}{{#if current}} active{{/if}}"{{#if current}} aria-current="page"{{/if}}>{{label}}</a>{{/foreach}}
+{{!-- Menú fijo del tema (verticals/movilidad.json → ghost.menu): no depende del ajuste de navegación de Ghost. --}}
+<a href="{{@site.url}}/" class="nav-portada">Portada</a><a href="{{@site.url}}/tierra/" class="nav-tierra">Tierra</a><a href="{{@site.url}}/mar/" class="nav-mar">Mar</a><a href="{{@site.url}}/aire/" class="nav-aire">Aire</a><a href="{{@site.url}}/regulacion/" class="nav-regulacion">Regulación</a><a href="{{@site.url}}/licitaciones/" class="nav-licitaciones">Licitaciones</a><a href="{{@site.url}}/analisis/" class="nav-analisis">Análisis</a>

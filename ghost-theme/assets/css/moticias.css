@@ -428,3 +428,12 @@ footer.site .end { margin-top: 26px; padding-top: 16px; border-top: 1px solid rg
   .list li .mini { width: 72px; height: 52px; }
 }
 .empty { background:#fff; border:1px dashed var(--line-strong); border-radius: var(--radius); padding: 36px 24px; text-align:center; color: var(--muted); }
+
+/* Menú fijo: sección activa según la clase del body (home-template, page-<sección>, tag-<sección>) */
+.home-template .nav a.nav-portada { background: var(--ink); color: #fff; }
+.page-tierra .nav a.nav-tierra, .post-template.tag-tierra .nav a.nav-tierra, .tag-template.tag-tierra .nav a.nav-tierra { background: var(--tierra); color: #fff; }
+.page-mar .nav a.nav-mar, .post-template.tag-mar .nav a.nav-mar, .tag-template.tag-mar .nav a.nav-mar { background: var(--mar); color: #fff; }
+.page-aire .nav a.nav-aire, .post-template.tag-aire .nav a.nav-aire, .tag-template.tag-aire .nav a.nav-aire { background: var(--aire); color: #fff; }
+.page-regulacion .nav a.nav-regulacion, .post-template.tag-regulacion .nav a.nav-regulacion, .tag-template.tag-regulacion .nav a.nav-regulacion { background: var(--regulacion); color: #fff; }
+.page-licitaciones .nav a.nav-licitaciones, .post-template.tag-licitaciones .nav a.nav-licitaciones, .tag-template.tag-licitaciones .nav a.nav-licitaciones { background: var(--licitaciones); color: #fff; }
+.page-analisis .nav a.nav-analisis, .post-template.tag-analisis .nav a.nav-analisis, .post-template.tag-hash-reportaje .nav a.nav-analisis { background: var(--analisis); color: #fff; }

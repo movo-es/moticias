@@ -7,7 +7,8 @@
   python3 -I src/ghost_theme_deploy.py --routes              sube ghost/routes.yaml
   python3 -I src/ghost_theme_deploy.py --redirects           sube ghost/redirects.yaml
 
-Variables de entorno: GHOST_URL y GHOST_ADMIN_KEY (nunca en el repositorio). En GitHub, la Action
+Variables de entorno: GHOST_URL y GHOST_ADMIN_KEY (nunca en el repositorio). Rutas y redirecciones necesitan además
+GHOST_STAFF_TOKEN (token de acceso de un usuario administrador): Ghost no deja subirlas a una integración. En GitHub, la Action
 .github/workflows/tema-ghost.yml hace lo mismo con los secretos del repositorio.
 """
 import argparse, json, os, sys, uuid, zipfile
@@ -56,6 +57,8 @@ def main():
         if not key or ":" not in key:
             sys.exit("Falta GHOST_ADMIN_KEY")
         g = Ghost(os.environ["GHOST_URL"], key)
+        staff = os.environ.get("GHOST_STAFF_TOKEN")
+        gs = Ghost(os.environ["GHOST_URL"], staff) if staff and ":" in staff else g  # rutas y redirecciones
         if a.upload:
             body, ct = multipart("file", z, "application/zip")
             st, r = g.call("POST", "/themes/upload/", raw=body, ctype=ct)
@@ -65,11 +68,11 @@ def main():
             rep["activado"] = (st, "ok" if st == 200 else r)
         if a.routes:
             body, ct = multipart("routes", os.path.join(ROOT, "ghost", "routes.yaml"), "application/x-yaml")
-            st, r = g.call("POST", "/settings/routes/yaml/", raw=body, ctype=ct)
+            st, r = gs.call("POST", "/settings/routes/yaml/", raw=body, ctype=ct)
             rep["rutas"] = (st, "ok" if st == 200 else r)
         if a.redirects:
             body, ct = multipart("redirects", os.path.join(ROOT, "ghost", "redirects.yaml"), "application/x-yaml")
-            st, r = g.call("POST", "/redirects/upload/", raw=body, ctype=ct)
+            st, r = gs.call("POST", "/redirects/upload/", raw=body, ctype=ct)
             rep["redirecciones"] = (st, "ok" if st == 200 else r)
     print(json.dumps(rep, ensure_ascii=False, indent=1))
 

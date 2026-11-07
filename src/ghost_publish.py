@@ -205,14 +205,23 @@ def md_to_html(md):
 
 # ---------- vertical ----------
 def load_vertical(vid):
-    return json.load(open(os.path.join(ROOT, "verticals", vid + ".json"), encoding="utf-8"))
+    v = json.load(open(os.path.join(ROOT, "verticals", vid + ".json"), encoding="utf-8"))
+    PERMALINKS["modo"] = v.get("ghost", {}).get("permalinks", "seccion")
+    return v
 
 
 def collection_of(a):
     return "analisis" if a.get("kind") in ("analisis", "reportaje") else (a.get("section") or "noticias")
 
 
+PERMALINKS = {"modo": "seccion"}
+
+
 def rel_url(a):
+    """URL relativa de la pieza. Con ghost/routes.yaml subido: /<sección>/<slug>/ (modo «seccion»);
+    sin él, Ghost sirve las piezas en la raíz: /<slug>/ (modo «raiz», verticals/<id>.json → ghost.permalinks)."""
+    if PERMALINKS["modo"] == "raiz":
+        return "/%s/" % a["id"]
     return "/%s/%s/" % (collection_of(a), a["id"])
 
 
@@ -579,13 +588,31 @@ def setup(vertical, g):
         else:
             st, r = g.call("POST", "/tags/", {"tags": [body]})
         (res["etiquetas"] if st in (200, 201) else res["errores"]).append(slug if st in (200, 201) else (slug, r))
+    # Portadas de sección como páginas (plantilla custom-seccion): solo mientras no esté subido routes.yaml.
+    res["paginas_seccion"] = []
+    for slug, sec in gh.get("sections", {}).items():
+        status = "published" if PERMALINKS["modo"] == "raiz" else "draft"
+        page = {"title": sec["name"], "slug": slug, "custom_template": "custom-seccion",
+                "html": HTML_CARD % ('<p class="m-answer">%s</p>' % esc(sec["description"])),
+                "meta_title": "%s · %s" % (sec["name"], vertical.get("name")), "meta_description": sec["description"][:500],
+                "custom_excerpt": sec.get("sub", "")[:300]}
+        r, err = upsert(page, status, g, kind="pages")
+        res["paginas_seccion"].append(slug if r else (slug, err))
     nav = [{"label": l, "url": u} for l, u in gh.get("menu", [])]
     nav2 = [{"label": l, "url": u} for l, u in gh.get("secondary_menu", [])]
-    st, r = g.call("PUT", "/settings/", {"settings": [{"key": "navigation", "value": json.dumps(nav, ensure_ascii=False)},
-                                                      {"key": "secondary_navigation", "value": json.dumps(nav2, ensure_ascii=False)},
-                                                      {"key": "timezone", "value": vertical.get("timezone", "Europe/Madrid")},
-                                                      {"key": "locale", "value": "es"}]})
-    res["menu"] = "ok" if st == 200 else ("no permitido a la integración (%s): hazlo a mano en Ajustes → Navegación" % st)
+    # Ajustes del sitio: Ghost no los deja cambiar a una integración; sí con el token de acceso de un usuario
+    # administrador (GHOST_STAFF_TOKEN, Ghost → Ajustes → Staff → tu perfil → Staff access token).
+    staff = os.environ.get("GHOST_STAFF_TOKEN")
+    gs = Ghost(g.base, staff) if staff and ":" in staff else g
+    brand = vertical.get("brand", {})
+    st, r = gs.call("PUT", "/settings/", {"settings": [{"key": "navigation", "value": json.dumps(nav, ensure_ascii=False)},
+                                                       {"key": "secondary_navigation", "value": json.dumps(nav2, ensure_ascii=False)},
+                                                       {"key": "timezone", "value": vertical.get("timezone", "Europe/Madrid")},
+                                                       {"key": "locale", "value": "es"},
+                                                       {"key": "title", "value": brand.get("name", vertical.get("name"))},
+                                                       {"key": "description", "value": brand.get("tagline", vertical.get("tagline", ""))},
+                                                       {"key": "accent_color", "value": brand.get("colors", {}).get("azul-286", "#0033A1")}]})
+    res["ajustes"] = "ok" if st == 200 else ("sin permiso (%s): falta GHOST_STAFF_TOKEN; el menú lo pone el tema y el resto queda como está" % st)
     return res
 
 
