@@ -14,9 +14,9 @@
 ## Tras el visto bueno del director
 - [ ] Secretos `GHOST_URL` y `GHOST_ADMIN_KEY` en GitHub (Rainer)
 - [ ] Repositorio en privado (Rainer)
-- [ ] `python3 -I src/ghost_publish.py --setup --all --status published --edition <última>`: secciones con su respuesta directa, 74 piezas con el formato nuevo y sus fotos (fecha original conservada), apertura y página de la edición
-- [ ] `python3 -I src/ghost_theme_deploy.py --upload --activate`
+- [x] `python3 -I src/ghost_publish.py --setup --all --status published --edition 2026-11-06` (7-11-2026, 20:50): 7 secciones con su respuesta directa; 74 piezas con el formato nuevo y sus 74 fotos, fecha original conservada (62 publicadas, 12 en borrador); apertura Cantabria (la prevista, Ouigo-Semaf, espera al director), segunda A-32; página `edicion-hoy` publicada
+- [x] `python3 -I src/ghost_theme_deploy.py --upload --activate` (7-11-2026): tema «moticias» activo en www.moticias.com; portada y ficha comprobadas a 1366 y 390 px
 - [ ] Subir `ghost/routes.yaml` y `ghost/redirects.yaml` y cambiar el menú (Rainer, a mano: Ghost no lo permite por API)
-- [ ] Zona horaria Europe/Madrid, icono, logotipo y og:image de la marca en Ghost → Ajustes (Rainer o por sesión)
+- [ ] Ghost → Ajustes → General: título «MOTICIAS», descripción «Noticias con M de Movilidad y Transportes», zona horaria Europe/Madrid; Design & branding: icono, logotipo, color #0033A1 y og:image de `verticals/movilidad/marca/` (Rainer; la integración no puede cambiar ajustes). Ghost genera ya su propio `/llms.txt` con el título y la descripción del sitio; al subir `routes.yaml` lo sustituye el del tema
 - [ ] Verificar las URL de «Qué verás tú» y archivar el cambio
 - [ ] Variables `GHOST_URL` y `GHOST_ADMIN_KEY` en la tarea programada «MOTICIAS · edición diaria»

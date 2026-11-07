@@ -1,6 +1,6 @@
 # Cambio: tema-ghost-v1 — moticias.com con el aspecto del portal MOTICIAS
 
-Estado: aplicado en local y validado (7-11-2026); pendiente del visto bueno del director para activarlo en moticias.com.
+Estado: activo en www.moticias.com desde el 7-11-2026 (orden del director «Activa el tema»); pendientes los pasos manuales en Ghost (rutas, redirecciones, menú, ajustes generales).
 
 ## Por qué
 
