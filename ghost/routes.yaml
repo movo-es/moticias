@@ -1,0 +1,51 @@
+## MOTICIAS · rutas de Ghost (Ajustes → Labs → Routes → Upload routes YAML)
+## Secciones en subdirectorios, nunca /tag/. Análisis y reportajes viven en /analisis/.
+## Una pieza pertenece a la primera colección cuyo filtro cumple, por eso /analisis/ va primero.
+
+routes:
+  /llms.txt/:
+    template: llms
+    content_type: text/plain
+
+collections:
+  /analisis/:
+    permalink: /analisis/{slug}/
+    filter: tag:analisis,tag:hash-reportaje
+    template: seccion-analisis
+  /tierra/:
+    permalink: /tierra/{slug}/
+    filter: primary_tag:tierra
+    template: seccion
+    data: tag.tierra
+  /mar/:
+    permalink: /mar/{slug}/
+    filter: primary_tag:mar
+    template: seccion
+    data: tag.mar
+  /aire/:
+    permalink: /aire/{slug}/
+    filter: primary_tag:aire
+    template: seccion
+    data: tag.aire
+  /logistica/:
+    permalink: /logistica/{slug}/
+    filter: primary_tag:logistica
+    template: seccion
+    data: tag.logistica
+  /regulacion/:
+    permalink: /regulacion/{slug}/
+    filter: primary_tag:regulacion
+    template: seccion
+    data: tag.regulacion
+  /licitaciones/:
+    permalink: /licitaciones/{slug}/
+    filter: primary_tag:licitaciones
+    template: seccion
+    data: tag.licitaciones
+  /:
+    permalink: /{slug}/
+    template: home
+
+taxonomies:
+  tag: /tema/{slug}/
+  author: /firma/{slug}/

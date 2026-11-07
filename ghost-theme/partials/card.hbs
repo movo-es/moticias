@@ -1,0 +1,9 @@
+<article class="card {{primary_tag.slug}}">
+  {{> "thumb"}}
+  <div class="body">
+    {{> "kicker"}}
+    <h3><a href="{{url}}">{{title}}</a></h3>
+    {{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}
+    {{> "meta"}}
+  </div>
+</article>

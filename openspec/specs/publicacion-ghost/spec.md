@@ -1,6 +1,6 @@
 # Capacidad: publicación en moticias.com (Ghost)
 
-Estado: activa desde el 7-11-2026 (Ghost(Pro), plan Publisher). Publicador: `src/ghost_publish.py` (Admin API). Regla completa: `docs/firma-y-publicacion.md`.
+Estado: activa desde el 7-11-2026 (Ghost(Pro), plan Publisher). Publicador: `src/ghost_publish.py` (Admin API). Regla de firma: `docs/firma-y-publicacion.md`. Tema propio y portada: cambio en curso `tema-ghost-v1` (`docs/tema-ghost.md`).
 
 ## Requisito: publicación por API
 Cada pieza cerrada se publica como post de Ghost con etiqueta de sección (`#tierra`, `#mar`, `#aire`, `#regulacion`, `#licitaciones`, `#analisis`), metadatos Schema.org `NewsArticle`, fuentes al pie con fechas y trazabilidad. Pendiente: URL en subdirectorio por sección y un boletín por edición.

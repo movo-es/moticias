@@ -1,0 +1,1 @@
+{{#if pagination.pages}}{{#match pagination.pages ">" 1}}<nav class="pager" aria-label="Paginación">{{#if prev}}<a href="{{page_url prev}}">← Más recientes</a>{{/if}}<span>Página {{page}} de {{pages}}</span>{{#if next}}<a href="{{page_url next}}">Anteriores →</a>{{/if}}</nav>{{/match}}{{/if}}

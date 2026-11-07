@@ -232,5 +232,140 @@
   "active": [
    "movilidad-al-trabajo-pmst"
   ]
+ },
+ "brand": {
+  "name": "MOTICIAS",
+  "tagline": "Noticias con M de Movilidad y Transportes",
+  "domain": "moticias.com",
+  "dir": "verticals/movilidad/marca/",
+  "doc": "docs/marca.md",
+  "colors": {
+   "azul-286": "#0033A1",
+   "cielo": "#2E9BE6",
+   "tinta": "#0B1B3F",
+   "senal": "#F26A1B",
+   "niebla": "#F4F6FB",
+   "linea": "#C9D2E6",
+   "cielo-claro": "#8FD0FF",
+   "senal-clara": "#FFB27A"
+  },
+  "fonts": {
+   "marca": "Plus Jakarta Sans",
+   "editorial": "Newsreader",
+   "datos": "IBM Plex Mono"
+  },
+  "sections_colors": {
+   "tierra": "#0B1B3F",
+   "mar": "#0033A1",
+   "aire": "#2E9BE6",
+   "logistica": "#3F6B4A",
+   "regulacion": "#4B3E91",
+   "licitaciones": "#F26A1B",
+   "analisis": "#8A2333"
+  }
+ },
+ "ghost": {
+  "site_url": "https://www.moticias.com",
+  "page_edition_slug": "edicion-hoy",
+  "internal_tags": {
+   "reportaje": "#reportaje",
+   "segunda": "#segunda",
+   "edicion": "#edicion"
+  },
+  "collections_order": [
+   "analisis",
+   "tierra",
+   "mar",
+   "aire",
+   "logistica",
+   "regulacion",
+   "licitaciones"
+  ],
+  "menu": [
+   [
+    "Portada",
+    "/"
+   ],
+   [
+    "Tierra",
+    "/tierra/"
+   ],
+   [
+    "Mar",
+    "/mar/"
+   ],
+   [
+    "Aire",
+    "/aire/"
+   ],
+   [
+    "Regulación",
+    "/regulacion/"
+   ],
+   [
+    "Licitaciones",
+    "/licitaciones/"
+   ],
+   [
+    "Análisis",
+    "/analisis/"
+   ]
+  ],
+  "secondary_menu": [
+   [
+    "Cómo trabajamos",
+    "/como-trabajamos/"
+   ],
+   [
+    "Aviso legal",
+    "/aviso-legal/"
+   ],
+   [
+    "Privacidad",
+    "/politica-de-privacidad/"
+   ],
+   [
+    "Cookies",
+    "/politica-de-cookies/"
+   ]
+  ],
+  "sections": {
+   "tierra": {
+    "name": "Tierra",
+    "sub": "autobús, ferrocarril, carretera y movilidad urbana",
+    "description": "Tierra reúne en MOTICIAS lo que decide el transporte de viajeros por carretera y ferrocarril en España: concesiones de autobús, contratos de servicio público, Adif y Renfe, cánones, material rodante, movilidad urbana y metropolitana. Cada pieza enlaza su fuente oficial, fecha los hechos y explica qué cambia para operadores, administraciones y viajeros."
+   },
+   "mar": {
+    "name": "Mar",
+    "sub": "pasaje marítimo, puertos y marina mercante",
+    "description": "Mar sigue el transporte marítimo de pasajeros en España: líneas de interés público con Baleares, Canarias, Ceuta y Melilla, concesiones portuarias, terminales de cruceros, flota y descarbonización. MOTICIAS publica cada decisión con su fuente primaria —BOE, Puertos del Estado, autoridades portuarias, Marina Mercante— y con el calendario de lo que viene."
+   },
+   "aire": {
+    "name": "Aire",
+    "sub": "aerolíneas, aeropuertos y navegación aérea",
+    "description": "Aire cubre el transporte aéreo de pasajeros que toca a España: Aena y sus tarifas, regulación europea de derechos del pasajero, aerolíneas, rutas, navegación aérea y seguridad. Cada pieza de MOTICIAS se apoya en documentos oficiales fechados y explica el efecto para aeropuertos, compañías, administraciones y viajeros."
+   },
+   "logistica": {
+    "name": "Logística",
+    "sub": "mercancías por tierra, mar y aire",
+    "description": "Logística recoge en MOTICIAS las decisiones sobre transporte de mercancías que afectan a la red que comparten los viajeros: terminales ferroviarias, puertos, carga aérea, fiscalidad europea y zonas de actividades logísticas. Siempre con fuente oficial enlazada, fecha de los hechos y lo que cambia para operadores y administraciones."
+   },
+   "regulacion": {
+    "name": "Regulación",
+    "sub": "normas, expedientes europeos y consultas",
+    "description": "Regulación es el eje de MOTICIAS: leyes, reales decretos, órdenes, reglamentos europeos y consultas públicas sobre transporte de personas en España. Cada pieza cita la norma por su número y artículo, enlaza el BOE o el DOUE, fecha la entrada en vigor y señala los plazos que obligan a operadores y administraciones."
+   },
+   "licitaciones": {
+    "name": "Licitaciones",
+    "sub": "anuncios, adjudicaciones y plazos",
+    "description": "Licitaciones reúne los contratos públicos de transporte de viajeros en España: anuncios, adjudicaciones y formalizaciones de Adif, Renfe, Aena, autoridades portuarias, comunidades autónomas y ayuntamientos. MOTICIAS indica importe, plazo de ofertas y órgano de contratación, con enlace al anuncio oficial y a la plataforma de contratación."
+   },
+   "analisis": {
+    "name": "Análisis",
+    "sub": "análisis del director y reportajes de fondo",
+    "description": "Análisis reúne los textos de fondo de MOTICIAS: el análisis diario del director, Rainer, y los reportajes de investigación propia sobre el sistema, el dinero y la regla del transporte de personas en España. Cada texto se apoya en documentos primarios, declara los intereses del autor y termina con lo que hay que vigilar."
+   }
+  },
+  "home_answer": "MOTICIAS publica cada mañana laborable la edición del transporte de personas en España: normas del BOE y del DOUE, contratos, plazos y análisis, con fuente primaria enlazada y fecha en cada pieza. Es un medio profesional para decisores de operadores, administraciones, reguladores y consultoras."
  }
 }

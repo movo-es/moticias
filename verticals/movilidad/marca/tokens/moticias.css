@@ -1,0 +1,15 @@
+:root {
+  --mt-azul: #0033A1;
+  --mt-cielo: #2E9BE6;
+  --mt-tinta: #0B1B3F;
+  --mt-senal: #F26A1B;
+  --mt-niebla: #F4F6FB;
+  --mt-linea: #C9D2E6;
+  --mt-cielo-claro: #8FD0FF;
+  --mt-senal-clara: #FFB27A;
+  --mt-font-marca: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --mt-font-editorial: 'Newsreader', Georgia, serif;
+  --mt-font-datos: 'IBM Plex Mono', ui-monospace, monospace;
+  --mt-radio-capsula: 999px;
+  --mt-radio-tarjeta: 24px;
+}

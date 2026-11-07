@@ -1,0 +1,43 @@
+<div class="topbar">
+  <div class="wrap">
+    <div class="left">
+      {{#get "pages" filter="slug:edicion-hoy" limit="1" fields="title,custom_excerpt,updated_at"}}
+        {{#foreach pages}}
+        <span><span class="dot"></span>{{title}}</span>
+        <span class="hide-m">Actualizado {{date updated_at format="HH:mm"}} CET</span>
+        {{/foreach}}
+      {{else}}
+        <span><span class="dot"></span>{{date format="dddd, D [de] MMMM [de] YYYY"}}</span>
+      {{/get}}
+    </div>
+    <div class="right">
+      <a class="btn hide-m" href="/como-trabajamos/">Cómo trabajamos</a>
+      {{#if @site.members_enabled}}
+        {{#if @member}}
+          <a class="btn" href="#/portal/account">Mi cuenta</a>
+        {{else}}
+          <a class="btn hide-m" href="#/portal/signin" data-portal="signin">Entrar</a>
+          <a class="btn solid" href="#/portal/signup" data-portal="signup">Suscríbete</a>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <a class="logo" href="{{@site.url}}/" aria-label="MOTICIAS, portada">
+        <img class="logo-full" src="{{asset "marca/moticias-logo-horizontal.svg"}}" alt="MOTICIAS · Noticias con M de Movilidad y Transportes" width="702" height="122">
+        <img class="logo-compact" src="{{asset "marca/moticias-logo-horizontal-sin-claim.svg"}}" alt="MOTICIAS" width="420" height="90">
+      </a>
+      <div class="side">
+        <b>Información profesional para quien decide.</b><br>
+        Regulación, contratos, redes y datos del transporte de personas por tierra, mar y aire. Fuentes primarias, fechadas y enlazadas.
+      </div>
+    </div>
+    <nav class="nav" aria-label="Secciones">
+      {{navigation}}
+    </nav>
+  </div>
+</header>
+<div class="ticker" id="ticker" hidden><div class="wrap"><div class="label"></div><div class="track"><div class="reel"></div></div></div></div>

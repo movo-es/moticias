@@ -1,0 +1,30 @@
+# MOTICIAS · sube y activa el tema de Ghost cuando cambia ghost-theme/ en main.
+# Secretos del repositorio (GitHub → Settings → Secrets and variables → Actions):
+#   GHOST_URL        URL de la Admin API, p. ej. https://moticias.ghost.io
+#   GHOST_ADMIN_KEY  clave de la integración personalizada «MOTICIAS publicador» (id:secret)
+name: Tema de Ghost
+on:
+  push:
+    branches: [main]
+    paths: ["ghost-theme/**"]
+  workflow_dispatch:
+concurrency:
+  group: tema-ghost
+  cancel-in-progress: true
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validar el tema con gscan (falla si hay errores)
+        run: npx --yes gscan@latest ghost-theme
+      - name: Subir y activar el tema
+        uses: TryGhost/action-deploy-theme@v1
+        with:
+          api-url: ${{ secrets.GHOST_URL }}
+          api-key: ${{ secrets.GHOST_ADMIN_KEY }}
+          working-directory: ghost-theme
+          theme-name: moticias

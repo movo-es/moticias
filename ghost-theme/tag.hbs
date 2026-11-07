@@ -1,0 +1,31 @@
+{{!< default}}
+{{!-- Portada de sección (colecciones de routes.yaml con data: tag.<sección>). --}}
+{{#tag}}
+<section class="section-intro {{slug}}">
+  <div class="wrap">
+    <h1>{{name}}</h1>
+    {{#if description}}<p class="answer">{{description}}</p>{{/if}}
+  </div>
+</section>
+{{/tag}}
+<section class="block">
+  <div class="wrap">
+    {{#if posts}}
+    <div class="mode-grid">
+    {{#foreach posts limit="1"}}
+      <article class="mode-lead {{primary_tag.slug}}">
+        {{> "thumb"}}
+        {{> "kicker"}}
+        <h2><a href="{{url}}">{{title}}</a></h2>
+        {{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}
+        {{> "meta" show_author=true}}
+      </article>
+    {{/foreach}}
+      <ul class="list">{{#foreach posts from="2" to="7"}}{{> "lista"}}{{/foreach}}</ul>
+    </div>
+    {{/if}}
+    <div class="cards more-cards">{{#foreach posts from="8"}}{{> "card"}}{{/foreach}}</div>
+    {{pagination}}
+  </div>
+</section>
+<section class="block ad-block"><div class="wrap">{{> "promo" slot="portada-medio"}}</div></section>

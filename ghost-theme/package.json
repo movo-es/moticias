@@ -1,0 +1,20 @@
+{
+  "name": "moticias",
+  "description": "Tema de MOTICIAS para Ghost: portada de edición, ficha de pieza con fuentes y trazabilidad, secciones en subdirectorios.",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "author": { "name": "Avionline S.L.", "email": "redaccion@moticias.com" },
+  "engines": { "ghost": ">=5.0.0" },
+  "keywords": ["ghost-theme", "news"],
+  "config": {
+    "posts_per_page": 15,
+    "image_sizes": {
+      "s": { "width": 400 },
+      "m": { "width": 800 },
+      "l": { "width": 1200 },
+      "xl": { "width": 1600 }
+    },
+    "card_assets": true,
+    "custom": {}
+  }
+}

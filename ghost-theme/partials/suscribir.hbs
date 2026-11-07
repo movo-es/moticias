@@ -1,0 +1,16 @@
+{{#if @site.members_enabled}}{{#unless @member}}
+<section class="subscribe" aria-label="Suscripción">
+  <div>
+    <h4>La edición de MOTICIAS, cada mañana laborable en tu correo</h4>
+    <p>Normas, contratos y plazos del transporte de personas, con su fuente oficial. Gratis; te das de baja con un clic.</p>
+  </div>
+  <form data-members-form="signup" class="sub-form">
+    <label class="sr-only" for="sub-email-{{#if id}}{{id}}{{else}}pie{{/if}}">Correo electrónico</label>
+    <input id="sub-email-{{#if id}}{{id}}{{else}}pie{{/if}}" data-members-email type="email" required placeholder="tu@empresa.es" autocomplete="email">
+    <button type="submit">Suscribirme</button>
+    <p class="msg ok" data-members-success>Revisa tu correo: te hemos enviado un enlace para confirmar.</p>
+    <p class="msg err" data-members-error></p>
+    <p class="legal">Al suscribirte aceptas la <a href="/politica-de-privacidad/">política de privacidad</a>. Responsable: Avionline S.L.</p>
+  </form>
+</section>
+{{/unless}}{{/if}}

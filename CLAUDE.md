@@ -23,7 +23,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - Fotos solo con licencia libre y crédito, del sujeto concreto, sin rostros reconocibles; nunca la misma foto dos veces en la misma página.
 - Campañas temáticas (`data/campanas/`): orientan la selección (palabras clave, cadencia, peso), nunca el tratamiento ni la firma; monetización señalizada y fuera del texto; la fecha gancho no se publica sin verificar en fuente primaria.
 - La investigación de un accidente se cita como investigación en curso.
-- No se toca el código del portal ni el de la hemeroteca fuera de un cambio OpenSpec.
+- No se toca el código del portal, el de la hemeroteca ni el tema de Ghost fuera de un cambio OpenSpec.
 - Lectura web sin aprobaciones: WebFetch solo con URL que ya aparecen en la sesión; las APIs del BOE y de Openverse son la única excepción para scripts.
 
 ## Cómo trabaja Rainer
@@ -41,9 +41,11 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - `verticals/` — configuración de cada vertical (`movilidad.json` = MOTICIAS; `turismo.json` = «viajar en grupo», previsto). Nada específico de un vertical va en el código.
 - `supabase/migrations/` — esquema de la plataforma (CRM, leads, campañas, señales, asesor).
 - `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`, `campanas/` (campañas temáticas; informes en `docs/campanas/`), `paginas/` (aviso legal, privacidad, cookies, cómo trabajamos).
+- `ghost-theme/` — tema de moticias.com (aspecto del portal, marca v1); `ghost/` — `routes.yaml` (secciones en subdirectorios, `/llms.txt`) y `redirects.yaml`; `.github/workflows/tema-ghost.yml` lo despliega (`docs/tema-ghost.md`).
+- `verticals/movilidad/marca/` — marca v1 (la Glorieta; `docs/marca.md`).
 - `portal/` — código y datos del artefacto MOTICIAS; `portal/img/` las fotos con `credits.json`.
 - `hemeroteca/` — código y `data/` de la Hemeroteca MOTICIAS.
-- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`.
+- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`, `ghost_theme_deploy.py`, `ghost_redirects.py`.
 - `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`, `campana-tematica`.
 - `work/` — temporal, ignorado por git.
 
@@ -59,4 +61,4 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 ## Estado (7 de noviembre de 2026)
 
-Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) activo para moticias.com (`src/ghost_publish.py`, regla de firma y estado en `docs/firma-y-publicacion.md`): 62 piezas rutinarias publicadas con firma G. Jordan, 12 críticas, análisis y reportajes en borrador a nombre de Rainer; páginas legales (`data/paginas/`) en borrador hasta su orden; el sitio sigue en modo privado. Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`; primera campaña temática «Movilidad al trabajo · PMST» (10-11 → 19-12-2026) en `data/campanas/`. Pendientes principales en `docs/plan-moticias-com.md § 9`.
+Tres ediciones publicadas (4, 5 y 6 de noviembre): 74 piezas, 53 referencias del BOE, 51 plazos. Portal y hemeroteca en artefactos de Claude. Ghost(Pro) activo para moticias.com (`src/ghost_publish.py`, regla de firma y estado en `docs/firma-y-publicacion.md`): 62 piezas rutinarias publicadas con firma G. Jordan, 12 críticas, análisis y reportajes en borrador a nombre de Rainer; páginas legales (`data/paginas/`) en borrador hasta su orden. Tema propio con el aspecto del portal (`tema-ghost-v1`) construido y probado en local; se activa en moticias.com con el visto bueno del director. Plataforma v1 propuesta en `openspec/changes/plataforma-v1/` con sus fases en `tasks.md`; primera campaña temática «Movilidad al trabajo · PMST» (10-11 → 19-12-2026) en `data/campanas/`. Pendientes principales en `docs/plan-moticias-com.md § 9`.

@@ -1,0 +1,27 @@
+# MOTICIAS
+
+> Noticias con M de Movilidad y Transportes. Medio profesional de noticias, análisis y referencia regulatoria del transporte de personas por tierra, mar y aire en España, para decisores. Cada pieza enlaza su fuente primaria (BOE, DOUE, ministerios, reguladores) y fecha los hechos.
+
+Titular: Avionline S.L. Director: Rainer. Idioma: español de España. Edición diaria en laborables, cierre hacia las 07:30 CET.
+
+## Secciones
+
+- [Portada de la edición]({{@site.url}}/): apertura, análisis, lo esencial, documento del día, boletines del BOE y próximos plazos.
+- [Tierra]({{@site.url}}/tierra/): autobús, ferrocarril, carretera y movilidad urbana.
+- [Mar]({{@site.url}}/mar/): pasaje marítimo, puertos y marina mercante.
+- [Aire]({{@site.url}}/aire/): aerolíneas, aeropuertos y navegación aérea.
+- [Regulación]({{@site.url}}/regulacion/): normas, expedientes europeos y consultas.
+- [Licitaciones]({{@site.url}}/licitaciones/): anuncios, adjudicaciones y plazos.
+- [Análisis]({{@site.url}}/analisis/): análisis del director y reportajes de fondo.
+- [Logística]({{@site.url}}/logistica/): mercancías por tierra, mar y aire.
+
+## Método
+
+- [Cómo trabajamos]({{@site.url}}/como-trabajamos/): fuentes, uso de IA bajo supervisión editorial, firmas, conflictos de interés y correcciones.
+- [Mapa del sitio]({{@site.url}}/sitemap.xml) · [RSS]({{@site.url}}/rss/)
+
+## Últimas piezas
+
+{{#get "posts" limit="30" include="tags"}}{{#foreach posts}}
+- [{{title}}]({{url absolute="true"}}) ({{date published_at format="YYYY-MM-DD"}}, {{primary_tag.name}}): {{custom_excerpt}}
+{{/foreach}}{{/get}}

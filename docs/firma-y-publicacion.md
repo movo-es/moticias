@@ -26,6 +26,10 @@ Al final de la rutina (`docs/tarea-edicion-diaria.md`, paso 7 quáter):
 cd ~/moticias && python3 -I src/ghost_publish.py --date AAAA-MM-DD --status published
 ```
 
+## Apertura y segunda en Ghost
+
+La apertura del día es la entrada destacada de Ghost; la segunda lleva la etiqueta interna `#segunda`. Si la apertura prevista es crítica y espera al director, el publicador destaca la mejor rutinaria del día (`docs/tema-ghost.md`); la portada nunca enlaza una pieza en borrador.
+
 ## Páginas fijas
 
 Aviso legal, privacidad, cookies y «Cómo trabajamos» viven en `data/paginas/<slug>.json` y se suben siempre como borrador:

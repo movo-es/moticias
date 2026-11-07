@@ -1,0 +1,9 @@
+<article class="feature">
+  {{> "thumb"}}
+  <div class="body">
+    <div class="kicker">{{#has tag="#reportaje"}}Reportaje{{else}}Análisis{{/has}} · {{primary_tag.name}}</div>
+    <h3><a href="{{url}}">{{title}}</a></h3>
+    {{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}
+    <div class="meta"><span>{{primary_author.name}}</span><span class="sep">·</span><span>{{reading_time minute="1 min de lectura" minutes="% min de lectura"}}</span><span class="sep">·</span><time class="num" datetime="{{date published_at format="YYYY-MM-DD"}}">{{date published_at format="D MMM YYYY"}}</time></div>
+  </div>
+</article>

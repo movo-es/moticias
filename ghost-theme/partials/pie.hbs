@@ -1,0 +1,24 @@
+<footer class="site">
+  <div class="wrap">
+    {{> "suscribir"}}
+    <div class="grid">
+      <div>
+        <img class="logo-neg" src="{{asset "marca/moticias-logo-horizontal-negativo.svg"}}" alt="MOTICIAS · Noticias con M de Movilidad y Transportes" width="351" height="61">
+        <p class="about">Medio profesional de noticias, análisis y referencia regulatoria del transporte de personas por tierra, mar y aire en España. Dirección editorial: Rainer. Titular: Avionline S.L.</p>
+        <p class="interests">El director de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y lo declara en toda pieza que toque su mercado.</p>
+      </div>
+      <div>
+        <h5>Secciones</h5>
+        <p>{{#foreach @site.navigation}}<a href="{{url}}">{{label}}</a><br>{{/foreach}}</p>
+      </div>
+      <div>
+        <h5>Sobre la cabecera</h5>
+        <p>{{#foreach @site.secondary_navigation}}<a href="{{url}}">{{label}}</a><br>{{/foreach}}<a href="mailto:redaccion@moticias.com">redaccion@moticias.com</a></p>
+      </div>
+    </div>
+    <div class="end">
+      <span>© {{date format="YYYY"}} Avionline S.L. · MOTICIAS</span>
+      <span><a href="{{@site.url}}/rss/">RSS</a> · <a href="{{@site.url}}/sitemap.xml">Mapa del sitio</a> · <a href="{{@site.url}}/llms.txt">llms.txt</a></span>
+    </div>
+  </div>
+</footer>

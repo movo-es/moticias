@@ -1,0 +1,39 @@
+{{!< default}}
+{{#post}}
+<article class="article {{primary_tag.slug}}{{#has tag="#reportaje"}} long{{/has}}{{#has tag="analisis"}} long{{/has}}">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Migas"><a href="{{@site.url}}/">Portada</a> <span>›</span> {{#primary_tag}}<a href="{{url}}">{{name}}</a>{{/primary_tag}}</nav>
+    <header class="article-head">
+      {{> "kicker"}}
+      <h1>{{title}}</h1>
+      {{#if custom_excerpt}}<p class="dek">{{custom_excerpt}}</p>{{/if}}
+      <div class="meta">
+        <span class="byline">Por {{#foreach authors}}<a href="{{url}}">{{name}}</a>{{/foreach}}</span>
+        <span class="sep">·</span><time class="num" datetime="{{date published_at format="YYYY-MM-DDTHH:mm"}}">{{date published_at format="D [de] MMMM [de] YYYY, HH:mm"}} CET</time>
+        {{#if reading_time}}<span class="sep">·</span><span>{{reading_time minute="1 min de lectura" minutes="% min de lectura"}}</span>{{/if}}
+      </div>
+    </header>
+    {{#if feature_image}}
+    <figure class="article-hero">
+      <img srcset="{{img_url feature_image size="m"}} 800w, {{img_url feature_image size="l"}} 1200w, {{img_url feature_image size="xl"}} 1600w" sizes="(max-width: 1280px) 100vw, 1280px" src="{{img_url feature_image size="xl"}}" alt="{{feature_image_alt}}">
+      {{#if feature_image_caption}}<figcaption>{{{feature_image_caption}}}</figcaption>{{/if}}
+    </figure>
+    {{/if}}
+    <div class="article-main gh-content">
+      {{content}}
+    </div>
+    <div class="ad-end">{{> "promo" slot="articulo-lateral"}}</div>
+    {{#if comments}}<div class="comments">{{comments}}</div>{{/if}}
+  </div>
+</article>
+{{#get "posts" filter="primary_tag:{{primary_tag.slug}}+id:-{{id}}" limit="3" include="tags"}}
+{{#if posts}}
+<section class="block related">
+  <div class="wrap">
+    {{> "section-head" sec=../primary_tag.slug title="Más en la sección" url=../primary_tag.url}}
+    <div class="cards">{{#foreach posts}}{{> "card"}}{{/foreach}}</div>
+  </div>
+</section>
+{{/if}}
+{{/get}}
+{{/post}}
