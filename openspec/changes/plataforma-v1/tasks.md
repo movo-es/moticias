@@ -11,7 +11,8 @@ Orden pensado para que cada paso produzca valor por sí solo. Las casillas se ma
 
 ## Fase 1 · Publicar en moticias.com (Ghost)
 - [ ] Rainer: elegir plan Ghost(Pro), apuntar el dominio moticias.com, crear integración personalizada y pasar la Admin API key (se guarda como variable de entorno `GHOST_ADMIN_KEY`, nunca en el repo).
-- [ ] Rainer: decidir sociedad titular y responsable del tratamiento; textos legales (aviso, privacidad, cookies).
+- [x] Sociedad titular y responsable del tratamiento: Avionline S.L. (7-11-2026).
+- [ ] Textos legales (aviso legal, privacidad, cookies) a nombre de Avionline S.L.
 - [ ] Publicar las 74 piezas existentes con `src/ghost_publish.py --all`; comprobar URL en subdirectorios, Schema.org, fuentes al pie, trazabilidad.
 - [ ] Añadir `llms.txt`, `robots`, sitemap y alta en Search Console y Publisher Center.
 - [ ] Integrar el publicador en `/edicion-diaria` (paso 7 quater).
@@ -20,7 +21,7 @@ Orden pensado para que cada paso produzca valor por sí solo. Las casillas se ma
 - [ ] Crear proyecto Supabase `moticias` y aplicar la migración 001 (tablas de `design.md`, RLS, roles).
 - [ ] `app/`: Next.js con autenticación (Supabase Auth, correo), rol superadmin para Rainer, ruta `/redaccion` con cola de pendientes, vista previa y botones Publicar / Retirar / Reordenar.
 - [ ] Desplegar en Vercel (proyecto `moticias`), dominio `redaccion.moticias.com` o `moticias.com/redaccion` (preferible subdirectorio si Ghost lo permite; si no, subdominio solo para la herramienta privada).
-- [ ] Activar modo aprobación en `/edicion-diaria` (`status: pendiente`) cuando Rainer lo pida.
+- [x] Política de aprobación: rutinarias directas con firma «G. Jordan»; críticas y análisis en `pendiente` con firma «Rainer» (7-11-2026). Pendiente: botón Editar/Retirar en la sala.
 
 ## Fase 3 · Suscripciones y CRM
 - [ ] Niveles en Ghost: lector (gratis), profesional, corporativa; formulario de alta con los cinco campos; centro de preferencias.

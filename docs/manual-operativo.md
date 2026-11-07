@@ -37,9 +37,10 @@ Colección `articles/{id}` — una pieza (noticia, análisis o reportaje):
 | `key_data` | Cifras clave: lista de `{label, value, source}` (4–8) que la página muestra en la columna lateral |
 | `timeline` | Cronología: lista de `{date, text}` (4–10) pasados y futuros; los futuros se marcan en color |
 | `scope` | Ámbito del análisis (rotación diaria) |
-| `author`, `author_role`, `author_note` | Firma, cargo y declaración de intereses |
+| `author`, `author_role`, `author_note` | Firma («G. Jordan» rutinarias, «Rainer» críticas y análisis), cargo y declaración de intereses |
+| `risk`, `review_note` | `rutinaria` o `critica`, y la frase que lo justifica (ver § 3, aprobación) |
 | `date`, `event_date`, `published_at`, `published_time` | Fecha de edición, fecha de los hechos, sello de publicación |
-| `status` | `publicado` o `borrador` (los borradores solo los ve el administrador) |
+| `status` | `publicado`, `pendiente` (crítica a la espera del director) o `borrador`; solo `publicado` se muestra a los lectores |
 | `featured` | `1` apertura, `2` segunda, `0` resto |
 | `relevance` | `ALTA` o `MEDIA` |
 | `geo` | `{place, lat, lon}` para el mapa |
@@ -70,7 +71,7 @@ Con la sesión de Claude abierta, el artefacto detecta al propietario y muestra 
 
 Desde cada pieza, el enlace «Editar esta pieza» abre su formulario. Los cambios se guardan en la base al instante y los ven todos los lectores en la siguiente carga.
 
-Límites actuales: no hay gestión de usuarios ni flujo de aprobación (llegará). Todo lo que la redacción automática escribe entra como `publicado`; cuando Rainer quiera aprobar antes, basta con que la rutina diaria escriba `status: "borrador"` y él pulse «Publicar» en el panel.
+Aprobación (criterio del director, 7-11-2026): las piezas rutinarias —una fuente oficial, o dos fuentes profesionales de confianza que coincidan— se publican directamente con la firma «G. Jordan, Redactor responsable»; las críticas para la reputación o con implicaciones legales (criterios en `verticals/movilidad.json` → `editorial.critical_criteria`) y los análisis del director se guardan en `pendiente` con firma «Rainer, Director de MOTICIAS» y las publica él. El visor del editor tiene que ofrecer editar y retirar en un toque. Hoy el panel del artefacto lo permite (editar y borrar); en Ghost, el editor de la pieza y «Unpublish»; la sala de redacción lo hará con un botón. Límite actual: no hay gestión de usuarios.
 
 ## 4. Reglas editoriales (operativas)
 

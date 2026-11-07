@@ -21,3 +21,10 @@ En `body_md` solo URL `https://…`; las piezas anteriores se citan por título 
 
 ## Requisito: análisis
 `kind: analisis`, firmado «Rainer», `author_role: Director de MOTICIAS`, `author_note` con la declaración de intereses, `scope` del ámbito de rotación; añade `{date, scope}` a `settings/site.recent_scopes` (últimos 30).
+
+## Requisito: firma y aprobación
+Toda pieza lleva `author`, `author_role`, `risk` (`rutinaria` | `critica`) y `review_note`. Rutinaria (una fuente oficial, o dos profesionales de confianza coincidentes): firma «G. Jordan, Redactor responsable», publicación directa. Crítica (criterios de `verticals/<id>.json` → `editorial.critical_criteria`) o análisis del director: firma «Rainer, Director de MOTICIAS», `status: pendiente`, aviso al director con el motivo; solo él la publica. Ante la duda, crítica.
+
+#### Escenario: pieza que atribuye responsabilidad a una empresa con nombre
+- CUANDO una pieza afirma que una empresa o persona con nombre incumplió, causó o es responsable de algo
+- ENTONCES se guarda como `critica` y `pendiente`, firmada por el director, y no se muestra a los lectores hasta que él la publique.

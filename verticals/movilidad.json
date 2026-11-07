@@ -5,33 +5,187 @@
   "domain": "moticias.com",
   "language": "es-ES",
   "timezone": "Europe/Madrid",
-  "editor": {"name": "Rainer", "role": "Director de MOTICIAS",
-             "interests_note": "Rainer es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."},
-  "schedule": {"daily_edition": "CRON_TZ=Europe/Madrid 38 6 * * 1-5", "weekly_advisor": "CRON_TZ=Europe/Madrid 17 9 * * 1",
-               "regulatory_radar": "lunes", "tenders_week": "viernes", "monthly_dashboard": "día 12"},
-  "sections": ["tierra", "mar", "aire", "regulacion", "licitaciones", "analisis", "logistica", "tecnologia", "datos"],
-  "subsectors": ["autobús", "ferrocarril", "carretera", "urbano", "aéreo", "marítimo", "transversal"],
-  "analysis_rotation": ["Regulación y gobernanza", "Autobús y carretera", "Ferrocarril", "Aéreo", "Marítimo y puertos",
-                        "Movilidad urbana y tecnología", "Infraestructuras, financiación y Europa"],
+  "editor": {
+    "name": "Rainer",
+    "role": "Director de MOTICIAS",
+    "interests_note": "Rainer es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."
+  },
+  "schedule": {
+    "daily_edition": "CRON_TZ=Europe/Madrid 38 6 * * 1-5",
+    "weekly_advisor": "CRON_TZ=Europe/Madrid 17 9 * * 1",
+    "regulatory_radar": "lunes",
+    "tenders_week": "viernes",
+    "monthly_dashboard": "día 12"
+  },
+  "sections": [
+    "tierra",
+    "mar",
+    "aire",
+    "regulacion",
+    "licitaciones",
+    "analisis",
+    "logistica",
+    "tecnologia",
+    "datos"
+  ],
+  "subsectors": [
+    "autobús",
+    "ferrocarril",
+    "carretera",
+    "urbano",
+    "aéreo",
+    "marítimo",
+    "transversal"
+  ],
+  "analysis_rotation": [
+    "Regulación y gobernanza",
+    "Autobús y carretera",
+    "Ferrocarril",
+    "Aéreo",
+    "Marítimo y puertos",
+    "Movilidad urbana y tecnología",
+    "Infraestructuras, financiación y Europa"
+  ],
   "sources_file": "portal/data/sources.json",
   "sources_doc": "docs/fuentes.md",
-  "primary_feeds": {"boe_api": "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}",
-                    "ted_api": "https://api.ted.europa.eu/v3/notices/search", "ted_cpv": ["60100000", "60200000", "34100000", "34600000"],
-                    "placsp_atom": "https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom"},
+  "primary_feeds": {
+    "boe_api": "https://www.boe.es/datosabiertos/api/boe/sumario/{aaaammdd}",
+    "ted_api": "https://api.ted.europa.eu/v3/notices/search",
+    "ted_cpv": [
+      "60100000",
+      "60200000",
+      "34100000",
+      "34600000"
+    ],
+    "placsp_atom": "https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom"
+  },
   "segments": [
-    {"id": "administraciones", "label": "Administraciones", "solution": "MUFMI",
-     "signals": ["regulacion", "licitaciones", "concesiones", "OSP", "mapa concesional", "radar regulatorio"]},
-    {"id": "operadores-autobus", "label": "Operadores de autobús", "solution": "MOVENBUS",
-     "signals": ["licitaciones", "autobús", "alertas por comunidad", "flota", "costes"]},
-    {"id": "empresas-pmst", "label": "Empresas con PMST y sostenibilidad", "solution": "MOVO",
-     "signals": ["regulacion", "urbano", "PMST", "Ley 9/2025", "movilidad al trabajo", "plantillas"]},
-    {"id": "campus-municipios", "label": "Municipios y gestores de grandes campus", "solution": "Planes de movilidad y organización de tráficos (con Jörg Fischer y Francisco González)",
-     "signals": ["infraestructuras", "puertos", "urbano", "logistica", "aparcamiento", "accesos", "campus", "universidad", "plataforma logística"]}
+    {
+      "id": "administraciones",
+      "label": "Administraciones",
+      "solution": "MUFMI",
+      "signals": [
+        "regulacion",
+        "licitaciones",
+        "concesiones",
+        "OSP",
+        "mapa concesional",
+        "radar regulatorio"
+      ]
+    },
+    {
+      "id": "operadores-autobus",
+      "label": "Operadores de autobús",
+      "solution": "MOVENBUS",
+      "signals": [
+        "licitaciones",
+        "autobús",
+        "alertas por comunidad",
+        "flota",
+        "costes"
+      ]
+    },
+    {
+      "id": "empresas-pmst",
+      "label": "Empresas con PMST y sostenibilidad",
+      "solution": "MOVO",
+      "signals": [
+        "regulacion",
+        "urbano",
+        "PMST",
+        "Ley 9/2025",
+        "movilidad al trabajo",
+        "plantillas"
+      ]
+    },
+    {
+      "id": "campus-municipios",
+      "label": "Municipios y gestores de grandes campus",
+      "solution": "Planes de movilidad y organización de tráficos (con Jörg Fischer y Francisco González)",
+      "signals": [
+        "infraestructuras",
+        "puertos",
+        "urbano",
+        "logistica",
+        "aparcamiento",
+        "accesos",
+        "campus",
+        "universidad",
+        "plataforma logística"
+      ]
+    }
   ],
-  "subscriptions": {"tiers": ["lector", "profesional", "corporativa"], "sponsor_tier": "anunciante"},
-  "sensors": {"topics": ["transporte", "movilidad", "ferroviario", "autobús", "aéreo", "marítimo", "puertos", "licitaciones", "concesiones", "PMST"],
-              "risk_keywords": ["accidente", "huelga", "sanción", "expediente", "investigación", "quiebra", "concurso de acreedores", "denuncia", "incidente"],
-              "watched_entities": ["Movenbus", "MUFMI", "MOVO", "Moveme", "Avionline"],
-              "shared_with": ["amarantia", "inteligencia-movo"]},
-  "artifacts": {"portal": "2f56cd87-523c-490a-b970-7d2bda59a9ee", "hemeroteca": "6f16e8b1-b3dc-4320-bb92-f5d1e0b37615"}
+  "subscriptions": {
+    "tiers": [
+      "lector",
+      "profesional",
+      "corporativa"
+    ],
+    "sponsor_tier": "anunciante"
+  },
+  "sensors": {
+    "topics": [
+      "transporte",
+      "movilidad",
+      "ferroviario",
+      "autobús",
+      "aéreo",
+      "marítimo",
+      "puertos",
+      "licitaciones",
+      "concesiones",
+      "PMST"
+    ],
+    "risk_keywords": [
+      "accidente",
+      "huelga",
+      "sanción",
+      "expediente",
+      "investigación",
+      "quiebra",
+      "concurso de acreedores",
+      "denuncia",
+      "incidente"
+    ],
+    "watched_entities": [
+      "Movenbus",
+      "MUFMI",
+      "MOVO",
+      "Moveme",
+      "Avionline"
+    ],
+    "shared_with": [
+      "amarantia",
+      "inteligencia-movo"
+    ]
+  },
+  "artifacts": {
+    "portal": "2f56cd87-523c-490a-b970-7d2bda59a9ee",
+    "hemeroteca": "6f16e8b1-b3dc-4320-bb92-f5d1e0b37615"
+  },
+  "owner": {
+    "company": "Avionline S.L.",
+    "role": "sociedad titular de MOTICIAS y responsable del tratamiento de datos",
+    "decided": "2026-11-07"
+  },
+  "editorial": {
+    "default_author": "G. Jordan",
+    "default_author_role": "Redactor responsable",
+    "director": "Rainer",
+    "director_role": "Director de MOTICIAS",
+    "approval": {
+      "routine": "ninguna (publicación directa)",
+      "critical": "director, antes de publicar",
+      "quick_fix": "botón editar/retirar en el visor del editor"
+    },
+    "routine_requires": "al menos una fuente oficial, o dos fuentes profesionales de confianza (docs/fuentes.md) que coincidan",
+    "critical_criteria": [
+      "atribuye responsabilidad, culpa o conducta indebida a personas o empresas con nombre (accidentes, sanciones, investigaciones, delitos, conflictos laborales con nombres)",
+      "se apoya en acusaciones o filtraciones de una sola fuente",
+      "puede tener implicaciones legales fuertes (litigios abiertos, datos personales, secretos comerciales, difamación)",
+      "toca a empresas del grupo, socios o clientes (Movenbus, MUFMI, MOVO, Moveme, Avionline, Amarantia, socios de la línea de planes de movilidad)",
+      "corrige o contradice una pieza anterior de MOTICIAS",
+      "análisis y reportajes firmados por el director"
+    ]
+  }
 }

@@ -17,6 +17,9 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - Cada pieza es un reportaje de fondo (1.000–1.500 palabras) con cifras clave, cronología y 6–12 fuentes con fecha; los resúmenes no se publican.
 - Nunca borrar piezas, boletines ni plazos anteriores; las correcciones añaden `revised_at` y una nota al final.
 - Edición diaria solo en laborables españoles; noticia flash de gran importancia, cualquier día.
+- Firma y aprobación: las piezas rutinarias (una fuente oficial o dos profesionales de confianza) se publican directas firmadas «G. Jordan, Redactor responsable»; las críticas para la reputación o con implicaciones legales y los análisis se firman «Rainer, Director de MOTICIAS» y esperan su aprobación (`status: pendiente`). Criterios en `verticals/movilidad.json` → `editorial`.
+- Titular de MOTICIAS y responsable del tratamiento: Avionline S.L.
+- Modelos: barridos y escritura automática en Opus 5.5; el asesor semanal en Fable 5.1.
 - Fotos solo con licencia libre y crédito, del sujeto concreto, sin rostros reconocibles; nunca la misma foto dos veces en la misma página.
 - La investigación de un accidente se cita como investigación en curso.
 - No se toca el código del portal ni el de la hemeroteca fuera de un cambio OpenSpec.

@@ -38,7 +38,7 @@ Reglas para la redacción (en la tarea diaria): hechos de las últimas 72 horas;
 - Después (centro de preferencias y segundo correo de bienvenida): modos que le interesan (autobús, ferrocarril, aéreo, marítimo, urbano), comunidades autónomas, tamaño de la empresa, si licita (sí o no, en qué ámbitos), CIF opcional y teléfono opcional.
 - Comportamiento: aperturas, clics por tema y por licitación, descargas del calendario y de documentos. Con esto se segmenta y se puntúa el interés sin preguntar más.
 
-**Consentimientos separados (RGPD, LOPDGDD y artículo 21 de la LSSI).** Casilla 1 (obligatoria): recibir los boletines de MOTICIAS. Casilla 2 (opcional y separada): recibir ofertas de servicios de las empresas del grupo (MOVO, Movenbus, MUFMI), nombradas. Sin la casilla 2 no se puede usar el contacto para vender, tampoco a direcciones de empresa. Hay que decidir qué sociedad es responsable del tratamiento y ponerla en la política de privacidad. Analítica web con consentimiento (o una herramienta sin cookies, como Plausible o Umami) y sin muro de «pagar o aceptar cookies».
+**Consentimientos separados (RGPD, LOPDGDD y artículo 21 de la LSSI).** Casilla 1 (obligatoria): recibir los boletines de MOTICIAS. Casilla 2 (opcional y separada): recibir ofertas de servicios de las empresas del grupo (MOVO, Movenbus, MUFMI), nombradas. Sin la casilla 2 no se puede usar el contacto para vender, tampoco a direcciones de empresa. Responsable del tratamiento: Avionline S.L. (decidido el 7-11-2026); figura en la política de privacidad. Analítica web con consentimiento (o una herramienta sin cookies, como Plausible o Umami) y sin muro de «pagar o aceptar cookies».
 
 **Imanes de suscripción (lo que hace que alguien deje su correo).**
 - Alertas de licitaciones filtradas por comunidad y modo, con plazo e importe.
@@ -93,7 +93,7 @@ Métricas: suscriptores activos y su perfil; aperturas y clics por tema; clics e
 
 ## 9. Pasos y lo que hace falta decidir
 
-1. Sociedad titular de MOTICIAS y responsable del tratamiento de datos (Moveme, Avionline u otra).
+1. Sociedad titular de MOTICIAS y responsable del tratamiento de datos: **Avionline S.L.** (decidido el 7-11-2026).
 2. Ghost(Pro): cuenta creada el 7-11-2026 (usuario ruphoff@avionline.es); falta elegir plan, conectar el dominio moticias.com y crear la clave de Admin API para la rutina.
 3. Confirmar la cuenta de Brevo que se usa (la de MOVO u otra) y el remitente verificado, por ejemplo boletin@moticias.com, o decidir que la lista vive en Ghost.
 4. Textos legales: aviso legal, privacidad y cookies.
