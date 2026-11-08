@@ -2,6 +2,17 @@
 
 Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`openspec/changes/<nombre>/`) que toma su spec de `specs/<módulo>/spec.md` de aquí o de `plataforma-v1`, la afina en la entrevista (si la hay) y se construye y archiva por separado. Las casillas se marcan al archivar el hijo. Orden y fechas: `docs/estrategia-2027.md § 5`.
 
+## Hecho el 8-11-2026 (sesión de estrategia, antes de la primera entrevista)
+- [x] Mapa, specs y entrevistas 10–15; reglas nuevas en `CLAUDE.md`.
+- [x] Módulo 1 `src/selector.py` + perfiles en `data/perfiles/` (plantilla de asociación migrada del portal, dos widgets).
+- [x] Módulo 3 `app/public/widget.js` + `src/export_feed.py` + demo; probado con shadow DOM frente a CSS hostil.
+- [x] Módulo 2 `src/empaquetador.py` (selección, revisión, página, correo Brevo, PDF por Chrome); muestra de 8 páginas generada.
+- [x] «Quién decide»: `src/quien_decide_semilla.py` y 16 cargos con fuente en `data/cargos/`.
+- [x] Comandos `/prensa-buzon`, `/edicion-a-medida`, `/conocimiento-ingesta`, `/auscultar`, `/quien-decide-actualizar` (texto; se afinan en su cambio).
+- [x] Borradores legales (`docs/legal/`), `ghost/llms.txt` y `ghost/robots.txt`.
+- [x] BDNS como primera fuente de segundo nivel (`src/bdns_sweep.py`, verificado).
+- [ ] Pendiente de Rainer: repositorio en privado; respuestas a las cinco preguntas del 8-11 (sector, «conocimiento» en MOVO, Amarantia, canales, entrega).
+
 ## Semana 46 (10–16 nov 2026)
 - [ ] `publicar-en-ghost-v1` (entrevista 1 de `docs/paso-a-code.md`): moticias.com con las 74 piezas, rutina publicando sola, legales a nombre de Avionline, campaña PMST visible. Repositorio puesto en privado.
 
