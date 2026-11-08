@@ -1,0 +1,23 @@
+# moticias.com
+User-agent: *
+Disallow: /ghost/
+Disallow: /members/
+Disallow: /signin/
+Disallow: /signup/
+Disallow: /account/
+Disallow: /p/
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://moticias.com/sitemap.xml

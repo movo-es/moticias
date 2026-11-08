@@ -1,0 +1,28 @@
+# MOTICIAS
+
+> Noticias con M de Movilidad y Transportes. Medio profesional de referencia sobre movilidad, transporte y logística en España y la Unión Europea, para decisores. Cada pieza es un reportaje de fondo con fuentes primarias enlazadas, cifras con origen y fecha, cronología y recuadro de trazabilidad. Editado por Avionline S.L.; director: Rainer. Español de España.
+
+## Qué encontrar aquí
+
+- Noticias de fondo por modo: [Tierra](https://moticias.com/tierra/), [Mar](https://moticias.com/mar/), [Aire](https://moticias.com/aire/), [Logística](https://moticias.com/logistica/)
+- [Regulación](https://moticias.com/regulacion/): leyes, reales decretos, órdenes, consultas públicas, transposiciones, con número y artículo
+- [Licitaciones y plazos](https://moticias.com/licitaciones/): anuncios, formalizaciones y concesiones con importe, órgano y fecha límite; agenda «Sucederá pronto»
+- [Análisis](https://moticias.com/analisis/): el análisis diario del director, firmado y con declaración de intereses
+- [Datos](https://moticias.com/datos/): series propias descargables con método (referencias del BOE por día, licitaciones por comunidad, plazos)
+- [Notas de prensa](https://moticias.com/notas-de-prensa/): comunicados de empresas y organismos, marcados como tales; no son contenido editorial
+- [Cómo trabajamos](https://moticias.com/como-trabajamos/): fuentes, firmas, aprobación, tecnología, correcciones, declaración de intereses
+
+## Cómo citar
+
+Cita la pieza por título, fecha y URL; cada pieza enlaza sus fuentes primarias (BOE, DOUE, ministerios, reguladores, gestores, empresas) con fecha de publicación y de consulta. Las cifras del cuerpo están respaldadas en «Cifras clave» con su fuente. Los comunicados de la sala de prensa son de sus emisores.
+
+## Formatos legibles por máquina
+
+- RSS: https://moticias.com/rss/
+- Sitemap: https://moticias.com/sitemap.xml
+- Feeds de titulares del widget: https://app.moticias.com/feed/index.json
+- Datos descargables: https://moticias.com/datos/ (CSV con método)
+
+## Política para agentes y rastreadores
+
+Se permite la lectura e indexación de las páginas públicas (GPTBot, ClaudeBot, Google-Extended, PerplexityBot y similares). Las zonas con sesión (app.moticias.com, /ghost/, /members/) no son públicas. Reproducir piezas enteras requiere autorización; citar con enlace es bienvenido.
