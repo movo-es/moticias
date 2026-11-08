@@ -1,0 +1,142 @@
+<!-- MOTICIAS · mapa de la semana: leyenda, colores y símbolos por modo y proceso, y lista de noticias por lugar.
+     Va en Ghost → Settings → Code injection → Site footer. Fuente de verdad: este fichero (ghost/inyeccion-pie.html).
+     Provisional hasta versionar el tema (src/ghost_theme.py); entonces pasa a assets/js/moticias.js y moticias.css. -->
+<style>
+.m-map .pin .core,.m-map .pin .halo{transition:r .15s}
+.m-map .pin{cursor:pointer}
+.m-map .pin.sec-tierra .core{fill:#ffffff}.m-map .pin.sec-tierra .halo{stroke:#ffffff}
+.m-map .pin.sec-mar .core{fill:#3fd0c9}.m-map .pin.sec-mar .halo{stroke:#3fd0c9}
+.m-map .pin.sec-aire .core{fill:#7cc4ff}.m-map .pin.sec-aire .halo{stroke:#7cc4ff}
+.m-map .pin.sec-logistica .core{fill:#9be15d}.m-map .pin.sec-logistica .halo{stroke:#9be15d}
+.m-map .pin.sec-regulacion .core{fill:#c9b8ff}.m-map .pin.sec-regulacion .halo{stroke:#c9b8ff}
+.m-map .pin.sec-licitaciones .core{fill:#ffb35c}.m-map .pin.sec-licitaciones .halo{stroke:#ffb35c}
+.m-map .pin.sec-otras .core{fill:#e6ecf7}.m-map .pin.sec-otras .halo{stroke:#e6ecf7}
+.m-map .pin .mixto{fill:none;stroke:#fff;stroke-width:1.2;stroke-dasharray:2 2}
+.m-leyenda{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 2px 0;padding:0;list-style:none;font:600 12px/1.2 var(--font-brand,system-ui);color:#e6ecf7}
+.m-leyenda li{display:flex;align-items:center;gap:6px;cursor:pointer;opacity:.95;padding:3px 2px;border-radius:4px}
+.m-leyenda li.off{opacity:.35}
+.m-leyenda li small{font-weight:400;opacity:.7}
+.m-leyenda svg{width:14px;height:14px;flex:none}
+.m-leyenda .tit{width:100%;cursor:default;font-weight:400;opacity:.75;padding:0}
+.m-map-filtro{display:none;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line,#e3e4e1);font:600 14px/1.3 var(--font-brand,system-ui)}
+.m-map-filtro.on{display:flex}
+.m-map-filtro button{border:1px solid var(--line,#e3e4e1);background:#fff;border-radius:16px;padding:5px 12px;font:inherit;font-weight:500;cursor:pointer}
+.m-map-list li.fuera{display:none}
+</style>
+<script>
+(function () {
+  "use strict";
+  // Modos (círculo) y procesos (rombo y cuadrado), con el nombre que ve el lector.
+  var SEC = {
+    tierra: ["Tierra", "círculo"], mar: ["Mar", "círculo"], aire: ["Aire", "círculo"], logistica: ["Logística", "círculo"],
+    regulacion: ["Regulación", "rombo"], licitaciones: ["Licitaciones", "cuadrado"]
+  };
+  var MODOS = ["tierra", "mar", "aire", "logistica"], PROCESOS = ["regulacion", "licitaciones"];
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var NS = "http://www.w3.org/2000/svg";
+  function sec(s) { return SEC[s] ? s : "otras"; }
+  function forma(s, r) {
+    var el;
+    if (s === "regulacion" || s === "licitaciones") {
+      el = document.createElementNS(NS, "rect");
+      el.setAttribute("x", -r); el.setAttribute("y", -r); el.setAttribute("width", 2 * r); el.setAttribute("height", 2 * r);
+      el.setAttribute("rx", s === "regulacion" ? 1 : 1.5);
+      if (s === "regulacion") el.setAttribute("transform", "rotate(45)");
+    } else { el = document.createElementNS(NS, "circle"); el.setAttribute("r", r); }
+    el.setAttribute("class", "core");
+    return el;
+  }
+  function icono(s) {
+    var c = { tierra: "#fff", mar: "#3fd0c9", aire: "#7cc4ff", logistica: "#9be15d", regulacion: "#c9b8ff", licitaciones: "#ffb35c" }[s];
+    var f = s === "regulacion" ? '<rect x="3.5" y="3.5" width="7" height="7" transform="rotate(45 7 7)" fill="' + c + '"/>'
+      : s === "licitaciones" ? '<rect x="2.5" y="2.5" width="9" height="9" rx="1.5" fill="' + c + '"/>'
+      : '<circle cx="7" cy="7" r="5" fill="' + c + '"/>';
+    return '<svg viewBox="0 0 14 14" aria-hidden="true">' + f + "</svg>";
+  }
+
+  function mejorar(box) {
+    var svg = $("svg", box), lista = $(".m-map-list");
+    if (!svg || !lista || box.getAttribute("data-mejorado")) return;
+    box.setAttribute("data-mejorado", "1");
+    var lis = $$("li[data-pin]", lista), cuenta = {};
+    lis.forEach(function (li) { var s = sec(li.getAttribute("data-sec")); cuenta[s] = (cuenta[s] || 0) + 1; });
+
+    // 1. Cada pin toma el color y la forma de su sección dominante; si mezcla secciones, lleva un anillo discontinuo.
+    $$(".pin", svg).forEach(function (p) {
+      var i = p.getAttribute("data-pin"), items = lis.filter(function (li) { return li.getAttribute("data-pin") === i; });
+      var n = {}, dom = null;
+      items.forEach(function (li) { var s = sec(li.getAttribute("data-sec")); n[s] = (n[s] || 0) + 1; if (!dom || n[s] > n[dom]) dom = s; });
+      p.setAttribute("class", "pin sec-" + (dom || "otras"));
+      p.setAttribute("data-secs", Object.keys(n).join(" "));
+      var core = $(".core", p), r = core ? parseFloat(core.getAttribute("r")) || 5 : 5;
+      if (core) p.replaceChild(forma(dom, r), core);
+      if (Object.keys(n).length > 1) {
+        var ring = document.createElementNS(NS, "circle");
+        ring.setAttribute("class", "mixto"); ring.setAttribute("r", r + 3.5);
+        p.insertBefore(ring, p.firstChild);
+      }
+      var t = document.createElementNS(NS, "title");
+      t.textContent = items.length + " noticia" + (items.length > 1 ? "s" : "") + " · pulsa para verlas";
+      p.appendChild(t);
+      p.setAttribute("role", "button"); p.setAttribute("tabindex", "0");
+    });
+
+    // 2. Leyenda: modos (círculos) y procesos (formas), con cuántas piezas hay de cada uno; pulsar filtra.
+    var ley = document.createElement("ul");
+    ley.className = "m-leyenda";
+    var fila = function (s) {
+      return cuenta[s] ? '<li data-sec="' + s + '" title="Ver solo ' + SEC[s][0] + '">' + icono(s) + SEC[s][0] + " <small>" + cuenta[s] + "</small></li>" : "";
+    };
+    ley.innerHTML = '<li class="tit">Modos</li>' + MODOS.map(fila).join("") + '<li class="tit">Procesos</li>' + PROCESOS.map(fila).join("") +
+      '<li class="tit"><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="#fff" stroke-dasharray="2 2"/></svg>&nbsp;anillo: lugar con noticias de varios tipos · el número indica cuántas</li>';
+    box.appendChild(ley);
+
+    // 3. Lista de noticias del lugar: al pulsar un pin, la lista de al lado (debajo en el móvil) muestra solo ese lugar.
+    var cab = document.createElement("div");
+    cab.className = "m-map-filtro";
+    cab.innerHTML = '<span></span><button type="button">Ver todas</button>';
+    lista.parentNode.insertBefore(cab, lista);
+    function filtrar(prueba, texto) {
+      var n = 0;
+      lis.forEach(function (li) { var ok = prueba(li); li.classList.toggle("fuera", !ok); if (ok) n++; });
+      $("span", cab).textContent = texto + " · " + n + " noticia" + (n === 1 ? "" : "s");
+      cab.classList.add("on");
+      lista.scrollTop = 0;
+      var top = cab.getBoundingClientRect().top;
+      if (top < 0 || top > window.innerHeight - 120) cab.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function todas() {
+      lis.forEach(function (li) { li.classList.remove("fuera"); });
+      $$(".m-leyenda li", box).forEach(function (l) { l.classList.remove("off"); });
+      cab.classList.remove("on");
+    }
+    $("button", cab).addEventListener("click", todas);
+    $$(".pin", svg).forEach(function (p) {
+      var abrir = function (e) {
+        e.stopPropagation();
+        var i = p.getAttribute("data-pin"), primero = lis.filter(function (li) { return li.getAttribute("data-pin") === i; })[0];
+        var lugar = primero ? ($(".m-place", primero) || {}).textContent || "" : "";
+        filtrar(function (li) { return li.getAttribute("data-pin") === i; }, "Noticias en " + lugar.split(",")[0].replace(/\s*\(.*$/, ""));
+      };
+      p.addEventListener("click", abrir);
+      p.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") abrir(e); });
+    });
+    $$(".m-leyenda li[data-sec]", box).forEach(function (l) {
+      l.addEventListener("click", function () {
+        var s = l.getAttribute("data-sec");
+        $$(".m-leyenda li[data-sec]", box).forEach(function (x) { x.classList.toggle("off", x !== l); });
+        filtrar(function (li) { return sec(li.getAttribute("data-sec")) === s; }, SEC[s][0]);
+      });
+    });
+  }
+
+  function vigilar() {
+    var box = $(".m-map[data-map]");
+    if (!box) return;
+    if ($("svg .pin", box)) return mejorar(box);
+    new MutationObserver(function (m, o) { if ($("svg .pin", box)) { o.disconnect(); mejorar(box); } }).observe(box, { childList: true, subtree: true });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", vigilar); else vigilar();
+})();
+</script>
