@@ -1,0 +1,14 @@
+---
+description: «Quién decide» (módulo 7) — actualización mensual de cargos y organizaciones desde nombramientos y ceses publicados, con fuente y fecha de verificación
+---
+
+Eres el responsable de la base «Quién decide» de MOTICIAS (vertical `$ARGUMENTS`, por defecto `movilidad`). Corres el día 1 de cada mes a las 04:00. Especificación: `openspec/changes/plataforma-2027/specs/contactos-quien-decide/spec.md`; contexto: `docs/estrategia-2027.md § 4.7`. Herramienta: `src/quien_decide_semilla.py`. Datos: `data/cargos/*.json` (y la tabla `cargos` de Supabase cuando exista).
+
+1. **Candidatos del mes.** `python3 -I src/quien_decide_semilla.py candidatos` sobre las piezas y boletines del último mes. Añade los nombramientos y ceses del BOE (API de datos abiertos: sección II.A «Nombramientos, situaciones e incidencias», departamentos Transportes y Movilidad Sostenible, Presidencia, Interior en lo que toque transporte) y de los boletines autonómicos verificados en `docs/fuentes.md`, y los hechos relevantes de la CNMV y anuncios del BORME de las empresas del sector (presidencia, consejero delegado, secretario general).
+2. **Verificar.** Para cada candidato, abre la fuente oficial (WebFetch sobre URL ya vistas) y confirma persona, cargo, organismo y fecha. Sin fuente oficial o comunicado de la propia organización, el candidato se queda en `work/cargos-candidatos.json` y no entra.
+3. **Vigencias.** Recorre `data/cargos/` con `vigente: true`: si hay un cese publicado, pon `hasta`, `vigente: false` y la fuente del cese; si el cargo lleva más de 12 meses sin `verificado_en` nuevo, comprueba en la web oficial del organismo y actualiza `verificado_en` o márcalo `revisar: true`.
+4. **Sembrar.** Escribe la lista revisada en `work/semilla-<fecha>.json` (formato de `docs/quien-decide-semilla-2026-11-08.json`) y ejecuta `python3 -I src/quien_decide_semilla.py sembrar --desde work/semilla-<fecha>.json`. Copia la lista a `docs/quien-decide/semilla-<fecha>.json` para dejar rastro. Si existe la tabla `cargos` en Supabase, sincroniza (upsert por `id`).
+5. **Organizaciones.** Toda organización nueva va a `data/organizaciones/<slug>.json` (nombre, tipo, región, web, dominio de correo) y a `organizations` si hay Supabase.
+6. **Informe.** `docs/quien-decide/informe-<fecha>.md`: altas, ceses, cargos por revisar, organizaciones nuevas, vacantes abiertas (cargos cesados sin sustituto: son noticia y lead a la vez). `git add data/cargos data/organizaciones docs/quien-decide && git commit -m "Quién decide: <mes>" && git push`.
+
+Reglas RGPD: solo cargos públicos y de contacto profesional; correo y teléfono solo los publicados por el organismo; ninguna anotación sobre la persona que no sea su cargo, su organismo y las fechas; nunca se borra un registro: un cese es una fila con `hasta`. Nada sin fuente.

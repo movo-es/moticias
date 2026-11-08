@@ -1,0 +1,26 @@
+{
+ "cargo": "Director general",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-03",
+   "tipo": "comunicado",
+   "url": "https://wizzair.com/"
+  }
+ ],
+ "hasta": null,
+ "id": "mauro-peneda-wizz-air-malta",
+ "notas": null,
+ "organizacion": "Wizz Air Malta",
+ "persona": "Mauro Peneda",
+ "piezas": [
+  "wizz-air-abre-su-base-de-madrid-y-entra-en-el-madrid-t3bx"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "operador",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

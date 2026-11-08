@@ -1,0 +1,79 @@
+{
+ "id": "edicion-autobus-y-carretera",
+ "name": "Edición Autobús y Carretera",
+ "vertical": "movilidad",
+ "type": "asociacion",
+ "status": "plantilla",
+ "brand": {
+  "client_name": "Asociación (plantilla)",
+  "logo_text": "AC",
+  "accent": "#4f6f3a",
+  "tagline": "Concesiones, contratos, normativa y plazos del transporte de viajeros por carretera",
+  "intro_md": "Selección preparada para empresas de transporte de viajeros por carretera: **mapa concesional, contratos públicos, cambios normativos y fechas límite**. Al adaptarla a un cliente se cambian el nombre, el color, el logotipo y los filtros."
+ },
+ "filters": {
+  "kinds": [],
+  "sections": [],
+  "subsectors": [
+   "autobús",
+   "carretera",
+   "urbano"
+  ],
+  "modos": [
+   "tierra"
+  ],
+  "tags_include": [],
+  "tags_exclude": [],
+  "keywords": [
+   "autobús",
+   "autobus",
+   "autocar",
+   "concesión",
+   "concesiones",
+   "mapa concesional",
+   "transporte de viajeros por carretera",
+   "VTC",
+   "taxi",
+   "estación de autobuses",
+   "obligación de servicio público",
+   "peaje",
+   "carretera"
+  ],
+  "keywords_exclude": [],
+  "campaigns": [],
+  "relevance_min": null,
+  "days": 14
+ },
+ "limits": {
+  "articles": 10,
+  "boletines": 10,
+  "agenda": 8
+ },
+ "include": {
+  "articles": true,
+  "boletines": true,
+  "agenda": true
+ },
+ "cadence": "quincenal",
+ "outputs": {
+  "page": true,
+  "email": true,
+  "pdf": true,
+  "feed": true
+ },
+ "review": {
+  "required": true,
+  "reviewers": []
+ },
+ "client_content_dir": "data/perfiles/contenido/edicion-autobus-y-carretera",
+ "contact": {
+  "title": "¿Quieres una edición como esta para tu organización?",
+  "text": "La adaptamos a tu marca y a tus temas, y la enviamos cada mañana como página propia o por correo.",
+  "email": "",
+  "cta_text": "",
+  "cta_url": ""
+ },
+ "created_at": "2026-11-08",
+ "notes": "Migrado de data/blogs/edicion-autobus-y-carretera.json (portal). Plantilla: para un cliente, duplicar y cambiar brand y filters.",
+ "client_content_title": "Comunicados de la asociación"
+}

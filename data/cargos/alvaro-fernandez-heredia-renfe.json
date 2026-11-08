@@ -1,0 +1,26 @@
+{
+ "cargo": "Presidente de Renfe Operadora",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-05",
+   "tipo": "web-oficial",
+   "url": "https://www.transportes.gob.es/transporte-terrestre/resoluciones-de-servicios-minimos-ferroviarios"
+  }
+ ],
+ "hasta": null,
+ "id": "alvaro-fernandez-heredia-renfe",
+ "notas": null,
+ "organizacion": "Renfe",
+ "persona": "Álvaro Fernández Heredia",
+ "piezas": [
+  "ouigo-desconvoca-sus-paros-tras-pactar-con-semaf-que-fu9h"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "operador",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

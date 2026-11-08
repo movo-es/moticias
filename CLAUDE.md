@@ -23,6 +23,9 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - Fotos solo con licencia libre y crédito, del sujeto concreto, sin rostros reconocibles; nunca la misma foto dos veces en la misma página.
 - Campañas temáticas (`data/campanas/`): orientan la selección (palabras clave, cadencia, peso), nunca el tratamiento ni la firma; monetización señalizada y fuera del texto; la fecha gancho no se publica sin verificar en fuente primaria.
 - La investigación de un accidente se cita como investigación en curso.
+- Un comunicado de empresa (sala de prensa) nunca es noticia sin verificación independiente: se publica marcado, fuera de la portada editorial y del boletín diario.
+- La comunicación de crisis de Amarantia (PLUS) se firma siempre como comunicado de la empresa y nunca se presenta como alerta oficial; ningún paso externo se envía sin aprobación humana.
+- `app.moticias.com` (aplicación privada y zonas con sesión) es la única excepción a «subdirectorios, nunca subdominios».
 - No se toca el código del portal ni el de la hemeroteca fuera de un cambio OpenSpec.
 - Lectura web sin aprobaciones: WebFetch solo con URL que ya aparecen en la sesión; las APIs del BOE y de Openverse son la única excepción para scripts.
 
@@ -36,15 +39,16 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 ## Mapa del repositorio
 
 - `CLAUDE.md` — esta página.
-- `docs/` — estrategia, arquitectura, manual operativo, estándar de profundidad, tarea diaria, fuentes, benchmark, plan, gestores del portal, registro de ediciones; `docs/asesor/` informes semanales del asesor; `docs/promo/` borradores de promoción.
-- `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado). Cambio en curso: `plataforma-v1` (sala de redacción, suscripciones, CRM, promoción, sensores, verticales).
+- `docs/` — estrategia (`estrategia.md` y `estrategia-2027.md`), arquitectura, manual operativo, estándar de profundidad, tarea diaria, fuentes, benchmark, plan, gestores del portal, registro de ediciones; `docs/asesor/` informes semanales del asesor; `docs/promo/` borradores de promoción.
+- `openspec/` — `project.md`, `specs/` (lo que el sistema hace hoy) y `changes/` (lo que está cambiando; `archive/` lo cerrado). Cambios en curso: `plataforma-v1` (sala de redacción, suscripciones, CRM, promoción, sensores, verticales) y `plataforma-2027` (sala de prensa, fuentes de segundo nivel, conocimiento, ediciones a medida, motor de envíos, auscultador y PLUS de Amarantia, «Quién decide»); el orden semanal está en `docs/estrategia-2027.md § 5`.
 - `verticals/` — configuración de cada vertical (`movilidad.json` = MOTICIAS; `turismo.json` = «viajar en grupo», previsto). Nada específico de un vertical va en el código.
 - `supabase/migrations/` — esquema de la plataforma (CRM, leads, campañas, señales, asesor).
 - `data/` — contenido publicado, un JSON por documento: `articles/`, `boletines/`, `agenda/`, `editions/`, `settings/`, `blogs/`, `ads/`, `soluciones/`, `campanas/` (campañas temáticas; informes en `docs/campanas/`).
 - `portal/` — código y datos del artefacto MOTICIAS; `portal/img/` las fotos con `credits.json`.
 - `hemeroteca/` — código y `data/` de la Hemeroteca MOTICIAS.
-- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`.
-- `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`, `campana-tematica`.
+- `src/` — `export_data.py`, `hemeroteca_build.py`, `boe_sweep.py`, `ghost_publish.py`, `selector.py` (módulo 1), `empaquetador.py` (módulo 2), `export_feed.py` (feed del widget), `quien_decide_semilla.py`.
+- `app/public/` — `widget.js` (módulo 3) y su demo; `data/perfiles/` — perfiles de ediciones a medida y del widget; `data/cargos/` — «Quién decide»; `docs/legal/` — borradores legales; `ghost/` — `llms.txt` y `robots.txt` para moticias.com.
+- `.claude/commands/` — `edicion-diaria`, `consejo-visibilidad`, `radar-regulatorio`, `licitaciones-semana`, `sensores`, `promo-social`, `campana-tematica`, `prensa-buzon`, `edicion-a-medida`, `conocimiento-ingesta`, `auscultar`, `quien-decide-actualizar`.
 - `work/` — temporal, ignorado por git.
 
 ## Tareas programadas (en la nube, cuenta de Rainer)

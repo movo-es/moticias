@@ -1,0 +1,12 @@
+{
+ "id": "widget-portada",
+ "name": "Widget · Lo esencial de MOTICIAS",
+ "vertical": "movilidad",
+ "type": "widget",
+ "status": "activo",
+ "filters": {"kinds": ["noticia", "analisis", "reportaje"], "days": 7},
+ "limits": {"articles": 8, "boletines": 0, "agenda": 5},
+ "include": {"articles": true, "boletines": false, "agenda": true},
+ "outputs": {"feed": true},
+ "notes": "Alimenta app/public/feed/widget-portada.json. Sin filtros de tema: lo más relevante de la semana."
+}

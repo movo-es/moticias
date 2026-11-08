@@ -1,0 +1,26 @@
+{
+ "cargo": "Director general de ENAIRE; presidente del Consejo de Administración de la Red (Network Management Board) 2025-2026",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-10-30",
+   "tipo": "web-oficial",
+   "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ%3AL_202602407"
+  }
+ ],
+ "hasta": null,
+ "id": "enrique-maurer-somolinos-enaire",
+ "notas": "La presidencia del NMB para 2027-2028 no consta: vigilar la Decisión 2026/2407.",
+ "organizacion": "ENAIRE",
+ "persona": "Enrique Maurer Somolinos",
+ "piezas": [
+  "doue-decision-2026-2407-gestor-red-celula-crisis-aviacion"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "administracion",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

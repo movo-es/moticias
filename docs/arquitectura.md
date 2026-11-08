@@ -25,6 +25,14 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | Código del portal (artefacto) | `portal/` | cambio OpenSpec (hoy no se toca) |
 | Código y datos de la hemeroteca | `hemeroteca/` | código: OpenSpec; datos: la rutina |
 | Scripts | `src/` | cambio OpenSpec |
+| Perfiles de ediciones a medida y widgets (módulo 1) | `data/perfiles/<id>.json` (+ `contenido/<id>/` del cliente) | sala de redacción; hoy, a mano |
+| Feeds del widget y el propio widget (módulo 3) | `app/public/feed/*.json` (los genera `src/export_feed.py`), `app/public/widget.js` | la rutina, cada mañana; código por OpenSpec |
+| Ediciones a medida emitidas (módulo 2) | `work/ediciones/<perfil>/<fecha>/` (temporal); archivo opcional en `data/ediciones-a-medida/` | `/edicion-a-medida` |
+| «Quién decide» (módulo 7) | `data/cargos/<id>.json`, `data/organizaciones/`, listas revisadas en `docs/quien-decide/` | `/quien-decide-actualizar` (mensual); altas a mano con `src/quien_decide_semilla.py sembrar` |
+| Sala de prensa (módulo 8) | `data/notas-de-prensa/<id>.json`, plantillas en `docs/prensa/` | `/prensa-buzon` |
+| Conocimiento (módulo 6, hasta Supabase) | `data/conocimiento/` (fuentes, propuestas, estado) | `/conocimiento-ingesta` |
+| Textos legales y ficheros de raíz de moticias.com | `docs/legal/`, `ghost/` | Rainer (con revisión profesional) |
+| Estrategia 2027 y su cambio | `docs/estrategia-2027.md`, `openspec/changes/plataforma-2027/` | Rainer y Code, método OpenSpec |
 | Trabajo temporal de una sesión | `work/` (ignorado por git) | nadie lo conserva |
 
 ## 2. Las tres vías de actualización

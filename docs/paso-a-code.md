@@ -36,6 +36,31 @@ Cada entrevista es una conversación corta (10–15 preguntas como mucho, de una
 Entrevístame para el cambio <nombre> de MOTICIAS. Lee antes CLAUDE.md, docs/paso-a-code.md § 3 (la entrevista <n>), openspec/changes/plataforma-v1/design.md y la spec correspondiente en openspec/changes/plataforma-v1/specs/. Pregunta de una en una, solo lo que no esté decidido, con tu recomendación. Al terminar, resume las decisiones y pásalas a /opsx:propose <nombre>.
 ```
 
+### Orden vigente desde el 8-11-2026 (estrategia 2027)
+
+`docs/estrategia-2027.md § 5` manda sobre la numeración de abajo. Un cambio por semana; «sin entrevista» significa que Code propone y aplica a partir de la spec y solo pregunta si encuentra una decisión no cubierta. Las specs de los módulos nuevos están en `openspec/changes/plataforma-2027/specs/`.
+
+| Semana | Cambio | Entrevista |
+|---|---|---|
+| 46 (10–16 nov) | `publicar-en-ghost-v1` | nº 1 |
+| 47 | `notas-de-prensa-v1` | nº 10 (corta) |
+| 48 | `sala-de-redaccion-v1` | nº 3 |
+| 49 | `sensores-v1` | sin entrevista (spec `plataforma-v1/specs/sensores` + `plataforma-2027/specs/fuentes-segundo-nivel`) |
+| 50 | `campanas-tematicas-v1` · `quien-decide-semilla` | nº 2 · sin entrevista |
+| 51–52 | `suscripciones-v1` | nº 4 |
+| 1–2 (ene 2027) | `fuentes-segundo-nivel-v1` · `crm-leads-v1` | sin entrevista · nº 5 |
+| 3 | `notas-de-prensa-v2` | sin entrevista |
+| 4–6 | `conocimiento-v1` | nº 11 |
+| 7–9 | `ediciones-a-medida-v2` | nº 12 |
+| 10–11 | `motor-envios-v1` | nº 13 |
+| 12–13 | `amarantia-auscultador-v1` | nº 14 (sustituye a la nº 7) |
+| 14–18 | `amarantia-plus-v1` | nº 15 |
+| 19–20 | `contactos-quien-decide-v1` · `asesor-v1` | sin entrevista · sin entrevista (la nº 8 queda como guion) |
+| 21–23 | `publicidad-promocion-v1` | nº 6 |
+| 24–26 | `vertical-turismo-v1` | nº 9 |
+
+Para los cambios de `plataforma-2027`, el mensaje de arranque lee además `docs/estrategia-2027.md § 4.x` y la spec en `openspec/changes/plataforma-2027/specs/<módulo>/`.
+
 ### Entrevista 1 · `publicar-en-ghost-v1` (fase 1)
 Spec base: `openspec/specs/publicacion-ghost/spec.md` y `src/ghost_publish.py`.
 Decidir: plan de Ghost(Pro) contratado y subdominio final; dominio principal `www.moticias.com`; tema de Ghost (uno de serie adaptado o propio con huecos señalizados; recomendado: de serie con inyección de bloques por código hasta la fase 4); cómo se representan en Ghost las secciones y subsectores (etiquetas internas `#tierra` + etiquetas públicas); qué pasa con el portal-artefacto cuando Ghost esté en marcha (se mantiene como espejo un mes; después, solo hemeroteca); textos legales a nombre de Avionline S.L. (quién los redacta y dónde viven: `data/settings/legal.json`); `llms.txt`, sitemap y Search Console; cuándo entra el paso 7 quater (publicador) en la rutina diaria y en qué estado publica (`published` las rutinarias, `draft` las pendientes).
@@ -81,6 +106,36 @@ Spec base: `openspec/changes/plataforma-v1/specs/verticales/spec.md` y `vertical
 Antes de la entrevista: el contenido del proyecto «viajar en grupo» (Rainer lo pega en la sesión o lo exporta desde ese proyecto) a `verticals/turismo.json`.
 Decidir: nombre, dominio y marca; secciones, subsectores, rotación de análisis; fuentes y entidades; segmentos y soluciones (Movenbus para organizadores de grupos, …); tareas programadas propias (hora, modelo); `data/` por vertical (`data/<vertical>/` o repositorio aparte; recomendado: `data/turismo/` en este repositorio mientras el código sea común).
 Entregable: primera edición de prueba del segundo vertical sin tocar código.
+
+### Entrevista 10 · `notas-de-prensa-v1` (semana 47; corta)
+Spec base: `openspec/changes/plataforma-2027/specs/notas-de-prensa/spec.md` y `docs/estrategia-2027.md § 4.1`.
+Decidir: nombre público de la sección (recomendado: «Notas de prensa»); verificación del emisor (recomendado: correo de dominio corporativo o enlace de confirmación); plazo de publicación (recomendado: mismo día laborable si llega antes de las 14:00); adjuntos permitidos (PDF e imágenes con derechos declarados); texto de la marca «Comunicado de empresa»; si las notas del grupo se publican igual (recomendado: sí, marcadas); quién vacía el buzón (agente `/prensa-buzon` a las 09:30 y 15:30).
+Entregable: sección en moticias.com, formulario, buzón `prensa@moticias.com`, ficha de organización, primera nota publicada.
+
+### Entrevista 11 · `conocimiento-v1` (semanas 4–6 de 2027)
+Spec base: `openspec/changes/plataforma-2027/specs/conocimiento/spec.md` y `docs/estrategia-2027.md § 4.5`.
+Decidir: ¿existe código o tablas del menú Conocimiento en `movo-es/movo`?; esquema compartido en el Supabase de MOVO o proyecto nuevo del grupo (recomendado: esquema `conocimiento` en un proyecto común `grupo`, con RLS por `owner`); corpus inicial (recomendado: Ley 9/2025 y desarrollo, piezas de MOTICIAS, BOE consolidado de transporte); quién aprueba la incorporación de fuentes propuestas; proveedor de embeddings (recomendado: Voyage); límites de consulta por nivel (recomendado: 50 al mes en corporativa, ampliable); formato de cita (recomendado: fuente, artículo o página, fecha de validez); si la consulta se expone por API a MOVO desde el primer día.
+Entregable: esquema `conocimiento`, `/conocimiento-ingesta`, consulta IA con citas en `app.moticias.com/conocimiento`.
+
+### Entrevista 12 · `ediciones-a-medida-v2` (semanas 7–9)
+Spec base: `openspec/changes/plataforma-2027/specs/ediciones-a-medida/spec.md`, `docs/estrategia-2027.md § 4.6`, `src/selector.py`, `src/empaquetador.py`, `app/public/widget.js`.
+Decidir: clientes piloto (tres asociaciones: nombres); cadencia por defecto (recomendado: quincenal para asociaciones, semanal para empresas); plantilla del PDF (recomendado: la de `src/empaquetador.py` con cabecera del cliente); quién revisa el documento colaborativo (recomendado: redactor y un contacto del cliente); contenido del cliente: ¿por formulario, por correo o por la sala?; marca del widget (texto y enlace); métricas que se enseñan al cliente (lecturas, clics, altas).
+Entregable: perfiles, página privada, correo, PDF con revisión previa, widget en una web amiga.
+
+### Entrevista 13 · `motor-envios-v1` (semanas 10–11)
+Spec base: `openspec/changes/plataforma-2027/specs/motor-envios/spec.md` y `docs/estrategia-2027.md § 4.4`.
+Decidir: remitentes por canal (correo `alertas@moticias.com`; SMS con remitente alfanumérico «MOTICIAS» o el del cliente; WhatsApp: número de Avionline o del cliente); proveedor de voz (recomendado: Twilio); plantillas iniciales (alerta de licitación, alerta de señal, comunicado, paso de PLUS); política de bajas y de horario (recomendado: nada no urgente entre 22:00 y 8:00); acuses (recomendado: enlace en correo y SMS, botón en WhatsApp, tecla en voz); registro y retención (recomendado: 24 meses).
+Entregable: envío a un segmento por correo, SMS y WhatsApp con acuses y registro; alertas de licitaciones por comunidad.
+
+### Entrevista 14 · `amarantia-auscultador-v1` (semanas 12–13; sustituye a la nº 7)
+Spec base: `openspec/changes/plataforma-2027/specs/auscultador/spec.md`, `plataforma-v1/specs/sensores/spec.md` y `docs/estrategia-2027.md § 4.3`.
+Decidir: primer cliente o entidades propias del grupo para arrancar; fuentes del anillo 2 que se activan (recomendado: Bluesky, Reddit, YouTube, Google News, Telegram público); umbrales de pico y tendencia (recomendado: 3 desviaciones a 6 horas; pendiente a 14 días); niveles y quién recibe cada uno; qué llega a la redacción como «posible noticia grande» (recomendado: nivel atención o crisis sobre cualquier entidad del sector); si se contrata una herramienta de escucha externa para X (recomendado: no hasta que un cliente lo pague); relación con el hub Inteligencia (Airtable `appBS92rDurXwwDuv`): migrar o sincronizar.
+Entregable: entidades, línea base, alertas con niveles, panel `app.moticias.com/amarantia`, aviso por canal.
+
+### Entrevista 15 · `amarantia-plus-v1` (semanas 14–18)
+Spec base: `openspec/changes/plataforma-2027/specs/plus/spec.md` y `docs/estrategia-2027.md § 4.4`.
+Decidir: cliente piloto y escenario del primer plan (recomendado: interrupción del servicio o accidente sin víctimas); audiencias y canales del piloto; quién aprueba cada paso (recomendado: dos personas designadas por el cliente, cualquiera de las dos); regla de avance por defecto (recomendado: 80 % de acuses o 20 minutos); contenido del flash público y lista de medios; fecha del primer simulacro; contrato de encargado del tratamiento (plantilla a nombre de Avionline).
+Entregable: plan piloto, secuencia con aprobación por paso, simulacro con informe.
 
 ## 4. Qué hace Rainer en cada entrevista
 

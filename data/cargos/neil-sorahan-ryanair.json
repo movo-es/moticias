@@ -1,0 +1,26 @@
+{
+ "cargo": "Director financiero (CFO)",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-02",
+   "tipo": "comunicado",
+   "url": "https://investor.ryanair.com/wp-content/uploads/2026/10/H1-FY27-Ryanair-Results.pdf"
+  }
+ ],
+ "hasta": null,
+ "id": "neil-sorahan-ryanair",
+ "notas": null,
+ "organizacion": "Ryanair",
+ "persona": "Neil Sorahan",
+ "piezas": [
+  "aire-ryanair-semestre-fy27-combustible-espana"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "operador",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

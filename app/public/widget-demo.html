@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo del widget de MOTICIAS en una web ajena</title>
+<style>
+  /* Estilos agresivos a propósito: el widget no debe verse afectado (shadow DOM). */
+  body { font-family: "Comic Sans MS", cursive; background: #fdf6e3; color: #333; margin: 0; }
+  * { line-height: 2 !important; }
+  a { color: red !important; text-decoration: wavy underline !important; }
+  header { background: #2b5797; color: #fff; padding: 20px 32px; }
+  main { display: grid; grid-template-columns: 1fr 340px; gap: 32px; padding: 24px 32px; max-width: 1100px; margin: 0 auto; }
+  aside { display: grid; gap: 24px; align-content: start; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+  code { background: #eee; padding: 2px 4px; }
+</style>
+</head>
+<body>
+<header><h1>Asociación Provincial de Transportistas (web de ejemplo)</h1><p>Página anfitriona con su propio CSS, para comprobar que el widget se aísla.</p></header>
+<main>
+  <article>
+    <h2>Cómo se incrusta</h2>
+    <p>Dos líneas. La primera marca dónde; la segunda carga el script una sola vez por página.</p>
+    <pre><code>&lt;div class="moticias-widget" data-feed="https://app.moticias.com/feed/widget-portada.json" data-limit="6" data-agenda="1"&gt;&lt;/div&gt;
+&lt;script async src="https://app.moticias.com/widget.js"&gt;&lt;/script&gt;</code></pre>
+    <p>Filtros: <code>data-tags="autobús,concesiones"</code>, <code>data-section="licitaciones"</code>, <code>data-theme="dark"</code>, <code>data-accent="#4f6f3a"</code>. Con Ghost en marcha, <code>data-ghost-url</code> y <code>data-ghost-key</code> leen la Content API directamente.</p>
+    <p>En esta demo los feeds se leen de <code>./feed/</code>, generados por <code>src/export_feed.py</code> a partir del repositorio.</p>
+  </article>
+  <aside>
+    <div class="moticias-widget" data-feed="./feed/widget-portada.json" data-limit="6" data-agenda="1" data-title="Lo esencial de la semana"></div>
+    <div class="moticias-widget" data-feed="./feed/widget-ferrocarril.json" data-limit="4" data-title="Ferrocarril" data-theme="dark" data-accent="#7ea9ea"></div>
+    <div class="moticias-widget" data-feed="./feed/widget-portada.json" data-section="regulacion" data-limit="3" data-title="Regulación" data-accent="#4a3f7a"></div>
+  </aside>
+</main>
+<script src="./widget.js"></script>
+</body>
+</html>

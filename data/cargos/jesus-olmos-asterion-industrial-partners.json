@@ -1,0 +1,26 @@
+{
+ "cargo": "Consejero delegado",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-10-30",
+   "tipo": "comunicado",
+   "url": "https://www.investegate.co.uk/announcement/rns/mobico-group--mcg/recommended-cash-acquisition-for-mobico-group-plc/9849217"
+  }
+ ],
+ "hasta": null,
+ "id": "jesus-olmos-asterion-industrial-partners",
+ "notas": "Anuncio de la oferta recomendada (RNS, 30-10-2026).",
+ "organizacion": "Asterion Industrial Partners",
+ "persona": "Jesús Olmos",
+ "piezas": [
+  "opa-cosmen-asterion-mobico-alsa"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "industria",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}
