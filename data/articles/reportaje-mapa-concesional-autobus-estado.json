@@ -74,6 +74,28 @@
  "key_fact": "34 corredores, 3 aprobados, 2 licitados y 0 adjudicados a un mes del plazo legal del 5-12-2026",
  "kicker": "Reportaje · Mapa concesional estatal",
  "kind": "reportaje",
+ "menciones": [
+  {
+   "cta": "Transporte a la demanda con MUFMI",
+   "estado": "publicada",
+   "exclusividad": "compartida",
+   "historial": [
+    {
+     "accion": "anadir",
+     "en": "2026-11-08T22:29+00:00",
+     "por": "superadmin"
+    }
+   ],
+   "motivo": "añadida a mano por superadmin; la cabecera no trata del tema (sin frase disparadora ni dos palabras clave)",
+   "nombre": "MUFMI",
+   "origen": "manual",
+   "producto": "mufmi",
+   "propuesta_en": "2026-11-08T22:29+00:00",
+   "puntuacion": 0,
+   "texto": "Donde la demanda no llena una línea fija, el transporte a la demanda mantiene el servicio con vehículos más pequeños y reserva previa. MUFMI diseña y opera estos servicios para administraciones.",
+   "url": "https://mufmi.com?utm_source=moticias&utm_medium=nota-de-la-casa&utm_campaign=moticias-nota-de-la-casa-mufmi&utm_content=reportaje-mapa-concesional-autobus-estado"
+  }
+ ],
  "published_at": "2026-11-04T16:25:00+01:00",
  "published_time": "16:25",
  "relevance": "ALTA",
