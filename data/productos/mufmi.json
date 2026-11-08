@@ -55,8 +55,10 @@
   "derechos de emisión",
   "aéreo"
  ],
+ "exclusividad": "compartida",
  "id": "mufmi",
  "max_por_semana": 3,
+ "modo": "automatico",
  "name": "MUFMI",
  "one_liner": "Transporte de viajeros a la demanda y servicios de movilidad para administraciones.",
  "owner": "Moveme S.L.",

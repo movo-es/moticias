@@ -22,7 +22,8 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
   - artículo: lateral y cierre;
   - blogs;
   - boletín (reservado).
-- Nunca aparece sobre la apertura ni dentro del texto. La etiqueta es siempre visible (art. 20 LSSI).
+- Los huecos de publicidad nunca aparecen sobre la apertura ni dentro del texto. La etiqueta es siempre visible (art. 20 LSSI).
+- Excepción, desde el 8-11-2026: las cajas «Contenido patrocinado» de los productos del grupo, en medio del texto (ver abajo).
 - Los huecos sin campaña de pago se rellenan con autopromoción (en `data/ads/`):
   - MOVO valoración de licitaciones;
   - Ediciones a medida;
@@ -31,6 +32,16 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 - El panel muestra campañas en curso y programadas, importe contratado e inventario de huecos.
 - Para el contenido patrocinado se rellena el campo «Contenido patrocinado por» de la pieza. Se señaliza y queda fuera de la selección automática de portada.
 - Página pública: #anunciate (formatos, sin tarifas publicadas).
+
+## Gestor de patrocinios (móvil) · desde el 8-11-2026
+
+- Dirección: `app.moticias.com/gestor/` (Vercel; mientras no esté el dominio, la dirección de Vercel del proyecto `moticias-app`). Se entra con contraseña; la sesión dura 90 días en el móvil.
+- Perfiles: superadministrador (todo) y oficina (cajas de las piezas, sin tocar productos ni publicidad).
+- Piezas: pendientes, con caja, posibles y todas. En cada pieza: publicar, retirar, editar el texto, añadir a mano otro producto (con su puntuación contra la pieza), ver cómo queda en el texto y republicar en la web.
+- Productos: cómo entra cada uno (automático con umbral, con revisión, solo a mano, apagado), exclusiva o comparte, umbral, máximo por semana, textos, URL y contexto.
+- Publicidad: campañas de `data/ads/`, activar o pausar.
+- El correo diario de menciones lleva «Gestionar» en cada pieza: abre el gestor en esa pieza.
+- Cada cambio queda en el repositorio (commit) y se republica la pieza en Ghost al momento.
 
 ## Licitaciones y «Sucederá pronto»
 - #licitaciones se divide en anuncios, publicaciones y resoluciones, y se filtra por sector:

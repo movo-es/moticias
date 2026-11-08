@@ -216,7 +216,7 @@
   },
   "rules": [
    "La campaña orienta la selección (palabras clave, cadencia, peso), nunca el tratamiento ni la firma.",
-   "Ninguna pieza menciona la solución dentro del texto; la relación la hace la plataforma en huecos señalizados y, desde el 8-11-2026, el bloque «Nota de la casa» del gestor de productos propios (data/productos/).",
+   "El texto de la pieza nunca menciona la solución; la relación la hace la plataforma en huecos señalizados y, desde el 8-11-2026, en las cajas «Contenido patrocinado» del gestor de productos propios (data/productos/), separadas del texto y etiquetadas.",
    "Fecha gancho sin verificar en fuente primaria (hook.date_verified=false): no se publica ninguna pieza que la cite.",
    "Sin actualidad sobre el tema no se fuerza una pieza: se publica fondo del plan editorial o nada.",
    "Nunca se borra una campaña; al cerrar, sus piezas quedan en una página pilar permanente."
@@ -227,23 +227,24 @@
  },
  "productos": {
   "dir": "data/productos/",
-  "label": "Nota de la casa",
-  "declaracion": "MOTICIAS pertenece al mismo grupo empresarial que este servicio. La mención no es publicidad pagada y no ha intervenido en la selección ni en la redacción de la pieza.",
+  "label": "Contenido patrocinado",
+  "declaracion": "%(nombre)s es un servicio de una empresa del grupo de MOTICIAS.",
   "email": [
    "ruphoff@avionline.es"
   ],
   "remitente": "redaccion@moticias.com",
-  "max_por_pieza": 1,
+  "max_por_pieza": 2,
   "sin_menciones_en": [
    "analisis"
   ],
   "rules": [
-   "La mención nunca va dentro del texto de la pieza: va en el bloque señalizado «Nota de la casa», al pie, con su declaración.",
-   "La decide el gestor de productos propios (data/productos/) por contexto; una pieza lleva una mención como mucho.",
-   "Los análisis del director y las piezas que tratan del grupo no llevan mención.",
-   "Cada mención publicada se comunica al director por correo con enlace de edición; retirar = estado retirada, nunca borrar.",
-   "La mención no cambia la firma ni los criterios de aprobación de la pieza."
-  ]
+   "La mención va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos, con la etiqueta discreta pero siempre visible (art. 20 LSSI) y una línea que declara que el servicio es del grupo.",
+   "Cada producto decide en el gestor si entra solo (modo automatico, con umbral de puntuación), si espera aprobación (revision), si solo se pone a mano (manual) o si no se menciona (apagado); y si es exclusiva (ninguna otra caja en esa pieza) o compartida (hasta max_por_pieza cajas).",
+   "Los análisis del director y las piezas que tratan del grupo no llevan cajas.",
+   "Cada mención publicada se comunica al director por correo con enlace al gestor de patrocinios; retirar = estado retirada, nunca borrar.",
+   "La caja no cambia el texto, la firma ni los criterios de aprobación de la pieza."
+  ],
+  "gestor_url": "https://app.moticias.com/gestor/"
  },
  "encargos": {
   "dir": "data/encargos/",

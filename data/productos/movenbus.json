@@ -61,8 +61,10 @@
   "dimite",
   "dimisión"
  ],
+ "exclusividad": "compartida",
  "id": "movenbus",
  "max_por_semana": 3,
+ "modo": "automatico",
  "name": "Movenbus",
  "one_liner": "Plataforma que agrupa a pymes de autobús y autocar para cubrir servicios discrecionales con una sola interlocución.",
  "owner": "Moveme S.L.",

@@ -68,6 +68,7 @@
   {
    "cta": "Comprobar si tu centro está obligado",
    "estado": "publicada",
+   "exclusividad": "compartida",
    "motivo": "subsector urbano; sección tierra; «ley 9/2025»; plan de movilidad; planes de movilidad; ZBE (cabecera); zonas de bajas emisiones (cabecera)",
    "nombre": "MOVO · planes de movilidad sostenible al trabajo",
    "origen": "automatica",

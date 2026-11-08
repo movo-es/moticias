@@ -12,8 +12,9 @@ Vertical: --vertical movilidad (lee verticals/<id>.json para secciones y etiquet
 
 Qué hace con cada pieza de data/articles/<id>.json:
 - Construye el HTML del post: respuesta directa (summary), cuerpo (body_md → HTML sencillo), cifras clave, cronología,
-  guía rápida (los cinco bloques), fuentes con fechas, bloque «Nota de la casa» si la pieza lleva una mención publicada
-  (src/menciones.py, data/productos/), recuadro de trazabilidad y declaración de intereses si procede.
+  guía rápida (los cinco bloques), fuentes con fechas, recuadro de trazabilidad y declaración de intereses si procede.
+  Si la pieza lleva menciones publicadas, cada una va en una caja «Contenido patrocinado» en medio del cuerpo
+  (src/menciones.py: cajas_html + insertar_en_medio; data/productos/; gestor en app.moticias.com/gestor/).
 - Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section>, subsector, tags), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
@@ -25,7 +26,7 @@ cursiva, enlaces, listas, citas); las fotos /_blob/ requieren subirlas con /imag
 import argparse, base64, datetime, glob, hashlib, hmac, html, json, os, re, sys, time, urllib.error, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from menciones import bloque_html  # noqa: E402  (bloque «Nota de la casa»; data/productos/README.md)
+from menciones import cajas_html, insertar_en_medio  # noqa: E402  (cajas «Contenido patrocinado»; data/productos/README.md)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "Moticias/1.0 (+https://moticias.com)"
@@ -118,7 +119,7 @@ def build_html(a, vertical):
     parts = []
     if a.get("summary"):
         parts.append('<p class="respuesta-directa"><strong>%s</strong></p>' % inline(a["summary"]))
-    parts.append(md_to_html(a.get("body_md", "")))
+    parts.append(insertar_en_medio(md_to_html(a.get("body_md", "")), cajas_html(a, vertical, inline)))
     if a.get("key_data"):
         parts.append("<h2>Cifras clave</h2><ul>" + "".join(
             "<li><strong>%s:</strong> %s <small>(%s)</small></li>" % (inline(k.get("label", "")), inline(k.get("value", "")), inline(k.get("source", "")))
@@ -135,9 +136,6 @@ def build_html(a, vertical):
             '<li>[%s] %s — <a href="%s" rel="noopener">%s</a> (publicado %s; consultado %s)</li>' % (
                 "Fuente oficial" if s.get("kind") == "oficial" else "Medios", inline(s.get("outlet", "")), html.escape(s.get("url", ""), quote=True),
                 inline(s.get("title", "")), fmt_date(s.get("published")), fmt_date(s.get("accessed"))) for s in a["sources"]) + "</ul>")
-    nota = bloque_html(a, vertical, inline)  # una mención como mucho, señalizada, nunca dentro del texto
-    if nota:
-        parts.append(nota)
     traz = ["Hechos: %s" % fmt_date(a.get("event_date")), "Redacción: %s" % (a.get("published_at") or "")]
     if a.get("revised_at"):
         traz.append("Revisión: %s" % a["revised_at"])
@@ -189,6 +187,16 @@ def upsert(post, status, base_url, token):
         return None, res
     p = res["posts"][0]
     return {"ghost_id": p["id"], "url": p.get("url"), "status": p.get("status"), "updated_at": p.get("updated_at")}, None
+
+
+def republicar(a, vertical, base_url, admin_key):
+    """Actualiza en Ghost un post que ya existe, manteniendo su estado (publicado o borrador). No crea posts nuevos.
+    Lo usa el gestor de patrocinios tras cada cambio. Devuelve (resultado, error)."""
+    token = ghost_token(admin_key)
+    st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,status" % (base_url, a["id"]), token)
+    if st != 200 or not found.get("posts"):
+        return None, "la pieza aún no está en Ghost (la subirá la rutina)"
+    return upsert(build_post(a, vertical, base_url), found["posts"][0].get("status") or "draft", base_url, token)
 
 
 def main():

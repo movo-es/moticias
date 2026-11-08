@@ -1,0 +1,37 @@
+{
+ "$schema": "https://openapi.vercel.sh/vercel.json",
+ "framework": null,
+ "outputDirectory": "app/public",
+ "functions": {
+  "api/gestor.py": {
+   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads}/**",
+   "maxDuration": 30
+  }
+ },
+ "headers": [
+  {
+   "source": "/gestor/(.*)",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    },
+    {
+     "key": "Cache-Control",
+     "value": "no-store"
+    },
+    {
+     "key": "X-Frame-Options",
+     "value": "DENY"
+    }
+   ]
+  }
+ ],
+ "redirects": [
+  {
+   "source": "/",
+   "destination": "/gestor/",
+   "permanent": false
+  }
+ ]
+}

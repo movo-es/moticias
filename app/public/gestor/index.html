@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#111111">
+<title>Patrocinios · MOTICIAS</title>
+<style>
+:root{--bg:#f6f6f4;--card:#fff;--ink:#141414;--mute:#6b6f6c;--line:#e3e4e1;--acc:#1c6b4a;--warn:#a15c00;--bad:#a12b2b;--soft:#f4f6f5}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:5;background:#111;color:#fff;padding:12px 16px calc(10px);display:flex;align-items:center;gap:10px}
+header b{font-size:17px;letter-spacing:.02em}header small{opacity:.65;margin-left:auto;font-size:12px}
+nav{position:sticky;top:46px;z-index:4;display:flex;background:#111;padding:0 8px 8px;gap:6px;overflow-x:auto}
+nav button{flex:1;min-width:max-content;background:#2a2a2a;color:#ddd;border:0;border-radius:18px;padding:8px 12px;font-size:14px}
+nav button.on{background:#fff;color:#111;font-weight:600}
+main{max-width:720px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mute{color:var(--mute);font-size:13px}
+h1{font-size:20px;margin:4px 0 8px}h2{font-size:16px;margin:0 0 6px}
+.chip{display:inline-block;font-size:12px;border-radius:10px;padding:2px 8px;background:#eee;color:#333}
+.chip.pub{background:#e3f1ea;color:var(--acc)}.chip.pro{background:#fff1dd;color:var(--warn)}.chip.ret{background:#f3e3e3;color:var(--bad)}
+button.b{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:10px 14px;font-size:15px;min-height:44px}
+button.b2{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:10px 14px;font-size:15px;min-height:44px}
+button.bad{border-color:var(--bad);background:#fff;color:var(--bad)}
+button:disabled{opacity:.5}
+.filtros{display:flex;gap:6px;overflow-x:auto;margin:0 0 10px}
+.filtros button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:6px 12px;font-size:14px;white-space:nowrap}
+.filtros button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.item{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 10px;font:inherit;color:inherit}
+.item .t{font-weight:600;line-height:1.3;margin:2px 0 6px}
+.caja{background:var(--soft);border-left:3px solid #c9d2cd;border-radius:6px;padding:12px;margin:10px 0}
+.caja .et{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7a837e;margin:0 0 6px}
+textarea,input,select{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+textarea{min-height:110px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{flex:1;border:0;background:#fff;padding:10px 6px;font-size:14px;min-height:44px}
+.seg button.on{background:var(--ink);color:#fff}
+.vista{font-family:Georgia,serif;font-size:15px;line-height:1.55;max-height:60vh;overflow:auto;border-top:1px solid var(--line);margin-top:10px;padding-top:6px}
+.vista aside{outline:2px dashed var(--acc);outline-offset:3px}
+#aviso{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:9;background:#111;color:#fff;border-radius:10px;padding:12px 14px;font-size:14px;display:none}
+#aviso.err{background:var(--bad)}
+.vacio{text-align:center;color:var(--mute);padding:30px 10px}
+details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
+.cand{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.cand:first-child{border-top:0}
+.barra{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:4px}.barra i{display:block;height:100%;background:var(--acc)}
+</style>
+</head>
+<body>
+<header><b>MOTICIAS · Patrocinios</b><small id="quien"></small></header>
+<nav id="nav" hidden>
+  <button data-v="piezas" class="on">Piezas</button>
+  <button data-v="productos">Productos</button>
+  <button data-v="anuncios">Publicidad</button>
+</nav>
+<main id="app"><div class="vacio">Cargando…</div></main>
+<div id="aviso"></div>
+<script>
+"use strict";
+const $ = s => document.querySelector(s), app = $("#app");
+const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const MODOS = {automatico:"Automático", revision:"Con revisión", manual:"Solo a mano", apagado:"Apagado"};
+const EST = {publicada:["pub","Publicada"], propuesta:["pro","Pendiente"], retirada:["ret","Retirada"]};
+let yo = null, vista = "piezas", filtro = "pendientes", cache = {piezas:null, productos:null, anuncios:null};
+
+async function api(a, body, params) {
+  const q = new URLSearchParams(Object.assign({a}, params || {}));
+  const r = await fetch("/api/gestor?" + q, body ? {method:"POST", headers:{"Content-Type":"application/json","X-Gestor":"1"}, body:JSON.stringify(body), credentials:"same-origin"} : {credentials:"same-origin"});
+  let d = {}; try { d = await r.json(); } catch (e) {}
+  if (r.status === 401 && a !== "entrar") { yo = null; login(); throw new Error("sin sesión"); }
+  if (!r.ok) throw new Error(d.error || ("Error " + r.status));
+  return d;
+}
+function aviso(t, err) { const n = $("#aviso"); n.textContent = t; n.className = err ? "err" : ""; n.style.display = "block"; clearTimeout(aviso.t); aviso.t = setTimeout(() => n.style.display = "none", err ? 6000 : 3500); }
+const chip = e => { const x = EST[e] || ["", e]; return `<span class="chip ${x[0]}">${E(x[1])}</span>`; };
+
+function login(msg) {
+  $("#nav").hidden = true; $("#quien").textContent = "";
+  app.innerHTML = `<div class="card"><h1>Entrar</h1><p class="mute">${msg || "Gestor de contenido patrocinado y publicidad de MOTICIAS."}</p>
+  <form id="f"><label>Contraseña</label><input type="password" id="clave" autocomplete="current-password" required>
+  <p><button class="b" style="width:100%">Entrar</button></p></form><p class="mute">La sesión dura 90 días en este móvil.</p></div>`;
+  $("#f").onsubmit = async ev => { ev.preventDefault(); try { const d = await api("entrar", {clave: $("#clave").value}); yo = d.rol; arrancar(); } catch (e) { aviso(e.message, true); } };
+}
+
+async function arrancar() {
+  let est; try { est = await api("yo"); } catch (e) { return; }
+  if (!est.configurado) { app.innerHTML = `<div class="card"><h1>Falta configurar</h1><p>Añade en Vercel la variable <b>GESTOR_CLAVE_SUPERADMIN</b> y vuelve a desplegar.</p></div>`; return; }
+  yo = est.rol; if (!yo) return login();
+  window._est = est;
+  $("#nav").hidden = false; $("#quien").textContent = yo === "superadmin" ? "superadmin" : "oficina";
+  $("#nav").querySelector('[data-v="productos"]').hidden = $("#nav").querySelector('[data-v="anuncios"]').hidden = false;
+  const p = new URLSearchParams(location.search).get("pieza");
+  if (p) return abrirPieza(p, true);
+  ir(vista);
+}
+$("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
+function ir(v) { vista = v; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, productos:verProductos, anuncios:verAnuncios})[v](); scrollTo(0,0); }
+
+function avisoConfig() {
+  const e = window._est || {}; const f = [];
+  if (!e.escritura) f.push("GITHUB_TOKEN (sin él, el gestor solo puede mirar)");
+  if (!e.ghost) f.push("GHOST_ADMIN_KEY y GHOST_URL (sin ellas, los cambios se ven en la web en la próxima publicación)");
+  return f.length ? `<div class="card" style="border-color:#e7c48d"><b>Configuración pendiente en Vercel</b><p class="mute">Falta: ${f.map(E).join("; ")}.</p></div>` : "";
+}
+
+// ---------- Piezas ----------
+async function verPiezas() {
+  app.innerHTML = `<div class="vacio">Cargando piezas…</div>`;
+  try { cache.piezas = (await api("piezas", null, {dias: 30})).piezas; } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  pintarPiezas();
+}
+function pintarPiezas() {
+  const ps = cache.piezas || [];
+  const grupos = {
+    pendientes: ps.filter(p => p.menciones.some(m => m.estado === "propuesta")),
+    publicadas: ps.filter(p => p.menciones.some(m => m.estado === "publicada")),
+    candidatas: ps.filter(p => !p.menciones.some(m => m.estado !== "retirada") && p.candidatos.length && p.kind !== "analisis"),
+    todas: ps
+  };
+  if (filtro === "pendientes" && !grupos.pendientes.length) filtro = "publicadas";
+  const nombres = {pendientes:"Pendientes", publicadas:"Con caja", candidatas:"Posibles", todas:"Todas"};
+  const lista = grupos[filtro];
+  app.innerHTML = avisoConfig() + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
+    + (lista.length ? lista.map(p => {
+      const act = p.menciones.filter(m => m.estado !== "retirada");
+      const c = p.candidatos[0];
+      return `<button class="item" data-id="${E(p.id)}"><span class="mute">${E(p.date)} · ${E(p.section || "")}${p.kind === "analisis" ? " · análisis" : ""}</span>
+        <div class="t">${E(p.title)}</div>
+        <div class="row">${act.length ? act.map(m => `${chip(m.estado)} <span class="mute">${E(m.nombre || m.producto)}</span>`).join(" ") : (c ? `<span class="mute">Posible: ${E(c.nombre)} · ${c.puntuacion}/${c.umbral}</span>` : `<span class="mute">Sin coincidencias</span>`)}</div></button>`;
+    }).join("") : `<div class="vacio">Nada en «${nombres[filtro]}» en los últimos 30 días.</div>`);
+  app.querySelector(".filtros").onclick = ev => { const b = ev.target.closest("button"); if (b) { filtro = b.dataset.f; pintarPiezas(); } };
+  app.querySelectorAll(".item").forEach(b => b.onclick = () => abrirPieza(b.dataset.id));
+}
+
+async function abrirPieza(id, desdeCorreo) {
+  app.innerHTML = `<div class="vacio">Abriendo la pieza…</div>`;
+  let p; try { p = await api("pieza", null, {id}); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  pintarPieza(p, desdeCorreo);
+}
+function pintarPieza(p, desdeCorreo) {
+  const act = p.menciones.filter(m => m.estado !== "retirada"), ret = p.menciones.filter(m => m.estado === "retirada");
+  const usados = new Set(act.map(m => m.producto));
+  const cands = (p.candidatos || []).filter(c => !usados.has(c.producto) && c.modo !== "apagado");
+  app.innerHTML = `<p><button class="b2" id="volver">← ${desdeCorreo ? "Todas las piezas" : "Volver"}</button></p>
+  <div class="card"><span class="mute">${E(p.date)} · ${E(p.section || "")} · ${E(p.author || "")}</span><h1>${E(p.title)}</h1>
+  <a href="${E(p.url)}" target="_blank" rel="noopener" class="mute">Ver en moticias.com ↗</a></div>
+  ${p.kind === "analisis" ? `<div class="card"><b>Análisis del director</b><p class="mute">Los análisis no llevan contenido patrocinado.</p></div>` : ""}
+  ${act.map(m => cajaMencion(m)).join("")}
+  ${cands.length && p.kind !== "analisis" ? `<div class="card"><h2>Añadir contenido patrocinado</h2><p class="mute">Puntuación de cada producto contra esta pieza (umbral del producto).</p>${cands.map(c => `
+    <div class="cand"><div style="flex:1"><b>${E(c.nombre)}</b> <span class="mute">${MODOS[c.modo]} · ${c.exclusividad}</span>
+    <div class="mute">${c.puntuacion === null ? E(c.motivo) : c.puntuacion + " / " + c.umbral + (c.supera ? " · supera el umbral" : "")}</div>
+    ${c.puntuacion !== null ? `<div class="barra"><i style="width:${Math.min(100, 100 * c.puntuacion / Math.max(1, c.umbral))}%"></i></div>` : ""}</div>
+    <button class="b2" data-anadir="${E(c.producto)}">Añadir</button></div>`).join("")}</div>` : ""}
+  ${ret.length ? `<details class="card"><summary>Retiradas (${ret.length})</summary>${ret.map(m => `<div class="cand"><span>${E(m.nombre || m.producto)}</span><button class="b2" data-anadir="${E(m.producto)}">Volver a poner</button></div>`).join("")}</details>` : ""}
+  <details class="card"><summary>Ver cómo queda en el texto</summary><div class="vista">${p.vista || ""}</div></details>
+  <p><button class="b2" id="repub" style="width:100%">Republicar en la web ahora</button></p>`;
+  $("#volver").onclick = () => { history.replaceState(null, "", location.pathname); ir("piezas"); };
+  $("#repub").onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Republicada en la web" : d.detalle, !d.ok); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
+  app.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => mencion(p, b.dataset.prod, b.dataset.acc, b));
+  app.querySelectorAll("[data-anadir]").forEach(b => b.onclick = () => mencion(p, b.dataset.anadir, "anadir", b));
+  app.querySelectorAll("[data-editar]").forEach(b => b.onclick = () => {
+    const box = b.closest(".card"), m = p.menciones.find(x => x.producto === b.dataset.editar);
+    box.querySelector(".editor").innerHTML = `<label>Texto de la caja</label><textarea id="tx">${E(m.texto)}</textarea><label>Texto del enlace</label><input id="cta" value="${E(m.cta)}">
+      <p class="row"><button class="b" id="g">Guardar</button><button class="b2" id="c">Cancelar</button></p>`;
+    box.querySelector("#c").onclick = () => pintarPieza(p);
+    box.querySelector("#g").onclick = ev => mencion(p, m.producto, "editar", ev.target, {texto: box.querySelector("#tx").value, cta: box.querySelector("#cta").value});
+  });
+  scrollTo(0,0);
+}
+function cajaMencion(m) {
+  return `<div class="card"><div class="row" style="justify-content:space-between"><h2>${E(m.nombre || m.producto)}</h2>${chip(m.estado)}</div>
+  <div class="caja"><p class="et">Contenido patrocinado</p>${E(m.texto)} <u>${E(m.cta)}</u></div>
+  <p class="mute">${m.origen === "manual" ? "Puesta a mano" : "Automática"} · puntuación ${E(m.puntuacion)} · ${E(m.exclusividad || "compartida")}</p>
+  <details><summary>Por qué</summary><p class="mute">${E(m.motivo)}</p></details>
+  <div class="editor"></div>
+  <div class="row">${m.estado !== "publicada" ? `<button class="b" data-acc="publicar" data-prod="${E(m.producto)}">Publicar</button>` : ""}
+  <button class="b2" data-editar="${E(m.producto)}">Editar texto</button>
+  <button class="b2 bad" data-acc="retirar" data-prod="${E(m.producto)}">Retirar</button></div></div>`;
+}
+async function mencion(p, producto, accion, btn, extra) {
+  btn.disabled = true;
+  try {
+    const d = await api("mencion", Object.assign({id: p.id, producto, accion}, extra || {}));
+    const i = (cache.piezas || []).findIndex(x => x.id === p.id); if (i >= 0) cache.piezas[i] = d.pieza;
+    aviso({publicar:"Publicada", retirar:"Retirada", editar:"Texto guardado", anadir:"Caja añadida", proponer:"Pendiente"}[accion] + (d.ghost.ok ? " · web actualizada" : " · " + d.ghost.detalle), false);
+    pintarPieza(Object.assign({}, p, d.pieza));
+  } catch (e) { aviso(e.message, true); btn.disabled = false; }
+}
+
+// ---------- Productos ----------
+async function verProductos() {
+  app.innerHTML = `<div class="vacio">Cargando productos…</div>`;
+  try { cache.productos = (await api("productos")).productos; } catch (e) { return; }
+  const sa = yo === "superadmin";
+  app.innerHTML = avisoConfig() + (sa ? "" : `<div class="card mute">Perfil oficina: puedes consultar los ajustes; los cambia el superadministrador.</div>`)
+   + cache.productos.map(p => `<div class="card" data-p="${E(p.id)}">
+    <div class="row" style="justify-content:space-between"><h2>${E(p.name)}</h2><span class="chip ${p.modo === "apagado" ? "ret" : "pub"}">${MODOS[p.modo] || p.modo}</span></div>
+    <p class="mute">${E(p.one_liner || "")}${p.url ? "" : " · <b>sin URL: no se puede mencionar</b>"}</p>
+    <label>Cómo entra en las piezas</label><div class="seg" data-k="modo">${Object.keys(MODOS).map(k => `<button data-v="${k}" class="${p.modo===k?"on":""}" ${sa?"":"disabled"}>${MODOS[k]}</button>`).join("")}</div>
+    <label>Junto a otros</label><div class="seg" data-k="exclusividad">${[["exclusiva","Exclusiva"],["compartida","Comparte"]].map(([k,t]) => `<button data-v="${k}" class="${(p.exclusividad||"compartida")===k?"on":""}" ${sa?"":"disabled"}>${t}</button>`).join("")}</div>
+    <div class="row" style="gap:12px"><div style="flex:1"><label>Umbral de puntuación</label><input type="number" inputmode="numeric" data-k="umbral" value="${E(p.umbral ?? 10)}" ${sa?"":"disabled"}></div>
+    <div style="flex:1"><label>Máximo por semana</label><input type="number" inputmode="numeric" data-k="max_por_semana" value="${E(p.max_por_semana ?? 0)}" ${sa?"":"disabled"}></div></div>
+    <details><summary>Textos y contexto</summary>
+      <label>Texto de la caja</label><textarea data-t="corto" ${sa?"":"disabled"}>${E((p.textos||{}).corto)}</textarea>
+      <label>Texto del enlace</label><input data-t="cta" value="${E((p.textos||{}).cta)}" ${sa?"":"disabled"}>
+      <label>URL de destino</label><input data-k="url" value="${E(p.url)}" ${sa?"":"disabled"}>
+      <label>Contexto (cuándo sí y cuándo no)</label><textarea data-k="contexto" ${sa?"":"disabled"}>${E(p.contexto)}</textarea>
+    </details>
+    ${sa ? `<p><button class="b" data-guardar style="width:100%">Guardar</button></p>` : ""}</div>`).join("")
+   + `<p class="mute">Automático: entra solo si la pieza supera el umbral. Con revisión: queda pendiente para aprobar aquí. Solo a mano: nunca entra solo. Exclusiva: si entra, la pieza no lleva otra caja.</p>`;
+  if (!sa) return;
+  app.querySelectorAll(".seg button").forEach(b => b.onclick = () => { b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); });
+  app.querySelectorAll("[data-guardar]").forEach(b => b.onclick = async () => {
+    const c = b.closest("[data-p]"), cambios = {textos:{}};
+    c.querySelectorAll(".seg").forEach(s => cambios[s.dataset.k] = s.querySelector(".on").dataset.v);
+    c.querySelectorAll("input[data-k],textarea[data-k]").forEach(i => cambios[i.dataset.k] = i.value);
+    c.querySelectorAll("[data-t]").forEach(i => cambios.textos[i.dataset.t] = i.value);
+    b.disabled = true;
+    try { await api("producto", {id: c.dataset.p, cambios}); aviso("Guardado · se aplica desde la próxima edición"); } catch (e) { aviso(e.message, true); }
+    b.disabled = false;
+  });
+}
+
+// ---------- Publicidad ----------
+async function verAnuncios() {
+  app.innerHTML = `<div class="vacio">Cargando publicidad…</div>`;
+  try { cache.anuncios = (await api("anuncios")).anuncios; } catch (e) { return; }
+  const sa = yo === "superadmin";
+  app.innerHTML = avisoConfig() + `<p class="mute">Huecos de publicidad fuera del texto (portada, artículo, boletín). Las cajas dentro del texto se gestionan en «Piezas» y «Productos».</p>`
+   + cache.anuncios.map(a => `<div class="card" data-a="${E(a.id)}"><div class="row" style="justify-content:space-between"><h2>${E(a.name)}</h2><span class="chip ${a.status==="activo"?"pub":"ret"}">${E(a.status)}</span></div>
+    <p class="mute">${E(a.advertiser)} · ${E(a.type)} · ${E((a.slots||[]).join(", "))}<br>${E(a.start || "")} → ${E(a.end || "")}</p>
+    <div class="caja"><p class="et">${E(a.label || "Publicidad")}</p><b>${E(a.headline)}</b><br>${E(a.text)}</div>
+    ${sa ? `<div class="row"><button class="b2" data-st="${a.status==="activo"?"pausado":"activo"}">${a.status==="activo"?"Pausar":"Activar"}</button></div>` : ""}</div>`).join("");
+  app.querySelectorAll("[data-st]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await api("anuncio", {id: b.closest("[data-a]").dataset.a, cambios: {status: b.dataset.st}}); aviso("Guardado"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; }
+  });
+}
+arrancar();
+</script>
+</body>
+</html>

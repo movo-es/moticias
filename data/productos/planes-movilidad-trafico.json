@@ -25,8 +25,10 @@
   ]
  },
  "excluir": [],
+ "exclusividad": "compartida",
  "id": "planes-movilidad-trafico",
  "max_por_semana": 0,
+ "modo": "apagado",
  "name": "Planes de movilidad y organización de tráficos",
  "one_liner": "Planes de movilidad y organización de tráficos para municipios, puertos, campus y plataformas logísticas.",
  "owner": "Nueva línea (con Jörg Fischer y Francisco González)",
