@@ -64,6 +64,8 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 const $ = s => document.querySelector(s), app = $("#app");
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const MODOS = {automatico:"Automático", revision:"Con revisión", manual:"Solo a mano", apagado:"Apagado"};
+const POS = {premium:["Premium","tras la entradilla"], estandar:["Estándar","entre el tercio y la mitad"], referencia:["Referencia","al final del texto"]};
+const enWeb = m => m.estado === "publicada" ? (m.en_web ? `<span class="chip pub">En la web</span>` : `<span class="chip pro">Falta en la web</span>`) : "";
 const EST = {publicada:["pub","Publicada"], propuesta:["pro","Pendiente"], retirada:["ret","Retirada"]};
 let yo = null, vista = "piezas", filtro = "pendientes", cache = {piezas:null, productos:null, anuncios:null};
 
@@ -118,20 +120,27 @@ function pintarPiezas() {
   const grupos = {
     pendientes: ps.filter(p => p.menciones.some(m => m.estado === "propuesta")),
     publicadas: ps.filter(p => p.menciones.some(m => m.estado === "publicada")),
+    web: ps.filter(p => p.menciones.some(m => m.estado === "publicada" && !m.en_web)),
     candidatas: ps.filter(p => !p.menciones.some(m => m.estado !== "retirada") && p.candidatos.length && p.kind !== "analisis"),
     todas: ps
   };
-  if (filtro === "pendientes" && !grupos.pendientes.length) filtro = "publicadas";
-  const nombres = {pendientes:"Pendientes", publicadas:"Con caja", candidatas:"Posibles", todas:"Todas"};
+  if (filtro === "pendientes" && !grupos.pendientes.length && !grupos.web.length) filtro = "publicadas";
+  if (filtro === "pendientes" && !grupos.pendientes.length && grupos.web.length) filtro = "web";
+  const nombres = {pendientes:"Pendientes", web:"Falta en la web", publicadas:"Con caja", candidatas:"Posibles", todas:"Todas"};
   const lista = grupos[filtro];
-  app.innerHTML = avisoConfig() + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
+  const subir = grupos.web.length ? `<div class="card"><b>${grupos.web.length} pieza(s) con caja aprobada que aún no está en la web.</b><p><button class="b" id="subir" style="width:100%">Subir todo a la web ahora</button></p></div>` : "";
+  app.innerHTML = avisoConfig() + subir + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
     + (lista.length ? lista.map(p => {
       const act = p.menciones.filter(m => m.estado !== "retirada");
       const c = p.candidatos[0];
       return `<button class="item" data-id="${E(p.id)}"><span class="mute">${E(p.date)} · ${E(p.section || "")}${p.kind === "analisis" ? " · análisis" : ""}</span>
         <div class="t">${E(p.title)}</div>
-        <div class="row">${act.length ? act.map(m => `${chip(m.estado)} <span class="mute">${E(m.nombre || m.producto)}</span>`).join(" ") : (c ? `<span class="mute">Posible: ${E(c.nombre)} · ${c.puntuacion}/${c.umbral}</span>` : `<span class="mute">Sin coincidencias</span>`)}</div></button>`;
+        <div class="row">${act.length ? act.map(m => `${chip(m.estado)} ${enWeb(m)} <span class="mute">${E(m.nombre || m.producto)} · ${POS[m.posicion || "estandar"][0]}</span>`).join(" ") : (c ? `<span class="mute">Posible: ${E(c.nombre)} · ${c.puntuacion}/${c.umbral}</span>` : `<span class="mute">Sin coincidencias</span>`)}</div></button>`;
     }).join("") : `<div class="vacio">Nada en «${nombres[filtro]}» en los últimos 30 días.</div>`);
+  const bs = $("#subir"); if (bs) bs.onclick = async () => { bs.disabled = true; bs.textContent = "Subiendo…";
+    try { const d = await api("republicar_pendientes", {}); const mal = d.piezas.filter(r => !r.ok);
+      aviso(mal.length ? `${d.piezas.length - mal.length} subidas; ${mal.length} con error: ${mal[0].detalle}` : `${d.piezas.length} pieza(s) actualizadas en la web`, !!mal.length); verPiezas(); }
+    catch (e) { aviso(e.message, true); bs.disabled = false; } };
   app.querySelector(".filtros").onclick = ev => { const b = ev.target.closest("button"); if (b) { filtro = b.dataset.f; pintarPiezas(); } };
   app.querySelectorAll(".item").forEach(b => b.onclick = () => abrirPieza(b.dataset.id));
 }
@@ -157,10 +166,12 @@ function pintarPieza(p, desdeCorreo) {
     <button class="b2" data-anadir="${E(c.producto)}">Añadir</button></div>`).join("")}</div>` : ""}
   ${ret.length ? `<details class="card"><summary>Retiradas (${ret.length})</summary>${ret.map(m => `<div class="cand"><span>${E(m.nombre || m.producto)}</span><button class="b2" data-anadir="${E(m.producto)}">Volver a poner</button></div>`).join("")}</details>` : ""}
   <details class="card"><summary>Ver cómo queda en el texto</summary><div class="vista">${p.vista || ""}</div></details>
-  <p><button class="b2" id="repub" style="width:100%">Republicar en la web ahora</button></p>`;
+  <p><button class="b2" id="repub" style="width:100%">Volver a subir a la web</button></p>
+  <p class="mute">Cada cambio se sube solo a la web. Este botón solo hace falta si un cambio quedó marcado «Falta en la web».</p>`;
   $("#volver").onclick = () => { history.replaceState(null, "", location.pathname); ir("piezas"); };
-  $("#repub").onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Republicada en la web" : d.detalle, !d.ok); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
+  $("#repub").onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Subida a la web" : d.detalle, !d.ok); if (d.ok) abrirPieza(p.id); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
   app.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => mencion(p, b.dataset.prod, b.dataset.acc, b));
+  app.querySelectorAll("[data-pos]").forEach(b => b.onclick = () => { if (!b.classList.contains("on")) mencion(p, b.dataset.prod, "posicion", b, {posicion: b.dataset.pos}); });
   app.querySelectorAll("[data-anadir]").forEach(b => b.onclick = () => mencion(p, b.dataset.anadir, "anadir", b));
   app.querySelectorAll("[data-editar]").forEach(b => b.onclick = () => {
     const box = b.closest(".card"), m = p.menciones.find(x => x.producto === b.dataset.editar);
@@ -172,8 +183,10 @@ function pintarPieza(p, desdeCorreo) {
   scrollTo(0,0);
 }
 function cajaMencion(m) {
-  return `<div class="card"><div class="row" style="justify-content:space-between"><h2>${E(m.nombre || m.producto)}</h2>${chip(m.estado)}</div>
+  const pos = m.posicion || "estandar";
+  return `<div class="card"><div class="row" style="justify-content:space-between"><h2>${E(m.nombre || m.producto)}</h2><span>${chip(m.estado)} ${enWeb(m)}</span></div>
   <div class="caja"><p class="et">Contenido patrocinado</p>${E(m.texto)} <u>${E(m.cta)}</u></div>
+  <label>Posición en el texto</label><div class="seg">${Object.keys(POS).map(k => `<button data-pos="${k}" data-prod="${E(m.producto)}" class="${k===pos?"on":""}">${POS[k][0]}<br><small>${POS[k][1]}</small></button>`).join("")}</div>
   <p class="mute">${m.origen === "manual" ? "Puesta a mano" : "Automática"} · puntuación ${E(m.puntuacion)} · ${E(m.exclusividad || "compartida")}</p>
   <details><summary>Por qué</summary><p class="mute">${E(m.motivo)}</p></details>
   <div class="editor"></div>
@@ -186,7 +199,7 @@ async function mencion(p, producto, accion, btn, extra) {
   try {
     const d = await api("mencion", Object.assign({id: p.id, producto, accion}, extra || {}));
     const i = (cache.piezas || []).findIndex(x => x.id === p.id); if (i >= 0) cache.piezas[i] = d.pieza;
-    aviso({publicar:"Publicada", retirar:"Retirada", editar:"Texto guardado", anadir:"Caja añadida", proponer:"Pendiente"}[accion] + (d.ghost.ok ? " · web actualizada" : " · " + d.ghost.detalle), false);
+    aviso({publicar:"Publicada", retirar:"Retirada", editar:"Texto guardado", anadir:"Caja añadida", proponer:"Pendiente", posicion:"Posición cambiada"}[accion] + (d.ghost.ok ? " · web actualizada" : " · " + d.ghost.detalle), false);
     pintarPieza(Object.assign({}, p, d.pieza));
   } catch (e) { aviso(e.message, true); btn.disabled = false; }
 }
@@ -202,6 +215,7 @@ async function verProductos() {
     <p class="mute">${E(p.one_liner || "")}${p.url ? "" : " · <b>sin URL: no se puede mencionar</b>"}</p>
     <label>Cómo entra en las piezas</label><div class="seg" data-k="modo">${Object.keys(MODOS).map(k => `<button data-v="${k}" class="${p.modo===k?"on":""}" ${sa?"":"disabled"}>${MODOS[k]}</button>`).join("")}</div>
     <label>Junto a otros</label><div class="seg" data-k="exclusividad">${[["exclusiva","Exclusiva"],["compartida","Comparte"]].map(([k,t]) => `<button data-v="${k}" class="${(p.exclusividad||"compartida")===k?"on":""}" ${sa?"":"disabled"}>${t}</button>`).join("")}</div>
+    <label>Posición por defecto</label><div class="seg" data-k="posicion">${Object.keys(POS).map(k => `<button data-v="${k}" class="${(p.posicion||"estandar")===k?"on":""}" ${sa?"":"disabled"}>${POS[k][0]}<br><small>${POS[k][1]}</small></button>`).join("")}</div>
     <div class="row" style="gap:12px"><div style="flex:1"><label>Umbral de puntuación</label><input type="number" inputmode="numeric" data-k="umbral" value="${E(p.umbral ?? 10)}" ${sa?"":"disabled"}></div>
     <div style="flex:1"><label>Máximo por semana</label><input type="number" inputmode="numeric" data-k="max_por_semana" value="${E(p.max_por_semana ?? 0)}" ${sa?"":"disabled"}></div></div>
     <details><summary>Textos y contexto</summary>
@@ -211,7 +225,7 @@ async function verProductos() {
       <label>Contexto (cuándo sí y cuándo no)</label><textarea data-k="contexto" ${sa?"":"disabled"}>${E(p.contexto)}</textarea>
     </details>
     ${sa ? `<p><button class="b" data-guardar style="width:100%">Guardar</button></p>` : ""}</div>`).join("")
-   + `<p class="mute">Automático: entra solo si la pieza supera el umbral. Con revisión: queda pendiente para aprobar aquí. Solo a mano: nunca entra solo. Exclusiva: si entra, la pieza no lleva otra caja.</p>`;
+   + `<p class="mute">Automático: entra solo si la pieza supera el umbral. Con revisión: queda pendiente para aprobar aquí. Solo a mano: nunca entra solo. Exclusiva: si entra, la pieza no lleva otra caja. Premium: justo después de la entradilla. Estándar: entre el tercio y la mitad. Referencia: al final del texto. La caja lleva siempre enlace.</p>`;
   if (!sa) return;
   app.querySelectorAll(".seg button").forEach(b => b.onclick = () => { b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); });
   app.querySelectorAll("[data-guardar]").forEach(b => b.onclick = async () => {

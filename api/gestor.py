@@ -29,7 +29,7 @@ DIAS_SESION = 90
 VERTICAL = "movilidad"
 
 # Campos que el superadministrador puede cambiar en un producto y en un anuncio (lista cerrada).
-CAMPOS_PRODUCTO = {"modo", "umbral", "exclusividad", "max_por_semana", "status", "url", "one_liner", "contexto", "textos", "excluir"}
+CAMPOS_PRODUCTO = {"modo", "umbral", "exclusividad", "posicion", "max_por_semana", "status", "url", "one_liner", "contexto", "textos", "excluir"}
 CAMPOS_ANUNCIO = {"status", "start", "end", "headline", "text", "cta", "url", "weight"}
 
 
@@ -158,7 +158,7 @@ def detalle(pid):
 
 def accion_mencion(rol, d):
     pid, prod_id, acc = d.get("id"), d.get("producto"), d.get("accion")
-    if acc not in ("publicar", "retirar", "proponer", "editar", "anadir"):
+    if acc not in ("publicar", "retirar", "proponer", "editar", "anadir", "posicion"):
         return 400, {"error": "acción desconocida"}
     ruta = "data/articles/%s.json" % pid
     a, sha = leer(ruta)
@@ -170,6 +170,8 @@ def accion_mencion(rol, d):
     ms = a.setdefault("menciones", [])
     ahora = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
     m = next((x for x in ms if x.get("producto") == prod_id), None)
+    if acc == "anadir" and d.get("posicion") not in (None, *M.POSICIONES):
+        return 400, {"error": "posición no válida"}
     if acc == "anadir":
         if a.get("kind") == "analisis":
             return 400, {"error": "los análisis del director no llevan contenido patrocinado"}
@@ -184,6 +186,8 @@ def accion_mencion(rol, d):
             pts, motivos = M.puntuar(a, prod)
             m = M.nueva_mencion(a, prod, pts or 0, ["añadida a mano por %s" % rol] + (motivos if isinstance(motivos, list) else [motivos]), "publicada", origen="manual")
             ms.append(m)
+        if d.get("posicion") in M.POSICIONES:
+            m["posicion"] = d["posicion"]
     else:
         if not m:
             return 404, {"error": "esa pieza no tiene mención de ese producto"}
@@ -197,19 +201,45 @@ def accion_mencion(rol, d):
             for k in ("texto", "cta"):
                 if isinstance(d.get(k), str) and d[k].strip():
                     m[k] = d[k].strip()[:600]
+            if d.get("posicion") in M.POSICIONES:
+                m["posicion"] = d["posicion"]
+        elif acc == "posicion":
+            if d.get("posicion") not in M.POSICIONES:
+                return 400, {"error": "posición no válida"}
+            m["posicion"] = d["posicion"]
     m.setdefault("historial", []).append({"en": ahora, "por": rol, "accion": acc})
     pub = [x for x in ms if x.get("estado") == "publicada"]
     maxp = int((v.get("productos") or {}).get("max_por_pieza") or 2)
     if acc in ("publicar", "anadir") and (len(pub) > maxp or (len(pub) > 1 and any(x.get("exclusividad") == "exclusiva" for x in pub))):
         return 400, {"error": "no cabe: la pieza ya tiene %d caja(s) y una de ellas es exclusiva o se supera el máximo (%d). Retira otra antes." % (len(pub) - 1, maxp)}
+    # Cada cambio se sube a la web en el acto (también en productos propios: la pieza se actualiza en Ghost y su fecha de
+    # modificación y el sitemap se refrescan); si Ghost responde bien, la mención queda marcada «en la web».
+    m.pop("en_web", None)
+    rep_ok, rep = republicar(a, v)
+    if rep_ok:
+        G.marcar_en_web(a)
     ok, det = escribir(ruta, a, sha, "Patrocinio: %s %s en %s" % (acc, prod_id, pid))
     if not ok:
         return 502, {"error": det}
-    rep_ok, rep = republicar(a, v)
     r = resumen_pieza(a, productos())
     r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
     r["candidatos"] = M.candidatos(a, productos())
     return 200, {"ok": True, "commit": det, "ghost": {"ok": rep_ok, "detalle": rep}, "pieza": r}
+
+
+def pendiente_web(p):
+    return any(m.get("estado") == "publicada" and not m.get("en_web") for m in p.get("menciones") or [])
+
+
+def republicar_y_marcar(pid):
+    ruta = "data/articles/%s.json" % pid
+    a, sha = leer(ruta)
+    if not a:
+        return {"ok": False, "detalle": "pieza no encontrada"}
+    ok, det = republicar(a, vertical())
+    if ok and G.marcar_en_web(a) and sha:
+        escribir(ruta, a, sha, "Patrocinio: %s en la web" % pid)
+    return {"ok": ok, "detalle": det}
 
 
 def accion_producto(d):
@@ -223,6 +253,8 @@ def accion_producto(d):
     cambios = {k: val for k, val in (d.get("cambios") or {}).items() if k in CAMPOS_PRODUCTO}
     if "modo" in cambios and cambios["modo"] not in M.MODOS:
         return 400, {"error": "modo no válido"}
+    if "posicion" in cambios and cambios["posicion"] not in M.POSICIONES:
+        return 400, {"error": "posición no válida"}
     if "exclusividad" in cambios and cambios["exclusividad"] not in ("exclusiva", "compartida"):
         return 400, {"error": "exclusividad no válida"}
     for k in ("umbral", "max_por_semana"):
@@ -328,11 +360,11 @@ class handler(BaseHTTPRequestHandler):
         if a == "mencion":
             return self._enviar(*accion_mencion(rol, d))
         if a == "republicar":
-            art, _ = leer("data/articles/%s.json" % d.get("id"))
-            if not art:
-                return self._enviar(404, {"error": "pieza no encontrada"})
-            ok, det = republicar(art, vertical())
-            return self._enviar(200, {"ok": ok, "detalle": det})
+            return self._enviar(200, republicar_y_marcar(d.get("id")))
+        if a == "republicar_pendientes":
+            ids = [p["id"] for p in piezas(60) if pendiente_web(p)]
+            res = [dict(republicar_y_marcar(i), id=i) for i in ids[:15]]
+            return self._enviar(200, {"ok": all(r["ok"] for r in res), "piezas": res, "quedan": max(0, len(ids) - 15)})
         if rol != "superadmin":
             return self._enviar(403, {"error": "solo el superadministrador puede cambiar productos y publicidad"})
         if a == "producto":

@@ -37,11 +37,11 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 
 - Dirección: `app.moticias.com/gestor/` (Vercel; mientras no esté el dominio, la dirección de Vercel del proyecto `moticias-app`). Se entra con contraseña; la sesión dura 90 días en el móvil.
 - Perfiles: superadministrador (todo) y oficina (cajas de las piezas, sin tocar productos ni publicidad).
-- Piezas: pendientes, con caja, posibles y todas. En cada pieza: publicar, retirar, editar el texto, añadir a mano otro producto (con su puntuación contra la pieza), ver cómo queda en el texto y republicar en la web.
+- Piezas: pendientes, falta en la web, con caja, posibles y todas. En cada pieza: publicar, retirar, editar el texto, elegir la posición (premium tras la entradilla · estándar entre el tercio y la mitad · referencia al final), añadir a mano otro producto (con su puntuación contra la pieza), ver cómo queda en el texto y republicar en la web.
 - Productos: cómo entra cada uno (automático con umbral, con revisión, solo a mano, apagado), exclusiva o comparte, umbral, máximo por semana, textos, URL y contexto.
 - Publicidad: campañas de `data/ads/`, activar o pausar.
 - El correo diario de menciones lleva «Gestionar» en cada pieza: abre el gestor en esa pieza.
-- Cada cambio queda en el repositorio (commit) y se republica la pieza en Ghost al momento.
+- Cada cambio queda en el repositorio (commit) y se sube la pieza a Ghost al momento; la caja muestra «En la web» o «Falta en la web», y la lista ofrece «Subir todo a la web ahora».
 
 ## Licitaciones y «Sucederá pronto»
 - #licitaciones se divide en anuncios, publicaciones y resoluciones, y se filtra por sector:

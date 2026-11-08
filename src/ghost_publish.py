@@ -189,6 +189,20 @@ def upsert(post, status, base_url, token):
     return {"ghost_id": p["id"], "url": p.get("url"), "status": p.get("status"), "updated_at": p.get("updated_at")}, None
 
 
+def marcar_en_web(a, cuando=None):
+    """Anota en cada mención publicada cuándo quedó en la web (lo muestra el gestor). Devuelve True si cambió algo."""
+    cuando = cuando or datetime.datetime.now().astimezone().isoformat(timespec="minutes")
+    cambio = False
+    for m in a.get("menciones") or []:
+        if m.get("estado") == "publicada" and not m.get("en_web"):
+            m["en_web"] = cuando
+            cambio = True
+        elif m.get("estado") != "publicada" and m.get("en_web"):
+            m.pop("en_web")
+            cambio = True
+    return cambio
+
+
 def republicar(a, vertical, base_url, admin_key):
     """Actualiza en Ghost un post que ya existe, manteniendo su estado (publicado o borrador). No crea posts nuevos.
     Lo usa el gestor de patrocinios tras cada cambio. Devuelve (resultado, error)."""
@@ -247,6 +261,10 @@ def main():
             bad.append((art["id"], err))
         else:
             ok += 1
+            if marcar_en_web(art):  # las cajas ya están en la web: el gestor lo muestra
+                with open(os.path.join(ROOT, "data", "articles", art["id"] + ".json"), "w", encoding="utf-8") as fh:
+                    json.dump(art, fh, ensure_ascii=False, indent=1, sort_keys=True)
+                    fh.write("\n")
             with open(os.path.join(outdir, art["id"] + ".json"), "w", encoding="utf-8") as fh:
                 json.dump(res, fh, ensure_ascii=False, indent=1)
         time.sleep(0.5)
