@@ -67,6 +67,7 @@
   {
    "cta": "Transporte a la demanda con MUFMI",
    "estado": "publicada",
+   "exclusividad": "compartida",
    "motivo": "subsector urbano; sección licitaciones; «transporte a la demanda» (cabecera); «servicio a la demanda» (cabecera); flexible; microbuses",
    "nombre": "MUFMI",
    "origen": "automatica",

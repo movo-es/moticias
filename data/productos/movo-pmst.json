@@ -48,8 +48,10 @@
   "Avionline",
   "movo.es"
  ],
+ "exclusividad": "compartida",
  "id": "movo-pmst",
  "max_por_semana": 4,
+ "modo": "automatico",
  "name": "MOVO · planes de movilidad sostenible al trabajo",
  "one_liner": "Diagnóstico, encuesta a la plantilla, medidas y documento negociable del PMST, en semanas.",
  "owner": "Avionline S.L.",

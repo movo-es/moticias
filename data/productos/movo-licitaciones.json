@@ -19,8 +19,10 @@
   "MOVO",
   "Avionline"
  ],
+ "exclusividad": "compartida",
  "id": "movo-licitaciones",
  "max_por_semana": 0,
+ "modo": "apagado",
  "name": "MOVO · valoración de licitaciones",
  "one_liner": "Valoración de pliegos y licitaciones de transporte para operadores que deciden si concurrir.",
  "owner": "Avionline S.L.",

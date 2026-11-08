@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MOTICIAS · Menciones del grupo («Nota de la casa»), solo biblioteca estándar.
+"""MOTICIAS · Menciones del grupo (cajas «Contenido patrocinado» en el texto), solo biblioteca estándar.
 
   python3 -I src/menciones.py proponer --fecha AAAA-MM-DD [--ids ID ...] [--aplicar] [--estado publicada|propuesta]
       Puntúa los productos de data/productos/ contra las piezas del día y propone como mucho una mención por pieza.
@@ -9,10 +9,13 @@
   python3 -I src/menciones.py enviar --fecha AAAA-MM-DD [--dry-run]
       Envía el informe por correo (Brevo, BREVO_API_KEY en el entorno) SOLO si hubo menciones ese día.
 
-Reglas (CLAUDE.md y openspec/changes/plataforma-2027/specs/menciones-del-grupo/spec.md): la mención nunca va dentro
-del texto de la pieza; va en un bloque señalizado al pie con su declaración; una pieza lleva una mención como mucho;
-los análisis del director y las piezas que ya tratan del grupo no llevan ninguna; el director recibe el resumen con un
-enlace para editar o retirar cada mención; retirar = `estado: retirada` (nunca se borra).
+Reglas (CLAUDE.md y openspec/changes/patrocinios-en-linea/, decisión de Rainer del 8-11-2026 por la noche): la mención
+va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos y con su etiqueta; cada
+producto decide en el gestor si entra solo (`modo: automatico`, con su `umbral`), si espera aprobación (`revision`) o si
+solo se pone a mano (`manual`), y si es `exclusiva` (ninguna otra caja en esa pieza) o `compartida` (hasta
+`max_por_pieza` cajas); los análisis del director y las piezas que ya tratan del grupo no llevan ninguna; el director
+recibe el resumen con un enlace al gestor de patrocinios (app.moticias.com/gestor/) para publicar, editar o retirar
+cada mención; retirar = `estado: retirada` (nunca se borra).
 """
 import argparse, datetime, glob, html, json, os, re, sys, unicodedata, urllib.error, urllib.parse, urllib.request
 
@@ -97,6 +100,21 @@ def texto_completo(a):
     return plano(t)
 
 
+MODOS = ("automatico", "revision", "manual", "apagado")
+
+
+def modo(prod):
+    """automatico | revision | manual | apagado. Sin campo: activo → automatico; otro status → apagado."""
+    m = prod.get("modo")
+    if m in MODOS:
+        return m if prod.get("status") == "activo" else "apagado"
+    return "automatico" if prod.get("status") == "activo" else "apagado"
+
+
+def exclusividad(prod):
+    return "exclusiva" if prod.get("exclusividad") == "exclusiva" else "compartida"
+
+
 def puntuar(a, prod):
     """Devuelve (puntuación, motivos) o (None, motivo de exclusión).
 
@@ -150,45 +168,123 @@ def publicadas_ultimos_dias(data_dir, producto_id, hasta, dias=7):
     return n
 
 
-def proponer(a, productos, data_dir, fecha, estado="publicada"):
-    mejor = None
-    for prod in productos:
-        pts, motivos = puntuar(a, prod)
-        if pts is None or pts < int(prod.get("umbral") or 6):
-            continue
-        if mejor is None or pts > mejor[0]:
-            mejor = (pts, prod, motivos)
-    if not mejor:
-        return None
-    pts, prod, motivos = mejor
-    est = estado
-    tope = int(prod.get("max_por_semana") or 0)
-    if tope and publicadas_ultimos_dias(data_dir, prod["id"], fecha) >= tope:
-        est = "propuesta"
-        motivos = motivos + ["tope semanal alcanzado: queda como propuesta"]
+def nueva_mencion(a, prod, pts, motivos, est, origen="automatica"):
     return {"producto": prod["id"], "nombre": prod.get("name"), "texto": (prod.get("textos") or {}).get("corto", ""),
             "cta": (prod.get("textos") or {}).get("cta", ""), "url": con_utm(prod["url"], prod, a["id"]),
-            "estado": est, "motivo": "; ".join(motivos), "puntuacion": pts, "origen": "automatica",
+            "exclusividad": exclusividad(prod), "estado": est, "motivo": "; ".join(motivos), "puntuacion": pts, "origen": origen,
             "propuesta_en": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
 
 
-# ---------- bloque HTML (lo usa ghost_publish) ----------
-def bloque_html(a, vertical, inline=html.escape):
+def candidatos(a, productos):
+    """Todos los productos puntuados contra la pieza (también los que no llegan al umbral), de mayor a menor."""
+    out = []
+    for prod in productos:
+        pts, motivos = puntuar(a, prod)
+        out.append({"producto": prod.get("id"), "nombre": prod.get("name"), "modo": modo(prod), "exclusividad": exclusividad(prod),
+                    "umbral": int(prod.get("umbral") or 10), "puntuacion": pts, "motivo": motivos if pts is None else "; ".join(motivos),
+                    "supera": pts is not None and pts >= int(prod.get("umbral") or 10)})
+    out.sort(key=lambda c: -(c["puntuacion"] or -1))
+    return out
+
+
+def proponer(a, productos, data_dir, fecha, estado="publicada", max_por_pieza=2):
+    """Devuelve la lista de menciones nuevas para la pieza (vacía si ninguna). Respeta modo, umbral, exclusividad y tope semanal."""
+    puntuados = []
+    for prod in productos:
+        if modo(prod) not in ("automatico", "revision"):
+            continue
+        pts, motivos = puntuar(a, prod)
+        if pts is None or pts < int(prod.get("umbral") or 10):
+            continue
+        puntuados.append((pts, prod, motivos))
+    puntuados.sort(key=lambda t: -t[0])
+    elegidos = []
+    for pts, prod, motivos in puntuados:
+        if elegidos and (exclusividad(prod) == "exclusiva" or exclusividad(elegidos[0][1]) == "exclusiva"):
+            continue
+        if len(elegidos) >= max_por_pieza:
+            break
+        elegidos.append((pts, prod, motivos))
+    out = []
+    for pts, prod, motivos in elegidos:
+        est = estado if modo(prod) == "automatico" else "propuesta"
+        if modo(prod) == "revision":
+            motivos = motivos + ["modo revisión: espera aprobación en el gestor"]
+        tope = int(prod.get("max_por_semana") or 0)
+        if est == "publicada" and tope and publicadas_ultimos_dias(data_dir, prod["id"], fecha) >= tope:
+            est = "propuesta"
+            motivos = motivos + ["tope semanal alcanzado: queda como propuesta"]
+        out.append(nueva_mencion(a, prod, pts, motivos, est))
+    return out
+
+
+# ---------- cajas HTML (las usa ghost_publish) ----------
+def cajas_html(a, vertical, inline=html.escape):
+    """Una caja por mención publicada (como mucho max_por_pieza; si la primera es exclusiva, solo esa)."""
+    cfg = vertical.get("productos") or {}
     pub = [m for m in a.get("menciones") or [] if m.get("estado") == "publicada"]
     if not pub:
-        return ""
+        return []
+    if pub[0].get("exclusividad") == "exclusiva":
+        pub = pub[:1]
+    pub = pub[: int(cfg.get("max_por_pieza") or 2)]
+    etiqueta = cfg.get("label", "Contenido patrocinado")
+    decl = cfg.get("declaracion", "")
+    out = []
+    for m in pub:
+        # Tarjeta HTML de Ghost (los comentarios kg-card la conservan intacta al convertir a Lexical) con estilos en línea,
+        # para que la caja se vea igual con cualquier tema: separada del texto, fondo suave, etiqueta pequeña y gris.
+        out.append('<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" '
+                   'style="margin:2em 0;padding:1em 1.2em;background:#f4f6f5;border-left:3px solid #c9d2cd;border-radius:4px;font-size:.95em">'
+                   '<p class="contenido-patrocinado-etiqueta" style="margin:0 0 .5em;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:#7a837e">%s</p>'
+                   '<p style="margin:0">%s <a href="%s" rel="sponsored noopener">%s</a></p>%s</aside><!--kg-card-end: html-->'
+                   % (html.escape(m.get("producto") or "", quote=True), inline(etiqueta), inline(m.get("texto", "")),
+                      html.escape(m.get("url", ""), quote=True), inline(m.get("cta") or m.get("nombre") or ""),
+                      ('<p class="contenido-patrocinado-declaracion" style="margin:.6em 0 0;font-size:.75em;color:#7a837e">%s</p>'
+                       % inline(decl % {"nombre": m.get("nombre") or ""})) if decl else ""))
+    return out
+
+
+def insertar_en_medio(cuerpo_html, cajas):
+    """Reparte las cajas entre los bloques del cuerpo (1 caja: hacia la mitad; 2: a un tercio y a dos tercios), siempre
+    después de un párrafo y nunca delante del primer bloque ni detrás del último."""
+    if not cajas:
+        return cuerpo_html
+    bloques = [b for b in cuerpo_html.split("\n") if b.strip()]
+    if len(bloques) < 2:
+        return "\n".join(bloques + cajas)
+    n = len(bloques)
+    huecos = [i for i in range(1, n) if bloques[i - 1].startswith(("<p>", "</ul>", "<blockquote"))] or list(range(1, n))
+    pos = []
+    for k in range(len(cajas)):
+        objetivo = round(n * (k + 1) / (len(cajas) + 1))
+        mejor = min((h for h in huecos if h not in pos), key=lambda h: abs(h - objetivo), default=None)
+        if mejor is not None:
+            pos.append(mejor)
+    pos_caja = sorted(zip(pos, cajas))
+    out, j = [], 0
+    for i, b in enumerate(bloques):
+        while j < len(pos_caja) and pos_caja[j][0] == i:
+            out.append(pos_caja[j][1]); j += 1
+        out.append(b)
+    out += [c for _, c in pos_caja[j:]]
+    return "\n".join(out)
+
+
+def bloque_html(a, vertical, inline=html.escape):
+    """Compatibilidad: todas las cajas juntas (sin posición)."""
+    return "\n".join(cajas_html(a, vertical, inline))
+
+
+def url_gestor(vertical, pieza_id=None):
     cfg = vertical.get("productos") or {}
-    etiqueta = cfg.get("label", "Nota de la casa")
-    decl = cfg.get("declaracion", "%s pertenece al mismo grupo empresarial que este servicio. La mención no es publicidad pagada y no ha intervenido en la selección ni en la redacción de la pieza." % vertical.get("name", "MOTICIAS"))
-    m = pub[0]
-    return ('<aside class="nota-de-la-casa"><p class="nota-de-la-casa-etiqueta"><small>%s</small></p>'
-            '<p>%s <a href="%s" rel="noopener">%s</a></p><p class="nota-de-la-casa-declaracion"><small>%s</small></p></aside>'
-            % (inline(etiqueta), inline(m.get("texto", "")), html.escape(m.get("url", ""), quote=True),
-               inline(m.get("cta") or m.get("nombre") or ""), inline(decl)))
+    base = (os.environ.get("GESTOR_URL") or cfg.get("gestor_url") or "https://app.moticias.com/gestor/").rstrip("/") + "/"
+    return base + ("?pieza=" + urllib.parse.quote(pieza_id) if pieza_id else "")
 
 
 # ---------- informe y correo ----------
 def informe(piezas, vertical, base_url, fecha):
+    gestor = url_gestor(vertical)
     filas = []
     for a in piezas:
         for m in a.get("menciones") or []:
@@ -198,21 +294,22 @@ def informe(piezas, vertical, base_url, fecha):
     if not filas:
         return None, None
     md = ["# Menciones del grupo · %s" % fecha, "",
-          "%d mención(es) en la edición. Para editar el texto o retirar una mención, abre el enlace «GitHub» (cambia `texto` o pon `estado: \"retirada\"`); la rutina republica la pieza. El enlace «Ghost» abre el editor del post publicado." % len(filas), ""]
-    h = ["<h2>Menciones del grupo · %s</h2><p>%d mención(es). <b>GitHub</b> edita la fuente de verdad (texto o <code>estado: retirada</code>); <b>Ghost</b> abre el editor del post.</p>" % (html.escape(fecha), len(filas))]
+          "%d mención(es) en la edición. «Gestionar» abre el gestor de patrocinios en el móvil: publicar, retirar o cambiar el texto, y la pieza se republica sola. Gestor: %s" % (len(filas), gestor), ""]
+    h = ["<h2>Menciones del grupo · %s</h2><p>%d mención(es). <b>Gestionar</b> abre el gestor de patrocinios: publicar, retirar o cambiar el texto; la pieza se republica sola.</p>"
+         '<p><a href="%s" style="display:inline-block;padding:10px 14px;background:#111;color:#fff;text-decoration:none;border-radius:6px">Abrir el gestor de patrocinios</a></p>' % (html.escape(fecha), len(filas), html.escape(gestor, quote=True))]
     for a, m in filas:
         u = url_pieza(a, base_url)
-        ge, re_ = url_edicion_ghost(a, base_url), REPO_EDIT % a["id"]
+        ge, re_, gp = url_edicion_ghost(a, base_url), REPO_EDIT % a["id"], url_gestor(vertical, a["id"])
         md += ["## %s" % a.get("title", a["id"]), "- Pieza: %s" % u, "- Producto: **%s** · estado: %s · puntuación %s" % (m.get("nombre"), m.get("estado"), m.get("puntuacion")),
                "- Texto: %s — [%s](%s)" % (m.get("texto"), m.get("cta"), m.get("url")), "- Motivo: %s" % m.get("motivo"),
-               "- Editar: [GitHub](%s) · [Ghost](%s)" % (re_, ge), ""]
+               "- Gestionar: %s · respaldo: [GitHub](%s) · [Ghost](%s)" % (gp, re_, ge), ""]
         h.append('<div style="border:1px solid #ddd;padding:12px;margin:10px 0"><p><b><a href="%s">%s</a></b></p>'
                  '<p>Producto: <b>%s</b> · estado: %s · puntuación %s</p><p style="background:#f6f6f6;padding:8px">%s <a href="%s">%s</a></p>'
-                 '<p><small>Motivo: %s</small></p><p><a href="%s" style="padding:6px 10px;border:1px solid #333;text-decoration:none">Editar en GitHub</a> &nbsp; '
-                 '<a href="%s" style="padding:6px 10px;border:1px solid #333;text-decoration:none">Editar en Ghost</a></p></div>'
+                 '<p><small>Motivo: %s</small></p><p><a href="%s" style="display:inline-block;padding:10px 14px;background:#111;color:#fff;text-decoration:none;border-radius:6px">Gestionar</a></p>'
+                 '<p><small>Respaldo: <a href="%s">GitHub</a> · <a href="%s">Ghost</a></small></p></div>'
                  % (html.escape(u, quote=True), html.escape(a.get("title", a["id"])), html.escape(m.get("nombre") or ""), html.escape(m.get("estado") or ""), m.get("puntuacion"),
                     html.escape(m.get("texto") or ""), html.escape(m.get("url") or "", quote=True), html.escape(m.get("cta") or ""),
-                    html.escape(m.get("motivo") or ""), html.escape(re_, quote=True), html.escape(ge, quote=True)))
+                    html.escape(m.get("motivo") or ""), html.escape(gp, quote=True), html.escape(re_, quote=True), html.escape(ge, quote=True)))
     h.append("<p><small>Generado por src/menciones.py · %s</small></p>" % html.escape(vertical.get("name", "")))
     return "\n".join(md), "\n".join(h)
 
@@ -260,11 +357,11 @@ def main():
             if any(m.get("estado") in ("publicada", "propuesta", "retirada") for m in a.get("menciones") or []):
                 res.append({"id": a["id"], "mencion": None, "nota": "ya tenía mención (no se repite)"})
                 continue
-            m = proponer(a, productos, args.data, fecha, args.estado)
-            if m and args.aplicar:
-                a.setdefault("menciones", []).append(m)
+            ms = proponer(a, productos, args.data, fecha, args.estado, int(cfg.get("max_por_pieza") or 2))
+            if ms and args.aplicar:
+                a.setdefault("menciones", []).extend(ms)
                 guardar_pieza(a)
-            res.append({"id": a["id"], "mencion": m})
+            res.append({"id": a["id"], "mencion": ms or None})
         con = [r for r in res if r["mencion"]]
         print(json.dumps({"fecha": fecha, "piezas": len(piezas), "con_mencion": len(con), "aplicado": args.aplicar, "detalle": res}, ensure_ascii=False, indent=1))
         return
