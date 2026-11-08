@@ -1,4 +1,4 @@
-# MOTICIAS · Paso a Claude Code: cómo seguir construyendo con entrevistas OpenSpec (7 de noviembre de 2026)
+# MOTICIAS · Paso a Claude Code: cómo seguir construyendo con entrevistas OpenSpec (7 de noviembre de 2026; orden revisado el 8)
 
 Respuesta corta: todo lo que hay que saber ya está en este repositorio; Claude Code lo lee al abrirlo (`CLAUDE.md`). A partir de ahora cada funcionalidad se construye como un cambio OpenSpec: una entrevista corta (`/opsx:explore`) que fija las decisiones, una propuesta con spec, diseño y tareas (`/opsx:propose`), la construcción (`/opsx:apply`) y el archivo (`/opsx:archive`). El cambio grande `plataforma-v1` es el mapa; se ejecuta troceado en cambios pequeños, uno por capacidad, en el orden de abajo. Nada se hace desde el ordenador de Rainer: Claude Code en la nube con el repositorio `movo-es/moticias`.
 
@@ -146,5 +146,5 @@ Contestar a las preguntas (una por una, en el móvil vale), leer el «Qué verá
 ## 5. Primer mensaje para la sesión de Code (pegar tal cual)
 
 ```
-Lee CLAUDE.md y docs/paso-a-code.md. Confirma en cinco líneas qué es MOTICIAS, qué reglas no se rompen, qué cambio está abierto y cuál es la primera entrevista. Después instala OpenSpec (sección 1, paso 3), haz commit y empieza la Entrevista 1 (publicar-en-ghost-v1) con /opsx:explore según la sección 3.
+Lee CLAUDE.md, docs/paso-a-code.md y docs/estrategia-2027.md § 5 y § 6. Confirma en cinco líneas qué es MOTICIAS, qué reglas no se rompen, qué cambios están abiertos y qué te toca esta semana. Si OpenSpec no está instalado, instálalo (sección 1, paso 3) y haz commit. La entrevista 1 ya está hecha: aplica openspec/changes/publicar-en-ghost-v1/tasks.md en orden, una tarea por commit con su verificación, y para y pregúntame solo si una tarea exige una decisión que no está en la propuesta. Las variables GHOST_URL y GHOST_ADMIN_KEY tienen que estar en el entorno; si no están, pídemelas y no las escribas nunca en el repositorio.
 ```
