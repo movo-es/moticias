@@ -1,0 +1,26 @@
+{
+ "cargo": "Consejero de Mobico Group (familia Cosmen, oferente de la opa con Asterion)",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-10-30",
+   "tipo": "comunicado",
+   "url": "https://www.investegate.co.uk/announcement/rns/mobico-group--mcg/recommended-cash-acquisition-for-mobico-group-plc/9849217"
+  }
+ ],
+ "hasta": null,
+ "id": "jorge-cosmen-consejero-de-mobico-group-familia-cosmen-oferente-de-la-opa-con-ast",
+ "notas": "Anuncio de la oferta recomendada (RNS, 30-10-2026).",
+ "organizacion": "Mobico Group (Alsa)",
+ "persona": "Jorge Cosmen",
+ "piezas": [
+  "opa-cosmen-asterion-mobico-alsa"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "operador",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

@@ -1,0 +1,26 @@
+{
+ "cargo": "Presidente",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-04",
+   "tipo": "comunicado",
+   "url": "https://www.aireuropa.com/us/en/aea/aexperience/press.html"
+  }
+ ],
+ "hasta": null,
+ "id": "juan-jose-hidalgo-presidente-globalia-air-europa",
+ "notas": null,
+ "organizacion": "Globalia (Air Europa)",
+ "persona": "Juan José Hidalgo",
+ "piezas": [
+  "air-europa-agrupa-su-mantenimiento-en-la-marca-air-europa-cshv"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "operador",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

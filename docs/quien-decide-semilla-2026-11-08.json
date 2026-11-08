@@ -1,0 +1,322 @@
+[
+ {
+  "persona": "Óscar Puente Santiago",
+  "cargo": "Ministro de Transportes y Movilidad Sostenible",
+  "organizacion": "Ministerio de Transportes y Movilidad Sostenible",
+  "tipo_org": "administracion",
+  "desde": "2023-11-21",
+  "hasta": "2026-11-04",
+  "vigente": false,
+  "fuentes": [
+   {
+    "tipo": "boe",
+    "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23171",
+    "fecha": "2026-11-04"
+   }
+  ],
+  "piezas": [
+   "puente-dimite-ministro-transportes-urda",
+   "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+  ],
+  "notas": "Cese por Real Decreto 974/2026 tras el accidente de Urda."
+ },
+ {
+  "persona": "Carlos Cuerpo Caballero",
+  "cargo": "Vicepresidente primero del Gobierno y ministro de Economía, Comercio y Empresa; despacho de Transportes y Movilidad Sostenible por suplencia",
+  "organizacion": "Gobierno de España",
+  "tipo_org": "administracion",
+  "desde": "2026-11-04",
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "boe",
+    "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23172",
+    "fecha": "2026-11-04"
+   },
+   {
+    "tipo": "web-oficial",
+    "url": "https://www.lamoncloa.gob.es/presidente/actividades/Paginas/2026/041126-sanchez-comparecencia-.aspx",
+    "fecha": "2026-11-04"
+   }
+  ],
+  "piezas": [
+   "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+  ],
+  "notas": "Suplencia en Transportes (Real Decreto 975/2026) hasta el nombramiento de titular; revisar tras el 29-N."
+ },
+ {
+  "persona": "Pedro Sánchez Pérez-Castejón",
+  "cargo": "Presidente del Gobierno",
+  "organizacion": "Gobierno de España",
+  "tipo_org": "administracion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "web-oficial",
+    "url": "https://www.lamoncloa.gob.es/presidente/actividades/Paginas/2026/041126-sanchez-comparecencia-.aspx",
+    "fecha": "2026-11-04"
+   }
+  ],
+  "piezas": [
+   "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+  ]
+ },
+ {
+  "persona": "José Antonio Santano Clavero",
+  "cargo": "Secretario de Estado de Transportes y Movilidad Sostenible",
+  "organizacion": "Ministerio de Transportes y Movilidad Sostenible",
+  "tipo_org": "administracion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "web-oficial",
+    "url": "https://www.transportes.gob.es/transporte-terrestre/resoluciones-de-servicios-minimos-ferroviarios",
+    "fecha": "2026-11-05"
+   }
+  ],
+  "piezas": [
+   "ouigo-desconvoca-sus-paros-tras-pactar-con-semaf-que-fu9h"
+  ],
+  "notas": "Citado como asistente a la reunión del 5-11-2026 con Semaf; confirmar fecha de nombramiento en el BOE."
+ },
+ {
+  "persona": "Luis Pedro Marco de la Peña",
+  "cargo": "Presidente de Adif y de Adif Alta Velocidad",
+  "organizacion": "Adif",
+  "tipo_org": "administracion",
+  "desde": null,
+  "hasta": "2026-11-05",
+  "vigente": false,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.adif.es/comunicacion/notas-prensa",
+    "fecha": "2026-11-05"
+   }
+  ],
+  "piezas": [
+   "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+  ],
+  "notas": "Renuncia presentada el 4-11-2026 (EFE, Europa Press); el cese formal debe pasar por Consejo de Ministros: completar con la referencia del BOE cuando se publique."
+ },
+ {
+  "persona": "Álvaro Fernández Heredia",
+  "cargo": "Presidente de Renfe Operadora",
+  "organizacion": "Renfe",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "web-oficial",
+    "url": "https://www.transportes.gob.es/transporte-terrestre/resoluciones-de-servicios-minimos-ferroviarios",
+    "fecha": "2026-11-05"
+   }
+  ],
+  "piezas": [
+   "ouigo-desconvoca-sus-paros-tras-pactar-con-semaf-que-fu9h"
+  ]
+ },
+ {
+  "persona": "Enrique Maurer Somolinos",
+  "cargo": "Director general de ENAIRE; presidente del Consejo de Administración de la Red (Network Management Board) 2025-2026",
+  "organizacion": "ENAIRE",
+  "tipo_org": "administracion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "web-oficial",
+    "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=OJ%3AL_202602407",
+    "fecha": "2026-10-30"
+   }
+  ],
+  "piezas": [
+   "doue-decision-2026-2407-gestor-red-celula-crisis-aviacion"
+  ],
+  "notas": "La presidencia del NMB para 2027-2028 no consta: vigilar la Decisión 2026/2407."
+ },
+ {
+  "persona": "Manuel Gavira Florentino",
+  "cargo": "Vicepresidente segundo y consejero de Turismo",
+  "organizacion": "Junta de Andalucía",
+  "tipo_org": "administracion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "web-oficial",
+    "url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261103-referencia-rueda-de-prensa-ministros.aspx",
+    "fecha": "2026-11-03"
+   }
+  ],
+  "piezas": [
+   "aire-puente-aereo-madrid-andalucia-urda"
+  ],
+  "notas": "Negocia por la Junta el puente aéreo Madrid–Andalucía tras Urda."
+ },
+ {
+  "persona": "Diego Martín",
+  "cargo": "Secretario general",
+  "organizacion": "Semaf (Sindicato Español de Maquinistas y Ayudantes Ferroviarios)",
+  "tipo_org": "asociacion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.semaf.org/informaciones/conseguimos-todas-reivindicaciones/",
+    "fecha": "2026-11-05"
+   }
+  ],
+  "piezas": [
+   "ouigo-desconvoca-sus-paros-tras-pactar-con-semaf-que-fu9h"
+  ]
+ },
+ {
+  "persona": "José Manuel Lastra",
+  "cargo": "Presidente",
+  "organizacion": "Confederación Española de Agencias de Viajes (CEAV)",
+  "tipo_org": "asociacion",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.transportes.gob.es/ministerio/comunicacion/sala-prensa/mar-03112026-1418",
+    "fecha": "2026-11-03"
+   }
+  ],
+  "piezas": [
+   "real-decreto-ley-32-2026-el-tope-de-precios-vence-el-10-h2vd"
+  ],
+  "notas": "Fuente oficial de la pieza; la declaración de Lastra procede de Hosteltur."
+ },
+ {
+  "persona": "Jorge Cosmen",
+  "cargo": "Consejero de Mobico Group (familia Cosmen, oferente de la opa con Asterion)",
+  "organizacion": "Mobico Group (Alsa)",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.investegate.co.uk/announcement/rns/mobico-group--mcg/recommended-cash-acquisition-for-mobico-group-plc/9849217",
+    "fecha": "2026-10-30"
+   }
+  ],
+  "piezas": [
+   "opa-cosmen-asterion-mobico-alsa"
+  ],
+  "notas": "Anuncio de la oferta recomendada (RNS, 30-10-2026)."
+ },
+ {
+  "persona": "Jesús Olmos",
+  "cargo": "Consejero delegado",
+  "organizacion": "Asterion Industrial Partners",
+  "tipo_org": "industria",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.investegate.co.uk/announcement/rns/mobico-group--mcg/recommended-cash-acquisition-for-mobico-group-plc/9849217",
+    "fecha": "2026-10-30"
+   }
+  ],
+  "piezas": [
+   "opa-cosmen-asterion-mobico-alsa"
+  ],
+  "notas": "Anuncio de la oferta recomendada (RNS, 30-10-2026)."
+ },
+ {
+  "persona": "Juan José Hidalgo",
+  "cargo": "Presidente",
+  "organizacion": "Globalia (Air Europa)",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://www.aireuropa.com/us/en/aea/aexperience/press.html",
+    "fecha": "2026-11-04"
+   }
+  ],
+  "piezas": [
+   "air-europa-agrupa-su-mantenimiento-en-la-marca-air-europa-cshv"
+  ]
+ },
+ {
+  "persona": "József Váradi",
+  "cargo": "Consejero delegado",
+  "organizacion": "Wizz Air",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://wizzair.com/",
+    "fecha": "2026-11-03"
+   }
+  ],
+  "piezas": [
+   "wizz-air-abre-su-base-de-madrid-y-entra-en-el-madrid-t3bx"
+  ],
+  "notas": "La nota oficial de Wizz Air no fue accesible en la edición nº 2; la pieza se apoya en tres medios y en el BOE."
+ },
+ {
+  "persona": "Mauro Peneda",
+  "cargo": "Director general",
+  "organizacion": "Wizz Air Malta",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://wizzair.com/",
+    "fecha": "2026-11-03"
+   }
+  ],
+  "piezas": [
+   "wizz-air-abre-su-base-de-madrid-y-entra-en-el-madrid-t3bx"
+  ]
+ },
+ {
+  "persona": "Neil Sorahan",
+  "cargo": "Director financiero (CFO)",
+  "organizacion": "Ryanair",
+  "tipo_org": "operador",
+  "desde": null,
+  "hasta": null,
+  "vigente": true,
+  "fuentes": [
+   {
+    "tipo": "comunicado",
+    "url": "https://investor.ryanair.com/wp-content/uploads/2026/10/H1-FY27-Ryanair-Results.pdf",
+    "fecha": "2026-11-02"
+   }
+  ],
+  "piezas": [
+   "aire-ryanair-semestre-fy27-combustible-espana"
+  ]
+ }
+]

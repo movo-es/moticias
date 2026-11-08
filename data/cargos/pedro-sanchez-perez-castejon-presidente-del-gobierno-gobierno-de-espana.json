@@ -1,0 +1,26 @@
+{
+ "cargo": "Presidente del Gobierno",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-04",
+   "tipo": "web-oficial",
+   "url": "https://www.lamoncloa.gob.es/presidente/actividades/Paginas/2026/041126-sanchez-comparecencia-.aspx"
+  }
+ ],
+ "hasta": null,
+ "id": "pedro-sanchez-perez-castejon-presidente-del-gobierno-gobierno-de-espana",
+ "notas": null,
+ "organizacion": "Gobierno de España",
+ "persona": "Pedro Sánchez Pérez-Castejón",
+ "piezas": [
+  "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "administracion",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

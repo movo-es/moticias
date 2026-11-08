@@ -1,0 +1,26 @@
+{
+ "cargo": "Presidente de Adif y de Adif Alta Velocidad",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-05",
+   "tipo": "comunicado",
+   "url": "https://www.adif.es/comunicacion/notas-prensa"
+  }
+ ],
+ "hasta": "2026-11-05",
+ "id": "luis-pedro-marco-de-la-pena-presidente-de-adif-y-de-adif-alta-velocidad-adif",
+ "notas": "Renuncia presentada el 4-11-2026 (EFE, Europa Press); el cese formal debe pasar por Consejo de Ministros: completar con la referencia del BOE cuando se publique.",
+ "organizacion": "Adif",
+ "persona": "Luis Pedro Marco de la Peña",
+ "piezas": [
+  "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "administracion",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": false
+}

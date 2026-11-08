@@ -1,0 +1,26 @@
+{
+ "cargo": "Presidente",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-03",
+   "tipo": "comunicado",
+   "url": "https://www.transportes.gob.es/ministerio/comunicacion/sala-prensa/mar-03112026-1418"
+  }
+ ],
+ "hasta": null,
+ "id": "jose-manuel-lastra-presidente-confederacion-espanola-de-agencias-de-viajes-ceav",
+ "notas": "Fuente oficial de la pieza; la declaración de Lastra procede de Hosteltur.",
+ "organizacion": "Confederación Española de Agencias de Viajes (CEAV)",
+ "persona": "José Manuel Lastra",
+ "piezas": [
+  "real-decreto-ley-32-2026-el-tope-de-precios-vence-el-10-h2vd"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "asociacion",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}

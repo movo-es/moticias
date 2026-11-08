@@ -1,0 +1,26 @@
+{
+ "cargo": "Vicepresidente segundo y consejero de Turismo",
+ "creado_en": "2026-11-08",
+ "desde": null,
+ "email_profesional": null,
+ "fuentes": [
+  {
+   "fecha": "2026-11-03",
+   "tipo": "web-oficial",
+   "url": "https://www.lamoncloa.gob.es/consejodeministros/referencias/Paginas/2026/20261103-referencia-rueda-de-prensa-ministros.aspx"
+  }
+ ],
+ "hasta": null,
+ "id": "manuel-gavira-florentino-vicepresidente-segundo-y-consejero-de-turismo-junta-de-",
+ "notas": "Negocia por la Junta el puente aéreo Madrid–Andalucía tras Urda.",
+ "organizacion": "Junta de Andalucía",
+ "persona": "Manuel Gavira Florentino",
+ "piezas": [
+  "aire-puente-aereo-madrid-andalucia-urda"
+ ],
+ "tel_profesional": null,
+ "tipo_org": "administracion",
+ "verificado_en": "2026-11-08",
+ "vertical": "movilidad",
+ "vigente": true
+}
