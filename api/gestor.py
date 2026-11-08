@@ -11,8 +11,9 @@ Variables de entorno (en Vercel, nunca en el repositorio):
   GHOST_URL, GHOST_ADMIN_KEY  para republicar la pieza al momento (si faltan, la verá la rutina siguiente)
   GITHUB_REPO               opcional, por defecto movo-es/moticias; GITHUB_BRANCH, por defecto main
 
-Rutas: GET/POST /api/gestor?a=<acción>  (yo, entrar, salir, piezas, pieza, mencion, republicar, productos, producto,
-anuncios, anuncio). Reglas: openspec/changes/patrocinios-en-linea/.
+Rutas: GET/POST /api/gestor?a=<acción>  (yo, entrar, aceptar, salir, piezas, pieza, mencion, republicar,
+republicar_pendientes, productos, producto, anuncios, anuncio, equipo, suscriptores). Equipo: src/equipo.py y el
+repositorio privado EQUIPO_REPO (por defecto movo-es/moticias-equipo), al que debe llegar también GITHUB_TOKEN. Reglas: openspec/changes/patrocinios-en-linea/.
 """
 import base64, datetime, glob, hashlib, hmac, http.cookies, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler
@@ -21,8 +22,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
+import equipo as EQ  # noqa: E402
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
+EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
+EQUIPO_FICHERO = "equipo.json"
 BRANCH = os.environ.get("GITHUB_BRANCH", "main")
 COOKIE = "gestor"
 DIAS_SESION = 90
@@ -44,21 +48,41 @@ def _secreto():
     return hashlib.sha256(("moticias-gestor|" + c["superadmin"] + "|" + c["oficina"]).encode()).digest()
 
 
-def firmar(rol, dias=DIAS_SESION):
-    exp = int(time.time()) + dias * 86400
-    msg = "%s.%d" % (rol, exp)
-    return msg + "." + hmac.new(_secreto(), msg.encode(), hashlib.sha256).hexdigest()
+def _firma(msg):
+    return hmac.new(_secreto(), msg.encode(), hashlib.sha256).hexdigest()
 
 
-def rol_de(valor):
+def firmar(sujeto, dias=DIAS_SESION):
+    """sujeto: «superadmin» u «oficina» (acceso con la contraseña común) o «p-<id>-<versión>» (persona del equipo)."""
+    msg = "%s.%d" % (sujeto, int(time.time()) + dias * 86400)
+    return msg + "." + _firma(msg)
+
+
+def sesion_de(valor):
+    """Devuelve {perfil, nombre, id, permisos} o None. Una persona suspendida, o cuya versión cambió (perfil cambiado,
+    enlace nuevo), pierde la sesión en el acto."""
     try:
-        rol, exp, sig = (valor or "").split(".")
-        msg = "%s.%s" % (rol, exp)
-        if hmac.compare_digest(sig, hmac.new(_secreto(), msg.encode(), hashlib.sha256).hexdigest()) and int(exp) > time.time() and rol in ("superadmin", "oficina"):
-            return rol
+        sujeto, exp, sig = (valor or "").split(".")
     except ValueError:
-        pass
+        return None
+    if not hmac.compare_digest(sig, _firma("%s.%s" % (sujeto, exp))) or int(exp) <= time.time():
+        return None
+    if sujeto in ("superadmin", "oficina"):
+        return {"perfil": sujeto, "nombre": "Acceso común (%s)" % sujeto, "id": None, "permisos": EQ.PERFILES[sujeto]["permisos"]}
+    if sujeto.startswith("p-"):
+        try:
+            _, pid, ver = sujeto.split("-")
+        except ValueError:
+            return None
+        datos, _ = equipo()
+        per = EQ.buscar(datos, pid=pid)
+        if per and per.get("estado") == "activa" and str(per.get("version") or 0) == ver and per.get("perfil") in EQ.PERFILES:
+            return {"perfil": per["perfil"], "nombre": per.get("nombre"), "id": pid, "permisos": EQ.PERFILES[per["perfil"]]["permisos"]}
     return None
+
+
+def cookie_sesion(sujeto):
+    return "%s=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax" % (COOKIE, firmar(sujeto), DIAS_SESION * 86400)
 
 
 # ---------- datos ----------
@@ -70,11 +94,11 @@ def productos():
     return M.cargar_productos(os.path.join(ROOT, "data"))
 
 
-def gh(method, path, body=None):
+def gh(method, path, body=None, repo=None):
     tok = os.environ.get("GITHUB_TOKEN")
     if not tok:
         return 0, {"message": "falta GITHUB_TOKEN"}
-    req = urllib.request.Request("https://api.github.com/repos/%s/%s" % (REPO, path), method=method,
+    req = urllib.request.Request(("https://api.github.com/repos/%s/%s" % (repo or REPO, path)).rstrip("/"), method=method,
                                  data=json.dumps(body).encode() if body is not None else None,
                                  headers={"Authorization": "Bearer " + tok, "Accept": "application/vnd.github+json",
                                           "User-Agent": "moticias-gestor", "X-GitHub-Api-Version": "2022-11-28"})
@@ -87,23 +111,27 @@ def gh(method, path, body=None):
         return 0, {"message": str(e)}
 
 
-def leer(ruta):
+def leer(ruta, repo=None):
     """Devuelve (objeto, sha). Primero GitHub (fresco); si no hay token, el fichero del despliegue (sha None)."""
-    st, r = gh("GET", "contents/%s?ref=%s" % (urllib.parse.quote(ruta), BRANCH))
+    st, r = gh("GET", "contents/%s" % urllib.parse.quote(ruta) + ("" if repo else "?ref=%s" % BRANCH), repo=repo)
     if st == 200:
         return json.loads(base64.b64decode(r["content"]).decode("utf-8")), r["sha"]
+    if repo:
+        return None, None
     p = os.path.join(ROOT, ruta)
     if os.path.exists(p):
         return json.load(open(p, encoding="utf-8")), None
     return None, None
 
 
-def escribir(ruta, obj, sha, mensaje):
+def escribir(ruta, obj, sha, mensaje, repo=None):
     txt = json.dumps(obj, ensure_ascii=False, indent=1, sort_keys=True) + "\n"
-    body = {"message": mensaje + "\n\nGestor de patrocinios (app.moticias.com/gestor/)", "content": base64.b64encode(txt.encode("utf-8")).decode(), "branch": BRANCH}
+    body = {"message": mensaje + "\n\nGestor de patrocinios (app.moticias.com/gestor/)", "content": base64.b64encode(txt.encode("utf-8")).decode()}
+    if not repo:
+        body["branch"] = BRANCH
     if sha:
         body["sha"] = sha
-    st, r = gh("PUT", "contents/%s" % urllib.parse.quote(ruta), body)
+    st, r = gh("PUT", "contents/%s" % urllib.parse.quote(ruta), body, repo=repo)
     if st in (200, 201):
         return True, (r.get("commit") or {}).get("sha", "")[:7]
     if st == 409:
@@ -295,6 +323,62 @@ def accion_anuncio(d):
     return (200, {"ok": True, "commit": det}) if ok else (502, {"error": det})
 
 
+# ---------- equipo (repositorio privado) ----------
+_CACHE = {"t": 0, "datos": None, "sha": None}
+
+
+def equipo(fresco=False):
+    """(datos, sha) de equipo.json en el repositorio privado, con 60 s de caché por instancia."""
+    if fresco or not _CACHE["datos"] or time.time() - _CACHE["t"] > 60:
+        datos, sha = leer(EQUIPO_FICHERO, repo=EQUIPO_REPO)
+        _CACHE.update(t=time.time(), datos=datos or EQ.vacio(), sha=sha)
+    return _CACHE["datos"], _CACHE["sha"]
+
+
+def guardar_equipo(datos, sha, mensaje):
+    datos["actualizado"] = EQ.ahora()
+    ok, det = escribir(EQUIPO_FICHERO, datos, sha, mensaje, repo=EQUIPO_REPO)
+    _CACHE.update(t=0, datos=None)
+    return ok, det
+
+
+def accion_equipo(ses, d, base):
+    datos, sha = equipo(fresco=True)
+    acc = d.get("accion")
+    try:
+        if acc == "invitar":
+            p, token = EQ.invitar(datos, d.get("nombre"), d.get("email"), d.get("perfil"), ses["nombre"])
+        else:
+            p, token = EQ.cambiar(datos, d.get("id"), acc, ses["nombre"], d.get("perfil"))
+            if p.get("id") == ses.get("id") and acc in ("suspender", "perfil") and d.get("perfil") != "superadmin":
+                return 400, {"error": "no puedes quitarte a ti mismo el perfil de superadministrador ni suspenderte"}
+    except ValueError as e:
+        return 400, {"error": str(e)}
+    ok, det = guardar_equipo(datos, sha, "Equipo: %s %s" % (acc, p["id"]))
+    if not ok:
+        return 502, {"error": det}
+    r = {"ok": True, "persona": EQ.publica(p)}
+    if token:
+        r["enlace"] = base + "/gestor/?invitacion=" + urllib.parse.quote(token)
+    return 200, r
+
+
+def suscriptores():
+    """Resumen de los suscriptores de Ghost (Members): totales por tipo y las últimas altas. Se gestionan en Ghost."""
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key or ":" not in key:
+        return {"error": "sin clave de Ghost"}
+    base, tok = G.admin_base(url.rstrip("/")), G.ghost_token(key)
+    out = {"ghost_members": base + "/ghost/#/members", "ghost_staff": base + "/ghost/#/settings/staff"}
+    for k, f in (("total", ""), ("gratuitos", "&filter=status:free"), ("pago", "&filter=status:paid"), ("cortesia", "&filter=status:comped")):
+        st, r = G.api("GET", base + "/ghost/api/admin/members/?limit=1&fields=id" + f, tok)
+        out[k] = ((r.get("meta") or {}).get("pagination") or {}).get("total") if st == 200 else None
+    st, r = G.api("GET", base + "/ghost/api/admin/members/?limit=8&order=created_at%20desc&fields=name,email,status,created_at", tok)
+    out["ultimos"] = [{"nombre": m.get("name") or "", "email": m.get("email"), "estado": m.get("status"), "alta": (m.get("created_at") or "")[:10]}
+                      for m in (r.get("members") or [])] if st == 200 else []
+    return out
+
+
 # ---------- HTTP ----------
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None):
@@ -309,21 +393,38 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b)
 
-    def _rol(self):
+    def _ses(self):
         c = http.cookies.SimpleCookie(self.headers.get("Cookie") or "")
-        return rol_de(c[COOKIE].value) if COOKIE in c else None
+        return sesion_de(c[COOKIE].value) if COOKIE in c else None
+
+    def _base(self):
+        return "https://" + (self.headers.get("X-Forwarded-Host") or self.headers.get("Host") or "app.moticias.com")
 
     def _q(self):
         return {k: v[0] for k, v in urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).items()}
 
     def do_GET(self):
-        q, rol = self._q(), self._rol()
+        q, ses = self._q(), self._ses()
         a = q.get("a", "yo")
         if a == "yo":
-            return self._enviar(200, {"rol": rol, "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
+            return self._enviar(200, {"rol": ses and ses["perfil"], "nombre": ses and ses["nombre"], "permisos": ses and ses["permisos"],
+                                      "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
                                       "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"])})
-        if not rol:
+        if not ses:
             return self._enviar(401, {"error": "sin sesión"})
+        if a == "equipo":
+            if "equipo" not in ses["permisos"]:
+                return self._enviar(403, {"error": "solo el superadministrador ve el equipo"})
+            datos, sha = equipo(fresco=True)
+            return self._enviar(200, {"personas": [EQ.publica(p) for p in datos.get("personas", [])], "perfiles": EQ.PERFILES,
+                                      "repositorio": EQUIPO_REPO, "accesible": sha is not None or gh("GET", "", repo=EQUIPO_REPO)[0] == 200})
+        if a == "suscriptores":
+            r = suscriptores()
+            if "equipo" not in ses["permisos"]:  # solo el superadministrador ve los correos completos
+                for m in r.get("ultimos", []):
+                    e = m.get("email") or ""
+                    m["email"] = (e[:2] + "…@" + e.split("@")[-1]) if "@" in e else ""
+            return self._enviar(200, r)
         if a == "piezas":
             return self._enviar(200, {"piezas": piezas(int(q.get("dias") or 14))})
         if a == "pieza":
@@ -336,7 +437,7 @@ class handler(BaseHTTPRequestHandler):
         return self._enviar(404, {"error": "acción desconocida"})
 
     def do_POST(self):
-        q, rol = self._q(), self._rol()
+        q, ses = self._q(), self._ses()
         a = q.get("a")
         try:
             n = int(self.headers.get("Content-Length") or 0)
@@ -344,31 +445,60 @@ class handler(BaseHTTPRequestHandler):
         except (ValueError, json.JSONDecodeError):
             return self._enviar(400, {"error": "JSON no válido"})
         if a == "entrar":
-            clave = str(d.get("clave") or "")
-            for r, c in _claves().items():
-                if c and hmac.compare_digest(clave.encode(), c.encode()):
-                    ck = "%s=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax" % (COOKIE, firmar(r), DIAS_SESION * 86400)
-                    return self._enviar(200, {"rol": r}, ck)
+            clave, email = str(d.get("clave") or ""), str(d.get("email") or "").strip()
+            if email:  # cuenta personal del equipo
+                datos, sha = equipo(fresco=True)
+                p = EQ.buscar(datos, email=email)
+                if p and p.get("estado") == "activa" and EQ.comprobar(p, clave):
+                    p["ultimo_acceso"] = EQ.ahora()
+                    guardar_equipo(datos, sha, "Equipo: acceso %s" % p["id"])
+                    p = EQ.buscar(equipo()[0], pid=p["id"]) or p
+                    return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")}, cookie_sesion("p-%s-%s" % (p["id"], p.get("version") or 0)))
+            else:  # contraseña común (acceso de emergencia del superadministrador y perfil oficina antiguo)
+                for r, c in _claves().items():
+                    if c and hmac.compare_digest(clave.encode(), c.encode()):
+                        return self._enviar(200, {"rol": r}, cookie_sesion(r))
             time.sleep(1.2)
-            return self._enviar(401, {"error": "contraseña incorrecta"})
+            return self._enviar(401, {"error": "correo o contraseña incorrectos"})
+        if a == "aceptar":
+            datos, sha = equipo(fresco=True)
+            try:
+                p = EQ.aceptar(datos, str(d.get("invitacion") or ""), str(d.get("clave") or ""))
+            except ValueError as e:
+                time.sleep(0.8)
+                return self._enviar(400, {"error": str(e)})
+            p["ultimo_acceso"] = EQ.ahora()
+            ok, det = guardar_equipo(datos, sha, "Equipo: alta %s" % p["id"])
+            if not ok:
+                return self._enviar(502, {"error": det})
+            return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")}, cookie_sesion("p-%s-%s" % (p["id"], p.get("version") or 0)))
         if a == "salir":
             return self._enviar(200, {"rol": None}, "%s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax" % COOKIE)
-        if not rol:
+        if not ses:
             return self._enviar(401, {"error": "sin sesión"})
         if self.headers.get("X-Gestor") != "1":  # protección CSRF: solo la página del gestor envía esta cabecera
             return self._enviar(403, {"error": "petición no válida"})
+        permisos = ses["permisos"]
+        if a in ("mencion", "republicar", "republicar_pendientes") and "piezas" not in permisos:
+            return self._enviar(403, {"error": "tu perfil no cambia las cajas de las piezas"})
         if a == "mencion":
-            return self._enviar(*accion_mencion(rol, d))
+            return self._enviar(*accion_mencion(ses["nombre"], d))
         if a == "republicar":
             return self._enviar(200, republicar_y_marcar(d.get("id")))
         if a == "republicar_pendientes":
             ids = [p["id"] for p in piezas(60) if pendiente_web(p)]
             res = [dict(republicar_y_marcar(i), id=i) for i in ids[:15]]
             return self._enviar(200, {"ok": all(r["ok"] for r in res), "piezas": res, "quedan": max(0, len(ids) - 15)})
-        if rol != "superadmin":
-            return self._enviar(403, {"error": "solo el superadministrador puede cambiar productos y publicidad"})
         if a == "producto":
+            if "productos" not in permisos:
+                return self._enviar(403, {"error": "tu perfil no cambia los productos"})
             return self._enviar(*accion_producto(d))
         if a == "anuncio":
+            if "publicidad" not in permisos:
+                return self._enviar(403, {"error": "tu perfil no cambia la publicidad"})
             return self._enviar(*accion_anuncio(d))
+        if a == "equipo":
+            if "equipo" not in permisos:
+                return self._enviar(403, {"error": "solo el superadministrador gestiona el equipo"})
+            return self._enviar(*accion_equipo(ses, d, self._base()))
         return self._enviar(404, {"error": "acción desconocida"})

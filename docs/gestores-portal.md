@@ -36,7 +36,9 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 ## Gestor de patrocinios (móvil) · desde el 8-11-2026
 
 - Dirección: `app.moticias.com/gestor/` (Vercel; mientras no esté el dominio, la dirección de Vercel del proyecto `moticias-app`). Se entra con contraseña; la sesión dura 90 días en el móvil.
-- Perfiles: superadministrador (todo) y oficina (cajas de las piezas, sin tocar productos ni publicidad).
+- Perfiles (una cuenta por persona, desde el 9-11-2026): superadministrador (todo, incluido el equipo), editor (cajas de las piezas), comercial (productos propios y publicidad) y oficina (cajas de las piezas). Alta en la pestaña «Equipo»: nombre, correo y perfil → enlace de invitación de un solo uso (7 días) para mandar por WhatsApp o correo; con él la persona crea su contraseña. Suspender en vez de borrar; «Enlace para cambiar la contraseña» si alguien la olvida. Los datos del equipo están en el repositorio privado `movo-es/moticias-equipo`.
+- Suscriptores: pestaña con los totales de Ghost (gratuitos, de pago, cortesía), las últimas altas y el enlace para gestionarlos en Ghost. La redacción que escribe en Ghost se invita en Ghost (Settings → Staff).
+- Acceso de emergencia: sin correo, con la contraseña común del superadministrador.
 - Piezas: pendientes, falta en la web, con caja, posibles y todas. En cada pieza: publicar, retirar, editar el texto, elegir la posición (premium tras el primer párrafo · estándar entre el tercio y la mitad · referencia al final), añadir a mano otro producto (con su puntuación contra la pieza), ver cómo queda en el texto y republicar en la web.
 - Productos: cómo entra cada uno (automático con umbral, con revisión, solo a mano, apagado), exclusiva o comparte, umbral, máximo por semana, textos, URL y contexto.
 - Publicidad: campañas de `data/ads/`, activar o pausar.
