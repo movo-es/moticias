@@ -246,7 +246,7 @@ def cajas_html(a, vertical, inline=html.escape):
         out.append((posicion(m), '<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" '
                    'style="margin:2em 0;padding:1em 1.2em;background:#f4f6f5;border-left:3px solid #c9d2cd;border-radius:4px;font-size:.95em">'
                    '<p class="contenido-patrocinado-etiqueta" style="margin:0 0 .5em;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:#7a837e">%s</p>'
-                   '<p style="margin:0">%s <a href="%s" rel="sponsored noopener">%s</a></p>%s</aside><!--kg-card-end: html-->'
+                   '<p style="margin:0">%s <a href="%s" rel="sponsored noopener" style="color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px">%s</a></p>%s</aside><!--kg-card-end: html-->'
                    % (html.escape(m.get("producto") or "", quote=True), inline(etiqueta), inline(m.get("texto", "")),
                       html.escape(m.get("url", ""), quote=True), inline(m.get("cta") or m.get("nombre") or ""),
                       ('<p class="contenido-patrocinado-declaracion" style="margin:.6em 0 0;font-size:.75em;color:#7a837e">%s</p>'
