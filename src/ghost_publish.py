@@ -48,15 +48,51 @@ def ghost_token(admin_key):
     return signing + "." + b64url(sig)
 
 
+def _json(raw, status):
+    try:
+        return json.loads(raw or b"{}")
+    except ValueError:
+        return {"errors": [{"message": "respuesta no JSON (HTTP %s): %s" % (status, raw[:160].decode("utf-8", "replace"))}]}
+
+
+class _SinRedireccion(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *a, **k):
+        return None
+
+
+_ADMIN = {}
+
+
+def admin_base(base_url):
+    """Dirección de la Admin API. En Ghost(Pro) el dominio público (www.moticias.com) redirige /ghost/ al dominio de
+    administración (moticias.ghost.io) y en esa redirección se pierde la autorización: se detecta una vez y se usa el
+    destino. GHOST_ADMIN_URL lo fija a mano si hiciera falta. La URL pública de las piezas sigue siendo base_url."""
+    if os.environ.get("GHOST_ADMIN_URL"):
+        return os.environ["GHOST_ADMIN_URL"].rstrip("/")
+    if base_url not in _ADMIN:
+        dest = base_url
+        try:
+            urllib.request.build_opener(_SinRedireccion).open(
+                urllib.request.Request(base_url + "/ghost/api/admin/site/", headers={"User-Agent": UA}), timeout=20)
+        except urllib.error.HTTPError as e:
+            loc = e.headers.get("Location") or ""
+            if e.code in (301, 302, 307, 308) and "/ghost/" in loc:
+                dest = loc.split("/ghost/")[0].rstrip("/")
+        except urllib.error.URLError:
+            pass
+        _ADMIN[base_url] = dest
+    return _ADMIN[base_url]
+
+
 def api(method, url, token, body=None):
     data = json.dumps(body).encode() if body is not None else None
     req = urllib.request.Request(url, data=data, method=method, headers={
         "Authorization": "Ghost " + token, "Content-Type": "application/json", "Accept-Version": "v5.0", "User-Agent": UA})
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
-            return r.status, json.loads(r.read() or b"{}")
+            return r.status, _json(r.read(), r.status)
     except urllib.error.HTTPError as e:
-        return e.code, json.loads(e.read() or b"{}")
+        return e.code, _json(e.read(), e.code)
 
 
 # ---------- Markdown mínimo → HTML ----------
@@ -175,6 +211,7 @@ def build_post(a, vertical, base_url):
 
 # ---------- publicación ----------
 def upsert(post, status, base_url, token):
+    base_url = admin_base(base_url)
     post = dict(post, status=status)
     st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,updated_at" % (base_url, post["slug"]), token)
     if st == 200 and found.get("posts"):
@@ -207,9 +244,11 @@ def republicar(a, vertical, base_url, admin_key):
     """Actualiza en Ghost un post que ya existe, manteniendo su estado (publicado o borrador). No crea posts nuevos.
     Lo usa el gestor de patrocinios tras cada cambio. Devuelve (resultado, error)."""
     token = ghost_token(admin_key)
-    st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,status" % (base_url, a["id"]), token)
-    if st != 200 or not found.get("posts"):
+    st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,status" % (admin_base(base_url), a["id"]), token)
+    if st == 404:
         return None, "la pieza aún no está en Ghost (la subirá la rutina)"
+    if st != 200 or not found.get("posts"):
+        return None, "Ghost respondió %s: %s" % (st, ((found.get("errors") or [{}])[0].get("message") or "")[:200])
     return upsert(build_post(a, vertical, base_url), found["posts"][0].get("status") or "draft", base_url, token)
 
 
