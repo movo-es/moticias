@@ -83,7 +83,7 @@ def con_utm(url, producto, pieza_id):
     if not url:
         return url
     sep = "&" if "?" in url else "?"
-    q = urllib.parse.urlencode({"utm_source": "moticias", "utm_medium": "nota-de-la-casa",
+    q = urllib.parse.urlencode({"utm_source": "moticias", "utm_medium": "contenido-patrocinado",
                                 "utm_campaign": producto.get("utm_campaign") or "moticias-nota-de-la-casa", "utm_content": pieza_id})
     return url + sep + q
 
@@ -115,7 +115,7 @@ POSICIONES = ("premium", "estandar", "referencia")
 
 
 def posicion(x):
-    """premium (tras la entradilla) · estandar (entre el tercio y la mitad del texto) · referencia (al final del texto)."""
+    """premium (tras el primer párrafo) · estandar (entre el tercio y la mitad del texto) · referencia (al final del texto)."""
     return x.get("posicion") if x.get("posicion") in POSICIONES else "estandar"
 
 
@@ -256,7 +256,7 @@ def cajas_html(a, vertical, inline=html.escape):
 
 def insertar_en_medio(cuerpo_html, cajas):
     """Coloca las cajas en el cuerpo según su posición:
-    - premium: tras la entradilla (la respuesta directa va antes del cuerpo, así que la caja abre el cuerpo);
+    - premium: tras el primer párrafo del cuerpo (decisión de Rainer, 8-11-2026: no pegada a la entradilla);
     - estandar: entre el tercio y la mitad del texto (una: hacia el 40 %; dos: al tercio y a la mitad), siempre después
       de un párrafo, una lista o una cita;
     - referencia: al final del texto, antes de las cifras clave.
@@ -284,10 +284,14 @@ def insertar_en_medio(cuerpo_html, cajas):
             colocadas.setdefault(h, []).append(caja)
     elif medio:
         final = medio + final
-    out = list(premium)
+    if premium:  # tras el primer párrafo (o la primera lista o cita) del cuerpo
+        i1 = next((i + 1 for i, b in enumerate(bloques) if b.startswith(("<p>", "</ul>", "<blockquote"))), min(1, n))
+        colocadas[i1] = premium + colocadas.get(i1, [])
+    out = []
     for i, b in enumerate(bloques):
         out += colocadas.get(i, [])
         out.append(b)
+    out += colocadas.get(n, [])
     out += final
     return "\n".join(out)
 
