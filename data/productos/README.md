@@ -8,6 +8,7 @@ Un JSON por producto o servicio del grupo que MOTICIAS puede mencionar al pie de
 |---|---|
 | `id`, `name`, `url`, `owner` | Identificador (= nombre del fichero), nombre público, página de destino, sociedad titular. **Sin `url` no se menciona.** |
 | `modo` | `automatico` (entra solo si supera el `umbral`), `revision` (queda pendiente para aprobar en el gestor), `manual` (solo se pone a mano desde el gestor), `apagado`. |
+| `posicion` | Dónde va la caja por defecto: `premium` (tras la entradilla), `estandar` (entre el tercio y la mitad del texto) o `referencia` (al final del texto). Se puede cambiar en cada pieza. |
 | `exclusividad` | `exclusiva` (si entra, la pieza no lleva otra caja) o `compartida` (hasta dos cajas por pieza). |
 | `status` | `activo` (se menciona), `borrador` (no se menciona hasta aprobar), `pausado`, `retirado`. Nunca se borra un fichero. |
 | `one_liner` | Una frase de qué hace. |

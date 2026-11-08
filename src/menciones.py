@@ -111,6 +111,14 @@ def modo(prod):
     return "automatico" if prod.get("status") == "activo" else "apagado"
 
 
+POSICIONES = ("premium", "estandar", "referencia")
+
+
+def posicion(x):
+    """premium (tras la entradilla) · estandar (entre el tercio y la mitad del texto) · referencia (al final del texto)."""
+    return x.get("posicion") if x.get("posicion") in POSICIONES else "estandar"
+
+
 def exclusividad(prod):
     return "exclusiva" if prod.get("exclusividad") == "exclusiva" else "compartida"
 
@@ -171,7 +179,7 @@ def publicadas_ultimos_dias(data_dir, producto_id, hasta, dias=7):
 def nueva_mencion(a, prod, pts, motivos, est, origen="automatica"):
     return {"producto": prod["id"], "nombre": prod.get("name"), "texto": (prod.get("textos") or {}).get("corto", ""),
             "cta": (prod.get("textos") or {}).get("cta", ""), "url": con_utm(prod["url"], prod, a["id"]),
-            "exclusividad": exclusividad(prod), "estado": est, "motivo": "; ".join(motivos), "puntuacion": pts, "origen": origen,
+            "exclusividad": exclusividad(prod), "posicion": posicion(prod), "estado": est, "motivo": "; ".join(motivos), "puntuacion": pts, "origen": origen,
             "propuesta_en": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
 
 
@@ -220,7 +228,8 @@ def proponer(a, productos, data_dir, fecha, estado="publicada", max_por_pieza=2)
 
 # ---------- cajas HTML (las usa ghost_publish) ----------
 def cajas_html(a, vertical, inline=html.escape):
-    """Una caja por mención publicada (como mucho max_por_pieza; si la primera es exclusiva, solo esa)."""
+    """Lista de (posicion, html): una caja por mención publicada (como mucho max_por_pieza; si la primera es exclusiva,
+    solo esa). Siempre lleva enlace (si falta el texto del enlace, se usa el nombre del producto)."""
     cfg = vertical.get("productos") or {}
     pub = [m for m in a.get("menciones") or [] if m.get("estado") == "publicada"]
     if not pub:
@@ -234,46 +243,58 @@ def cajas_html(a, vertical, inline=html.escape):
     for m in pub:
         # Tarjeta HTML de Ghost (los comentarios kg-card la conservan intacta al convertir a Lexical) con estilos en línea,
         # para que la caja se vea igual con cualquier tema: separada del texto, fondo suave, etiqueta pequeña y gris.
-        out.append('<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" '
+        out.append((posicion(m), '<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" '
                    'style="margin:2em 0;padding:1em 1.2em;background:#f4f6f5;border-left:3px solid #c9d2cd;border-radius:4px;font-size:.95em">'
                    '<p class="contenido-patrocinado-etiqueta" style="margin:0 0 .5em;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:#7a837e">%s</p>'
                    '<p style="margin:0">%s <a href="%s" rel="sponsored noopener">%s</a></p>%s</aside><!--kg-card-end: html-->'
                    % (html.escape(m.get("producto") or "", quote=True), inline(etiqueta), inline(m.get("texto", "")),
                       html.escape(m.get("url", ""), quote=True), inline(m.get("cta") or m.get("nombre") or ""),
                       ('<p class="contenido-patrocinado-declaracion" style="margin:.6em 0 0;font-size:.75em;color:#7a837e">%s</p>'
-                       % inline(decl % {"nombre": m.get("nombre") or ""})) if decl else ""))
+                       % inline(decl % {"nombre": m.get("nombre") or ""})) if decl else "")))
     return out
 
 
 def insertar_en_medio(cuerpo_html, cajas):
-    """Reparte las cajas entre los bloques del cuerpo (1 caja: hacia la mitad; 2: a un tercio y a dos tercios), siempre
-    después de un párrafo y nunca delante del primer bloque ni detrás del último."""
+    """Coloca las cajas en el cuerpo según su posición:
+    - premium: tras la entradilla (la respuesta directa va antes del cuerpo, así que la caja abre el cuerpo);
+    - estandar: entre el tercio y la mitad del texto (una: hacia el 40 %; dos: al tercio y a la mitad), siempre después
+      de un párrafo, una lista o una cita;
+    - referencia: al final del texto, antes de las cifras clave.
+    Acepta también cajas sin posición (texto suelto): cuentan como estándar."""
+    cajas = [c if isinstance(c, tuple) else ("estandar", c) for c in cajas or []]
     if not cajas:
         return cuerpo_html
     bloques = [b for b in cuerpo_html.split("\n") if b.strip()]
-    if len(bloques) < 2:
-        return "\n".join(bloques + cajas)
+    premium = [h for p, h in cajas if p == "premium"]
+    final = [h for p, h in cajas if p == "referencia"]
+    medio = [h for p, h in cajas if p not in ("premium", "referencia")]
     n = len(bloques)
-    huecos = [i for i in range(1, n) if bloques[i - 1].startswith(("<p>", "</ul>", "<blockquote"))] or list(range(1, n))
-    pos = []
-    for k in range(len(cajas)):
-        objetivo = round(n * (k + 1) / (len(cajas) + 1))
-        mejor = min((h for h in huecos if h not in pos), key=lambda h: abs(h - objetivo), default=None)
-        if mejor is not None:
-            pos.append(mejor)
-    pos_caja = sorted(zip(pos, cajas))
-    out, j = [], 0
+    colocadas = {}
+    if medio and n >= 2:
+        huecos = [i for i in range(1, n) if bloques[i - 1].startswith(("<p>", "</ul>", "<blockquote"))] or list(range(1, n))
+        objetivos = [0.4] if len(medio) == 1 else [1 / 3, 0.5]
+        usados = []
+        for caja, f in zip(medio, objetivos):
+            obj = max(1, round(n * f))
+            h = min((h for h in huecos if h not in usados), key=lambda h: abs(h - obj), default=None)
+            if h is None:
+                final.insert(0, caja)
+                continue
+            usados.append(h)
+            colocadas.setdefault(h, []).append(caja)
+    elif medio:
+        final = medio + final
+    out = list(premium)
     for i, b in enumerate(bloques):
-        while j < len(pos_caja) and pos_caja[j][0] == i:
-            out.append(pos_caja[j][1]); j += 1
+        out += colocadas.get(i, [])
         out.append(b)
-    out += [c for _, c in pos_caja[j:]]
+    out += final
     return "\n".join(out)
 
 
 def bloque_html(a, vertical, inline=html.escape):
     """Compatibilidad: todas las cajas juntas (sin posición)."""
-    return "\n".join(cajas_html(a, vertical, inline))
+    return "\n".join(h for _, h in cajas_html(a, vertical, inline))
 
 
 def url_gestor(vertical, pieza_id=None):

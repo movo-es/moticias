@@ -11,6 +11,12 @@ Sustituye a «la mención va al pie, señalizada, una por pieza». Cada mención
 - CUANDO la primera mención publicada tiene `exclusividad: exclusiva`
 - ENTONCES solo se pinta esa caja, aunque haya otras publicadas.
 
+## ADDED Requisito: posición de la caja (decisión de Rainer, 8-11-2026, 23:33)
+Cada mención tiene `posicion`, editable en el gestor, y cada producto una posición por defecto: `premium` (justo después de la entradilla, es decir, de la respuesta directa con que abre la pieza), `estandar` (entre el tercio y la mitad del texto: una caja hacia el 40 %, dos al tercio y a la mitad) y `referencia` (al final del texto, antes de las cifras clave). Sin campo, `estandar`. La caja lleva siempre enlace (si falta el texto del enlace, el nombre del producto), con `rel="sponsored noopener"`: es lo que Google pide para enlaces señalizados como patrocinados y protege a moticias.com de una penalización por esquema de enlaces.
+
+## ADDED Requisito: cada cambio sube a la web al momento
+Tras publicar una mención —de forma automática (rutina) o manual (gestor)— y tras cualquier cambio de texto, posición o estado, la pieza se actualiza en Ghost en el acto (`ghost_publish.republicar`, o `ghost_publish.py --ids`), lo que refresca su fecha de modificación y el sitemap. Si Ghost responde bien, la mención queda con `en_web: <fecha>`; si no, el gestor la muestra como «Falta en la web» y ofrece «Subir todo a la web ahora».
+
 ## ADDED Requisito: modo y exclusividad por producto
 Cada producto tiene `modo` (`automatico` · `revision` · `manual` · `apagado`) y `exclusividad` (`exclusiva` · `compartida`). La propuesta automática (`src/menciones.py proponer`) solo considera productos en `automatico` o `revision` que superan su `umbral`; ordena por puntuación; si el primero es exclusivo, solo él; si no, añade los compartidos siguientes hasta `max_por_pieza`, saltando los exclusivos. `automatico` escribe `estado: publicada`; `revision` escribe `propuesta` (pendiente en el gestor). El tope semanal sigue convirtiendo en `propuesta`. Un producto sin `modo` toma `automatico` si está `activo` y `apagado` en otro caso.
 
