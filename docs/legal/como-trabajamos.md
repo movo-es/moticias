@@ -16,6 +16,6 @@ Versión 1.0 · [fecha de publicación]
 
 **Declaración de intereses.** El director es cofundador de Movenbus y participa en MUFMI y MOVO. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado. Las soluciones del grupo aparecen, cuando aparecen, señalizadas y fuera del texto editorial, igual que las de terceros.
 
-**Correcciones.** Las correcciones se anotan al final de la pieza, con fecha y explicación, y se listan en la página de correcciones. Para pedir una: [correcciones@moticias.com].
+**Correcciones.** Las correcciones se anotan al final de la pieza, con fecha y explicación, y se listan en la página de correcciones. Para pedir una: redaccion@moticias.com.
 
 **Fotos.** Solo con licencia libre (Creative Commons o dominio público) y crédito visible; del sujeto concreto de la pieza; sin rostros reconocibles ni fotos de agencias.

@@ -11,13 +11,13 @@ Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`opens
 - [x] Comandos `/prensa-buzon`, `/edicion-a-medida`, `/conocimiento-ingesta`, `/auscultar`, `/quien-decide-actualizar` (texto; se afinan en su cambio).
 - [x] Borradores legales (`docs/legal/`), `ghost/llms.txt` y `ghost/robots.txt`.
 - [x] BDNS como primera fuente de segundo nivel (`src/bdns_sweep.py`, verificado).
-- [ ] Pendiente de Rainer: repositorio en privado; respuestas a las cinco preguntas del 8-11 (sector, «conocimiento» en MOVO, Amarantia, canales, entrega).
+- [x] Respuestas de Rainer (8-11, tarde): sector = movilidad + transporte + logística; «conocimiento» tiene código en `movo-es/movo` (se extiende); hay interés de un cliente de Amarantia (auscultador adelantado a enero); canales = Brevo (correo, SMS, WhatsApp), voz después; el repositorio sigue público por decisión suya; la rama se fundió en main (#1).
 
 ## Semana 46 (10–16 nov 2026)
-- [ ] `publicar-en-ghost-v1` (entrevista 1 de `docs/paso-a-code.md`): moticias.com con las 74 piezas, rutina publicando sola, legales a nombre de Avionline, campaña PMST visible. Repositorio puesto en privado.
+- [ ] `publicar-en-ghost-v1` (entrevista 1 hecha el 8-11; `openspec/changes/publicar-en-ghost-v1/tasks.md`): tema versionado, 12 piezas reconciliadas en borrador, legales publicadas, alta con consentimientos, paso 7 quater en la rutina.
 
 ## Semana 47
-- [ ] `notas-de-prensa-v1` (entrevista corta, Anexo A.1): sección `/notas-de-prensa/`, formulario en `app.moticias.com/prensa/enviar`, buzón `prensa@moticias.com` vaciado por `/prensa-buzon`, ficha de organización, primera nota publicada.
+- [ ] `notas-de-prensa-v1` (entrevista corta, nº 10): sección `/notas-de-prensa/`, formulario en `app.moticias.com/prensa/enviar`, buzón `prensa@moticias.com` vaciado por `/prensa-buzon`, ficha de organización, primera nota publicada.
 
 ## Semana 48
 - [ ] `sala-de-redaccion-v1` (entrevista 3): proyecto Supabase `moticias`, migración 001, `app.moticias.com/redaccion` con cola de aprobación.
@@ -27,43 +27,41 @@ Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`opens
 
 ## Semana 50
 - [ ] `campanas-tematicas-v1` (entrevista 2): `/campanas` con la campaña PMST.
-- [ ] `quien-decide-semilla` (sin entrevista): tablas `cargos` y `cargo_fuentes` (migración 002) sembradas con los nombramientos ya publicados en `data/boletines/` y `data/articles/`.
+- [x] `quien-decide-semilla`: hecha el 8-11 (`data/cargos/`, 16 cargos).
 
 ## Semanas 51–52
 - [ ] `suscripciones-v1` (entrevista 4): niveles en Ghost, alta con perfil, consentimientos separados (boletín · comunicados · ofertas del grupo), centro de preferencias.
 - [ ] Tareas programadas: radar regulatorio (lunes 07:30), licitaciones de la semana (viernes 07:30), promo social (laborables 08:15).
 
-## Semanas 1–2 (ene 2027)
-- [ ] `fuentes-segundo-nivel-v1` (sin entrevista): cinco fuentes nuevas en `sources.json`, tabla `datasets`, primera serie propia descargable con método.
-- [ ] `crm-leads-v1` (entrevista 5): `/crm`, puntuación nocturna `/leads-puntuar`.
+## Semanas 1–2 (ene 2027) — adelantado el 8-11 por interés de un cliente
+- [ ] `amarantia-auscultador-v1` (entrevista nº 14): `entities`, `baselines`, `alerts`; anillo 2 (Bluesky, Reddit, YouTube, Google News, Telegram público); `/auscultar` cada 2 horas; panel `app.moticias.com/amarantia`; aviso por correo (Brevo) hasta que exista el motor; primera entidad de cliente.
 
 ## Semana 3
+- [ ] `motor-envios-v1` (entrevista nº 13): adaptador Brevo (correo, SMS, WhatsApp), plantillas, acuses, bajas, registro, secuencias en Vercel Workflow; alertas de licitaciones por comunidad. Voz fuera.
+- [ ] `fuentes-segundo-nivel-v1` (sin entrevista): BDNS ya verificada (`src/bdns_sweep.py`); cuatro fuentes más en `sources.json`, tabla `datasets`, primera serie propia descargable con método.
+
+## Semana 4
+- [ ] `crm-leads-v1` (entrevista 5): `/crm`, puntuación nocturna `/leads-puntuar`.
 - [ ] `notas-de-prensa-v2` (sin entrevista): valoración IA y difusión opcional, pago en MOVO (Stripe), segmento «recibir comunicados».
 
-## Semanas 4–6
-- [ ] `conocimiento-v1` (entrevista nueva, A.2): esquema `conocimiento` compartido, migración 003 (`pgvector`), `/conocimiento-ingesta`, consulta IA con citas en `app.moticias.com/conocimiento` (corporativa) y API para MOVO.
+## Semanas 5–7
+- [ ] `conocimiento-v1` (entrevista nº 11): proceso `moticias` en el motor de conocimiento de `movo-es/movo` (migración en ESE repositorio, con sus reglas), canales de MOTICIAS, piezas como fuentes secundarias reputadas, búsqueda semántica (`pgvector` + Voyage) filtrada por `fuente_usable()`, `/conocimiento-ingesta`, consulta con citas en `app.moticias.com/conocimiento` (corporativa) y API para Amarantia.
 
-## Semanas 7–9
-- [ ] `ediciones-a-medida-v2` (entrevista nueva, A.3): perfiles, selector, página privada, correo, PDF con documento de revisión, `widget.js`; tres asociaciones piloto.
+## Semanas 8–10
+- [ ] `ediciones-a-medida-v2` (entrevista nº 12): perfiles, selector, página privada, correo, PDF con documento de revisión, `widget.js`; tres asociaciones piloto.
 
-## Semanas 10–11
-- [ ] `motor-envios-v1` (entrevista nueva, A.4): adaptadores Brevo (correo, SMS) y Twilio (WhatsApp, voz), plantillas, acuses, bajas, registro, secuencias en Vercel Workflow; alertas de licitaciones por comunidad.
+## Semanas 11–15
+- [ ] `amarantia-plus-v1` (entrevista nº 15): `planes`, `audiencias`, `secuencias`, `ejecuciones`, `envios`, `aprobaciones`; primer plan piloto; simulacro con informe; contrato de encargado.
 
-## Semanas 12–13
-- [ ] `amarantia-auscultador-v1` (entrevista nueva, A.5): `entities`, `baselines`, `alerts`; anillo 2 (Bluesky, Reddit, YouTube, Google News, Telegram público); `/auscultar` cada 2 horas; panel `app.moticias.com/amarantia`; primera entidad de cliente.
-
-## Semanas 14–18
-- [ ] `amarantia-plus-v1` (entrevista nueva, A.6): `planes`, `audiencias`, `secuencias`, `ejecuciones`, `envios`, `aprobaciones`; primer plan piloto; simulacro con informe; contrato de encargado.
-
-## Semanas 19–20
+## Semanas 16–17
 - [ ] `contactos-quien-decide-v1` (sin entrevista): `/quien-decide` para corporativa, `/quien-decide-actualizar` mensual, exportación bajo contrato.
 - [ ] `asesor-v1` (sin entrevista): aceptación de propuestas desde el móvil, métricas de Ghost y Search Console.
 - [ ] `/cuadro-de-mando` mensual (día 12).
 
-## Semanas 21–23
+## Semanas 18–20
 - [ ] `publicidad-promocion-v1` (entrevista 6): huecos operativos, `/anunciantes`, primer patrocinio ofrecido.
 
-## Semanas 24–26
+## Semanas 21–23
 - [ ] `vertical-turismo-v1` (entrevista 9): primera edición de prueba de «viajar en grupo».
 
 ## Al cerrar cada hijo

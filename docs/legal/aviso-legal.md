@@ -2,7 +2,7 @@
 
 Versión 1.0 · [fecha de publicación]
 
-**Titular.** moticias.com es un medio de información profesional sobre movilidad, transporte y logística editado por Avionline S.L., con NIF [B-XXXXXXXX], domicilio en [dirección completa, Santa Cruz de Tenerife], inscrita en el Registro Mercantil de [provincia], tomo [ ], folio [ ], hoja [ ]. Correo de contacto: [contacto@moticias.com]. Director: Rainer [apellido].
+**Titular.** moticias.com es un medio de información profesional sobre movilidad, transporte y logística editado por Avionline S.L., con NIF B35946524, domicilio en Calle Villalba Hervás, 9, 38002 Santa Cruz de Tenerife, España, inscrita en el Registro Mercantil de Santa Cruz de Tenerife, tomo 3652, libro 0, folio 123, sección 0, hoja TF-63589, inscripción 2. Correo de contacto: redaccion@moticias.com. Director: Rainer Uphoff.
 
 **Objeto.** Información general del sector (noticias, análisis, referencia regulatoria, licitaciones y plazos), una sala de prensa en la que se publican comunicados de empresas y organismos tal como los remiten, ediciones a medida para organizaciones, y servicios de datos y de conocimiento para suscriptores. Las condiciones de cada servicio de pago se indican en su página de contratación.
 
@@ -12,8 +12,8 @@ Versión 1.0 · [fecha de publicación]
 
 **Propiedad intelectual.** Los textos, datos propios y diseño de moticias.com son de Avionline S.L. o se publican con licencia de sus autores (fotografías con licencia Creative Commons y crédito visible). Se permite citar con enlace y mención de la fuente. La reproducción íntegra de piezas requiere autorización; las ediciones a medida y el widget se usan en los términos de su contrato o de la página del widget. Los comunicados de la sala de prensa pertenecen a quien los remite.
 
-**Fuentes y correcciones.** Cada pieza cita sus fuentes con fecha de publicación y de consulta. Las correcciones se anotan al final de la pieza con fecha y se recogen en la página de correcciones. Las peticiones de rectificación se dirigen a [correcciones@moticias.com].
+**Fuentes y correcciones.** Cada pieza cita sus fuentes con fecha de publicación y de consulta. Las correcciones se anotan al final de la pieza con fecha y se recogen en la página de correcciones. Las peticiones de rectificación se dirigen a redaccion@moticias.com.
 
 **Responsabilidad.** La información se ofrece con fines informativos y profesionales; las decisiones que se tomen a partir de ella son responsabilidad de quien las toma. Los enlaces a sitios de terceros se facilitan como referencia; Avionline S.L. no responde de su contenido.
 
-**Ley aplicable.** Legislación española. Para cualquier controversia, los juzgados y tribunales de [Santa Cruz de Tenerife], salvo que la ley disponga otro fuero.
+**Ley aplicable.** Legislación española. Para cualquier controversia, los juzgados y tribunales de Santa Cruz de Tenerife, salvo que la ley disponga otro fuero.

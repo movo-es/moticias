@@ -11,4 +11,4 @@ Al enviar este comunicado declaro que represento a la organización indicada, qu
 **Alta de alertas (licitaciones, señales).**
 - [ ] Quiero recibir alertas de [licitaciones / señales] por [correo / SMS / WhatsApp] en el número y dirección indicados. Puedo darme de baja en cada mensaje.
 
-**Pie de todos los correos.** Recibes este correo porque te suscribiste en moticias.com. Gestiona tus preferencias o date de baja: {{ enlace }}. Avionline S.L., [dirección].
+**Pie de todos los correos.** Recibes este correo porque te suscribiste en moticias.com. Gestiona tus preferencias o date de baja: {{ enlace }}. Avionline S.L., Calle Villalba Hervás, 9, 38002 Santa Cruz de Tenerife, España.

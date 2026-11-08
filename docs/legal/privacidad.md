@@ -2,7 +2,7 @@
 
 Versión 1.0 · [fecha de publicación]
 
-**Responsable.** Avionline S.L., NIF [B-XXXXXXXX], [dirección], [privacidad@moticias.com]. [Si procede: delegado de protección de datos: [nombre y contacto].]
+**Responsable.** Avionline S.L., NIF B35946524, Calle Villalba Hervás, 9, 38002 Santa Cruz de Tenerife, España, privacidad@avionline.es. No hay delegado de protección de datos designado: las consultas se dirigen a la dirección anterior.
 
 ## Qué datos tratamos y para qué
 
@@ -24,7 +24,7 @@ Proveedores que tratan datos por cuenta de Avionline S.L. con contrato de encarg
 
 ## Derechos
 
-Acceso, rectificación, supresión, oposición, limitación y portabilidad, y retirada del consentimiento en cualquier momento, escribiendo a [privacidad@moticias.com] con una copia de un documento que acredite la identidad. Quien figure en «Quién decide» puede oponerse al tratamiento de sus datos de contacto profesional desde la misma dirección. Reclamaciones: Agencia Española de Protección de Datos (aepd.es).
+Acceso, rectificación, supresión, oposición, limitación y portabilidad, y retirada del consentimiento en cualquier momento, escribiendo a privacidad@avionline.es con una copia de un documento que acredite la identidad. Quien figure en «Quién decide» puede oponerse al tratamiento de sus datos de contacto profesional desde la misma dirección. Reclamaciones: Agencia Española de Protección de Datos (aepd.es).
 
 ## Menores
 

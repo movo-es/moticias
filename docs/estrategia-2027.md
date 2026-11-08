@@ -1,6 +1,6 @@
 # MOTICIAS · Estrategia 2027: de portal de referencia a plataforma que se financia sola
 
-Fecha: 8 de noviembre de 2026. Origen: anotaciones manuscritas del director («Estrategia_2027», cuatro páginas) y su encargo del mismo día. Destino: `docs/estrategia-2027.md` en `movo-es/moticias`, que manda sobre esta copia. Complementa, no sustituye, a `docs/estrategia.md` (7-11-2026) y al cambio `plataforma-v1`.
+Fecha: 8 de noviembre de 2026 (revisado la misma tarde con las respuestas de Rainer a las cinco preguntas y la entrevista 1). Origen: anotaciones manuscritas del director («Estrategia_2027», cuatro páginas) y su encargo del mismo día. Destino: `docs/estrategia-2027.md` en `movo-es/moticias`, que manda sobre esta copia. Complementa, no sustituye, a `docs/estrategia.md` (7-11-2026) y al cambio `plataforma-v1`.
 
 Respuesta corta: MOTICIAS gana autoridad siendo la referencia informativa de movilidad, transporte y logística sin sobrecarga publicitaria; esa autoridad se convierte en ingresos por cinco vías (suscripción profesional, sala de prensa, revistas y ediciones a medida, datos y conocimiento premium, Amarantia) construidas sobre ocho módulos reutilizables. Ghost muestra; el repositorio manda; Supabase guarda estado; Vercel ejecuta; los agentes de Claude Code trabajan. Nueve cambios OpenSpec entre noviembre de 2026 y junio de 2027, uno por semana de media, cada uno con algo visible desde el móvil.
 
@@ -45,6 +45,8 @@ Más la publicidad limitada (patrocinio de sección, contenido patrocinado seña
 
 Principio: **Ghost muestra, el repositorio manda, Supabase guarda estado, Vercel ejecuta, los agentes trabajan.** Ningún dato tiene dos dueños.
 
+Estado real el 8-11-2026 (comprobado): www.moticias.com ya sirve 62 piezas en Ghost(Pro) 6.75 con un tema propio, secciones, redirección del dominio sin `www`, y `llms.txt`, `llms-full.txt` y `.md` por pieza generados por Ghost. Lo que falta es versionar ese tema y reconciliar las 12 piezas pendientes de la firma del director: cambio `publicar-en-ghost-v1`.
+
 | Capa | Plataforma | Qué hace | Qué no hace |
 |---|---|---|---|
 | Web pública, miembros, boletines | **Ghost(Pro)** en `moticias.com` | Piezas, secciones, páginas pilar, sala de prensa pública, niveles de suscripción y cobro, newsletters, Content API (lectura pública para el widget) | Lógica de negocio, CRM, cálculo; no se programa dentro de Ghost |
@@ -53,8 +55,8 @@ Principio: **Ghost muestra, el repositorio manda, Supabase guarda estado, Vercel
 | Estado y datos | **Supabase** (proyecto `moticias`; esquema compartido `grupo` para conocimiento y señales) | Postgres con RLS: estado editorial, contactos, organizaciones, leads, señales, alertas, planes PLUS, envíos y acuses, conocimiento con `pgvector`, métricas | Contenido editorial (vive en el repo y en Ghost) |
 | Aplicación privada y API | **Next.js en Vercel** (`app/` del repo; `app.moticias.com`) | Sala de redacción, CRM, panel Amarantia, PLUS, consulta IA, «Quién decide», gestor de ediciones a medida, `widget.js`, formularios públicos, webhooks | SEO: lo público indexable está en Ghost |
 | Secuencias durables | **Vercel Workflow** | Secuencias PLUS (paso, espera, acuse, aprobación humana, siguiente paso), campañas de difusión de notas, reintentos | Envío directo de mensajes (lo hacen los adaptadores) |
-| Canales | **Brevo** (correo masivo y SMS; ya contratado) · **Twilio** (WhatsApp Business y voz con confirmación por teclado) · Ghost (newsletters editoriales) | Envíos, plantillas aprobadas, acuses, bajas | Decidir a quién se envía (lo decide el motor de envíos) |
-| Inteligencia | **API de Claude** (valoración de notas, clasificación de señales y sentimiento, respuestas RAG con citas) · **Voyage AI** (embeddings; Anthropic no los ofrece) | Lo que requiere lenguaje | Cálculo: cifras y fechas salen de datos, no del modelo |
+| Canales | **Brevo** para correo, SMS y WhatsApp Business (ya contratado; decisión del 8-11) · Ghost (newsletters editoriales) · Twilio solo si un cliente de PLUS pide llamadas de voz | Envíos, plantillas aprobadas, acuses, bajas | Decidir a quién se envía (lo decide el motor de envíos) |
+| Inteligencia | **API de Claude** (valoración de notas, clasificación de señales y sentimiento, respuestas con citas) · **Voyage AI** (embeddings; Anthropic no los ofrece) · **Motor de conocimiento de MOVO** (`procesos`, `fuentes`, `fuente_usable()`, canales y hallazgos; `lib/conocimiento/anclaje.js`: el modelo no aporta hechos) | Lo que requiere lenguaje | Cálculo: cifras y fechas salen de datos, no del modelo |
 | Fuentes | APIs del BOE, TED, PLACSP, INE, Eurostat; RSS verificados; Openverse; redes con API abierta (Bluesky, Reddit, YouTube, Telegram público, Mastodon); X solo si un cliente paga su API | Entrada de señales y documentos | LinkedIn no ofrece API de escucha: se cubre por buscadores y alertas |
 | Información reservada (Amarantia) | Modelo local en el rack de Mac (plan ya anotado) | La parte clasificada, fuera de todo lo anterior | Nunca pasa por la nube |
 
@@ -116,7 +118,7 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 **Método.** Cada señal lleva entidad, fuente, hora, sentimiento (−1 a 1), confirmación (`confirmado` si hay fuente primaria; `sin-confirmar` si solo hay medios o redes; `rumor` si solo redes o fuentes anónimas), alcance (autor, seguidores, reenvíos cuando la fuente los da). Por entidad se mantiene una línea base móvil de 30 días (volumen diario y sentimiento medio). Dos detectores: **pico repentino** (volumen o sentimiento negativo fuera de tres desviaciones en una ventana de 6 horas) y **cambio de tendencia** (pendiente del sentimiento a 14 días que cruza un umbral). Cada detección abre una **alerta** con nivel (vigilar, atención, crisis), evidencias enlazadas y estado (`nueva → vista → confirmada | descartada → en acción`). Nunca se escala sola: una persona la confirma. Las señales de la redacción («posible noticia grande») van a `work/sensores/candidatas.md` y al aviso del director.
 
-**Canales de aviso.** Por plan del cliente: correo siempre; SMS y WhatsApp para atención y crisis; llamada de voz solo en crisis y a contactos designados. Todo por el motor de envíos.
+**Canales de aviso.** Por plan del cliente: correo siempre; SMS y WhatsApp (Brevo) para atención y crisis; la llamada de voz queda para cuando un cliente la pida. Todo por el motor de envíos. **Calendario:** el auscultador se adelanta a las semanas 1–2 de 2027 por el interés de un cliente; hasta que exista el motor de envíos avisa por correo.
 
 **Panel** (`app.moticias.com/amarantia`): entidades, línea base, alertas abiertas, evidencias, botones Confirmar / Descartar / Abrir PLUS. Vista de cliente con solo sus entidades (RLS). **Datos:** `entities` (cliente, nombre, alias, palabras de riesgo, umbrales), `baselines`, `alerts`, `alert_events`. **Reservado:** lo clasificado no entra aquí; el modelo local es otro proyecto y otra máquina.
 
@@ -126,7 +128,7 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 **Modelo.** `planes` (cliente, escenario: accidente, huelga, ciberataque, sanción, interrupción del servicio…, propietario, versión), `audiencias` (internas: dirección, operaciones, conductores; stakeholders: administración concedente, consorcio, alcaldes, representantes políticos, asociaciones; clientes; medios; público que optó), `secuencias` (pasos ordenados: audiencia, canal o canales, plantilla con variables, condición de avance: tiempo, porcentaje de acuses, aprobación humana), `ejecuciones` (una por crisis o simulacro), `envios` (destinatario, canal, estado: enviado, entregado, leído, acusado, fallido; reintentos), `aprobaciones` (quién, cuándo, qué paso).
 
-**Ejecución.** Vercel Workflow: cada paso es durable; «esperar acuse del 80 % o 20 minutos» y «esperar aprobación del responsable» son pasos que sobreviven a reinicios. Canales: Brevo (correo, SMS), Twilio (WhatsApp con plantillas aprobadas por Meta; voz con mensaje leído y «pulse 1 para confirmar»). El **flash público** es una nota en la sala de prensa (4.1) más redes y lista de medios; se firma siempre como comunicado de la empresa y nunca se presenta como alerta oficial (las alertas a la población son competencia de Protección Civil, sistema ES-Alert del 112). **Simulacros:** la misma secuencia contra una audiencia de prueba, con informe de tiempos y acuses; es lo primero que se vende.
+**Ejecución.** Vercel Workflow: cada paso es durable; «esperar acuse del 80 % o 20 minutos» y «esperar aprobación del responsable» son pasos que sobreviven a reinicios. Canales: Brevo (correo, SMS y WhatsApp con plantillas aprobadas por Meta); la voz con «pulse 1 para confirmar» entra con Twilio solo si un cliente la pide. El **flash público** es una nota en la sala de prensa (4.1) más redes y lista de medios; se firma siempre como comunicado de la empresa y nunca se presenta como alerta oficial (las alertas a la población son competencia de Protección Civil, sistema ES-Alert del 112). **Simulacros:** la misma secuencia contra una audiencia de prueba, con informe de tiempos y acuses; es lo primero que se vende.
 
 **Legal.** El cliente es responsable del tratamiento y Avionline encargado (contrato del art. 28 RGPD); los contactos de emergencia internos se tratan por ejecución del contrato laboral o interés legítimo documentado; WhatsApp exige opt-in previo y plantillas aprobadas; los SMS llevan remitente identificado; todo queda en registro de auditoría. Nada de esto se improvisa en la crisis: se firma al dar de alta el plan.
 
@@ -134,13 +136,13 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 **Para qué.** Una base de conocimiento verídica, de fuente primaria y actualizada es lo que convierte a MOVO en «el modelo IA de la movilidad», lo que justifica la suscripción corporativa de MOTICIAS y lo que Amarantia necesita para contextualizar una crisis. Se construye una vez, como servicio del grupo, y empieza por el corpus del proyecto «conocimiento» (PMST, Ley 9/2025 y su desarrollo).
 
-**Modelo** (esquema `conocimiento` en Supabase, compartido; cada fila con `owner` y `shared_with`). `fuentes` (id, tipo: ley, reglamento, orden, resolución, sentencia, informe, nota oficial, artículo; clase: primaria | secundaria-reputada | sin-confirmar; ponderación; url; fechas de incorporación, publicación y validez; estado: activa | desactivada-en-proyecto | baneada | compartida; origen: Claude | rol autorizado), `documentos` (texto limpio, versión, hash), `fragmentos` (texto, posición, embedding `vector`), `colecciones` (proyecto o cliente; qué fuentes incluye), `consultas` (pregunta, respuesta, citas, usuario, coste). Al incorporar una ley, un agente busca sus desarrollos (reales decretos, órdenes, normativa autonómica, ordenanzas, jurisprudencia) y los propone; no se incorporan sin aprobación para no engordar el fondo.
+**Lo que ya existe (comprobado el 8-11-2026 en `movo-es/movo`).** MOVO tiene el motor construido y en producción, con la misma filosofía que este documento pedía: `procesos` (catálogo de repositorios; hoy `pmst`; «un dominio nuevo es una fila, no un sistema nuevo»), `fuentes` (una fila por documento oficial, con identificador, emisor, ámbito, municipio por código INE, fechas de publicación y vigencia), `fuente_rango` (`primaria` 1,00 · `secundaria_reputada` 0,60 · `sin_confirmar` 0,25), `fuente_proceso` (alcance por proceso y veto), `fuente_uso` (libro de solo añadir: qué documento se apoyó en qué fuente), `fuente_usable()` (la única respuesta a «¿puedo citar esto?»), `conocimiento_canales` / `_hallazgos` / `_barridos` (el barrido automático con la verificación como propiedad del canal, marcada por una persona), `lib/conocimiento/anclaje.js` (las reglas que impiden que el modelo aporte hechos), `lib/consulta/buscar.js` (consulta técnica determinista con comprobación de citas) y el briefing `docs/CONOCIMIENTO-MOVILIDAD.md`. Tres estados de frescura: firmado, comprobado, nada. Lo que no tiene: búsqueda semántica (no hay `pgvector`), ni un proceso para MOTICIAS o Amarantia, ni una consulta abierta a clientes.
 
-**Consulta.** Respuesta en 40–60 palabras primero; después el detalle; cada afirmación con cita a fragmento y fecha de validez; cuando no hay base: «no consta en las fuentes». Ponderación por clase de fuente. Las cifras y fechas se extraen del texto citado, no se generan. Disponible en `app.moticias.com/conocimiento` para el nivel corporativa, dentro de MOVO para sus procesos, y por API para Amarantia. Coste por consulta registrado para fijar cuotas.
+**Decisión (8-11-2026): extender, no duplicar.** `conocimiento-v1` añade al motor de MOVO los procesos `moticias` (y después `amarantia`) como filas de `procesos`, da de alta los canales de MOTICIAS (BOE por API, boletines autonómicos, las propias piezas como fuente `secundaria_reputada` con sus fuentes primarias dentro), y construye encima la capa que falta: fragmentos con embeddings (Voyage) y una función de búsqueda semántica que devuelve solo fragmentos de fuentes que `fuente_usable()` aprueba para el proceso, con cita (identificador, artículo o página, fecha de vigencia) y «no consta» cuando no hay base. La consulta para el nivel corporativa de MOTICIAS vive en `app.moticias.com/conocimiento` y llama a esa función; MOVO la usa en su consola; Amarantia, por API interna. El esquema sigue en el Supabase de MOVO (Frankfurt), bajo sus reglas: tablas nuevas con RLS y permisos explícitos, funciones cerradas, la IA no calcula.
 
-**Ingesta.** Agente `/conocimiento-ingesta` (diario, tras la edición): legislación consolidada del BOE por API, piezas de MOTICIAS (74 y las que vengan: ya son documentos de fuente secundaria reputada con fuentes primarias dentro), boletines y plazos; documentos subidos por un rol autorizado. Embeddings con Voyage AI.
+**Ingesta.** `/conocimiento-ingesta` (diario, 03:00) escribe hallazgos en `conocimiento_hallazgos` por los canales de MOTICIAS y propone desarrollos normativos como hallazgos sin ascender; `ascender_hallazgo()` de MOVO decide qué entra en `fuentes` según el rango del canal. Las piezas de MOTICIAS entran como fuentes secundarias reputadas con `fuente_relacion` hacia sus fuentes primarias.
 
-**Decisión previa:** si en `movo-es/movo` existe ya código o tablas del menú Conocimiento, se extiende y se comparte; si solo existe el diseño, se construye aquí y MOVO lo consume. Es la primera pregunta de la entrevista.
+**Lo que decide la entrevista 11:** dónde corre la búsqueda semántica (función en Supabase con `pgvector` o servicio en Vercel), cuota por nivel, formato de cita en pantalla, y si el proceso `moticias` comparte canales con `pmst` o los duplica como filas propias.
 
 ### 4.6 Ediciones a medida, revistas, empaquetador y widget (`ediciones-a-medida-v2`)
 
@@ -164,26 +166,27 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 ## 5. Plan por semanas (noviembre de 2026 – junio de 2027)
 
-Criterios: una entrevista por semana como máximo (30 minutos desde el móvil); cada cambio deja algo visible; lo que ya produce valor va antes; los sensores se adelantan porque son baratos y alimentan tres productos; Amarantia PLUS va después del motor de envíos porque lo necesita; la publicidad y el segundo vertical, al final, cuando haya audiencia.
+Criterios: una entrevista por semana como máximo (30 minutos desde el móvil); cada cambio deja algo visible; lo que ya produce valor va antes; los sensores se adelantan porque son baratos y alimentan tres productos; el auscultador de Amarantia se adelanta a enero porque hay interés de un cliente (decisión del 8-11); PLUS va después del motor de envíos porque lo necesita; la publicidad y el segundo vertical, al final, cuando haya audiencia.
 
 | Semana | Cambio OpenSpec | Entrevista | Qué verá Rainer | Dependencias |
 |---|---|---|---|---|
-| 46 (10–16 nov) | `publicar-en-ghost-v1` | Sí (nº 1, ya guionizada) | moticias.com con las 74 piezas, rutina publicando sola, legales, campaña PMST visible; repo privado | Admin API de Ghost, dominio |
-| 47 (17–23 nov) | `notas-de-prensa-v1` | Corta (6 preguntas) | Sección `/notas-de-prensa/`, formulario, buzón `prensa@`, primera nota publicada; ficha de organización | Ghost; Hostinger Mail |
+| 46 (10–16 nov) | `publicar-en-ghost-v1` | Hecha el 8-11 (`openspec/changes/publicar-en-ghost-v1/`) | Las 74 piezas en www.moticias.com (12 pendientes de su «Publicar»), tema versionado, legales publicadas, alta con consentimientos | `GHOST_ADMIN_KEY` en la tarea |
+| 47 (17–23 nov) | `notas-de-prensa-v1` | Corta (nº 10) | Sección `/notas-de-prensa/`, formulario, buzón `prensa@`, primera nota publicada; ficha de organización | Ghost; buzón en Hostinger |
 | 48 (24–30 nov) | `sala-de-redaccion-v1` | Sí (nº 3) | Supabase `moticias` con migración 001; `app.moticias.com/redaccion` con cola de aprobación desde el móvil | Vercel, Supabase |
 | 49 (1–7 dic) | `sensores-v1` | No (spec clara) | `/sensores` escribe en `senales`; barrido de mediodía programado; vista por entidad | Supabase |
-| 50 (8–14 dic) | `campanas-tematicas-v1` + `quien-decide-semilla` | Sí (nº 2) + no | Panel `/campanas` con la campaña PMST; tabla de cargos sembrada con los nombramientos ya publicados | Sala |
-| 51–52 (15–28 dic) | `suscripciones-v1` | Sí (nº 4) | Niveles en Ghost, alta con perfil, consentimientos separados, centro de preferencias; primeras altas | Ghost miembros |
-| 1–2 (4–17 ene) | `fuentes-segundo-nivel-v1` + `crm-leads-v1` | No + sí (nº 5) | Cinco fuentes nuevas en el barrido; primera serie propia descargable; `/crm` con leads por solución | Sensores, suscripciones |
-| 3 (18–24 ene) | `notas-de-prensa-v2` (valoración y difusión) | No | Botón «Valorar» y «Difundir» con pago en MOVO (Stripe); segmento «recibir comunicados» | Motor de envíos mínimo (correo) |
-| 4–6 (25 ene–14 feb) | `conocimiento-v1` | Sí (nueva, decisiva) | Esquema `conocimiento` compartido; ingesta del corpus PMST y de las piezas; consulta IA con citas en `app.moticias.com/conocimiento` para corporativa | Decisión MOVO; Voyage |
-| 7–9 (15 feb–7 mar) | `ediciones-a-medida-v2` | Sí (nueva) | Perfil, selector, página privada, correo, PDF con documento de revisión; widget en una web amiga; tres asociaciones piloto invitadas | Selector; Brevo |
-| 10–11 (8–21 mar) | `motor-envios-v1` | Sí (nueva, con PLUS) | Envío por correo, SMS y WhatsApp a un segmento con acuses y registro; alertas de licitaciones por comunidad | Brevo, Twilio |
-| 12–13 (22 mar–4 abr) | `amarantia-auscultador-v1` | Sí (nueva) | Entidades, línea base, alertas con niveles, panel Amarantia, aviso por canal; primera entidad de cliente | Sensores, motor |
-| 14–18 (5 abr–9 may) | `amarantia-plus-v1` | Sí (nueva) | Plan de crisis de un cliente piloto, secuencia, aprobación por paso, simulacro con informe | Motor, auscultador, Workflow |
-| 19–20 (10–23 may) | `contactos-quien-decide-v1` + `asesor-v1` | No + no | «Quién decide» para corporativa; agente mensual; asesor con aceptación desde el móvil | Semilla de la semana 50 |
-| 21–23 (24 may–13 jun) | `publicidad-promocion-v1` | Sí (nº 6) | Huecos operativos con autopromoción, `/anunciantes`, primer patrocinio ofrecido a una asociación | Audiencia |
-| 24–26 (14 jun–4 jul) | `vertical-turismo-v1` | Sí (nº 9) | Primera edición de prueba de «viajar en grupo» sin tocar código | Todo lo anterior |
+| 50 (8–14 dic) | `campanas-tematicas-v1` | Sí (nº 2) | Panel `/campanas` con la campaña PMST; la semilla de «Quién decide» ya está en `data/cargos/` | Sala |
+| 51–52 (15–28 dic) | `suscripciones-v1` | Sí (nº 4) | Niveles en Ghost, alta con perfil, centro de preferencias; primeras altas | Ghost miembros |
+| 1–2 (4–17 ene) | `amarantia-auscultador-v1` (adelantado: hay interés de un cliente) | Sí (nº 14) | Entidades, línea base, alertas con niveles, panel Amarantia, aviso por correo (Brevo); primera entidad de cliente | Sensores |
+| 3 (18–24 ene) | `motor-envios-v1` + `fuentes-segundo-nivel-v1` | Sí (nº 13) + no | Envío por correo, SMS y WhatsApp (Brevo) a un segmento con acuses y registro; cinco fuentes nuevas y primera serie propia | Brevo |
+| 4 (25–31 ene) | `crm-leads-v1` + `notas-de-prensa-v2` | Sí (nº 5) + no | `/crm` con leads por solución; «Valorar» y «Difundir» con pago en MOVO | Suscripciones, motor |
+| 5–7 (1–21 feb) | `conocimiento-v1` (extiende el motor de MOVO) | Sí (nº 11) | Proceso `moticias` en el motor de conocimiento de MOVO, búsqueda semántica con citas en `app.moticias.com/conocimiento` para corporativa | Decisiones de la nº 11; Voyage |
+| 8–10 (22 feb–14 mar) | `ediciones-a-medida-v2` | Sí (nº 12) | Perfiles, página privada, correo, PDF con documento de revisión; widget en una web amiga; tres asociaciones piloto | Selector; Brevo |
+| 11–15 (15 mar–18 abr) | `amarantia-plus-v1` | Sí (nº 15) | Plan de crisis de un cliente piloto, secuencia, aprobación por paso, simulacro con informe | Motor, auscultador, Workflow |
+| 16–17 (19 abr–2 may) | `contactos-quien-decide-v1` + `asesor-v1` | No + no | «Quién decide» para corporativa; agente mensual; asesor con aceptación desde el móvil | Semilla |
+| 18–20 (3–23 may) | `publicidad-promocion-v1` | Sí (nº 6) | Huecos operativos con autopromoción, `/anunciantes`, primer patrocinio ofrecido a una asociación | Audiencia |
+| 21–23 (24 may–13 jun) | `vertical-turismo-v1` | Sí (nº 9) | Primera edición de prueba de «viajar en grupo» sin tocar código | Todo lo anterior |
+
+Voz (llamadas con acuse por teclado) queda fuera de 2027 salvo que un cliente de PLUS la pida; entonces entra Twilio solo para eso.
 
 Segundo semestre de 2027: API pública de datos, informes trimestrales de pago, modelo local para la parte reservada de Amarantia, segundo cliente de PLUS, «Quién decide» con organigramas.
 
@@ -233,15 +236,15 @@ Cada entrevista: 8–12 preguntas, una por mensaje, con la recomendación marcad
 
 **A.1 `notas-de-prensa-v1` (semana 47).** Nombre público de la sección (recomendado: «Notas de prensa»); verificación del emisor (recomendado: correo de dominio corporativo o enlace de confirmación); plazo de publicación (recomendado: mismo día laborable si llega antes de las 14:00); adjuntos permitidos (PDF e imágenes con derechos declarados); texto de la marca «Comunicado de empresa»; si las notas del grupo se publican igual (recomendado: sí, marcadas); quién vacía el buzón (agente a las 09:30 y 15:30).
 
-**A.2 `conocimiento-v1` (semanas 4–6).** ¿Existe código o tablas del menú Conocimiento en `movo-es/movo`?; esquema compartido en el Supabase de MOVO o proyecto nuevo del grupo (recomendado: esquema `conocimiento` en un proyecto común `grupo`, con RLS por `owner`); corpus inicial (recomendado: Ley 9/2025 y desarrollo, piezas de MOTICIAS, BOE consolidado de transporte); quién aprueba la incorporación de fuentes propuestas; proveedor de embeddings (recomendado: Voyage); límites de consulta por nivel (recomendado: 50 al mes en corporativa, ampliable); formato de cita (recomendado: fuente, artículo o página, fecha de validez); si la consulta se expone por API a MOVO desde el primer día.
+**A.2 `conocimiento-v1` (semanas 5–7).** Resuelto el 8-11: el motor existe en `movo-es/movo` y se extiende (§ 4.5). Quedan: dónde corre la búsqueda semántica (recomendado: `pgvector` en el Supabase de MOVO, función `security definer` cerrada); si el proceso `moticias` comparte canales con `pmst` (recomendado: canales propios, misma tabla); corpus inicial (recomendado: Ley 9/2025 y desarrollo, piezas de MOTICIAS, BOE consolidado de transporte); quién aprueba la incorporación de fuentes propuestas; proveedor de embeddings (recomendado: Voyage); límites de consulta por nivel (recomendado: 50 al mes en corporativa, ampliable); formato de cita (recomendado: fuente, artículo o página, fecha de validez); si la consulta se expone por API a MOVO desde el primer día.
 
-**A.3 `ediciones-a-medida-v2` (semanas 7–9).** Clientes piloto (tres asociaciones: nombres); cadencia por defecto (recomendado: quincenal para asociaciones, semanal para empresas); plantilla del PDF (recomendado: la de la hemeroteca con cabecera del cliente); quién revisa el documento colaborativo (recomendado: redactor y un contacto del cliente); contenido del cliente: ¿por formulario, por correo o por la sala?; marca del widget (texto y enlace); métricas que se enseñan al cliente (lecturas, clics, altas).
+**A.3 `ediciones-a-medida-v2` (semanas 8–10).** Clientes piloto (tres asociaciones: nombres); cadencia por defecto (recomendado: quincenal para asociaciones, semanal para empresas); plantilla del PDF (recomendado: la de la hemeroteca con cabecera del cliente); quién revisa el documento colaborativo (recomendado: redactor y un contacto del cliente); contenido del cliente: ¿por formulario, por correo o por la sala?; marca del widget (texto y enlace); métricas que se enseñan al cliente (lecturas, clics, altas).
 
-**A.4 `motor-envios-v1` (semanas 10–11).** Remitentes por canal (correo `alertas@moticias.com`; SMS con remitente alfanumérico «MOTICIAS» o el del cliente; WhatsApp: número de Avionline o del cliente); proveedor de voz (recomendado: Twilio); plantillas iniciales (alerta de licitación, alerta de señal, comunicado, paso de PLUS); política de bajas y de horario (recomendado: nada no urgente entre 22:00 y 8:00); acuses (recomendado: enlace de confirmación en correo y SMS, botón en WhatsApp, tecla en voz); registro y retención (recomendado: 24 meses).
+**A.4 `motor-envios-v1` (semana 3).** Todo en Brevo (correo, SMS, WhatsApp; decidido el 8-11); remitentes por canal (correo `alertas@moticias.com`; SMS con remitente alfanumérico «MOTICIAS» o el del cliente; WhatsApp: número de Avionline o del cliente); voz fuera de la v1; plantillas iniciales (alerta de licitación, alerta de señal, comunicado, paso de PLUS); política de bajas y de horario (recomendado: nada no urgente entre 22:00 y 8:00); acuses (recomendado: enlace de confirmación en correo y SMS, botón en WhatsApp, tecla en voz); registro y retención (recomendado: 24 meses).
 
-**A.5 `amarantia-auscultador-v1` (semanas 12–13).** Primer cliente o entidades propias del grupo para arrancar; fuentes del anillo 2 que se activan (recomendado: Bluesky, Reddit, YouTube, Google News, Telegram público); umbrales de pico y tendencia (recomendado: 3 desviaciones a 6 horas; pendiente a 14 días); niveles y quién recibe cada uno; qué llega a la redacción como «posible noticia grande» (recomendado: nivel atención o crisis sobre cualquier entidad del sector, no solo vigiladas); si se contrata una herramienta de escucha externa para X (recomendado: no hasta que un cliente lo pague).
+**A.5 `amarantia-auscultador-v1` (semanas 1–2 de 2027; adelantado).** Primer cliente o entidades propias del grupo para arrancar; fuentes del anillo 2 que se activan (recomendado: Bluesky, Reddit, YouTube, Google News, Telegram público); umbrales de pico y tendencia (recomendado: 3 desviaciones a 6 horas; pendiente a 14 días); niveles y quién recibe cada uno; qué llega a la redacción como «posible noticia grande» (recomendado: nivel atención o crisis sobre cualquier entidad del sector, no solo vigiladas); si se contrata una herramienta de escucha externa para X (recomendado: no hasta que un cliente lo pague).
 
-**A.6 `amarantia-plus-v1` (semanas 14–18).** Cliente piloto y escenario del primer plan (recomendado: interrupción del servicio o accidente sin víctimas); audiencias y canales del piloto; quién aprueba cada paso (recomendado: dos personas designadas por el cliente, cualquiera de las dos); regla de avance por defecto (recomendado: 80 % de acuses o 20 minutos); contenido del flash público y lista de medios; fecha del primer simulacro; contrato de encargado del tratamiento (plantilla a nombre de Avionline).
+**A.6 `amarantia-plus-v1` (semanas 11–15).** Cliente piloto y escenario del primer plan (recomendado: interrupción del servicio o accidente sin víctimas); audiencias y canales del piloto; quién aprueba cada paso (recomendado: dos personas designadas por el cliente, cualquiera de las dos); regla de avance por defecto (recomendado: 80 % de acuses o 20 minutos); contenido del flash público y lista de medios; fecha del primer simulacro; contrato de encargado del tratamiento (plantilla a nombre de Avionline).
 
 **A.7 `fuentes-segundo-nivel-v1`, `sensores-v1`, `quien-decide-semilla`, `contactos-quien-decide-v1`, `asesor-v1`.** Sin entrevista: la spec de este documento basta; Code propone y aplica, y pregunta solo si encuentra una decisión no cubierta.
 
@@ -257,11 +260,11 @@ Cada entrevista: 8–12 preguntas, una por mensaje, con la recomendación marcad
 | Licitaciones de la semana | viernes 07:30 | `/licitaciones-semana` | semana 51 |
 | Promoción social | laborables 08:15 | `/promo-social` | semana 51 |
 | Puntuación de leads | diario 02:00 | `/leads-puntuar` | semana 2 |
-| Ingesta de conocimiento | diario 03:00 | `/conocimiento-ingesta` | semana 6 |
-| Ediciones a medida | según perfil (p. ej. quincenal 07:00) | `/edicion-a-medida <perfil>` | semana 9 |
-| Auscultador (anillo 2) | cada 2 horas, 7–23 | `/auscultar` | semana 13 |
-| Quién decide | día 1 de cada mes 04:00 | `/quien-decide-actualizar` | semana 20 |
-| Cuadro de mando mensual | día 12, 07:30 | `/cuadro-de-mando` | semana 20 |
+| Ingesta de conocimiento | diario 03:00 | `/conocimiento-ingesta` | semana 7 |
+| Ediciones a medida | según perfil (p. ej. quincenal 07:00) | `/edicion-a-medida <perfil>` | semana 10 |
+| Auscultador (anillo 2) | cada 2 horas, 7–23 | `/auscultar` | semana 2 (ene 2027) |
+| Quién decide | día 1 de cada mes 04:00 | `/quien-decide-actualizar` | semana 17 |
+| Cuadro de mando mensual | día 12, 07:30 | `/cuadro-de-mando` | semana 17 |
 
 Las secuencias PLUS no son tareas programadas: las ejecuta Vercel Workflow cuando una persona las lanza.
 
@@ -275,11 +278,11 @@ Las secuencias PLUS no son tareas programadas: las ejecuta Vercel Workflow cuand
 | Uso de Claude (agentes, valoraciones, consultas RAG) | 200–450 € | la edición diaria es la mayor partida; se revisa con topes por comando |
 | Voyage AI (embeddings) | 5–30 € | solo en ingesta |
 | Brevo | 0–60 € | plan actual; SMS a coste por unidad (~0,07 €) |
-| Twilio (WhatsApp, voz) | 0–50 € en reposo | coste por mensaje y minuto; se repercute al cliente de PLUS |
+| Brevo WhatsApp / Twilio voz | 0 € en reposo | coste por mensaje y minuto; se repercute al cliente de PLUS; Twilio solo si hay voz |
 | APIs de redes (anillo 3) | 0 € | solo si un cliente paga X o una herramienta de escucha |
 | Dominio, correo (Hostinger) | ~5 € | ya contratado |
 | **Total** | **450–900 €** | sin contar horas de personas |
 
 ## Anexo D · Decisiones que este documento da por tomadas
 
-Pila y plataformas del § 2 · ocho módulos del § 3 · orden del § 5 · `app.moticias.com` como única excepción a los subdirectorios · Avionline S.L. titular y responsable · comunicados marcados y fuera de lo editorial · la comunicación de crisis nunca se presenta como alerta oficial · información reservada fuera de la nube · precios del § 1 como hipótesis a validar, no como tarifa publicada.
+Pila y plataformas del § 2 (Brevo para correo, SMS y WhatsApp; conocimiento sobre el motor de MOVO) · ocho módulos del § 3 · orden del § 5 · `app.moticias.com` como única excepción a los subdirectorios · Avionline S.L. titular y responsable · comunicados marcados y fuera de lo editorial · la comunicación de crisis nunca se presenta como alerta oficial · información reservada fuera de la nube · precios del § 1 como hipótesis a validar, no como tarifa publicada.

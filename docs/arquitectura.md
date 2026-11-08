@@ -31,7 +31,8 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | «Quién decide» (módulo 7) | `data/cargos/<id>.json`, `data/organizaciones/`, listas revisadas en `docs/quien-decide/` | `/quien-decide-actualizar` (mensual); altas a mano con `src/quien_decide_semilla.py sembrar` |
 | Sala de prensa (módulo 8) | `data/notas-de-prensa/<id>.json`, plantillas en `docs/prensa/` | `/prensa-buzon` |
 | Conocimiento (módulo 6, hasta Supabase) | `data/conocimiento/` (fuentes, propuestas, estado) | `/conocimiento-ingesta` |
-| Textos legales y ficheros de raíz de moticias.com | `docs/legal/`, `ghost/` | Rainer (con revisión profesional) |
+| Textos legales | `docs/legal/` (con los datos de Avionline) → páginas de Ghost | Rainer (revisión profesional después) |
+| Tema de moticias.com y textos de referencia de `llms.txt` | `ghost/theme/`, `ghost/` | `src/ghost_theme.py`; nunca el panel de Ghost |
 | Estrategia 2027 y su cambio | `docs/estrategia-2027.md`, `openspec/changes/plataforma-2027/` | Rainer y Code, método OpenSpec |
 | Trabajo temporal de una sesión | `work/` (ignorado por git) | nadie lo conserva |
 

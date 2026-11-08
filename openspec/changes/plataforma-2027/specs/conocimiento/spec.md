@@ -1,27 +1,26 @@
 # Capacidad: conocimiento (delta)
 
-## ADDED Requisito: servicio común del grupo
-El conocimiento vive en un esquema `conocimiento` de Supabase compartido por MOVO, MOTICIAS y Amarantia, con `owner` y `shared_with` en cada fuente y RLS por colección. Ningún producto copia fuentes: las comparte o las excluye.
+Decisión del 8-11-2026: el conocimiento del grupo es el **motor de conocimiento de MOVO** (`movo-es/movo`: `procesos`, `fuentes`, `fuente_rango`, `fuente_proceso`, `fuente_uso`, `fuente_usable()`, `conocimiento_canales`/`_hallazgos`/`_barridos`, `lib/conocimiento/anclaje.js`, `docs/CONOCIMIENTO-MOVILIDAD.md`). MOTICIAS no construye otro: lo extiende con un proceso propio y una capa de búsqueda semántica. Las migraciones de este cambio se escriben en el repositorio de MOVO, con sus reglas (RLS y permisos explícitos, funciones cerradas, la IA no calcula).
 
-## ADDED Requisito: fuentes clasificadas y fechadas
-`fuentes` (id, tipo: ley | reglamento | orden | resolución | sentencia | informe | nota-oficial | artículo | documento, clase: primaria | secundaria-reputada | sin-confirmar, ponderación, url, incorporada_en, publicada_en, valida_hasta, estado: activa | desactivada-en-proyecto | baneada | compartida, origen: claude | rol-autorizado, owner, shared_with text[]). Una fuente baneada no se usa en ningún proyecto.
+## ADDED Requisito: proceso `moticias` en el motor común
+`procesos` gana la fila `moticias` (y, cuando toque, `amarantia`). Las fuentes se comparten por `fuente_proceso` (alcance y veto por proceso); una fuente baneada en un proceso no se cita en él aunque valga en otro.
 
-## ADDED Requisito: desarrollos propuestos, no incorporados
-Al incorporar una ley, el agente busca reglamentos, órdenes, normativa autonómica, ordenanzas y jurisprudencia relacionadas y las propone con estado `propuesta`; solo un rol autorizado las incorpora.
+## ADDED Requisito: canales y hallazgos de MOTICIAS
+Los canales de MOTICIAS (BOE por API, boletines autonómicos, reguladores, las propias piezas) se dan de alta en `conocimiento_canales` con `proceso = 'moticias'`, `oficial` marcado por una persona, y filtros. `/conocimiento-ingesta` escribe hallazgos; `ascender_hallazgo()` decide qué entra en `fuentes` según el rango del canal. Los desarrollos normativos encontrados por el agente entran como hallazgos, nunca directamente como fuentes.
 
 #### Escenario: ley con desarrollo autonómico
-- CUANDO se incorpora la Ley 9/2025 de Movilidad Sostenible
-- ENTONCES el agente propone sus reales decretos de desarrollo y la normativa autonómica de PMST, con fecha de publicación leída en el BOE o boletín, y nada entra en las consultas hasta que se apruebe.
+- CUANDO el agente encuentra un real decreto que desarrolla una ley ya en `fuentes`
+- ENTONCES lo escribe como hallazgo del canal que lo publicó; si el canal es oficial, asciende a fuente con `fuente_relacion` «desarrolla»; si no, espera a una persona.
 
-## ADDED Requisito: fragmentos y consulta con citas
-`documentos` (texto limpio, versión, hash) y `fragmentos` (texto, posición, embedding vector). La consulta devuelve una respuesta de 40–60 palabras, el detalle y una cita por afirmación (fuente, artículo o página, fecha de validez), ponderada por clase de fuente; si no hay base: «no consta en las fuentes». Cifras y fechas se extraen del fragmento citado, nunca se generan. Cada consulta queda en `consultas` con usuario, citas y coste.
+## ADDED Requisito: las piezas son fuentes secundarias reputadas
+Cada pieza publicada de MOTICIAS entra en `fuentes` con rango `secundaria_reputada`, identificador `MOTICIAS-<id>`, emisor Avionline S.L., `publicado_at` y `fuente_relacion` «cita» hacia cada una de sus fuentes primarias que ya estén en `fuentes` (las que no, entran como hallazgos).
+
+## ADDED Requisito: búsqueda semántica con citas, filtrada por `fuente_usable()`
+`fuente_fragmentos` (fuente, posición, texto, embedding) y una función de consulta que devuelve solo fragmentos de fuentes para las que `fuente_usable(fuente, proceso)` contesta sí, ordenados por similitud y ponderados por rango. La respuesta en pantalla: 40–60 palabras primero, el detalle después, cada afirmación con cita (identificador, artículo o página, vigencia) y «no consta en las fuentes» cuando no hay base. Cifras y fechas se copian del fragmento citado; cada consulta queda registrada con sus citas y su coste.
 
 #### Escenario: pregunta sin base
-- CUANDO una consulta no encuentra fragmentos con similitud suficiente en la colección del usuario
-- ENTONCES responde «no consta en las fuentes de esta colección» y no redacta una respuesta general.
-
-## ADDED Requisito: corpus inicial e ingesta
-Corpus inicial: proyecto «conocimiento» (PMST, Ley 9/2025 y desarrollo), legislación consolidada del BOE en transporte (API de datos abiertos), piezas de MOTICIAS (fuente secundaria reputada), boletines y plazos. `/conocimiento-ingesta` corre a diario a las 03:00. Embeddings con Voyage AI.
+- CUANDO ninguna fuente usable del proceso tiene un fragmento con similitud suficiente
+- ENTONCES la respuesta es «no consta en las fuentes de esta colección», sin texto general del modelo.
 
 ## ADDED Requisito: acceso
-Consulta en `app.moticias.com/conocimiento` para el nivel corporativa (cuota mensual configurable), dentro de MOVO para sus procesos, y por API interna para Amarantia. La información reservada de Amarantia no entra en este servicio.
+Consulta en `app.moticias.com/conocimiento` para el nivel corporativa de MOTICIAS (cuota mensual configurable), en la consola de MOVO para la oficina, y por API interna para Amarantia. La información reservada de Amarantia no entra en el motor.
