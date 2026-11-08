@@ -71,11 +71,20 @@
  "menciones": [
   {
    "cta": "Transporte a la demanda con MUFMI",
+   "en_web": "2026-11-08T22:45+00:00",
    "estado": "publicada",
    "exclusividad": "compartida",
+   "historial": [
+    {
+     "accion": "posicion",
+     "en": "2026-11-08T22:45+00:00",
+     "por": "superadmin"
+    }
+   ],
    "motivo": "subsector autobús; sección regulacion; «transporte a la demanda»; «obligación de servicio público» (cabecera); OSP",
    "nombre": "MUFMI",
    "origen": "automatica",
+   "posicion": "premium",
    "producto": "mufmi",
    "propuesta_en": "2026-11-08T19:35+01:00",
    "puntuacion": 12,
