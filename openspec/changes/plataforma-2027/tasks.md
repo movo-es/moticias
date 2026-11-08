@@ -11,9 +11,12 @@ Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`opens
 - [x] Comandos `/prensa-buzon`, `/edicion-a-medida`, `/conocimiento-ingesta`, `/auscultar`, `/quien-decide-actualizar` (texto; se afinan en su cambio).
 - [x] Borradores legales (`docs/legal/`), `ghost/llms.txt` y `ghost/robots.txt`.
 - [x] BDNS como primera fuente de segundo nivel (`src/bdns_sweep.py`, verificado).
+- [x] Menciones del grupo (decisión de Rainer, 8-11 tarde): `data/productos/` (MUFMI, MOVO PMST, Movenbus activos; dos en borrador), `src/menciones.py` (proponer · informe · enviar), bloque «Nota de la casa» en `ghost_publish.py`, `/menciones`; aplicado a 6 piezas de las ediciones del 4 y el 6 (informe en `work/menciones/`).
+- [x] Buscador y piezas bajo demanda (misma decisión): `src/buscador.py` con veredicto, `/pieza-bajo-demanda`, `data/encargos/` (sin datos personales), cuota por nivel en el vertical.
 - [x] Respuestas de Rainer (8-11, tarde): sector = movilidad + transporte + logística; «conocimiento» tiene código en `movo-es/movo` (se extiende); hay interés de un cliente de Amarantia (auscultador adelantado a enero); canales = Brevo (correo, SMS, WhatsApp), voz después; el repositorio sigue público por decisión suya; la rama se fundió en main (#1).
 
 ## Semana 46 (10–16 nov 2026)
+- [ ] `menciones-del-grupo-v1` (sin entrevista; dentro de la semana de Ghost): paso 7 quinquies en la rutina, `BREVO_API_KEY` y remitente `redaccion@moticias.com` verificado en Brevo, republicar las 6 piezas con mención, primer correo real al director. Verificación: el correo llega con enlaces que abren el fichero y el editor.
 - [ ] `publicar-en-ghost-v1` (entrevista 1 hecha el 8-11; `openspec/changes/publicar-en-ghost-v1/tasks.md`): tema versionado, 12 piezas reconciliadas en borrador, legales publicadas, alta con consentimientos, paso 7 quater en la rutina.
 
 ## Semana 47
@@ -21,6 +24,7 @@ Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`opens
 
 ## Semana 48
 - [ ] `sala-de-redaccion-v1` (entrevista 3): proyecto Supabase `moticias`, migración 001, `app.moticias.com/redaccion` con cola de aprobación.
+- [ ] `buscador-bajo-demanda-v1` (entrevista corta nº 16): búsqueda nativa de Ghost visible en el tema; página «Pedir esta pieza» para miembros (formulario → `data/encargos/` vía API de GitHub desde Vercel, o tabla `encargos` si Supabase ya existe); tarea programada «piezas bajo demanda» (laborables cada 2 h, 8–20); primera pieza bajo demanda publicada.
 
 ## Semana 49
 - [ ] `sensores-v1` (sin entrevista): `/sensores` escribe en `senales`; tarea de mediodía 13:30; vista por entidad.

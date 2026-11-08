@@ -42,9 +42,9 @@ Entrevístame para el cambio <nombre> de MOTICIAS. Lee antes CLAUDE.md, docs/pas
 
 | Semana | Cambio | Entrevista |
 |---|---|---|
-| 46 (10–16 nov) | `publicar-en-ghost-v1` | nº 1, hecha el 8-11 (`openspec/changes/publicar-en-ghost-v1/`): Code aplica `tasks.md` |
+| 46 (10–16 nov) | `publicar-en-ghost-v1` · `menciones-del-grupo-v1` | nº 1, hecha el 8-11 (`openspec/changes/publicar-en-ghost-v1/`): Code aplica `tasks.md` · sin entrevista (decidido el 8-11; v1 construida) |
 | 47 | `notas-de-prensa-v1` | nº 10 (corta) |
-| 48 | `sala-de-redaccion-v1` | nº 3 |
+| 48 | `sala-de-redaccion-v1` · `buscador-bajo-demanda-v1` | nº 3 · nº 16 (corta) |
 | 49 | `sensores-v1` | sin entrevista |
 | 50 | `campanas-tematicas-v1` | nº 2 (la semilla de «Quién decide» ya está hecha) |
 | 51–52 | `suscripciones-v1` | nº 4 |
@@ -58,7 +58,7 @@ Entrevístame para el cambio <nombre> de MOTICIAS. Lee antes CLAUDE.md, docs/pas
 | 18–20 | `publicidad-promocion-v1` | nº 6 |
 | 21–23 | `vertical-turismo-v1` | nº 9 |
 
-Decisiones del 8-11 que ninguna entrevista vuelve a preguntar: sector = movilidad + transporte + logística («gestión y administración» como ángulo); canales = Brevo para correo, SMS y WhatsApp (voz solo si un cliente de PLUS la pide, con Twilio); conocimiento = extender el motor de `movo-es/movo`, no construir otro; www.moticias.com canónico; el tema propio actual se pule, no se rehace; repositorio público por decisión de Rainer (sin claves ni datos personales dentro).
+Decisiones del 8-11 que ninguna entrevista vuelve a preguntar: sector = movilidad + transporte + logística («gestión y administración» como ángulo); canales = Brevo para correo, SMS y WhatsApp (voz solo si un cliente de PLUS la pide, con Twilio); conocimiento = extender el motor de `movo-es/movo`, no construir otro; www.moticias.com canónico; el tema propio actual se pule, no se rehace; repositorio público por decisión de Rainer (sin claves ni datos personales dentro); las piezas que tratan de un problema que resuelve un producto del grupo llevan la «Nota de la casa» (bloque señalizado, nunca en el texto) decidida por `data/productos/` y revisada por el director por correo; cuando un cliente busca algo que no está publicado, se investiga y se escribe la pieza con el método de siempre y se guarda.
 
 Para los cambios de `plataforma-2027`, el mensaje de arranque lee además `docs/estrategia-2027.md § 4.x` y la spec en `openspec/changes/plataforma-2027/specs/<módulo>/`.
 
@@ -138,6 +138,11 @@ Entregable: entidades, línea base, alertas con niveles, panel `app.moticias.com
 Spec base: `openspec/changes/plataforma-2027/specs/plus/spec.md` y `docs/estrategia-2027.md § 4.4`.
 Decidir: cliente piloto y escenario del primer plan (recomendado: interrupción del servicio o accidente sin víctimas); audiencias y canales del piloto; quién aprueba cada paso (recomendado: dos personas designadas por el cliente, cualquiera de las dos); regla de avance por defecto (recomendado: 80 % de acuses o 20 minutos); contenido del flash público y lista de medios; fecha del primer simulacro; contrato de encargado del tratamiento (plantilla a nombre de Avionline).
 Entregable: plan piloto, secuencia con aprobación por paso, simulacro con informe.
+
+### Entrevista 16 · `buscador-bajo-demanda-v1` (semana 48; corta)
+Spec base: `openspec/changes/plataforma-2027/specs/buscador-bajo-demanda/spec.md`, `docs/estrategia-2027.md § 4.9`, `src/buscador.py`, `.claude/commands/pieza-bajo-demanda.md`.
+Decidido el 8-11: buscador; si no hay cobertura, pieza nueva con el método de siempre, guardada para siempre; encargos sin datos personales en el repositorio. Decidir: dónde se pulsa «Pedir esta pieza» (recomendado: página de resultados de la búsqueda de Ghost y pie de cada pieza); cuota por nivel (recomendado: profesional 2 al mes, corporativa 10, lector ninguna); cómo llega el encargo antes de Supabase (recomendado: formulario en `app.moticias.com` que escribe `data/encargos/` por la API de GitHub); plazo prometido (recomendado: «en el próximo día laborable»); qué recibe el solicitante si no hay fuentes; si las piezas bajo demanda se marcan públicamente («Pieza publicada a petición de un suscriptor», sin identificarlo; recomendado: sí).
+Entregable: buscador visible, botón «Pedir esta pieza», tarea «piezas bajo demanda» programada, primera pieza bajo demanda publicada y notificada.
 
 ## 4. Qué hace Rainer en cada entrevista
 

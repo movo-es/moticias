@@ -1,0 +1,42 @@
+{
+ "contexto": "Sin URL pública todavía: no se menciona hasta que exista una página de destino y Rainer apruebe el texto. Contexto previsto: accesos a puertos y plataformas logísticas, aparcamiento disuasorio, ordenación de tráficos en campus y grandes recintos, planes de movilidad urbana sostenible (PMUS) de municipios.",
+ "disparadores": {
+  "frases": [
+   "plan de movilidad urbana sostenible",
+   "organización del tráfico"
+  ],
+  "palabras_clave": [
+   "PMUS",
+   "aparcamiento",
+   "accesos",
+   "campus",
+   "plataforma logística",
+   "puerto",
+   "ordenación del tráfico"
+  ],
+  "secciones": [
+   "tierra",
+   "mar"
+  ],
+  "subsectores": [
+   "urbano",
+   "logística",
+   "carretera"
+  ]
+ },
+ "excluir": [],
+ "id": "planes-movilidad-trafico",
+ "max_por_semana": 0,
+ "name": "Planes de movilidad y organización de tráficos",
+ "one_liner": "Planes de movilidad y organización de tráficos para municipios, puertos, campus y plataformas logísticas.",
+ "owner": "Nueva línea (con Jörg Fischer y Francisco González)",
+ "status": "borrador",
+ "textos": {
+  "corto": "",
+  "cta": ""
+ },
+ "umbral": 99,
+ "updated_at": "2026-11-08T19:40:00+01:00",
+ "url": "",
+ "utm_campaign": "moticias-nota-de-la-casa-planes-movilidad"
+}

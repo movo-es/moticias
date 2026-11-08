@@ -16,8 +16,10 @@ MOTICIAS tiene el contenido y el método; le falta la capa que lo convierte en u
 6. **Auscultador de Amarantia** (`auscultador`): fuentes sociales en anillos, línea base por entidad, picos y tendencia, estados de alerta, aviso a clientes y a la redacción con humano en el bucle.
 7. **PLUS de Amarantia** (`plus`): planes de comunicación de crisis como secuencias ejecutables con aprobación por paso, acuses y simulacros; flash público como comunicado, nunca como alerta oficial.
 8. **Contactos «Quién decide»** (`contactos-quien-decide`): organizaciones y cargos con fuente y fecha de verificación, agente mensual, límites RGPD, acceso corporativa y CRM interno.
+9. **Menciones del grupo** (`menciones-del-grupo`; decisión del 8-11 por la tarde): gestor de productos propios (`data/productos/`) con el contexto que da entrada a cada uno; bloque señalizado «Nota de la casa» al pie de la pieza, una como mucho, nunca dentro del texto; correo al director con enlace de edición por cada mención (solo si las hay). Construido en v1 el 8-11 (`src/menciones.py`).
+10. **Buscador y piezas bajo demanda** (`buscador-bajo-demanda`; misma decisión): búsqueda sobre lo publicado; si no hay cobertura, `/pieza-bajo-demanda` investiga y escribe la pieza con el método de siempre y la guarda para siempre; encargos sin datos personales en el repositorio. Buscador y comando construidos el 8-11 (`src/buscador.py`).
 
-Reglas nuevas para `CLAUDE.md` (se añaden en este cambio): *un comunicado nunca es noticia sin verificación independiente; la comunicación de crisis nunca se presenta como alerta oficial; `app.moticias.com` es la única excepción a «sin subdominios» (nada con sesión suma autoridad)*.
+Reglas nuevas para `CLAUDE.md` (se añaden en este cambio): *un comunicado nunca es noticia sin verificación independiente; la comunicación de crisis nunca se presenta como alerta oficial; `app.moticias.com` es la única excepción a «sin subdominios» (nada con sesión suma autoridad); la mención de un producto del grupo va solo en el bloque señalizado «Nota de la casa», la decide el gestor de productos propios y el director la recibe por correo con enlace de edición; una pieza bajo demanda sigue el estándar, la firma y la aprobación de cualquier otra*.
 
 ## Fuera de alcance
 

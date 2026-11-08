@@ -12,7 +12,8 @@ Vertical: --vertical movilidad (lee verticals/<id>.json para secciones y etiquet
 
 Qué hace con cada pieza de data/articles/<id>.json:
 - Construye el HTML del post: respuesta directa (summary), cuerpo (body_md → HTML sencillo), cifras clave, cronología,
-  guía rápida (los cinco bloques), fuentes con fechas, recuadro de trazabilidad y declaración de intereses si procede.
+  guía rápida (los cinco bloques), fuentes con fechas, bloque «Nota de la casa» si la pieza lleva una mención publicada
+  (src/menciones.py, data/productos/), recuadro de trazabilidad y declaración de intereses si procede.
 - Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section>, subsector, tags), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
@@ -22,6 +23,9 @@ Limitaciones conocidas (se resuelven por OpenSpec): el Markdown se convierte con
 cursiva, enlaces, listas, citas); las fotos /_blob/ requieren subirlas con /images/upload/ (pendiente).
 """
 import argparse, base64, datetime, glob, hashlib, hmac, html, json, os, re, sys, time, urllib.error, urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from menciones import bloque_html  # noqa: E402  (bloque «Nota de la casa»; data/productos/README.md)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "Moticias/1.0 (+https://moticias.com)"
@@ -131,6 +135,9 @@ def build_html(a, vertical):
             '<li>[%s] %s — <a href="%s" rel="noopener">%s</a> (publicado %s; consultado %s)</li>' % (
                 "Fuente oficial" if s.get("kind") == "oficial" else "Medios", inline(s.get("outlet", "")), html.escape(s.get("url", ""), quote=True),
                 inline(s.get("title", "")), fmt_date(s.get("published")), fmt_date(s.get("accessed"))) for s in a["sources"]) + "</ul>")
+    nota = bloque_html(a, vertical, inline)  # una mención como mucho, señalizada, nunca dentro del texto
+    if nota:
+        parts.append(nota)
     traz = ["Hechos: %s" % fmt_date(a.get("event_date")), "Redacción: %s" % (a.get("published_at") or "")]
     if a.get("revised_at"):
         traz.append("Revisión: %s" % a["revised_at"])
@@ -155,7 +162,7 @@ def jsonld(a, vertical, url):
 
 def build_post(a, vertical, base_url):
     slug = a["id"]
-    url = "%s/%s/%s/" % (base_url.rstrip("/"), a.get("section", "noticias"), slug)
+    url = "%s/%s/" % (base_url.rstrip("/"), slug)  # Ghost sirve /<slug>/ (comprobado el 8-11-2026 en www.moticias.com)
     tags = ["#" + a.get("section", "")] + [t for t in [a.get("subsector")] if t] + list(a.get("tags") or [])
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": [{"name": t} for t in tags if t], "published_at": a.get("published_at"), "meta_title": a.get("title"),

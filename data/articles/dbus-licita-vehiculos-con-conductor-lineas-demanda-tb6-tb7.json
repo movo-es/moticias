@@ -63,6 +63,20 @@
  "key_fact": "2.822.018,40 € por seis años; ofertas hasta el 30 de noviembre de 2026",
  "kicker": "Transporte a la demanda · Urbano",
  "kind": "noticia",
+ "menciones": [
+  {
+   "cta": "Transporte a la demanda con MUFMI",
+   "estado": "publicada",
+   "motivo": "subsector urbano; sección licitaciones; «transporte a la demanda» (cabecera); «servicio a la demanda» (cabecera); flexible; microbuses",
+   "nombre": "MUFMI",
+   "origen": "automatica",
+   "producto": "mufmi",
+   "propuesta_en": "2026-11-08T19:35+01:00",
+   "puntuacion": 15,
+   "texto": "Donde la demanda no llena una línea fija, el transporte a la demanda mantiene el servicio con vehículos más pequeños y reserva previa. MUFMI diseña y opera estos servicios para administraciones.",
+   "url": "https://mufmi.com?utm_source=moticias&utm_medium=nota-de-la-casa&utm_campaign=moticias-nota-de-la-casa-mufmi&utm_content=dbus-licita-vehiculos-con-conductor-lineas-demanda-tb6-tb7"
+  }
+ ],
  "next": "Ofertas hasta el 30 de noviembre de 2026 a las 23:59 en la plataforma de contratación de Euskadi; apertura el 15 de diciembre a las 10:00. Las ofertas deben mantenerse cuatro meses. El anuncio no prevé prórrogas. El contrato anterior de la TB7 terminó el 22 de septiembre de 2026 según la plataforma, y no consta cómo se presta el servicio hasta la nueva adjudicación.",
  "published_at": "2026-11-04T07:30:00+01:00",
  "published_time": "07:30",

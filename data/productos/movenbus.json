@@ -1,0 +1,78 @@
+{
+ "contexto": "Queremos aparecer cuando la noticia trate de un comprador grande —Renfe, Adif, un consorcio, una administración, un organizador de eventos o de viajes en grupo— que necesita muchos autobuses discrecionales a la vez o en muchos sitios (planes alternativos de transporte, sustitución por obras o huelga, transporte escolar o de eventos, servicios regionales troceados en lotes) y donde el problema es coordinar una flota repartida entre pymes: solvencia por lotes, lotes desiertos, dificultad para reunir vehículos. Movenbus es la interlocución única que reúne operadores pequeños y medianos para dar esa respuesta. No queremos aparecer en noticias sobre líneas regulares concesionales ni sobre operaciones propias de Movenbus (de esas MOTICIAS no informa).",
+ "disparadores": {
+  "frases": [
+   "planes alternativos de transporte",
+   "autobuses de sustitución",
+   "transporte alternativo",
+   "servicios discrecionales",
+   "lotes territoriales",
+   "quedaron desiertos",
+   "quedó desierto",
+   "pymes de autobús"
+  ],
+  "palabras_clave": [
+   "autobús",
+   "autobuses",
+   "autocar",
+   "autocares",
+   "discrecional",
+   "discrecionales",
+   "planes alternativos",
+   "plan alternativo",
+   "sustitución",
+   "lotes",
+   "desiertos",
+   "desierto",
+   "pymes",
+   "flota",
+   "flotas",
+   "organizadores de grupos",
+   "viajes en grupo",
+   "transporte escolar",
+   "eventos",
+   "servicio alternativo",
+   "servicios alternativos",
+   "intermedian",
+   "intermediación"
+  ],
+  "secciones": [
+   "licitaciones",
+   "tierra",
+   "regulacion"
+  ],
+  "subsectores": [
+   "autobús",
+   "carretera"
+  ]
+ },
+ "excluir": [
+  "Movenbus",
+  "Moveme",
+  "MUFMI",
+  "concesión de línea regular",
+  "mapa concesional",
+  "concesional",
+  "línea regular",
+  "líneas regulares",
+  "urbano",
+  "matriculaciones",
+  "OPA",
+  "dimite",
+  "dimisión"
+ ],
+ "id": "movenbus",
+ "max_por_semana": 3,
+ "name": "Movenbus",
+ "one_liner": "Plataforma que agrupa a pymes de autobús y autocar para cubrir servicios discrecionales con una sola interlocución.",
+ "owner": "Moveme S.L.",
+ "status": "activo",
+ "textos": {
+  "corto": "Coordinar decenas de autocares de pymes distintas para un mismo contratante —un plan alternativo de transporte, una sustitución por obras, un gran evento— es el problema que resuelve Movenbus: una sola interlocución que agrupa operadores pequeños y medianos de toda España.",
+  "cta": "Cómo trabaja Movenbus con operadores y contratantes"
+ },
+ "umbral": 10,
+ "updated_at": "2026-11-08T19:40:00+01:00",
+ "url": "https://movenbus.com",
+ "utm_campaign": "moticias-nota-de-la-casa-movenbus"
+}

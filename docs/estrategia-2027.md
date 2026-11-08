@@ -1,8 +1,8 @@
 # MOTICIAS · Estrategia 2027: de portal de referencia a plataforma que se financia sola
 
-Fecha: 8 de noviembre de 2026 (revisado la misma tarde con las respuestas de Rainer a las cinco preguntas y la entrevista 1). Origen: anotaciones manuscritas del director («Estrategia_2027», cuatro páginas) y su encargo del mismo día. Destino: `docs/estrategia-2027.md` en `movo-es/moticias`, que manda sobre esta copia. Complementa, no sustituye, a `docs/estrategia.md` (7-11-2026) y al cambio `plataforma-v1`.
+Fecha: 8 de noviembre de 2026 (revisado la misma tarde con las respuestas de Rainer a las cinco preguntas, la entrevista 1 y su decisión sobre menciones del grupo y piezas bajo demanda). Origen: anotaciones manuscritas del director («Estrategia_2027», cuatro páginas) y su encargo del mismo día. Destino: `docs/estrategia-2027.md` en `movo-es/moticias`, que manda sobre esta copia. Complementa, no sustituye, a `docs/estrategia.md` (7-11-2026) y al cambio `plataforma-v1`.
 
-Respuesta corta: MOTICIAS gana autoridad siendo la referencia informativa de movilidad, transporte y logística sin sobrecarga publicitaria; esa autoridad se convierte en ingresos por cinco vías (suscripción profesional, sala de prensa, revistas y ediciones a medida, datos y conocimiento premium, Amarantia) construidas sobre ocho módulos reutilizables. Ghost muestra; el repositorio manda; Supabase guarda estado; Vercel ejecuta; los agentes de Claude Code trabajan. Nueve cambios OpenSpec entre noviembre de 2026 y junio de 2027, uno por semana de media, cada uno con algo visible desde el móvil.
+Respuesta corta: MOTICIAS gana autoridad siendo la referencia informativa de movilidad, transporte y logística sin sobrecarga publicitaria; esa autoridad se convierte en ingresos por cinco vías (suscripción profesional, sala de prensa, revistas y ediciones a medida, datos y conocimiento premium, Amarantia) construidas sobre diez módulos reutilizables. Ghost muestra; el repositorio manda; Supabase guarda estado; Vercel ejecuta; los agentes de Claude Code trabajan. Nueve cambios OpenSpec entre noviembre de 2026 y junio de 2027, uno por semana de media, cada uno con algo visible desde el móvil.
 
 ## 0. Qué añaden las anotaciones a lo que ya existe
 
@@ -64,7 +64,7 @@ Estado real el 8-11-2026 (comprobado): www.moticias.com ya sirve 62 piezas en Gh
 
 **Una sola identidad.** Cuenta `ruphoff@avionline.es` (GitHub `movo-es`, Ghost, Vercel, Supabase). Claves solo como variables de entorno en Vercel y en las tareas programadas. El repositorio es público por decisión de Rainer (8-11-2026): por eso no contiene claves, datos personales ni perfiles de clientes reales; lo que sea de un cliente vive en Supabase.
 
-## 3. Los ocho módulos reutilizables
+## 3. Los diez módulos reutilizables
 
 Cada módulo tiene una spec en `openspec/specs/<módulo>/`, código en `app/lib/<módulo>/` (TypeScript) o `src/<módulo>.py` (agentes), y una lista cerrada de consumidores. «Reutilizable» significa: lo usa más de un producto sin copiar código y se configura por vertical o por cliente, nunca por rama de código.
 
@@ -78,8 +78,10 @@ Cada módulo tiene una spec en `openspec/specs/<módulo>/`, código en `app/lib/
 | 6. **Conocimiento** | Gestor de fuentes y documentos con clasificación (primaria, secundaria reputada, sin confirmar), ponderación, fechas de incorporación, publicación y validez, estado (activa, desactivada, baneada, compartida); fragmentos con embeddings; consulta IA con citas y «no consta» | MOVO (PMST y futuros procesos), MOTICIAS corporativa, Amarantia, la nueva línea de planes | Colecciones por proyecto y por cliente |
 | 7. **Contactos «Quién decide»** | Organizaciones, cargos y responsables con fuente y fecha de verificación; CRM privado (contactos, intereses, eventos, leads por solución); agente mensual de actualización desde nombramientos | Premium corporativa, comercial del grupo, difusión de notas (listas de prensa y de cargos), PLUS (audiencias de stakeholders) | Segmentos y soluciones del vertical |
 | 8. **Sala de prensa** | Recepción de comunicados (formulario y buzón), ficha de la organización emisora, publicación marcada como comunicado, valoración IA opcional, difusión opcional, histórico por empresa | MOTICIAS (vía A), Amarantia (emisión a canales en una crisis), vertical turismo | Sección, etiquetas, tarifas |
+| 9. **Gestor de productos propios y menciones** | Catálogo de productos del grupo con el contexto que les da entrada; puntúa cada pieza, escribe una mención señalizada («Nota de la casa») al pie y avisa al director por correo con enlace de edición | MOTICIAS (todas las piezas), ediciones a medida (con los productos del cliente), vertical turismo (Movenbus para grupos) | `data/productos/<id>.json` por vertical; declaración y etiqueta en el vertical |
+| 10. **Buscador y piezas bajo demanda** | Búsqueda sobre lo publicado con veredicto; si no hay cobertura, encargo → investigación → pieza con el estándar de siempre, guardada para siempre | Suscripción profesional y corporativa (vía B), consulta IA (cuando no consta en el conocimiento, puede abrir un encargo), ediciones a medida | Cuota por nivel; fuentes del vertical |
 
-Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, campañas temáticas, publicidad, asesor, verticales) se mantiene y se apoya en estos módulos: el CRM es el módulo 7; las ediciones a medida son 1 + 2 + 3; los sensores son el 5.
+Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, campañas temáticas, publicidad, asesor, verticales) se mantiene y se apoya en estos módulos: el CRM es el módulo 7; las ediciones a medida son 1 + 2 + 3; los sensores son el 5; la autopromoción de las campañas se apoya en el 9.
 
 ## 4. Los módulos nuevos en detalle
 
@@ -164,15 +166,29 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 **Dónde se ve.** `app.moticias.com/quien-decide` para corporativa; `/crm` interno para el comercial del grupo (leads por solución, como en `plataforma-v1`).
 
+### 4.8 Menciones del grupo y gestor de productos propios (`menciones-del-grupo-v1`)
+
+**Decisión de Rainer (8-11-2026).** Cuando MOTICIAS publica algo que una solución del grupo resuelve, la pieza incluye una referencia sin parecer publicidad: MUFMI cuando trata de transporte a la demanda, MOVO en PMST, Movenbus cuando una compra grande de autobús discrecional necesita un agregador (ejemplo: los 14 lotes de Renfe para planes alternativos). El director recibe por correo cada mención con enlace directo para editarla. Y existe un gestor de productos propios con la descripción del contexto que da entrada a cada uno.
+
+**Cómo se concilia con el cortafuegos.** La referencia existe, pero no está en el texto: es un bloque señalizado «Nota de la casa» al pie de la pieza, después de las fuentes, con el texto del producto, el enlace con UTM y una declaración de una frase (mismo grupo; no es publicidad pagada; no ha intervenido en la selección ni en la redacción). Una pieza lleva una mención como mucho; los análisis del director y las piezas que tratan del grupo no llevan ninguna; la mención no cambia la firma ni la aprobación. Lo que convierte esto en credibilidad y no en folleto es que se declara y que el director lo revisa pieza a pieza.
+
+**El gestor** (`data/productos/<id>.json`, módulo 9): `contexto` en prosa (cuándo sí y cuándo no), `disparadores` (subsectores, secciones, palabras clave, frases), `excluir`, `umbral`, `max_por_semana`, `textos.corto`, `textos.cta`, `utm_campaign`, `status`. Hoy: Movenbus, MUFMI y MOVO·PMST activos; MOVO·licitaciones y la nueva línea de planes de movilidad en borrador hasta que Rainer confirme URL y texto. `src/menciones.py` puntúa (la cabecera de la pieza pesa doble y tiene que tratar del tema), escribe `menciones` en la pieza, el publicador pinta el bloque, y `informe` + `enviar` mandan a `ruphoff@avionline.es` el resumen con dos enlaces por mención: el fichero en GitHub (fuente de verdad: cambiar el texto o poner `estado: retirada`) y el editor de Ghost. Solo se envía si hubo menciones. Probado el 8-11 sobre las tres ediciones: 6 menciones en 74 piezas (Renfe → Movenbus con 36 puntos; Jaén y Dbus → MUFMI; ZBE → MOVO; dos dudosas que el correo deja a su criterio).
+
+### 4.9 Buscador y piezas bajo demanda (`buscador-bajo-demanda-v1`)
+
+**Decisión de Rainer (8-11-2026).** Hace falta un buscador. Si lo que busca un cliente no está en las noticias publicadas, se busca fuera y, si se encuentra, se construye una noticia con la información encontrada, con el mismo formato y el mismo método, y se guarda para que esté disponible en el futuro.
+
+**Cómo.** Búsqueda nativa de Ghost en el tema para lo público; `src/buscador.py` (módulo 10) sobre `data/` para los agentes, con veredicto `cubierto` / `parcial` / `sin_cobertura`. Cuando no hay cobertura, el miembro con sesión pulsa «Pedir esta pieza a la redacción» y se abre un encargo (consulta, fecha, `miembro_id` de Ghost, nivel; nunca correo ni nombre: el repositorio es público) con cuota por nivel (profesional 2 al mes, corporativa 10). `/pieza-bajo-demanda` (tarea cada dos horas en laborables) busca primero, investiga después con el estándar de profundidad y escribe la pieza completa con `origen: bajo-demanda`; sin fuente primaria no se escribe y el solicitante recibe las referencias que sí existen. La pieza pasa por el gestor de menciones, se publica, entra en la hemeroteca y queda para siempre. Es un servicio de la vía B que ningún medio sectorial ofrece: la pregunta del lector se convierte en archivo.
+
 ## 5. Plan por semanas (noviembre de 2026 – junio de 2027)
 
 Criterios: una entrevista por semana como máximo (30 minutos desde el móvil); cada cambio deja algo visible; lo que ya produce valor va antes; los sensores se adelantan porque son baratos y alimentan tres productos; el auscultador de Amarantia se adelanta a enero porque hay interés de un cliente (decisión del 8-11); PLUS va después del motor de envíos porque lo necesita; la publicidad y el segundo vertical, al final, cuando haya audiencia.
 
 | Semana | Cambio OpenSpec | Entrevista | Qué verá Rainer | Dependencias |
 |---|---|---|---|---|
-| 46 (10–16 nov) | `publicar-en-ghost-v1` | Hecha el 8-11 (`openspec/changes/publicar-en-ghost-v1/`) | Las 74 piezas en www.moticias.com (12 pendientes de su «Publicar»), tema versionado, legales publicadas, alta con consentimientos | `GHOST_ADMIN_KEY` en la tarea |
+| 46 (10–16 nov) | `publicar-en-ghost-v1` + `menciones-del-grupo-v1` | Hecha el 8-11 (`openspec/changes/publicar-en-ghost-v1/`) + sin entrevista | Las 74 piezas en www.moticias.com (12 pendientes de su «Publicar»), tema versionado, legales publicadas, alta con consentimientos; la «Nota de la casa» visible en la pieza de Renfe y el primer correo de menciones con enlaces de edición | `GHOST_ADMIN_KEY` y `BREVO_API_KEY` en la tarea |
 | 47 (17–23 nov) | `notas-de-prensa-v1` | Corta (nº 10) | Sección `/notas-de-prensa/`, formulario, buzón `prensa@`, primera nota publicada; ficha de organización | Ghost; buzón en Hostinger |
-| 48 (24–30 nov) | `sala-de-redaccion-v1` | Sí (nº 3) | Supabase `moticias` con migración 001; `app.moticias.com/redaccion` con cola de aprobación desde el móvil | Vercel, Supabase |
+| 48 (24–30 nov) | `sala-de-redaccion-v1` + `buscador-bajo-demanda-v1` | Sí (nº 3) + corta (nº 16) | Supabase `moticias` con migración 001; `app.moticias.com/redaccion` con cola de aprobación desde el móvil; buscador visible en el tema, «Pedir esta pieza» para miembros, primera pieza bajo demanda publicada | Vercel, Supabase |
 | 49 (1–7 dic) | `sensores-v1` | No (spec clara) | `/sensores` escribe en `senales`; barrido de mediodía programado; vista por entidad | Supabase |
 | 50 (8–14 dic) | `campanas-tematicas-v1` | Sí (nº 2) | Panel `/campanas` con la campaña PMST; la semilla de «Quién decide» ya está en `data/cargos/` | Sala |
 | 51–52 (15–28 dic) | `suscripciones-v1` | Sí (nº 4) | Niveles en Ghost, alta con perfil, centro de preferencias; primeras altas | Ghost miembros |
@@ -246,6 +262,10 @@ Cada entrevista: 8–12 preguntas, una por mensaje, con la recomendación marcad
 
 **A.6 `amarantia-plus-v1` (semanas 11–15).** Cliente piloto y escenario del primer plan (recomendado: interrupción del servicio o accidente sin víctimas); audiencias y canales del piloto; quién aprueba cada paso (recomendado: dos personas designadas por el cliente, cualquiera de las dos); regla de avance por defecto (recomendado: 80 % de acuses o 20 minutos); contenido del flash público y lista de medios; fecha del primer simulacro; contrato de encargado del tratamiento (plantilla a nombre de Avionline).
 
+**A.8 `buscador-bajo-demanda-v1` (semana 48; corta).** Dónde se pulsa «Pedir esta pieza» (recomendado: en la página de resultados de la búsqueda de Ghost y en el pie de cada pieza); quién puede (recomendado: profesional 2 al mes, corporativa 10; lector, ninguna); cómo llega el encargo antes de Supabase (recomendado: formulario en `app.moticias.com` que escribe `data/encargos/` por la API de GitHub); plazo prometido (recomendado: «en el próximo día laborable», sin hora); qué recibe el solicitante si no hay fuentes; si las piezas bajo demanda se marcan públicamente como tales (recomendado: sí, una línea «Pieza publicada a petición de un suscriptor», sin identificarlo).
+
+**A.9 `menciones-del-grupo-v1` (semana 46).** Sin entrevista: decidido el 8-11 por Rainer. Code conecta el correo (Brevo), republica las piezas con mención y añade el paso a la rutina; los textos de cada producto los revisa Rainer desde el primer correo.
+
 **A.7 `fuentes-segundo-nivel-v1`, `sensores-v1`, `quien-decide-semilla`, `contactos-quien-decide-v1`, `asesor-v1`.** Sin entrevista: la spec de este documento basta; Code propone y aplica, y pregunta solo si encuentra una decisión no cubierta.
 
 ## Anexo B · Tareas programadas (todas en la nube, cuenta de Rainer, Europe/Madrid)
@@ -255,6 +275,7 @@ Cada entrevista: 8–12 preguntas, una por mensaje, con la recomendación marcad
 | Edición diaria | laborables 06:38 | `/edicion-diaria` | ya corre |
 | Asesor de visibilidad y credibilidad | lunes 09:17 | `/consejo-visibilidad` | ya corre |
 | Buzón de prensa | laborables 09:30 y 15:30 | `/prensa-buzon` | semana 47 |
+| Piezas bajo demanda | laborables cada 2 h, 8–20 | `/pieza-bajo-demanda` | semana 48 |
 | Sensores y fuentes de segundo nivel | laborables 13:30 | `/sensores` (incluye segundo nivel desde enero) | semana 49 |
 | Radar regulatorio | lunes 07:30 | `/radar-regulatorio` | semana 51 |
 | Licitaciones de la semana | viernes 07:30 | `/licitaciones-semana` | semana 51 |
@@ -285,4 +306,4 @@ Las secuencias PLUS no son tareas programadas: las ejecuta Vercel Workflow cuand
 
 ## Anexo D · Decisiones que este documento da por tomadas
 
-Pila y plataformas del § 2 (Brevo para correo, SMS y WhatsApp; conocimiento sobre el motor de MOVO) · ocho módulos del § 3 · orden del § 5 · `app.moticias.com` como única excepción a los subdirectorios · Avionline S.L. titular y responsable · comunicados marcados y fuera de lo editorial · la comunicación de crisis nunca se presenta como alerta oficial · información reservada fuera de la nube · precios del § 1 como hipótesis a validar, no como tarifa publicada.
+Pila y plataformas del § 2 (Brevo para correo, SMS y WhatsApp; conocimiento sobre el motor de MOVO) · diez módulos del § 3 · menciones del grupo solo en el bloque señalizado «Nota de la casa», decididas por el gestor de productos propios y revisadas por el director por correo · piezas bajo demanda con el mismo estándar, firma y aprobación · orden del § 5 · `app.moticias.com` como única excepción a los subdirectorios · Avionline S.L. titular y responsable · comunicados marcados y fuera de lo editorial · la comunicación de crisis nunca se presenta como alerta oficial · información reservada fuera de la nube · precios del § 1 como hipótesis a validar, no como tarifa publicada.

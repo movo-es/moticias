@@ -68,6 +68,20 @@
  "key_fact": "3.687.776,35 euros para compensar el déficit de 2025 de 27 líneas con contratos en prolongación tácita",
  "kicker": "Concesiones · Autobús interurbano",
  "kind": "noticia",
+ "menciones": [
+  {
+   "cta": "Transporte a la demanda con MUFMI",
+   "estado": "publicada",
+   "motivo": "subsector autobús; sección regulacion; «transporte a la demanda»; «obligación de servicio público» (cabecera); OSP",
+   "nombre": "MUFMI",
+   "origen": "automatica",
+   "producto": "mufmi",
+   "propuesta_en": "2026-11-08T19:35+01:00",
+   "puntuacion": 12,
+   "texto": "Donde la demanda no llena una línea fija, el transporte a la demanda mantiene el servicio con vehículos más pequeños y reserva previa. MUFMI diseña y opera estos servicios para administraciones.",
+   "url": "https://mufmi.com?utm_source=moticias&utm_medium=nota-de-la-casa&utm_campaign=moticias-nota-de-la-casa-mufmi&utm_content=cantabria-declara-servicio-publico-sus-27-lineas-de-autobus-6zr7"
+  }
+ ],
  "next": "El plazo de solicitud termina quince días después de la publicación en el BOC: hacia el 19 de noviembre si son naturales o el 25 si son hábiles, según cálculo de MOTICIAS. Queda por conocer el reparto por línea del anexo II. El Consejo de Gobierno debe aprobar el nuevo mapa concesional de seis corredores, que el consejero situó en octubre de 2026, y después publicar pliegos y licitar.",
  "published_at": "2026-11-06T07:19:27+01:00",
  "published_time": "07:19",

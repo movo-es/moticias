@@ -1,0 +1,72 @@
+{
+ "contexto": "Queremos aparecer cuando la noticia trate de transporte a la demanda (TAD), transporte rural o de baja densidad, servicios flexibles o bajo reserva, sustitución de líneas regulares deficitarias por servicios a la demanda, contratos de administraciones (consejerías, cabildos, diputaciones, consorcios, ayuntamientos) para movilidad en zonas poco pobladas, y obligaciones de servicio público donde la demanda no justifica una línea fija. MUFMI opera y diseña esos servicios para administraciones. No queremos aparecer en piezas sobre operaciones o contratos del propio MUFMI ni de Moveme.",
+ "disparadores": {
+  "frases": [
+   "transporte a la demanda",
+   "transporte bajo demanda",
+   "servicio a la demanda",
+   "servicios a la demanda",
+   "obligación de servicio público",
+   "zonas de baja densidad",
+   "movilidad rural",
+   "transporte rural"
+  ],
+  "palabras_clave": [
+   "a la demanda",
+   "bajo demanda",
+   "TAD",
+   "rural",
+   "despoblada",
+   "despoblación",
+   "baja densidad",
+   "flexible",
+   "bajo reserva",
+   "reserva previa",
+   "microbús",
+   "microbuses",
+   "zonas rurales",
+   "servicio público",
+   "OSP",
+   "cabildo",
+   "diputación",
+   "comarca",
+   "comarcal",
+   "municipios pequeños",
+   "última milla",
+   "transporte sanitario"
+  ],
+  "secciones": [
+   "tierra",
+   "regulacion",
+   "licitaciones"
+  ],
+  "subsectores": [
+   "autobús",
+   "urbano",
+   "carretera"
+  ]
+ },
+ "excluir": [
+  "MUFMI",
+  "Moveme",
+  "Movenbus",
+  "ferroviario",
+  "ETS",
+  "derechos de emisión",
+  "aéreo"
+ ],
+ "id": "mufmi",
+ "max_por_semana": 3,
+ "name": "MUFMI",
+ "one_liner": "Transporte de viajeros a la demanda y servicios de movilidad para administraciones.",
+ "owner": "Moveme S.L.",
+ "status": "activo",
+ "textos": {
+  "corto": "Donde la demanda no llena una línea fija, el transporte a la demanda mantiene el servicio con vehículos más pequeños y reserva previa. MUFMI diseña y opera estos servicios para administraciones.",
+  "cta": "Transporte a la demanda con MUFMI"
+ },
+ "umbral": 10,
+ "updated_at": "2026-11-08T19:40:00+01:00",
+ "url": "https://mufmi.com",
+ "utm_campaign": "moticias-nota-de-la-casa-mufmi"
+}

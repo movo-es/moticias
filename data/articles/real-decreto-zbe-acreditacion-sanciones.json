@@ -64,6 +64,20 @@
  "key_fact": "Cinco requisitos para acreditar una ZBE efectiva, multa de 200 euros sin avisos transitorios y 151 municipios obligados",
  "kicker": "Zonas de bajas emisiones · Movilidad urbana",
  "kind": "noticia",
+ "menciones": [
+  {
+   "cta": "Comprobar si tu centro está obligado",
+   "estado": "publicada",
+   "motivo": "subsector urbano; sección tierra; «ley 9/2025»; plan de movilidad; planes de movilidad; ZBE (cabecera); zonas de bajas emisiones (cabecera)",
+   "nombre": "MOVO · planes de movilidad sostenible al trabajo",
+   "origen": "automatica",
+   "producto": "movo-pmst",
+   "propuesta_en": "2026-11-08T19:35+01:00",
+   "puntuacion": 12,
+   "texto": "Los centros de trabajo obligados por la Ley 9/2025 tienen que diagnosticar, negociar y aprobar su plan de movilidad sostenible al trabajo con plazo. MOVO recorre ese ciclo completo —diagnóstico, encuesta, medidas y documento negociable— en semanas.",
+   "url": "https://movo.es/pmst/?utm_source=moticias&utm_medium=nota-de-la-casa&utm_campaign=moticias-nota-de-la-casa-movo-pmst&utm_content=real-decreto-zbe-acreditacion-sanciones"
+  }
+ ],
  "next": "El real decreto se publicará en el BOE y, según el proyecto, entrará en vigor al día siguiente; los ayuntamientos deberán remitir la documentación acreditativa y adaptar sus ordenanzas, con información pública de al menos treinta días. No se fijan plazos nuevos ni multas distintas de los 200 euros de la Ley de Tráfico. Queda por ver si la primera convocatoria del FECMO exige la acreditación y si el Gobierno que salga del 29 de noviembre mantiene el criterio antes de las municipales de mayo de 2027.",
  "published_at": "2026-11-04T07:30:00+01:00",
  "published_time": "07:30",

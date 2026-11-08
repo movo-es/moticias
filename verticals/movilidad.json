@@ -216,13 +216,49 @@
   },
   "rules": [
    "La campaña orienta la selección (palabras clave, cadencia, peso), nunca el tratamiento ni la firma.",
-   "Ninguna pieza menciona la solución; la relación la hace la plataforma en huecos señalizados.",
+   "Ninguna pieza menciona la solución dentro del texto; la relación la hace la plataforma en huecos señalizados y, desde el 8-11-2026, el bloque «Nota de la casa» del gestor de productos propios (data/productos/).",
    "Fecha gancho sin verificar en fuente primaria (hook.date_verified=false): no se publica ninguna pieza que la cite.",
    "Sin actualidad sobre el tema no se fuerza una pieza: se publica fondo del plan editorial o nada.",
    "Nunca se borra una campaña; al cerrar, sus piezas quedan en una página pilar permanente."
   ],
   "active": [
    "movilidad-al-trabajo-pmst"
+  ]
+ },
+ "productos": {
+  "dir": "data/productos/",
+  "label": "Nota de la casa",
+  "declaracion": "MOTICIAS pertenece al mismo grupo empresarial que este servicio. La mención no es publicidad pagada y no ha intervenido en la selección ni en la redacción de la pieza.",
+  "email": [
+   "ruphoff@avionline.es"
+  ],
+  "remitente": "redaccion@moticias.com",
+  "max_por_pieza": 1,
+  "sin_menciones_en": [
+   "analisis"
+  ],
+  "rules": [
+   "La mención nunca va dentro del texto de la pieza: va en el bloque señalizado «Nota de la casa», al pie, con su declaración.",
+   "La decide el gestor de productos propios (data/productos/) por contexto; una pieza lleva una mención como mucho.",
+   "Los análisis del director y las piezas que tratan del grupo no llevan mención.",
+   "Cada mención publicada se comunica al director por correo con enlace de edición; retirar = estado retirada, nunca borrar.",
+   "La mención no cambia la firma ni los criterios de aprobación de la pieza."
+  ]
+ },
+ "encargos": {
+  "dir": "data/encargos/",
+  "cuota": {
+   "lector": 0,
+   "profesional": 2,
+   "corporativa": 10,
+   "casa": 999
+  },
+  "periodo": "mes",
+  "rules": [
+   "Primero se busca en lo publicado (src/buscador.py); solo se escribe una pieza nueva si no hay cobertura o es parcial.",
+   "Una pieza bajo demanda sigue el estándar de profundidad, la firma y la aprobación de cualquier otra; sin fuente primaria no se escribe.",
+   "El encargo guarda la consulta y el id de miembro de Ghost, nunca el correo ni el nombre: el repositorio es público.",
+   "Las piezas bajo demanda llevan origen: bajo-demanda y quedan disponibles para siempre (hemeroteca, Ghost, buscador)."
   ]
  }
 }

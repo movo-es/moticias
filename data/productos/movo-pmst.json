@@ -1,0 +1,65 @@
+{
+ "contexto": "Queremos aparecer cuando la noticia trate de la obligación de las empresas y entidades públicas con centros grandes de aprobar un plan de movilidad sostenible al trabajo (Ley 9/2025 de Movilidad Sostenible y su desarrollo), de plazos y sanciones, de la negociación con la representación de las personas trabajadoras, de zonas de bajas emisiones que afectan al acceso a centros de trabajo, de ayudas o deducciones ligadas a la movilidad al trabajo, de polígonos industriales y campus, y de ejemplos de empresas que ya lo hacen. MOVO guía todo el ciclo del PMST: diagnostica, redacta, presenta y evidencia. No queremos aparecer en piezas sobre MOVO o Avionline.",
+ "disparadores": {
+  "frases": [
+   "plan de movilidad sostenible al trabajo",
+   "planes de movilidad sostenible al trabajo",
+   "movilidad al trabajo",
+   "zona de bajas emisiones",
+   "ley 9/2025"
+  ],
+  "palabras_clave": [
+   "PMST",
+   "movilidad al trabajo",
+   "plan de movilidad",
+   "planes de movilidad",
+   "Ley 9/2025",
+   "Ley de Movilidad Sostenible",
+   "centros de trabajo",
+   "centro de trabajo",
+   "plantilla",
+   "plantillas",
+   "representación legal",
+   "ZBE",
+   "zona de bajas emisiones",
+   "zonas de bajas emisiones",
+   "polígono",
+   "polígonos",
+   "campus",
+   "teletrabajo",
+   "coche compartido",
+   "lanzadera",
+   "lanzaderas",
+   "aparcamiento",
+   "200 personas",
+   "500 personas"
+  ],
+  "secciones": [
+   "regulacion",
+   "tierra"
+  ],
+  "subsectores": [
+   "urbano",
+   "transversal"
+  ]
+ },
+ "excluir": [
+  "MOVO",
+  "Avionline",
+  "movo.es"
+ ],
+ "id": "movo-pmst",
+ "max_por_semana": 4,
+ "name": "MOVO · planes de movilidad sostenible al trabajo",
+ "one_liner": "Diagnóstico, encuesta a la plantilla, medidas y documento negociable del PMST, en semanas.",
+ "owner": "Avionline S.L.",
+ "status": "activo",
+ "textos": {
+  "corto": "Los centros de trabajo obligados por la Ley 9/2025 tienen que diagnosticar, negociar y aprobar su plan de movilidad sostenible al trabajo con plazo. MOVO recorre ese ciclo completo —diagnóstico, encuesta, medidas y documento negociable— en semanas.",
+  "cta": "Comprobar si tu centro está obligado"
+ },
+ "umbral": 10,
+ "updated_at": "2026-11-08T19:40:00+01:00",
+ "url": "https://movo.es/pmst/",
+ "utm_campaign": "moticias-nota-de-la-casa-movo-pmst"
+}
