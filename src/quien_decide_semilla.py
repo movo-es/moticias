@@ -67,7 +67,7 @@ def sembrar(desde):
             n_skip += 1
             print("omitido (sin fuente):", c.get("persona"), c.get("cargo"), file=sys.stderr)
             continue
-        cid = slug("%s %s %s" % (c["persona"], c["cargo"], c.get("organizacion") or ""))[:80]
+        cid = slug("%s %s" % (c["persona"], c.get("organizacion") or c["cargo"]))[:72].rstrip("-")
         path = os.path.join(CARGOS, cid + ".json")
         reg = {"id": cid, "vertical": c.get("vertical") or "movilidad", "persona": c["persona"], "cargo": c["cargo"],
                "organizacion": c.get("organizacion"), "tipo_org": c.get("tipo_org"), "desde": c.get("desde"), "hasta": c.get("hasta"),

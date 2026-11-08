@@ -1,9 +1,14 @@
 {
- "cargo": "Presidente del Gobierno",
+ "cargo": "Vicepresidente primero del Gobierno y ministro de Economía, Comercio y Empresa; despacho de Transportes y Movilidad Sostenible por suplencia",
  "creado_en": "2026-11-08",
- "desde": null,
+ "desde": "2026-11-04",
  "email_profesional": null,
  "fuentes": [
+  {
+   "fecha": "2026-11-04",
+   "tipo": "boe",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23172"
+  },
   {
    "fecha": "2026-11-04",
    "tipo": "web-oficial",
@@ -11,10 +16,10 @@
   }
  ],
  "hasta": null,
- "id": "pedro-sanchez-perez-castejon-presidente-del-gobierno-gobierno-de-espana",
- "notas": null,
+ "id": "carlos-cuerpo-caballero-gobierno-de-espana",
+ "notas": "Suplencia en Transportes (Real Decreto 975/2026) hasta el nombramiento de titular; revisar tras el 29-N.",
  "organizacion": "Gobierno de España",
- "persona": "Pedro Sánchez Pérez-Castejón",
+ "persona": "Carlos Cuerpo Caballero",
  "piezas": [
   "carlos-cuerpo-asume-el-despacho-de-transportes-hasta-el-29-n-x4kq"
  ],

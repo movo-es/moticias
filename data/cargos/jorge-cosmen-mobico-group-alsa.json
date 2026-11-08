@@ -1,5 +1,5 @@
 {
- "cargo": "Consejero delegado",
+ "cargo": "Consejero de Mobico Group (familia Cosmen, oferente de la opa con Asterion)",
  "creado_en": "2026-11-08",
  "desde": null,
  "email_profesional": null,
@@ -11,15 +11,15 @@
   }
  ],
  "hasta": null,
- "id": "jesus-olmos-consejero-delegado-asterion-industrial-partners",
+ "id": "jorge-cosmen-mobico-group-alsa",
  "notas": "Anuncio de la oferta recomendada (RNS, 30-10-2026).",
- "organizacion": "Asterion Industrial Partners",
- "persona": "Jesús Olmos",
+ "organizacion": "Mobico Group (Alsa)",
+ "persona": "Jorge Cosmen",
  "piezas": [
   "opa-cosmen-asterion-mobico-alsa"
  ],
  "tel_profesional": null,
- "tipo_org": "industria",
+ "tipo_org": "operador",
  "verificado_en": "2026-11-08",
  "vertical": "movilidad",
  "vigente": true
