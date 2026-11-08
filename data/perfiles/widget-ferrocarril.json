@@ -1,0 +1,11 @@
+{
+ "id": "widget-ferrocarril",
+ "name": "Widget · Ferrocarril",
+ "vertical": "movilidad",
+ "type": "widget",
+ "status": "activo",
+ "filters": {"subsectors": ["ferrocarril", "ferrocarril de mercancías"], "days": 14},
+ "limits": {"articles": 8, "boletines": 0, "agenda": 5},
+ "include": {"articles": true, "boletines": false, "agenda": true},
+ "outputs": {"feed": true}
+}
