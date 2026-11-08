@@ -64,7 +64,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 const $ = s => document.querySelector(s), app = $("#app");
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const MODOS = {automatico:"Automático", revision:"Con revisión", manual:"Solo a mano", apagado:"Apagado"};
-const POS = {premium:["Premium","tras la entradilla"], estandar:["Estándar","entre el tercio y la mitad"], referencia:["Referencia","al final del texto"]};
+const POS = {premium:["Premium","tras el primer párrafo"], estandar:["Estándar","entre el tercio y la mitad"], referencia:["Referencia","al final del texto"]};
 const enWeb = m => m.estado === "publicada" ? (m.en_web ? `<span class="chip pub">En la web</span>` : `<span class="chip pro">Falta en la web</span>`) : "";
 const EST = {publicada:["pub","Publicada"], propuesta:["pro","Pendiente"], retirada:["ret","Retirada"]};
 let yo = null, vista = "piezas", filtro = "pendientes", cache = {piezas:null, productos:null, anuncios:null};
@@ -225,7 +225,7 @@ async function verProductos() {
       <label>Contexto (cuándo sí y cuándo no)</label><textarea data-k="contexto" ${sa?"":"disabled"}>${E(p.contexto)}</textarea>
     </details>
     ${sa ? `<p><button class="b" data-guardar style="width:100%">Guardar</button></p>` : ""}</div>`).join("")
-   + `<p class="mute">Automático: entra solo si la pieza supera el umbral. Con revisión: queda pendiente para aprobar aquí. Solo a mano: nunca entra solo. Exclusiva: si entra, la pieza no lleva otra caja. Premium: justo después de la entradilla. Estándar: entre el tercio y la mitad. Referencia: al final del texto. La caja lleva siempre enlace.</p>`;
+   + `<p class="mute">Automático: entra solo si la pieza supera el umbral. Con revisión: queda pendiente para aprobar aquí. Solo a mano: nunca entra solo. Exclusiva: si entra, la pieza no lleva otra caja. Premium: tras el primer párrafo. Estándar: entre el tercio y la mitad. Referencia: al final del texto. La caja lleva siempre enlace.</p>`;
   if (!sa) return;
   app.querySelectorAll(".seg button").forEach(b => b.onclick = () => { b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); });
   app.querySelectorAll("[data-guardar]").forEach(b => b.onclick = async () => {
