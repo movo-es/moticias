@@ -407,3 +407,11 @@ Mantenimiento: la rutina diaria anota aquí (sección «Cambios detectados») to
 - 2026-11-04 · anetra-informa.es/noticias (indicada en el proyecto) queda incorporada como fuente de prensa sectorial del autobús.
 - 2026-11-06 · El Boletín Oficial de Cantabria y la web del Gobierno de Cantabria no admiten lectura automática; el Decreto 77/2026 se leyó en la reproducción de Noticias Jurídicas.
 - 2026-11-05 · La nota de prensa de Wizz Air y la web de COPE no fueron accesibles; Facua y Diario del Puerto solo legibles en titular y entradilla.
+
+## Fuentes de segundo nivel (estrategia 2027; alta progresiva desde el 8-11-2026)
+
+- **BDNS – Base de Datos Nacional de Subvenciones (API)** — transversal/ES · continua
+  https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias
+  Convocatorias y concesiones de todas las administraciones: ayudas al transporte, movilidad, flotas, PMST, bonos; presupuesto, beneficiarios, plazo y bases.
+  RSS/API: `https://www.infosubvenciones.es/bdnstrans/api/convocatorias/busqueda?vpd=GE&descripcion=<texto>&order=fechaRecepcion&direccion=desc`; detalle `…/api/convocatorias?vpd=GE&numConv=<código>`
+  Nota: verificada el 08/11/2026 (`src/bdns_sweep.py --dias 7`: 8 convocatorias, 3 plazos). Reutilización sujeta al aviso legal (citar y enlazar, no redistribuir la base). Pendientes de alta: Portal de Transparencia, CNMC, Congreso y Senado, Tribunal de Cuentas, actas de consorcios, CNMV, BORME (`docs/estrategia-2027.md § 4.2`).
