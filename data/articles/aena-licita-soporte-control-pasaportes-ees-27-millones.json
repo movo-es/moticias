@@ -212,5 +212,17 @@
   }
  ],
  "title": "Aena licita por 27,2 millones auxiliares para el control de pasaportes del sistema EES",
- "why": "El EES sustituye el sellado manual por un registro biométrico que alarga cada paso por frontera, y desde el 6 de septiembre de 2026 ya no cabe la suspensión parcial que permitía el Reglamento (UE) 2025/1534. Sin esa válvula, la única respuesta a las colas es capacidad: más policías, que dependen de Interior, y personal auxiliar que ordene los flujos, que paga Aena. El contrato sustituye los encargos puente de 2026 por un servicio de doce meses en 17 aeropuertos."
+ "why": "El EES sustituye el sellado manual por un registro biométrico que alarga cada paso por frontera, y desde el 6 de septiembre de 2026 ya no cabe la suspensión parcial que permitía el Reglamento (UE) 2025/1534. Sin esa válvula, la única respuesta a las colas es capacidad: más policías, que dependen de Interior, y personal auxiliar que ordene los flujos, que paga Aena. El contrato sustituye los encargos puente de 2026 por un servicio de doce meses en 17 aeropuertos.",
+ "modo": "aire",
+ "submodo": "aeropuertos",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "madrid",
+  "andalucia",
+  "baleares",
+  "estado"
+ ]
 }

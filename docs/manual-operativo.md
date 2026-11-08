@@ -30,6 +30,9 @@ Colección `articles/{id}` — una pieza (noticia, análisis o reportaje):
 | `kind` | `noticia`, `analisis` o `reportaje` |
 | `section` | `tierra`, `mar`, `aire`, `regulacion`, `licitaciones`, `analisis` |
 | `subsector` | `autobús`, `ferrocarril`, `carretera`, `urbano`, `aéreo`, `marítimo`, `transversal` |
+| `modo`, `submodo` | Qué se mueve (eje 1 de la taxonomía, `verticals/movilidad.json → taxonomia`): `tierra` (autobus, ferrocarril, urbano, carretera), `mar` (puertos, maritimo), `aire` (aerolineas, aeropuertos), `logistica` (logistica-tierra, logistica-mar, logistica-aire), `transversal`. Uno por pieza. Lo propone `python3 -I src/taxonomia.py pieza <ruta>` |
+| `temas` | Qué tipo de hecho es (eje 2): lista de uno o dos ids —`regulacion`, `concesiones`, `empresas`, `infraestructuras`, `tecnologia`, `seguridad`, `analisis`—; el primero manda |
+| `territorios` | Dónde se decide o a quién afecta (eje 3): lista de ids de comunidad (`cantabria`, `madrid`…, `ceuta`, `melilla`) y ámbitos (`estado`, `ue`, `internacional`). Alimenta el menú Territorio, el mapa y el buscador. `taxonomia_manual: true` protege una corrección a mano |
 | `kicker`, `title`, `subtitle` | Tema general y sector · Título · Subtítulo (formato obligatorio) |
 | `summary`, `actors`, `relevance_for`, `why`, `next` | Los cinco bloques obligatorios: de qué trata, protagonistas, para quién es relevante, por qué importa, qué puede pasar ahora |
 | `key_fact` | El dato que sostiene la pieza (cifra, fecha, referencia) |

@@ -143,5 +143,14 @@
   }
  ],
  "title": "El puerto de Huelva otorga a Zal Huelva una concesión de 50 años para su zona de actividades logísticas",
- "why": "Da soporte jurídico estable a la ZAL de Huelva tras años de concurso y marca las condiciones económicas que el concesionario asume durante medio siglo. Es la pieza privada que debe acompañar la urbanización pública de la Punta del Sebo."
+ "why": "Da soporte jurídico estable a la ZAL de Huelva tras años de concurso y marca las condiciones económicas que el concesionario asume durante medio siglo. Es la pieza privada que debe acompañar la urbanización pública de la Punta del Sebo.",
+ "modo": "logistica",
+ "submodo": "logistica-mar",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "andalucia"
+ ]
 }

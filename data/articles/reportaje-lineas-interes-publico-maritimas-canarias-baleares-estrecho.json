@@ -411,5 +411,16 @@
    "text": "Fecha prevista de inicio del contrato canario; vencen los de Melilla el 31-12-2026, con prórroga autorizada hasta 2028"
   }
  ],
- "title": "Las líneas marítimas de interés público se quedan sin navieras"
+ "title": "Las líneas marítimas de interés público se quedan sin navieras",
+ "modo": "mar",
+ "submodo": "maritimo",
+ "temas": [
+  "concesiones"
+ ],
+ "territorios": [
+  "canarias",
+  "ceuta",
+  "melilla",
+  "estado"
+ ]
 }

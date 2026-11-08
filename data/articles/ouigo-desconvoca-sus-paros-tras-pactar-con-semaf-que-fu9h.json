@@ -217,5 +217,14 @@
   }
  ],
  "title": "Ouigo desconvoca sus paros tras pactar con Semaf, que mantiene la huelga del 10 de noviembre en Renfe",
- "why": "El acuerdo en Ouigo retira cuatro jornadas de paro del calendario y demuestra que el conflicto de los maquinistas se desactiva con compromisos escritos. En Renfe ocurre lo contrario: el sindicato da por incumplido el acuerdo de seguridad del 9 de febrero y el Gobierno, con el ministerio en suplencia hasta el 29 de noviembre, no ha presentado medidas nuevas. La semana del 10 de noviembre suma paro de maquinistas, huelga general y paros parciales con la alta velocidad a Andalucía aún cortada."
+ "why": "El acuerdo en Ouigo retira cuatro jornadas de paro del calendario y demuestra que el conflicto de los maquinistas se desactiva con compromisos escritos. En Renfe ocurre lo contrario: el sindicato da por incumplido el acuerdo de seguridad del 9 de febrero y el Gobierno, con el ministerio en suplencia hasta el 29 de noviembre, no ha presentado medidas nuevas. La semana del 10 de noviembre suma paro de maquinistas, huelga general y paros parciales con la alta velocidad a Andalucía aún cortada.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "seguridad"
+ ],
+ "territorios": [
+  "andalucia",
+  "estado"
+ ]
 }

@@ -185,5 +185,15 @@
   }
  ],
  "title": "El mercado de autobuses y autocares se estanca en octubre: 342 unidades, un 0,3 % más",
- "why": "El mercado se mantiene plano, en torno a 3.300–3.400 unidades anuales, pese a la presión de las zonas de bajas emisiones —reforzada por el real decreto aprobado el 3 de noviembre—, las exigencias de flota cero emisiones en los grandes contratos urbanos (Zaragoza prevé 368 autobuses) y la incertidumbre del mapa concesional estatal. Septiembre, con 700 unidades, es el único mes que sostiene el acumulado; marzo, abril y junio cayeron entre un 12 % y un 13 %. Los operadores esperan a las adjudicaciones y a saber si el marco de ayudas al combustible, que expira el 31 de diciembre, se prorroga."
+ "why": "El mercado se mantiene plano, en torno a 3.300–3.400 unidades anuales, pese a la presión de las zonas de bajas emisiones —reforzada por el real decreto aprobado el 3 de noviembre—, las exigencias de flota cero emisiones en los grandes contratos urbanos (Zaragoza prevé 368 autobuses) y la incertidumbre del mapa concesional estatal. Septiembre, con 700 unidades, es el único mes que sostiene el acumulado; marzo, abril y junio cayeron entre un 12 % y un 13 %. Los operadores esperan a las adjudicaciones y a saber si el marco de ayudas al combustible, que expira el 31 de diciembre, se prorroga.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "aragon",
+  "estado"
+ ]
 }

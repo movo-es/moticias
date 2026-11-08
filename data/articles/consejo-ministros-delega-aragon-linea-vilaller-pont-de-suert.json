@@ -186,5 +186,17 @@
   }
  ],
  "title": "El Consejo de Ministros delega en Aragón la gestión de la línea de autobús Vilaller–Pont de Suert",
- "why": "Es un caso pequeño con un principio claro: cuando una línea sirve sobre todo a un territorio, su gestión puede ir donde está la demanda aunque toque otra comunidad. La T02-50 tiene 19 paradas y solo dos en Cataluña, en los extremos. El artículo 4 de la Ley Orgánica 5/1987 permite resolver estas líneas de frontera interior sin esperar a la reordenación del mapa estatal y da al operador una sola administración. La fórmula ya se usó en 2010 para Lanestosa–Bilbao."
+ "why": "Es un caso pequeño con un principio claro: cuando una línea sirve sobre todo a un territorio, su gestión puede ir donde está la demanda aunque toque otra comunidad. La T02-50 tiene 19 paradas y solo dos en Cataluña, en los extremos. El artículo 4 de la Ley Orgánica 5/1987 permite resolver estas líneas de frontera interior sin esperar a la reordenación del mapa estatal y da al operador una sola administración. La fórmula ya se usó en 2010 para Lanestosa–Bilbao.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "aragon",
+  "cataluna",
+  "pais-vasco",
+  "estado"
+ ]
 }

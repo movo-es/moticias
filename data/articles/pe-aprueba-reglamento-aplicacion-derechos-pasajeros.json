@@ -190,5 +190,14 @@
   }
  ],
  "title": "El Parlamento Europeo cierra el reglamento de aplicación de los derechos de los pasajeros",
- "why": "Es la primera reforma que actúa a la vez sobre los cinco reglamentos de derechos de los pasajeros de los cuatro modos. Para el autobús, la novedad es doble: normas de calidad publicadas en las empresas grandes y estaciones, y un organismo de aplicación que puede inspeccionar sin esperar a una queja, también en servicios de menos de 250 kilómetros. Para el aéreo, cierra el vacío de las devoluciones a través de intermediarios. Su aplicación coincide con la del Reglamento (UE) 2026/2202, lo que concentra la adaptación en un único horizonte: el 23 de octubre de 2027."
+ "why": "Es la primera reforma que actúa a la vez sobre los cinco reglamentos de derechos de los pasajeros de los cuatro modos. Para el autobús, la novedad es doble: normas de calidad publicadas en las empresas grandes y estaciones, y un organismo de aplicación que puede inspeccionar sin esperar a una queja, también en servicios de menos de 250 kilómetros. Para el aéreo, cierra el vacío de las devoluciones a través de intermediarios. Su aplicación coincide con la del Reglamento (UE) 2026/2202, lo que concentra la adaptación en un único horizonte: el 23 de octubre de 2027.",
+ "modo": "transversal",
+ "submodo": "transversal",
+ "temas": [
+  "regulacion",
+  "tecnologia"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

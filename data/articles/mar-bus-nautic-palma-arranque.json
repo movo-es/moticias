@@ -218,5 +218,14 @@
   }
  ],
  "title": "Palma estrena el Bus Nàutic: lanzadera marítima para cruceristas desde el 1 de noviembre",
- "why": "Palma pone en marcha un transporte de pasajeros por mar dentro de las aguas del puerto, ligado a la reforma del paseo marítimo y a la gestión de los cruceristas, el asunto más sensible de la política portuaria balear. Lo hace con una autorización demanial de hasta tres años, el máximo del artículo 75.1 de la Ley de Puertos, mientras el segundo concurso de concesión, abierto hasta el 21 de diciembre, intenta lo que el primero no logró. La tarifa para cruceristas supera en un 67 % la de la oferta fallida."
+ "why": "Palma pone en marcha un transporte de pasajeros por mar dentro de las aguas del puerto, ligado a la reforma del paseo marítimo y a la gestión de los cruceristas, el asunto más sensible de la política portuaria balear. Lo hace con una autorización demanial de hasta tres años, el máximo del artículo 75.1 de la Ley de Puertos, mientras el segundo concurso de concesión, abierto hasta el 21 de diciembre, intenta lo que el primero no logró. La tarifa para cruceristas supera en un 67 % la de la oferta fallida.",
+ "modo": "mar",
+ "submodo": "puertos",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "baleares"
+ ]
 }

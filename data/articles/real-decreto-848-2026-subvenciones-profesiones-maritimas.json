@@ -217,5 +217,16 @@
   }
  ],
  "title": "El Gobierno aprueba subvenciones directas para el acceso a las profesiones marítimas",
- "why": "La ayuda a los embarques pasó de 80.000 euros en 2017 y 185.000 en 2019 y 2020 a un millón en 2025, pero aquel millón cubría dos años; el de 2026 cubre uno. Aun así, en la última convocatoria las navieras justificaron 4,6 millones de euros de coste por 677 embarques, casi cinco veces la dotación, y la flota bajo pabellón español está por debajo de 2 millones de GT. Sin plazas de embarco no hay tarjetas profesionales (Real Decreto 269/2022), y sin oficiales españoles no hay relevo en una flota que debe afrontar el ETS y el paquete Fit for 55."
+ "why": "La ayuda a los embarques pasó de 80.000 euros en 2017 y 185.000 en 2019 y 2020 a un millón en 2025, pero aquel millón cubría dos años; el de 2026 cubre uno. Aun así, en la última convocatoria las navieras justificaron 4,6 millones de euros de coste por 677 embarques, casi cinco veces la dotación, y la flota bajo pabellón español está por debajo de 2 millones de GT. Sin plazas de embarco no hay tarjetas profesionales (Real Decreto 269/2022), y sin oficiales españoles no hay relevo en una flota que debe afrontar el ETS y el paquete Fit for 55.",
+ "modo": "mar",
+ "submodo": "maritimo",
+ "temas": [
+  "regulacion",
+  "empresas"
+ ],
+ "territorios": [
+  "canarias",
+  "baleares",
+  "estado"
+ ]
 }

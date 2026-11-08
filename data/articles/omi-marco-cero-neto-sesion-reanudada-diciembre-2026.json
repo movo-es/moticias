@@ -206,5 +206,17 @@
   }
  ],
  "title": "La OMI se juega en diciembre la adopción del Marco de Cero Emisiones Netas",
- "why": "Si la OMI adopta el marco, el transporte marítimo tendrá por primera vez un estándar global de combustibles y un mecanismo económico asociado. Si fracasa, la Unión Europea mantendrá su vía propia (FuelEU Maritime y ETS), con riesgo de doble regulación para las líneas que tocan puertos de terceros países. Para las navieras españolas de pasaje, el resultado condiciona inversiones en flota y combustibles y el coste de los enlaces con Canarias, Baleares, Ceuta y Melilla."
+ "why": "Si la OMI adopta el marco, el transporte marítimo tendrá por primera vez un estándar global de combustibles y un mecanismo económico asociado. Si fracasa, la Unión Europea mantendrá su vía propia (FuelEU Maritime y ETS), con riesgo de doble regulación para las líneas que tocan puertos de terceros países. Para las navieras españolas de pasaje, el resultado condiciona inversiones en flota y combustibles y el coste de los enlaces con Canarias, Baleares, Ceuta y Melilla.",
+ "modo": "mar",
+ "submodo": "maritimo",
+ "temas": [
+  "regulacion",
+  "empresas"
+ ],
+ "territorios": [
+  "ceuta",
+  "baleares",
+  "canarias",
+  "ue"
+ ]
 }

@@ -209,5 +209,13 @@
   }
  ],
  "title": "Bruselas renueva los órganos de gobierno de la red europea de tránsito aéreo para 2027-28",
- "why": "El Consejo de Gestión de la Red aprueba los planes de operaciones con los que se reparte cada verano la capacidad del espacio aéreo europeo y supervisa al Gestor de la Red; la EACCC coordina la respuesta a crisis como la ceniza volcánica de 2010, la COVID-19 o la guerra de Ucrania. En 2026 Europa ha batido récords de tráfico con 13 de 68 centros de control fuera del objetivo de capacidad, y ENAIRE, que preside el consejo, está en el centro de la disputa con Ryanair sobre los retrasos en España."
+ "why": "El Consejo de Gestión de la Red aprueba los planes de operaciones con los que se reparte cada verano la capacidad del espacio aéreo europeo y supervisa al Gestor de la Red; la EACCC coordina la respuesta a crisis como la ceniza volcánica de 2010, la COVID-19 o la guerra de Ucrania. En 2026 Europa ha batido récords de tráfico con 13 de 68 centros de control fuera del objetivo de capacidad, y ENAIRE, que preside el consejo, está en el centro de la disputa con Ryanair sobre los retrasos en España.",
+ "modo": "aire",
+ "submodo": "aeropuertos",
+ "temas": [
+  "regulacion"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

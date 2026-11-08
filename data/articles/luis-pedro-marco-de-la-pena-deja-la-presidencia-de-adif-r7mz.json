@@ -217,5 +217,17 @@
   }
  ],
  "title": "Luis Pedro Marco de la Peña deja la presidencia de Adif un día después de la dimisión de Puente",
- "why": "El administrador de la red se queda sin presidente en el momento en que debe ejecutar la mayor parte del plan de seguridad aprobado el 3 de noviembre, reponer la vía en Urda y pactar con los operadores una explotación con menos trenes. El relevo depende de un Consejo de Ministros en precampaña y de un titular de Transportes en suplencia. Quien llegue será el quinto presidente de la entidad en poco más de cinco años."
+ "why": "El administrador de la red se queda sin presidente en el momento en que debe ejecutar la mayor parte del plan de seguridad aprobado el 3 de noviembre, reponer la vía en Urda y pactar con los operadores una explotación con menos trenes. El relevo depende de un Consejo de Ministros en precampaña y de un titular de Transportes en suplencia. Quien llegue será el quinto presidente de la entidad en poco más de cinco años.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "infraestructuras",
+  "seguridad"
+ ],
+ "territorios": [
+  "castilla-la-mancha",
+  "andalucia",
+  "madrid",
+  "estado"
+ ]
 }

@@ -210,5 +210,17 @@
   }
  ],
  "title": "Iryo y Ouigo denuncian falta de interlocución con Adif y el Ministerio en plena crisis",
- "why": "La liberalización ha llevado la alta velocidad comercial de 32,4 millones de viajeros en 2023 a 40 millones en 2024, con ingresos medios un 20 % por debajo de 2019, pero la gestión de la crisis de seguridad se hace sin los operadores que mueven una parte creciente de esa demanda. La falta de canales formales se tradujo tras Urda en que Renfe dictara por su cuenta una consigna que no alcanzaba a Iryo ni Ouigo, mientras la Ley 38/2015 (artículo 20.2) obliga a Adif a coordinarse con todas las empresas ferroviarias. En paralelo, la CNMC ha exigido rebajas de recargos y la aprobación urgente del convenio 2027-2031 con un Adif AV cuyo coste financiero absorbe el 62 % de los cánones."
+ "why": "La liberalización ha llevado la alta velocidad comercial de 32,4 millones de viajeros en 2023 a 40 millones en 2024, con ingresos medios un 20 % por debajo de 2019, pero la gestión de la crisis de seguridad se hace sin los operadores que mueven una parte creciente de esa demanda. La falta de canales formales se tradujo tras Urda en que Renfe dictara por su cuenta una consigna que no alcanzaba a Iryo ni Ouigo, mientras la Ley 38/2015 (artículo 20.2) obliga a Adif a coordinarse con todas las empresas ferroviarias. En paralelo, la CNMC ha exigido rebajas de recargos y la aprobación urgente del convenio 2027-2031 con un Adif AV cuyo coste financiero absorbe el 62 % de los cánones.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "madrid",
+  "andalucia",
+  "cataluna",
+  "estado"
+ ]
 }

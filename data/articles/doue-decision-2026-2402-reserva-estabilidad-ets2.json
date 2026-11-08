@@ -222,5 +222,14 @@
   }
  ],
  "title": "El DOUE publica el refuerzo de la reserva de estabilidad del ETS2 para carretera",
- "why": "El ETS2 añadirá un coste de carbono al gasóleo y a la gasolina desde 2028. La reserva de estabilidad es el amortiguador automático frente a picos de precio, pero no fija un techo. Según la IRU, más del 90 % de la flota pesada europea sigue siendo diésel, así que el diseño de este colchón condiciona la factura energética de los operadores de autobús y de mercancías. En España, además, la ley que debe fijar las obligaciones de los suministradores no consta aún en el BOE."
+ "why": "El ETS2 añadirá un coste de carbono al gasóleo y a la gasolina desde 2028. La reserva de estabilidad es el amortiguador automático frente a picos de precio, pero no fija un techo. Según la IRU, más del 90 % de la flota pesada europea sigue siendo diésel, así que el diseño de este colchón condiciona la factura energética de los operadores de autobús y de mercancías. En España, además, la ley que debe fijar las obligaciones de los suministradores no consta aún en el BOE.",
+ "modo": "tierra",
+ "submodo": "carretera",
+ "temas": [
+  "regulacion",
+  "empresas"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

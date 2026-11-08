@@ -261,5 +261,1146 @@
    "El encargo guarda la consulta y el id de miembro de Ghost, nunca el correo ni el nombre: el repositorio es público.",
    "Las piezas bajo demanda llevan origen: bajo-demanda y quedan disponibles para siempre (hemeroteca, Ghost, buscador)."
   ]
+ },
+ "taxonomia": {
+  "nota": "Tres ejes independientes por pieza. `modo` (qué se mueve) y `submodo`; `temas` (qué tipo de hecho; el primero es el principal); `territorios` (dónde decide o a quién afecta; uno o varios). `section` y `subsector` se mantienen por compatibilidad con el portal, la hemeroteca y Ghost; los tres ejes son los que alimentan menús, filtros y buscador.",
+  "modos": [
+   {
+    "id": "tierra",
+    "nombre": "Tierra",
+    "submodos": [
+     {
+      "id": "autobus",
+      "nombre": "Autobús",
+      "alias": [
+       "autobús",
+       "autobuses",
+       "bus",
+       "autocar",
+       "autocares",
+       "discrecional",
+       "interurbano",
+       "concesional"
+      ]
+     },
+     {
+      "id": "ferrocarril",
+      "nombre": "Ferrocarril",
+      "alias": [
+       "tren",
+       "trenes",
+       "ferroviario",
+       "ferroviaria",
+       "renfe",
+       "adif",
+       "alta velocidad",
+       "ave",
+       "cercanías",
+       "ouigo",
+       "iryo"
+      ]
+     },
+     {
+      "id": "urbano",
+      "nombre": "Movilidad urbana",
+      "alias": [
+       "metro",
+       "tranvía",
+       "emt",
+       "tmb",
+       "movilidad urbana",
+       "bicicleta",
+       "patinete",
+       "vtc",
+       "taxi",
+       "zona de bajas emisiones",
+       "zbe"
+      ]
+     },
+     {
+      "id": "carretera",
+      "nombre": "Carretera",
+      "alias": [
+       "carreteras",
+       "autovía",
+       "autopista",
+       "peaje",
+       "peajes",
+       "dgt",
+       "tráfico",
+       "camión"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "mar",
+    "nombre": "Mar",
+    "submodos": [
+     {
+      "id": "puertos",
+      "nombre": "Puertos",
+      "alias": [
+       "puerto",
+       "puertos",
+       "autoridad portuaria",
+       "puertos del estado",
+       "terminal",
+       "estiba"
+      ]
+     },
+     {
+      "id": "maritimo",
+      "nombre": "Transporte marítimo",
+      "alias": [
+       "marítimo",
+       "naviera",
+       "naviero",
+       "buque",
+       "ferry",
+       "ferris",
+       "balearia",
+       "armas",
+       "trasmediterránea",
+       "marina mercante",
+       "línea marítima"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "aire",
+    "nombre": "Aire",
+    "submodos": [
+     {
+      "id": "aerolineas",
+      "nombre": "Aerolíneas",
+      "alias": [
+       "aerolínea",
+       "aerolíneas",
+       "compañía aérea",
+       "iberia",
+       "vueling",
+       "ryanair",
+       "wizz",
+       "air europa",
+       "binter",
+       "ruta aérea"
+      ]
+     },
+     {
+      "id": "aeropuertos",
+      "nombre": "Aeropuertos",
+      "alias": [
+       "aeropuerto",
+       "aeropuertos",
+       "aena",
+       "barajas",
+       "el prat",
+       "dora",
+       "tasas aeroportuarias",
+       "enaire",
+       "navegación aérea"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "logistica",
+    "nombre": "Logística",
+    "submodos": [
+     {
+      "id": "logistica-tierra",
+      "nombre": "Mercancías por tierra",
+      "alias": [
+       "mercancías",
+       "mercancias",
+       "carga",
+       "transporte de mercancías",
+       "camiones",
+       "ferrocarril de mercancías",
+       "intermodal",
+       "multimodal",
+       "terminal logística",
+       "paquetería"
+      ]
+     },
+     {
+      "id": "logistica-mar",
+      "nombre": "Mercancías por mar",
+      "alias": [
+       "contenedores",
+       "teu",
+       "portacontenedores",
+       "granel",
+       "zal",
+       "zona de actividades logísticas"
+      ]
+     },
+     {
+      "id": "logistica-aire",
+      "nombre": "Carga aérea",
+      "alias": [
+       "carga aérea",
+       "cargo",
+       "aduanas",
+       "paquetería exprés"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "transversal",
+    "nombre": "Transversal",
+    "submodos": [
+     {
+      "id": "transversal",
+      "nombre": "Todos los modos",
+      "alias": [
+       "intermodal",
+       "movilidad sostenible",
+       "pmst",
+       "plan de movilidad",
+       "ley de movilidad",
+       "sistema de transporte"
+      ]
+     }
+    ]
+   }
+  ],
+  "temas": [
+   {
+    "id": "regulacion",
+    "nombre": "Regulación",
+    "alias": [
+     "ley",
+     "decreto",
+     "real decreto",
+     "reglamento",
+     "orden",
+     "norma",
+     "normativa",
+     "directiva",
+     "boe",
+     "doue",
+     "consulta pública",
+     "transposición",
+     "sanción",
+     "tribunal",
+     "sentencia",
+     "cnmc"
+    ]
+   },
+   {
+    "id": "concesiones",
+    "nombre": "Concesiones y licitaciones",
+    "alias": [
+     "concesión",
+     "concesiones",
+     "licitación",
+     "licitaciones",
+     "adjudicación",
+     "contrato",
+     "contratos",
+     "pliego",
+     "prórroga",
+     "vencidas",
+     "caducadas",
+     "caducado",
+     "expiradas",
+     "extinguidas",
+     "mapa concesional",
+     "obligación de servicio público",
+     "osp",
+     "servicio público",
+     "concurso"
+    ]
+   },
+   {
+    "id": "empresas",
+    "nombre": "Empresas y mercado",
+    "alias": [
+     "opa",
+     "fusión",
+     "compra",
+     "adquisición",
+     "resultados",
+     "beneficio",
+     "facturación",
+     "nueva base",
+     "nueva ruta",
+     "flota",
+     "pedido",
+     "fabricante",
+     "operador",
+     "cuota",
+     "competencia"
+    ]
+   },
+   {
+    "id": "infraestructuras",
+    "nombre": "Infraestructuras y obras",
+    "alias": [
+     "obra",
+     "obras",
+     "estación",
+     "electrificación",
+     "vía",
+     "tramo",
+     "túnel",
+     "puente",
+     "ampliación",
+     "terminal",
+     "inversión",
+     "fondos europeos",
+     "mantenimiento"
+    ]
+   },
+   {
+    "id": "tecnologia",
+    "nombre": "Tecnología y datos",
+    "alias": [
+     "digital",
+     "app",
+     "billete único",
+     "maas",
+     "datos",
+     "sensores",
+     "eléctrico",
+     "hidrógeno",
+     "autónomo",
+     "software",
+     "tarjeta",
+     "pago"
+    ]
+   },
+   {
+    "id": "seguridad",
+    "nombre": "Seguridad e incidentes",
+    "alias": [
+     "accidente",
+     "incidente",
+     "investigación",
+     "ciaf",
+     "ciaiac",
+     "ciaim",
+     "huelga",
+     "paro",
+     "seguridad"
+    ]
+   },
+   {
+    "id": "analisis",
+    "nombre": "Análisis del director",
+    "alias": [
+     "análisis",
+     "opinión",
+     "director"
+    ]
+   }
+  ],
+  "territorios": [
+   {
+    "id": "estado",
+    "nombre": "España (Estado)",
+    "tipo": "ambito",
+    "alias": [
+     "estado",
+     "españa",
+     "gobierno",
+     "ministerio",
+     "ministerio de transportes",
+     "consejo de ministros",
+     "moncloa",
+     "cortes",
+     "congreso",
+     "senado",
+     "nacional",
+     "estatal",
+     "renfe",
+     "adif",
+     "aena",
+     "puertos del estado",
+     "dgt",
+     "cnmc"
+    ]
+   },
+   {
+    "id": "ue",
+    "nombre": "Unión Europea",
+    "tipo": "ambito",
+    "alias": [
+     "ue",
+     "unión europea",
+     "europa",
+     "europeo",
+     "europea",
+     "bruselas",
+     "estrasburgo",
+     "comisión europea",
+     "parlamento europeo",
+     "consejo europeo",
+     "doue",
+     "eurocámara"
+    ]
+   },
+   {
+    "id": "internacional",
+    "nombre": "Internacional",
+    "tipo": "ambito",
+    "alias": [
+     "internacional",
+     "mundial",
+     "londres",
+     "lisboa",
+     "portugal",
+     "francia",
+     "parís",
+     "alemania",
+     "berlín",
+     "dublín",
+     "ámsterdam",
+     "marruecos",
+     "estados unidos",
+     "china"
+    ]
+   },
+   {
+    "id": "andalucia",
+    "nombre": "Andalucía",
+    "tipo": "ccaa",
+    "vecinos": [
+     "extremadura",
+     "castilla-la-mancha",
+     "murcia"
+    ],
+    "alias": [
+     "andalucía",
+     "andaluz",
+     "andaluza",
+     "junta de andalucía",
+     "sevilla",
+     "málaga",
+     "cádiz",
+     "huelva",
+     "córdoba",
+     "jaén",
+     "granada",
+     "almería",
+     "algeciras",
+     "jerez",
+     "marbella",
+     "punta del sebo"
+    ]
+   },
+   {
+    "id": "aragon",
+    "nombre": "Aragón",
+    "tipo": "ccaa",
+    "vecinos": [
+     "cataluna",
+     "comunidad-valenciana",
+     "castilla-la-mancha",
+     "castilla-y-leon",
+     "la-rioja",
+     "navarra"
+    ],
+    "alias": [
+     "aragón",
+     "aragonés",
+     "aragonesa",
+     "zaragoza",
+     "huesca",
+     "teruel",
+     "canfranc",
+     "pont de suert",
+     "vilaller"
+    ]
+   },
+   {
+    "id": "asturias",
+    "nombre": "Asturias",
+    "tipo": "ccaa",
+    "vecinos": [
+     "cantabria",
+     "galicia",
+     "castilla-y-leon"
+    ],
+    "alias": [
+     "asturias",
+     "asturiano",
+     "asturiana",
+     "principado",
+     "oviedo",
+     "gijón",
+     "avilés",
+     "el musel",
+     "pajares"
+    ]
+   },
+   {
+    "id": "baleares",
+    "nombre": "Baleares",
+    "tipo": "ccaa",
+    "vecinos": [
+     "comunidad-valenciana",
+     "cataluna"
+    ],
+    "alias": [
+     "baleares",
+     "balear",
+     "illes balears",
+     "mallorca",
+     "menorca",
+     "ibiza",
+     "eivissa",
+     "formentera",
+     "palma",
+     "palma de mallorca",
+     "apb",
+     "son sant joan"
+    ]
+   },
+   {
+    "id": "canarias",
+    "nombre": "Canarias",
+    "tipo": "ccaa",
+    "vecinos": [],
+    "alias": [
+     "canarias",
+     "canario",
+     "canaria",
+     "tenerife",
+     "gran canaria",
+     "las palmas",
+     "lanzarote",
+     "fuerteventura",
+     "la palma",
+     "la gomera",
+     "el hierro",
+     "santa cruz de tenerife",
+     "binter",
+     "guaguas",
+     "titsa"
+    ]
+   },
+   {
+    "id": "cantabria",
+    "nombre": "Cantabria",
+    "tipo": "ccaa",
+    "vecinos": [
+     "asturias",
+     "pais-vasco",
+     "castilla-y-leon"
+    ],
+    "alias": [
+     "cantabria",
+     "cántabro",
+     "cántabra",
+     "santander",
+     "torrelavega",
+     "castro urdiales",
+     "laredo",
+     "boc"
+    ]
+   },
+   {
+    "id": "castilla-la-mancha",
+    "nombre": "Castilla-La Mancha",
+    "tipo": "ccaa",
+    "vecinos": [
+     "madrid",
+     "castilla-y-leon",
+     "aragon",
+     "comunidad-valenciana",
+     "murcia",
+     "andalucia",
+     "extremadura"
+    ],
+    "alias": [
+     "castilla-la mancha",
+     "castilla la mancha",
+     "manchego",
+     "toledo",
+     "ciudad real",
+     "albacete",
+     "cuenca",
+     "guadalajara",
+     "talavera",
+     "urda",
+     "puertollano"
+    ]
+   },
+   {
+    "id": "castilla-y-leon",
+    "nombre": "Castilla y León",
+    "tipo": "ccaa",
+    "vecinos": [
+     "galicia",
+     "asturias",
+     "cantabria",
+     "pais-vasco",
+     "la-rioja",
+     "aragon",
+     "castilla-la-mancha",
+     "madrid",
+     "extremadura"
+    ],
+    "alias": [
+     "castilla y león",
+     "castellano-leonés",
+     "valladolid",
+     "león",
+     "burgos",
+     "salamanca",
+     "zamora",
+     "palencia",
+     "ávila",
+     "segovia",
+     "soria",
+     "ponferrada",
+     "miranda de ebro"
+    ]
+   },
+   {
+    "id": "cataluna",
+    "nombre": "Cataluña",
+    "tipo": "ccaa",
+    "vecinos": [
+     "aragon",
+     "comunidad-valenciana",
+     "baleares"
+    ],
+    "alias": [
+     "cataluña",
+     "catalunya",
+     "catalán",
+     "catalana",
+     "generalitat",
+     "barcelona",
+     "tarragona",
+     "lleida",
+     "girona",
+     "el prat",
+     "igualada",
+     "rodalies",
+     "fgc",
+     "tmb",
+     "port de barcelona"
+    ]
+   },
+   {
+    "id": "comunidad-valenciana",
+    "nombre": "Comunidad Valenciana",
+    "tipo": "ccaa",
+    "vecinos": [
+     "cataluna",
+     "aragon",
+     "castilla-la-mancha",
+     "murcia",
+     "baleares"
+    ],
+    "alias": [
+     "comunidad valenciana",
+     "comunitat valenciana",
+     "valenciano",
+     "valenciana",
+     "valencia",
+     "valència",
+     "alicante",
+     "alacant",
+     "castellón",
+     "castelló",
+     "sagunto",
+     "elche",
+     "benidorm",
+     "puerto de valencia",
+     "valenciaport",
+     "fgv",
+     "metrovalencia"
+    ]
+   },
+   {
+    "id": "extremadura",
+    "nombre": "Extremadura",
+    "tipo": "ccaa",
+    "vecinos": [
+     "castilla-y-leon",
+     "castilla-la-mancha",
+     "andalucia"
+    ],
+    "alias": [
+     "extremadura",
+     "extremeño",
+     "extremeña",
+     "badajoz",
+     "cáceres",
+     "mérida",
+     "plasencia"
+    ]
+   },
+   {
+    "id": "galicia",
+    "nombre": "Galicia",
+    "tipo": "ccaa",
+    "vecinos": [
+     "asturias",
+     "castilla-y-leon"
+    ],
+    "alias": [
+     "galicia",
+     "gallego",
+     "gallega",
+     "xunta",
+     "a coruña",
+     "la coruña",
+     "coruña",
+     "vigo",
+     "lugo",
+     "ourense",
+     "pontevedra",
+     "santiago de compostela",
+     "ferrol"
+    ]
+   },
+   {
+    "id": "madrid",
+    "nombre": "Comunidad de Madrid",
+    "tipo": "ccaa",
+    "vecinos": [
+     "castilla-y-leon",
+     "castilla-la-mancha"
+    ],
+    "alias": [
+     "comunidad de madrid",
+     "madrileño",
+     "madrileña",
+     "madrid",
+     "barajas",
+     "madrid-barajas",
+     "adolfo suárez",
+     "majadahonda",
+     "alcalá de henares",
+     "getafe",
+     "móstoles",
+     "crtm",
+     "emt madrid",
+     "metro de madrid",
+     "atocha",
+     "chamartín"
+    ]
+   },
+   {
+    "id": "murcia",
+    "nombre": "Región de Murcia",
+    "tipo": "ccaa",
+    "vecinos": [
+     "comunidad-valenciana",
+     "castilla-la-mancha",
+     "andalucia"
+    ],
+    "alias": [
+     "murcia",
+     "región de murcia",
+     "murciano",
+     "murciana",
+     "cartagena",
+     "lorca",
+     "corvera"
+    ]
+   },
+   {
+    "id": "navarra",
+    "nombre": "Navarra",
+    "tipo": "ccaa",
+    "vecinos": [
+     "pais-vasco",
+     "la-rioja",
+     "aragon"
+    ],
+    "alias": [
+     "navarra",
+     "navarro",
+     "nafarroa",
+     "pamplona",
+     "iruña",
+     "tudela"
+    ]
+   },
+   {
+    "id": "pais-vasco",
+    "nombre": "País Vasco",
+    "tipo": "ccaa",
+    "vecinos": [
+     "cantabria",
+     "castilla-y-leon",
+     "la-rioja",
+     "navarra"
+    ],
+    "alias": [
+     "país vasco",
+     "euskadi",
+     "vasco",
+     "vasca",
+     "bilbao",
+     "bilbo",
+     "san sebastián",
+     "donostia",
+     "vitoria",
+     "gasteiz",
+     "bizkaia",
+     "vizcaya",
+     "gipuzkoa",
+     "guipúzcoa",
+     "álava",
+     "araba",
+     "euskotren",
+     "dbus",
+     "bizkaibus",
+     "lurraldebus",
+     "puerto de bilbao",
+     "loiu"
+    ]
+   },
+   {
+    "id": "la-rioja",
+    "nombre": "La Rioja",
+    "tipo": "ccaa",
+    "vecinos": [
+     "pais-vasco",
+     "navarra",
+     "aragon",
+     "castilla-y-leon"
+    ],
+    "alias": [
+     "la rioja",
+     "riojano",
+     "riojana",
+     "logroño",
+     "calahorra"
+    ]
+   },
+   {
+    "id": "ceuta",
+    "nombre": "Ceuta",
+    "tipo": "ccaa",
+    "vecinos": [
+     "andalucia",
+     "melilla"
+    ],
+    "alias": [
+     "ceuta",
+     "ceutí",
+     "puerto de ceuta",
+     "estrecho"
+    ]
+   },
+   {
+    "id": "melilla",
+    "nombre": "Melilla",
+    "tipo": "ccaa",
+    "vecinos": [
+     "andalucia",
+     "ceuta"
+    ],
+    "alias": [
+     "melilla",
+     "melillense"
+    ]
+   }
+  ]
+ },
+ "busqueda": {
+  "nota": "Diccionario común del buscador web (índice estático + JavaScript del tema) y de src/buscador.py: cada grupo son términos equivalentes para la búsqueda. Las palabras se comparan sin tildes ni mayúsculas y con raíz tosca (plurales, derivados).",
+  "sinonimos": [
+   [
+    "caducado",
+    "caducada",
+    "caducadas",
+    "vencido",
+    "vencida",
+    "vencidas",
+    "expirado",
+    "expiradas",
+    "extinguido",
+    "extinguida",
+    "prórroga",
+    "prorrogado",
+    "prorrogadas",
+    "prolongación",
+    "prolongación tácita",
+    "fuera de plazo",
+    "sin renovar"
+   ],
+   [
+    "concesión",
+    "concesiones",
+    "concesional",
+    "contrato de servicio público",
+    "contrato de gestión",
+    "título concesional",
+    "mapa concesional",
+    "osp",
+    "obligación de servicio público",
+    "servicio público"
+   ],
+   [
+    "licitación",
+    "licitaciones",
+    "licitar",
+    "licita",
+    "concurso",
+    "pliego",
+    "pliegos",
+    "contratación",
+    "convocatoria",
+    "procedimiento abierto",
+    "plataforma de contratación"
+   ],
+   [
+    "adjudicación",
+    "adjudica",
+    "adjudicado",
+    "adjudicataria",
+    "adjudicatario",
+    "ganador",
+    "se lleva",
+    "gana el contrato"
+   ],
+   [
+    "autobús",
+    "autobuses",
+    "bus",
+    "buses",
+    "autocar",
+    "autocares",
+    "guagua",
+    "guaguas",
+    "coche de línea",
+    "interurbano",
+    "discrecional"
+   ],
+   [
+    "tren",
+    "trenes",
+    "ferrocarril",
+    "ferroviario",
+    "ferroviaria",
+    "ferroviarios",
+    "vía férrea"
+   ],
+   [
+    "alta velocidad",
+    "ave",
+    "avlo",
+    "ouigo",
+    "iryo",
+    "lav"
+   ],
+   [
+    "cercanías",
+    "rodalies",
+    "regional",
+    "media distancia",
+    "suburbano"
+   ],
+   [
+    "aeropuerto",
+    "aeropuertos",
+    "aeroportuario",
+    "aeroportuaria",
+    "aena",
+    "terminal aérea"
+   ],
+   [
+    "aerolínea",
+    "aerolíneas",
+    "compañía aérea",
+    "línea aérea",
+    "operador aéreo",
+    "low cost",
+    "bajo coste"
+   ],
+   [
+    "puerto",
+    "puertos",
+    "portuario",
+    "portuaria",
+    "autoridad portuaria",
+    "dársena",
+    "muelle"
+   ],
+   [
+    "naviera",
+    "navieras",
+    "naviero",
+    "armador",
+    "buque",
+    "buques",
+    "barco",
+    "ferry",
+    "ferris",
+    "transbordador"
+   ],
+   [
+    "mercancías",
+    "mercancia",
+    "carga",
+    "cargas",
+    "logística",
+    "logístico",
+    "flete",
+    "transporte de mercancías"
+   ],
+   [
+    "a la demanda",
+    "bajo demanda",
+    "transporte a la demanda",
+    "tad",
+    "flexible",
+    "demanda responsiva",
+    "rural"
+   ],
+   [
+    "movilidad al trabajo",
+    "pmst",
+    "plan de movilidad sostenible al trabajo",
+    "plan de movilidad",
+    "plan de transporte al trabajo",
+    "ptt"
+   ],
+   [
+    "zona de bajas emisiones",
+    "zbe",
+    "bajas emisiones",
+    "restricción de tráfico"
+   ],
+   [
+    "tope de precios",
+    "precio máximo",
+    "tarifa máxima",
+    "límite de precio",
+    "precios regulados",
+    "bonificación",
+    "descuento",
+    "gratuidad",
+    "abono"
+   ],
+   [
+    "eléctrico",
+    "eléctricos",
+    "electrificación",
+    "cero emisiones",
+    "descarbonización",
+    "hidrógeno",
+    "batería"
+   ],
+   [
+    "huelga",
+    "paro",
+    "paros",
+    "conflicto laboral",
+    "convenio",
+    "servicios mínimos"
+   ],
+   [
+    "accidente",
+    "siniestro",
+    "descarrilamiento",
+    "colisión",
+    "incidente",
+    "investigación técnica"
+   ],
+   [
+    "ministerio",
+    "ministerio de transportes",
+    "mitma",
+    "mitms",
+    "transportes y movilidad sostenible",
+    "fomento",
+    "óscar puente",
+    "puente"
+   ],
+   [
+    "comunidad autónoma",
+    "autonómico",
+    "autonómica",
+    "consejería",
+    "gobierno regional",
+    "junta",
+    "generalitat",
+    "xunta",
+    "diputación foral"
+   ],
+   [
+    "ayuntamiento",
+    "municipal",
+    "municipio",
+    "consistorio",
+    "alcalde",
+    "alcaldesa",
+    "ciudad"
+   ],
+   [
+    "subvención",
+    "subvenciones",
+    "ayuda",
+    "ayudas",
+    "fondos",
+    "bdns",
+    "next generation",
+    "mrr",
+    "financiación",
+    "compensación",
+    "déficit"
+   ],
+   [
+    "sanción",
+    "multa",
+    "expediente",
+    "infracción",
+    "incumplimiento",
+    "cnmc",
+    "competencia"
+   ],
+   [
+    "consulta pública",
+    "audiencia pública",
+    "información pública",
+    "alegaciones",
+    "trámite de audiencia"
+   ],
+   [
+    "entrada en vigor",
+    "en vigor",
+    "aplicación",
+    "fecha límite",
+    "plazo",
+    "plazos",
+    "vence el plazo"
+   ],
+   [
+    "opa",
+    "oferta pública",
+    "compra",
+    "adquisición",
+    "fusión",
+    "toma de control",
+    "venta"
+   ],
+   [
+    "chófer",
+    "chóferes",
+    "conductor",
+    "conductores",
+    "maquinista",
+    "maquinistas",
+    "tripulación",
+    "piloto",
+    "pilotos",
+    "falta de conductores"
+   ]
+  ],
+  "indice_web": "app/public/buscador/index.json (generado por src/export_search_index.py a partir de data/; servido en https://app.moticias.com/buscador/index.json; lo lee el tema de Ghost)"
  }
 }

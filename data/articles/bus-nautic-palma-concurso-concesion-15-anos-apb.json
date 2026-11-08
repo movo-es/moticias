@@ -218,5 +218,15 @@
   }
  ],
  "title": "La APB convoca el concurso para la concesión del Bus Nàutic de Palma por 15 años",
- "why": "Es el segundo intento de la APB de concesionar un transporte público marítimo dentro del recinto portuario, tras la retirada de la UTE de TUI y el concurso desierto del Bus Nàutic Eivissa en mayo de 2026. El nuevo pliego no alarga el plazo —ya era de quince años— sino que cambia el reparto de riesgos: elimina el volumen mínimo de negocio de 3,5 millones y la cláusula que recortaba la concesión a cinco años por emisiones de NOx, y a cambio casi duplica la tasa de ocupación y exige mayor solvencia. El resultado dirá si el modelo es viable para un operador privado sin subvención y si es replicable en otros puertos con presión de cruceristas. No consta que sea la primera concesión de este tipo en la red de puertos de interés general."
+ "why": "Es el segundo intento de la APB de concesionar un transporte público marítimo dentro del recinto portuario, tras la retirada de la UTE de TUI y el concurso desierto del Bus Nàutic Eivissa en mayo de 2026. El nuevo pliego no alarga el plazo —ya era de quince años— sino que cambia el reparto de riesgos: elimina el volumen mínimo de negocio de 3,5 millones y la cláusula que recortaba la concesión a cinco años por emisiones de NOx, y a cambio casi duplica la tasa de ocupación y exige mayor solvencia. El resultado dirá si el modelo es viable para un operador privado sin subvención y si es replicable en otros puertos con presión de cruceristas. No consta que sea la primera concesión de este tipo en la red de puertos de interés general.",
+ "modo": "mar",
+ "submodo": "puertos",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "baleares",
+  "estado"
+ ]
 }

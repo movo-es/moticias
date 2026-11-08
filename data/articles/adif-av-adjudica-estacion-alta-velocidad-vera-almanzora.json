@@ -215,5 +215,16 @@
   }
  ],
  "title": "Adif AV adjudica por 14 millones la nueva estación de alta velocidad de Vera-Almanzora",
- "why": "La estación de Vera-Almanzora es una de las piezas que faltan para que la línea de alta velocidad Murcia-Almería preste servicio comercial completo y dé acceso al tren al Levante almeriense. La adjudicación, con una baja moderada y un plazo de 18 meses, sitúa la terminación de la obra civil hacia mediados de 2028. El contrato se suma a los tramos de plataforma, montaje de vía y electrificación que Adif AV tiene en marcha entre Lorca y Almería."
+ "why": "La estación de Vera-Almanzora es una de las piezas que faltan para que la línea de alta velocidad Murcia-Almería preste servicio comercial completo y dé acceso al tren al Levante almeriense. La adjudicación, con una baja moderada y un plazo de 18 meses, sitúa la terminación de la obra civil hacia mediados de 2028. El contrato se suma a los tramos de plataforma, montaje de vía y electrificación que Adif AV tiene en marcha entre Lorca y Almería.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "andalucia",
+  "murcia",
+  "estado"
+ ]
 }

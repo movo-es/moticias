@@ -199,5 +199,15 @@
   }
  ],
  "title": "La CNMC consulta la referencia de beneficio razonable para instalaciones ferroviarias",
- "why": "El WACC es la vara con la que la CNMC comprueba, sobre las cuentas de los tres ejercicios anteriores, si los precios de estaciones, terminales y talleres superan el coste más un beneficio razonable, como exige el artículo 101 de la Ley 38/2015. Tras dos subidas consecutivas, la propuesta de 2026 baja las tres referencias entre 0,12 y 0,23 puntos. Afecta a los precios que Renfe Mantenimiento cobra a Ouigo e Iryo por sus talleres, en plena serie de conflictos de acceso resueltos por la CNMC."
+ "why": "El WACC es la vara con la que la CNMC comprueba, sobre las cuentas de los tres ejercicios anteriores, si los precios de estaciones, terminales y talleres superan el coste más un beneficio razonable, como exige el artículo 101 de la Ley 38/2015. Tras dos subidas consecutivas, la propuesta de 2026 baja las tres referencias entre 0,12 y 0,23 puntos. Afecta a los precios que Renfe Mantenimiento cobra a Ouigo e Iryo por sus talleres, en plena serie de conflictos de acceso resueltos por la CNMC.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "regulacion",
+  "empresas"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

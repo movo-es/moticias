@@ -218,5 +218,15 @@
   }
  ],
  "title": "El ferrocarril encadena huelgas: Semaf el 10 y 12, huelga general el 11 y Adif el 17",
- "why": "El conflicto desborda lo salarial y se centra en la seguridad: Semaf reclama el cumplimiento del acuerdo del 9 de febrero —grupos de trabajo paralizados desde abril—, protocolos vinculantes ante alertas meteorológicas, comunicaciones homogéneas, soluciones a las averías y cultura justa; CCOO pide plantillas y un grupo público que reúna Adif y Renfe. La suspensión cautelar de los mínimos de Ouigo por la Audiencia Nacional obliga al Ministerio a motivar mejor las tres resoluciones que debe dictar para el 10, el 12 y el 17. Todo con el corredor sur cerrado, un Ministerio sin titular y elecciones el 29-N."
+ "why": "El conflicto desborda lo salarial y se centra en la seguridad: Semaf reclama el cumplimiento del acuerdo del 9 de febrero —grupos de trabajo paralizados desde abril—, protocolos vinculantes ante alertas meteorológicas, comunicaciones homogéneas, soluciones a las averías y cultura justa; CCOO pide plantillas y un grupo público que reúna Adif y Renfe. La suspensión cautelar de los mínimos de Ouigo por la Audiencia Nacional obliga al Ministerio a motivar mejor las tres resoluciones que debe dictar para el 10, el 12 y el 17. Todo con el corredor sur cerrado, un Ministerio sin titular y elecciones el 29-N.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "seguridad"
+ ],
+ "territorios": [
+  "madrid",
+  "castilla-la-mancha",
+  "estado"
+ ]
 }

@@ -15,7 +15,8 @@ Qué hace con cada pieza de data/articles/<id>.json:
   guía rápida (los cinco bloques), fuentes con fechas, recuadro de trazabilidad y declaración de intereses si procede.
   Si la pieza lleva menciones publicadas, cada una va en una caja «Contenido patrocinado» en medio del cuerpo
   (src/menciones.py: cajas_html + insertar_en_medio; data/productos/; gestor en app.moticias.com/gestor/).
-- Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section>, subsector, tags), autor por defecto,
+- Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
+  territorios `t-<id>` con slug fijo; etiquetas libres que no repitan un eje), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
 - Crea o actualiza el post por slug (busca antes con GET /posts/slug/<slug>/) y guarda el resultado en
@@ -24,6 +25,9 @@ Limitaciones conocidas (se resuelven por OpenSpec): el Markdown se convierte con
 cursiva, enlaces, listas, citas); las fotos /_blob/ requieren subirlas con /images/upload/ (pendiente).
 """
 import argparse, base64, datetime, glob, hashlib, hmac, html, json, os, re, sys, time, urllib.error, urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from taxonomia import Taxonomia, plano  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from menciones import cajas_html, insertar_en_medio  # noqa: E402  (cajas «Contenido patrocinado»; data/productos/README.md)
@@ -194,12 +198,60 @@ def jsonld(a, vertical, url):
     return '<script type="application/ld+json">%s</script>' % json.dumps(d, ensure_ascii=False)
 
 
+_TX = {}
+
+
+def taxonomia(vertical):
+    vid = vertical.get("id", "movilidad")
+    if vid not in _TX:
+        _TX[vid] = Taxonomia(vid)
+    return _TX[vid]
+
+
+def etiquetas_taxonomia(tx):
+    """Las etiquetas públicas de los tres ejes, con slug fijo (el tema de Ghost filtra por slug) y descripción (sale en llms.txt).
+    Modo: m-<submodo> · Tema: tema-<id> · Territorio: t-<id>."""
+    out = []
+    for m in tx.tax["modos"]:
+        for sm in m["submodos"]:
+            out.append({"name": sm["nombre"] if sm["id"] != "transversal" else "Transversal", "slug": "m-" + sm["id"],
+                        "description": "Piezas de MOTICIAS sobre %s (%s): noticias, regulación, contratos y análisis." % (sm["nombre"].lower(), m["nombre"].lower())})
+    for t in tx.tax["temas"]:
+        out.append({"name": t["nombre"], "slug": "tema-" + t["id"], "description": "Piezas de MOTICIAS del tema «%s» en transporte, movilidad y logística." % t["nombre"]})
+    for t in tx.tax["territorios"]:
+        out.append({"name": t["nombre"], "slug": "t-" + t["id"],
+                    "description": "Noticias de transporte, movilidad y logística que se deciden en %s o afectan a %s." % (t["nombre"], t["nombre"])
+                    if t["tipo"] == "ccaa" else "Noticias de transporte, movilidad y logística de ámbito %s." % t["nombre"].lower()})
+    return out
+
+
+def etiquetas_pieza(a, tx):
+    """Etiquetas de un post: sección interna (#…), los tres ejes con slug fijo y las etiquetas libres que no repitan un eje."""
+    tags = [{"name": "#" + a.get("section", "")}] if a.get("section") else []
+    nombres_ejes = set()
+    if a.get("submodo") and a["submodo"] in tx.submodos:
+        sm = tx.submodos[a["submodo"]][1]
+        tags.append({"name": sm["nombre"], "slug": "m-" + sm["id"]}); nombres_ejes.add(plano(sm["nombre"]))
+    for t in a.get("temas") or []:
+        if t in tx.temas:
+            tags.append({"name": tx.temas[t]["nombre"], "slug": "tema-" + t}); nombres_ejes.add(plano(tx.temas[t]["nombre"]))
+    for t in a.get("territorios") or []:
+        if t in tx.territorios:
+            tags.append({"name": tx.territorios[t]["nombre"], "slug": "t-" + t}); nombres_ejes.add(plano(tx.territorios[t]["nombre"]))
+    alias_terr = {plano(al) for t in tx.tax["territorios"] for al in t["alias"]} | {plano(t["nombre"]) for t in tx.tax["territorios"]}
+    for t in a.get("tags") or []:
+        if plano(t) in nombres_ejes or plano(t) in alias_terr or plano(t) == plano(a.get("subsector") or ""):
+            continue  # ya está como eje: evita «Cantabria» dos veces
+        tags.append({"name": t})
+    return tags
+
+
 def build_post(a, vertical, base_url):
     slug = a["id"]
     url = "%s/%s/" % (base_url.rstrip("/"), slug)  # Ghost sirve /<slug>/ (comprobado el 8-11-2026 en www.moticias.com)
-    tags = ["#" + a.get("section", "")] + [t for t in [a.get("subsector")] if t] + list(a.get("tags") or [])
+    tags = etiquetas_pieza(a, taxonomia(vertical))
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
-            "tags": [{"name": t} for t in tags if t], "published_at": a.get("published_at"), "meta_title": a.get("title"),
+            "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"),
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
     im = a.get("image") or {}
     if im.get("src", "").startswith("http"):
@@ -207,6 +259,41 @@ def build_post(a, vertical, base_url):
         post["feature_image_caption"] = "%s · %s" % (im.get("credit", ""), im.get("license", ""))
         post["feature_image_alt"] = im.get("alt")
     return post
+
+
+# ---------- etiquetas de los tres ejes en Ghost ----------
+def asegurar_etiquetas(tx, base_url, token):
+    """Crea en Ghost las etiquetas de modo, tema y territorio con su slug fijo y su descripción; si ya existe una etiqueta
+    con ese nombre pero otro slug (p. ej. «Cantabria» creada como etiqueta libre), le cambia el slug para que el tema filtre
+    por él. Idempotente: se puede ejecutar cada día."""
+    base = admin_base(base_url)
+    creadas, cambiadas, errores = 0, 0, []
+    for et in etiquetas_taxonomia(tx):
+        st, r = api("GET", base + "/ghost/api/admin/tags/slug/%s/" % et["slug"], token)
+        if st == 200:
+            actual = r["tags"][0]
+            if (actual.get("description") or "") != et["description"] or actual.get("name") != et["name"]:
+                api("PUT", base + "/ghost/api/admin/tags/%s/" % actual["id"], token,
+                    {"tags": [{"name": et["name"], "description": et["description"], "updated_at": actual["updated_at"]}]})
+                cambiadas += 1
+            continue
+        st, r = api("GET", base + "/ghost/api/admin/tags/?filter=%s&limit=1" % urllib.request.quote("name:'%s'" % et["name"].replace("'", "\\'")), token)
+        if st == 200 and r.get("tags"):
+            actual = r["tags"][0]
+            st2, r2 = api("PUT", base + "/ghost/api/admin/tags/%s/" % actual["id"], token,
+                          {"tags": [{"slug": et["slug"], "description": et["description"], "updated_at": actual["updated_at"]}]})
+            if st2 < 300:
+                cambiadas += 1
+            else:
+                errores.append((et["slug"], r2))
+            continue
+        st, r = api("POST", base + "/ghost/api/admin/tags/", token, {"tags": [{"name": et["name"], "slug": et["slug"], "description": et["description"]}]})
+        if st < 300:
+            creadas += 1
+        else:
+            errores.append((et["slug"], r))
+        time.sleep(0.2)
+    return {"creadas": creadas, "cambiadas": cambiadas, "errores": errores}
 
 
 # ---------- publicación ----------
@@ -260,8 +347,17 @@ def main():
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--status", default="draft", choices=["draft", "published"])
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--etiquetas", action="store_true", help="crea o corrige en Ghost las etiquetas de modo, tema y territorio (sin piezas)")
     a = ap.parse_args()
     vertical = json.load(open(os.path.join(ROOT, "verticals", a.vertical + ".json"), encoding="utf-8"))
+    if a.etiquetas:
+        base_url = os.environ.get("GHOST_URL", "https://%s" % vertical.get("domain", "")).rstrip("/")
+        if a.dry_run:
+            print(json.dumps(etiquetas_taxonomia(taxonomia(vertical)), ensure_ascii=False, indent=1)); return
+        key = os.environ.get("GHOST_ADMIN_KEY")
+        if not key or ":" not in key:
+            sys.exit("Falta GHOST_ADMIN_KEY (id:secret) en el entorno")
+        print(json.dumps(asegurar_etiquetas(taxonomia(vertical), base_url, ghost_token(key)), ensure_ascii=False)); return
     arts = []
     for p in sorted(glob.glob(os.path.join(ROOT, "data", "articles", "*.json"))):
         art = json.load(open(p, encoding="utf-8"))

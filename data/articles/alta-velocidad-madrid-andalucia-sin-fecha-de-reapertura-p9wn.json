@@ -223,5 +223,17 @@
   }
  ],
  "title": "Alta velocidad Madrid–Andalucía sin fecha de reapertura: Ouigo cancela hasta el 15 de noviembre",
- "why": "Ocho días después del accidente, cada operador trabaja con una fecha distinta y ninguna es oficial. El calendario real lo marcan una decisión judicial, una obra de diez días y un esquema de capacidad reducida que Adif no ha publicado y que deberá repartir entre tres empresas. Mientras tanto vence el tope de precios y se acumulan huelgas en las tres semanas siguientes."
+ "why": "Ocho días después del accidente, cada operador trabaja con una fecha distinta y ninguna es oficial. El calendario real lo marcan una decisión judicial, una obra de diez días y un esquema de capacidad reducida que Adif no ha publicado y que deberá repartir entre tres empresas. Mientras tanto vence el tope de precios y se acumulan huelgas en las tres semanas siguientes.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "infraestructuras",
+  "seguridad"
+ ],
+ "territorios": [
+  "andalucia",
+  "castilla-la-mancha",
+  "madrid",
+  "estado"
+ ]
 }

@@ -130,5 +130,15 @@
   "gobernanza",
   "liberalización"
  ],
- "title": "Después de Urda: quién manda en la vía"
+ "title": "Después de Urda: quién manda en la vía",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "analisis",
+  "regulacion",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "castilla-la-mancha"
+ ]
 }

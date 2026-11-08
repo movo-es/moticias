@@ -181,5 +181,16 @@
   }
  ],
  "title": "Confebús pide neutralidad y seguridad jurídica en el decreto del Punto de Acceso Nacional",
- "why": "El decreto decidirá en qué condiciones se reutilizan los datos de oferta, y el desarrollo paralelo del artículo 92 de la Ley 9/2025, con la CNMC como supervisora, hasta dónde llegan las plataformas en la venta de billetes de autobús. El PAN concentra 148 conjuntos de datos de autobús, 27 ferroviarios, 3 marítimos y 1 aéreo, con cobertura del 95,34 % de la población, y entre septiembre y octubre incorporó los servicios del Gobierno de Aragón, de AISA en la Comunidad de Madrid y de Montferri. Ambos desarrollos tienen de plazo hasta el 5 de diciembre de 2026."
+ "why": "El decreto decidirá en qué condiciones se reutilizan los datos de oferta, y el desarrollo paralelo del artículo 92 de la Ley 9/2025, con la CNMC como supervisora, hasta dónde llegan las plataformas en la venta de billetes de autobús. El PAN concentra 148 conjuntos de datos de autobús, 27 ferroviarios, 3 marítimos y 1 aéreo, con cobertura del 95,34 % de la población, y entre septiembre y octubre incorporó los servicios del Gobierno de Aragón, de AISA en la Comunidad de Madrid y de Montferri. Ambos desarrollos tienen de plazo hasta el 5 de diciembre de 2026.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "tecnologia"
+ ],
+ "territorios": [
+  "madrid",
+  "aragon",
+  "estado"
+ ]
 }

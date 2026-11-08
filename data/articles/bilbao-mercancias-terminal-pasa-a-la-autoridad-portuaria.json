@@ -126,5 +126,14 @@
   }
  ],
  "title": "La terminal de Bilbao Mercancías pasará al patrimonio de la Autoridad Portuaria",
- "why": "Pone bajo gestión portuaria la terminal ferroviaria de mercancías de Bilbao y su zona intermodal. El Gobierno lo justifica en la integración de puerto y ferrocarril y en la eficiencia y competitividad del puerto y de su tejido logístico."
+ "why": "Pone bajo gestión portuaria la terminal ferroviaria de mercancías de Bilbao y su zona intermodal. El Gobierno lo justifica en la integración de puerto y ferrocarril y en la eficiencia y competitividad del puerto y de su tejido logístico.",
+ "modo": "logistica",
+ "submodo": "logistica-tierra",
+ "temas": [
+  "infraestructuras"
+ ],
+ "territorios": [
+  "pais-vasco",
+  "estado"
+ ]
 }

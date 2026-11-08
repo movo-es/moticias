@@ -134,5 +134,13 @@
   }
  ],
  "title": "La UE cobra desde el 1 de noviembre 2 euros por artículo a las importaciones del comercio electrónico",
- "why": "Encarece de forma estructural el envío directo de paquetes de bajo valor desde fuera de la UE y premia el almacén dentro de la Unión. España compite con Polonia o Hungría por atraer esos almacenes, según la patronal UNO."
+ "why": "Encarece de forma estructural el envío directo de paquetes de bajo valor desde fuera de la UE y premia el almacén dentro de la Unión. España compite con Polonia o Hungría por atraer esos almacenes, según la patronal UNO.",
+ "modo": "logistica",
+ "submodo": "logistica-aire",
+ "temas": [
+  "empresas"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

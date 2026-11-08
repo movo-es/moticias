@@ -203,5 +203,14 @@
   }
  ],
  "title": "Bruselas abre consulta sobre el ómnibus de simplificación del transporte por carretera",
- "why": "El paquete puede cambiar reglas cotidianas del sector: controles en carretera más selectivos y remotos, documentos digitales, actualización del software del tacógrafo sin inmovilizar el vehículo, descargas de datos menos frecuentes y formación de conductores más flexible. Para las autoridades, la reforma del Reglamento 1370/2007 sustituiría el informe anual de compensaciones por una sola comunicación al adjudicar, y solo por encima de 1 millón de euros, con un coste de transparencia que la Comisión no evalúa. El objetivo del 35 % de reducción de cargas para pymes es el general de la Brújula para la Competitividad, no una cifra de esta iniciativa."
+ "why": "El paquete puede cambiar reglas cotidianas del sector: controles en carretera más selectivos y remotos, documentos digitales, actualización del software del tacógrafo sin inmovilizar el vehículo, descargas de datos menos frecuentes y formación de conductores más flexible. Para las autoridades, la reforma del Reglamento 1370/2007 sustituiría el informe anual de compensaciones por una sola comunicación al adjudicar, y solo por encima de 1 millón de euros, con un coste de transparencia que la Comisión no evalúa. El objetivo del 35 % de reducción de cargas para pymes es el general de la Brújula para la Competitividad, no una cifra de esta iniciativa.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

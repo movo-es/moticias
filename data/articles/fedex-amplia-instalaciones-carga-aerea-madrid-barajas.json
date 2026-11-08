@@ -131,5 +131,15 @@
   }
  ],
  "title": "FedEx amplía a más de 4.500 m² su superficie en la zona de carga de Barajas",
- "why": "Refuerza la capacidad exprés de Barajas en un momento en que su carga cae: el aeropuerto movió 62.417 toneladas en septiembre, un 13,1 % menos. La apuesta por el despacho aduanero propio llega cuando la UE endurece el coste de las importaciones de bajo valor."
+ "why": "Refuerza la capacidad exprés de Barajas en un momento en que su carga cae: el aeropuerto movió 62.417 toneladas en septiembre, un 13,1 % menos. La apuesta por el despacho aduanero propio llega cuando la UE endurece el coste de las importaciones de bajo valor.",
+ "modo": "logistica",
+ "submodo": "logistica-aire",
+ "temas": [
+  "empresas"
+ ],
+ "territorios": [
+  "madrid",
+  "canarias",
+  "internacional"
+ ]
 }

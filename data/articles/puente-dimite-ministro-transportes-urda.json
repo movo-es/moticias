@@ -226,5 +226,17 @@
   }
  ],
  "title": "Óscar Puente dimite como ministro de Transportes tras el accidente de Urda",
- "why": "Deja sin titular político, a 26 días de las elecciones, el departamento que gestiona la crisis de la alta velocidad, el plan de seguridad aprobado ese mismo día, el nuevo mapa concesional estatal de autobuses y el traspaso de Rodalies. La interinidad frena decisiones regulatorias, licitaciones y nombramientos en Adif y Renfe. Los socios de coalición ya habían calificado de inasumible un segundo accidente en menos de un año, y la presión sindical continúa con huelgas convocadas para el 10, 11, 12 y 17 de noviembre."
+ "why": "Deja sin titular político, a 26 días de las elecciones, el departamento que gestiona la crisis de la alta velocidad, el plan de seguridad aprobado ese mismo día, el nuevo mapa concesional estatal de autobuses y el traspaso de Rodalies. La interinidad frena decisiones regulatorias, licitaciones y nombramientos en Adif y Renfe. Los socios de coalición ya habían calificado de inasumible un segundo accidente en menos de un año, y la presión sindical continúa con huelgas convocadas para el 10, 11, 12 y 17 de noviembre.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "infraestructuras",
+  "seguridad"
+ ],
+ "territorios": [
+  "castilla-la-mancha",
+  "castilla-y-leon",
+  "madrid",
+  "estado"
+ ]
 }

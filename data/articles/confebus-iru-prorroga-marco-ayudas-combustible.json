@@ -218,5 +218,14 @@
   }
  ],
  "title": "Confebús e IRU piden prorrogar a 2027 el marco europeo de ayudas al combustible",
- "why": "Sin prórroga del marco, las ayudas españolas al carburante del transporte por carretera decaen el 1 de enero de 2027: el Real Decreto-ley 25/2026 condiciona su plena efectividad a la cobertura europea y el propio marco solo admite concesiones hasta el 31 de diciembre de 2026. El gasóleo ha pasado de unos 1,44 a unos 1,93 euros por litro y la Comisión y la AIE prevén presión al menos hasta 2027. El combustible supone en torno al 30 % de los costes y los camiones y autobuses de la UE consumen unos 6.800 millones de litros al mes. La petición llega con las Cortes disueltas y elecciones el 29-N."
+ "why": "Sin prórroga del marco, las ayudas españolas al carburante del transporte por carretera decaen el 1 de enero de 2027: el Real Decreto-ley 25/2026 condiciona su plena efectividad a la cobertura europea y el propio marco solo admite concesiones hasta el 31 de diciembre de 2026. El gasóleo ha pasado de unos 1,44 a unos 1,93 euros por litro y la Comisión y la AIE prevén presión al menos hasta 2027. El combustible supone en torno al 30 % de los costes y los camiones y autobuses de la UE consumen unos 6.800 millones de litros al mes. La petición llega con las Cortes disueltas y elecciones el 29-N.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

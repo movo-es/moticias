@@ -196,5 +196,16 @@
   }
  ],
  "title": "Transportes aprueba el trazado definitivo de dos tramos de la A-32 en Jaén: 20,5 kilómetros y 278,8 millones",
- "why": "La A-32 es el eje de gran capacidad entre Andalucía oriental y el Levante por Albacete y lleva detenida en Villanueva del Arzobispo desde diciembre de 2022. La aprobación del trazado desbloquea 20,5 kilómetros, pero llega casi tres años después de la fecha que el Ministerio anunció para licitar las obras y deja pendientes los proyectos de construcción, un nuevo trámite de expropiaciones y la autorización del Consejo de Ministros."
+ "why": "La A-32 es el eje de gran capacidad entre Andalucía oriental y el Levante por Albacete y lleva detenida en Villanueva del Arzobispo desde diciembre de 2022. La aprobación del trazado desbloquea 20,5 kilómetros, pero llega casi tres años después de la fecha que el Ministerio anunció para licitar las obras y deja pendientes los proyectos de construcción, un nuevo trámite de expropiaciones y la autorización del Consejo de Ministros.",
+ "modo": "tierra",
+ "submodo": "carretera",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "andalucia",
+  "castilla-la-mancha",
+  "estado"
+ ]
 }

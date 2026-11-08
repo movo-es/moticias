@@ -218,5 +218,16 @@
   }
  ],
  "title": "Adif licita por 51,5 millones la electrificación del tramo Teruel–Sagunto",
- "why": "La catenaria Teruel–Sagunto es una de las dos piezas que faltan para electrificar a 25 kV la línea de 311 kilómetros; la otra, las subestaciones de La Puebla de Valverde y Segorbe, sigue en fase de proyecto básico y sin licitar. Mientras no lleguen ambas y no entre en servicio la electrificación Zaragoza–Teruel, el eje seguirá con tracción diésel. La línea, del corredor Cantábrico–Mediterráneo, lleva cerrada desde febrero de 2025 por las obras de adaptación de gálibos y acumula tres fechas de reapertura incumplidas."
+ "why": "La catenaria Teruel–Sagunto es una de las dos piezas que faltan para electrificar a 25 kV la línea de 311 kilómetros; la otra, las subestaciones de La Puebla de Valverde y Segorbe, sigue en fase de proyecto básico y sin licitar. Mientras no lleguen ambas y no entre en servicio la electrificación Zaragoza–Teruel, el eje seguirá con tracción diésel. La línea, del corredor Cantábrico–Mediterráneo, lleva cerrada desde febrero de 2025 por las obras de adaptación de gálibos y acumula tres fechas de reapertura incumplidas.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "aragon",
+  "comunidad-valenciana",
+  "estado"
+ ]
 }

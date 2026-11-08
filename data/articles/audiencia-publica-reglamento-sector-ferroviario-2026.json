@@ -187,5 +187,15 @@
   }
  ],
  "title": "Audiencia pública del nuevo Reglamento del Sector Ferroviario hasta el 12 de noviembre",
- "why": "Es la primera renovación completa del reglamento en más de veinte años. Tres novedades tocan el mercado: el estudio de viabilidad con umbral de rentabilidad socioeconómica, que puede frenar obras sin demanda; la obligación de servicio sustitutivo por carretera ante cortes de más de un día en servicios de obligación de servicio público, que crea demanda estable para el autobús sin decir quién la paga; y el tope del 20 % para modificar esos servicios, que fija reglas para los contratos que sustituirán al de Renfe a partir de 2027. Las cuantías de responsabilidad civil siguen siendo las de 2004. No es una norma de seguridad operacional, regulada por el Real Decreto 929/2020."
+ "why": "Es la primera renovación completa del reglamento en más de veinte años. Tres novedades tocan el mercado: el estudio de viabilidad con umbral de rentabilidad socioeconómica, que puede frenar obras sin demanda; la obligación de servicio sustitutivo por carretera ante cortes de más de un día en servicios de obligación de servicio público, que crea demanda estable para el autobús sin decir quién la paga; y el tope del 20 % para modificar esos servicios, que fija reglas para los contratos que sustituirán al de Renfe a partir de 2027. Las cuantías de responsabilidad civil siguen siendo las de 2004. No es una norma de seguridad operacional, regulada por el Real Decreto 929/2020.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

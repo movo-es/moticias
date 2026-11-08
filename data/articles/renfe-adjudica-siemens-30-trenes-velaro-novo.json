@@ -190,5 +190,15 @@
   }
  ],
  "title": "Renfe adjudica a Siemens 30 trenes de alta velocidad Velaro Novo por 1.218 millones",
- "why": "Es un pedido de hasta 1.777 millones que fija la flota con la que competirá con Iryo y Ouigo a partir de 2030. El concurso se ponderó un 70 % en criterios técnicos, con el peso desplazado en abril hacia los evaluables por fórmula, y Renfe justificó la elección en plazo, velocidad y solvencia tras los retrasos sufridos con Talgo. Que un fabricante con participación pública quede fuera reabre el debate entre política industrial y contratación."
+ "why": "Es un pedido de hasta 1.777 millones que fija la flota con la que competirá con Iryo y Ouigo a partir de 2030. El concurso se ponderó un 70 % en criterios técnicos, con el peso desplazado en abril hacia los evaluables por fórmula, y Renfe justificó la elección en plazo, velocidad y solvencia tras los retrasos sufridos con Talgo. Que un fabricante con participación pública quede fuera reabre el debate entre política industrial y contratación.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "empresas"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

@@ -190,5 +190,15 @@
   }
  ],
  "title": "La Junta adjudica a seis pymes las rutas a la demanda de Andalucía Rural Conectada en Jaén",
- "why": "El contrato muestra el límite del modelo andaluz de transporte rural a la demanda: lotes de 3.500 a 27.600 euros, adjudicación solo por precio y un techo de 0,74 euros por kilómetro. Donde hay un transportista local, el servicio sale, casi siempre al precio máximo; donde no lo hay, la ruta queda desierta. Ocho de catorce rutas, más de la mitad del valor estimado, no recibieron ninguna oferta, en paralelo a la falta de licitadores en el transporte escolar de Jaén que denunció Fedintra en septiembre de 2026."
+ "why": "El contrato muestra el límite del modelo andaluz de transporte rural a la demanda: lotes de 3.500 a 27.600 euros, adjudicación solo por precio y un techo de 0,74 euros por kilómetro. Donde hay un transportista local, el servicio sale, casi siempre al precio máximo; donde no lo hay, la ruta queda desierta. Ocho de catorce rutas, más de la mitad del valor estimado, no recibieron ninguna oferta, en paralelo a la falta de licitadores en el transporte escolar de Jaén que denunció Fedintra en septiembre de 2026.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "andalucia",
+  "ue"
+ ]
 }

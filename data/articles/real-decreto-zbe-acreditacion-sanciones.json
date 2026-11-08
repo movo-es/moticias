@@ -234,5 +234,14 @@
   }
  ],
  "title": "El Gobierno endurece el decreto de ZBE: acreditar restricciones y sancionar sin moratorias",
- "why": "Tres años después del plazo legal de 2023, en febrero de 2026 solo 56 ciudades tenían ZBE plenamente activa y 89 estaban en tramitación. El decreto convierte la obligación en comprobable: sin restricciones por etiqueta, control activo y multas efectivas no habrá acreditación, y la acreditación se vincula a la financiación estatal del transporte urbano. Para el autobús, la aplicación real de las restricciones acelera la renovación de flotas y refuerza su papel de alternativa al coche en los accesos a las ciudades; para los discrecionales sin etiqueta, cierra los periodos de gracia."
+ "why": "Tres años después del plazo legal de 2023, en febrero de 2026 solo 56 ciudades tenían ZBE plenamente activa y 89 estaban en tramitación. El decreto convierte la obligación en comprobable: sin restricciones por etiqueta, control activo y multas efectivas no habrá acreditación, y la acreditación se vincula a la financiación estatal del transporte urbano. Para el autobús, la aplicación real de las restricciones acelera la renovación de flotas y refuerza su papel de alternativa al coche en los accesos a las ciudades; para los discrecionales sin etiqueta, cierra los periodos de gracia.",
+ "modo": "tierra",
+ "submodo": "urbano",
+ "temas": [
+  "regulacion"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

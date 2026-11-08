@@ -231,5 +231,14 @@
   }
  ],
  "title": "Cantabria declara servicio público sus 27 líneas de autobús vencidas y paga 3,69 millones de déficit",
- "why": "El decreto pone por escrito lo que en muchas redes autonómicas es práctica: contratos vencidos que se siguen prestando y un déficit que la Administración cubre a año vencido, sin licitación. El Reglamento (CE) 1370/2007 limita a dos años las medidas de emergencia ante el riesgo de interrupción del servicio; Cantabria encadena tres decretos desde 2023. Mientras el mapa nuevo no se apruebe, el dinero público se reparte entre los operadores actuales."
+ "why": "El decreto pone por escrito lo que en muchas redes autonómicas es práctica: contratos vencidos que se siguen prestando y un déficit que la Administración cubre a año vencido, sin licitación. El Reglamento (CE) 1370/2007 limita a dos años las medidas de emergencia ante el riesgo de interrupción del servicio; Cantabria encadena tres decretos desde 2023. Mientras el mapa nuevo no se apruebe, el dinero público se reparte entre los operadores actuales.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "cantabria"
+ ]
 }

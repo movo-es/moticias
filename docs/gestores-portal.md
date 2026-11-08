@@ -65,3 +65,11 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 ## Imágenes
 - Cada pieza tiene una foto propia, elegida por su sujeto concreto (operador, buque, estación o puerto citados), con crédito y licencia CC.
 - El portal nunca repite una foto en la misma página: si coincide, usa una ilustración de sección.
+
+## Navegación por facetas y buscador (cambio `navegacion-y-buscador`, 9-11-2026)
+- Tres ejes por pieza, independientes: Modo (qué se mueve), Tema (qué tipo de hecho) y Territorio (comunidad o ámbito). `section` y `subsector` siguen para el portal y la hemeroteca.
+- Una sola barra: menús Modo · Tema · Territorio (con mapa de comunidades), botón «Análisis del director» y lupa. Cada menú cuenta las piezas con los demás filtros puestos.
+- Buscador con sinónimos del sector, topónimo como filtro, comunidades vecinas cuando no hay nada y corrección de erratas; sin resultado, «Pídela» (pieza bajo demanda).
+- Módulo fijo «Análisis del director» en la portada (columna derecha en escritorio; segunda tarjeta en móvil). En móvil, sin textos de presentación ni resúmenes: foto, modo · territorio y titular.
+- Etiquetas de Ghost con slug fijo: `m-<submodo>`, `tema-<id>`, `t-<territorio>` (`ghost_publish.py --etiquetas` las crea; cada una con descripción, que sale en `llms.txt`).
+- Maqueta navegable: `openspec/changes/navegacion-y-buscador/maqueta/`.

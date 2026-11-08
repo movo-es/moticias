@@ -190,5 +190,17 @@
   }
  ],
  "title": "Wizz Air abre su base de Madrid y entra en el Madrid–Andalucía con un tope voluntario de 99,99 euros",
- "why": "Es la primera vez que Wizz Air tiene aviones y tripulaciones basados en España y la primera que opera rutas domésticas. Llega cuando la alta velocidad con Andalucía está cortada y cuando el plan de seguridad prevé menos trenes en Madrid–Sevilla hasta comienzos de 2027. El texto del real decreto-ley publicado el 4 de noviembre confirma que los precios máximos anunciados por las aerolíneas son compromisos comerciales, no obligaciones legales."
+ "why": "Es la primera vez que Wizz Air tiene aviones y tripulaciones basados en España y la primera que opera rutas domésticas. Llega cuando la alta velocidad con Andalucía está cortada y cuando el plan de seguridad prevé menos trenes en Madrid–Sevilla hasta comienzos de 2027. El texto del real decreto-ley publicado el 4 de noviembre confirma que los precios máximos anunciados por las aerolíneas son compromisos comerciales, no obligaciones legales.",
+ "modo": "aire",
+ "submodo": "aerolineas",
+ "temas": [
+  "regulacion",
+  "empresas"
+ ],
+ "territorios": [
+  "madrid",
+  "andalucia",
+  "castilla-la-mancha",
+  "ue"
+ ]
 }

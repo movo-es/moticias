@@ -222,5 +222,17 @@
   }
  ],
  "title": "Plan de seguridad en alta velocidad: doble validación en el CRC y menos trenes a Sevilla",
- "why": "Es la primera respuesta normativa del Gobierno a dos accidentes con 115 muertos en nueve meses y cambia reglas operativas de fondo: la doble validación humana en situación degradada altera la práctica de los CRC, y la modificación del artículo 38 del RDSOIF afecta a los descansos de los reguladores. El recorte de frecuencias en la línea más antigua de la red, hasta comienzos de 2027, reduce la oferta de Renfe, Iryo y Ouigo en pleno conflicto laboral y con los cánones de Adif en discusión."
+ "why": "Es la primera respuesta normativa del Gobierno a dos accidentes con 115 muertos en nueve meses y cambia reglas operativas de fondo: la doble validación humana en situación degradada altera la práctica de los CRC, y la modificación del artículo 38 del RDSOIF afecta a los descansos de los reguladores. El recorte de frecuencias en la línea más antigua de la red, hasta comienzos de 2027, reduce la oferta de Renfe, Iryo y Ouigo en pleno conflicto laboral y con los cánones de Adif en discusión.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "seguridad",
+  "regulacion"
+ ],
+ "territorios": [
+  "andalucia",
+  "madrid",
+  "castilla-la-mancha",
+  "estado"
+ ]
 }

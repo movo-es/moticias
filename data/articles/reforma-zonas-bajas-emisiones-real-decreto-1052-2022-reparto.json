@@ -101,5 +101,13 @@
   }
  ],
  "title": "El Gobierno obliga a los ayuntamientos a demostrar que sus zonas de bajas emisiones restringen de verdad",
- "why": "Hasta ahora muchas zonas eran una delimitación sin sanción efectiva. Al exigir acreditación y régimen sancionador sin transitorios, la renovación de flotas de reparto deja de depender del calendario político de cada ayuntamiento."
+ "why": "Hasta ahora muchas zonas eran una delimitación sin sanción efectiva. Al exigir acreditación y régimen sancionador sin transitorios, la renovación de flotas de reparto deja de depender del calendario político de cada ayuntamiento.",
+ "modo": "logistica",
+ "submodo": "logistica-tierra",
+ "temas": [
+  "regulacion"
+ ],
+ "territorios": [
+  "estado"
+ ]
 }

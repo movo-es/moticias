@@ -168,5 +168,14 @@
   }
  ],
  "title": "Transportes fija cómo deben fichar los alumnos del CAP en los centros de formación",
- "why": "La resolución cierra el vacío abierto el 18 de septiembre, cuando el Real Decreto 487/2026 derogó el control biométrico obligatorio por los criterios de la Agencia Española de Protección de Datos sin que hubiera especificación técnica sustitutiva. El modelo pasa de identificar al alumno por la huella a hacer trazable su asistencia: fichaje por periodo, envío diario y dos años de conservación. Para los operadores, cuyos conductores necesitan 35 horas de formación continua cada cinco años, la validez del CAP depende de que ese control resista una inspección."
+ "why": "La resolución cierra el vacío abierto el 18 de septiembre, cuando el Real Decreto 487/2026 derogó el control biométrico obligatorio por los criterios de la Agencia Española de Protección de Datos sin que hubiera especificación técnica sustitutiva. El modelo pasa de identificar al alumno por la huella a hacer trazable su asistencia: fichaje por periodo, envío diario y dos años de conservación. Para los operadores, cuyos conductores necesitan 35 horas de formación continua cada cinco años, la validez del CAP depende de que ese control resista una inspección.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "regulacion",
+  "tecnologia"
+ ],
+ "territorios": [
+  "estado"
+ ]
 }

@@ -202,5 +202,15 @@
   }
  ],
  "title": "Adif eleva a 84,9 millones el contrato de servicios auxiliares en estaciones de viajeros",
- "why": "El contrato fija quién atiende presencialmente las estaciones de Adif —apertura y cierre, información, control de accesos— durante tres años. Su valor se ha multiplicado por 2,65 desde 2021 y la licitación llega con el reloj en contra: los contratos vigentes vencen, ya prorrogados, el 28 de febrero de 2027. La corrección solo alinea el BOE con el DOUE y no altera plazos ni pliegos."
+ "why": "El contrato fija quién atiende presencialmente las estaciones de Adif —apertura y cierre, información, control de accesos— durante tres años. Su valor se ha multiplicado por 2,65 desde 2021 y la licitación llega con el reloj en contra: los contratos vigentes vencen, ya prorrogados, el 28 de febrero de 2027. La corrección solo alinea el BOE con el DOUE y no altera plazos ni pliegos.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

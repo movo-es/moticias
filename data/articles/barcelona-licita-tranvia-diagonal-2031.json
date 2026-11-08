@@ -186,5 +186,15 @@
   }
  ],
  "title": "Barcelona licita la conexión del tranvía por la Diagonal: 2,8 km y servicio en 2031",
- "why": "Es la mayor obra de transporte urbano en superficie en marcha en España y cierra el debate abierto desde 2004 sobre unir las dos redes. La ATM prevé que la demanda del corredor pase de 31 a 62 millones de viajes anuales y el Ayuntamiento cifra en 12.500 los desplazamientos diarios en coche que desaparecen; la cifra de 75 millones no consta en los documentos oficiales. El tronco central queda para tranvía y bicicleta, con dos carriles por sentido en los laterales, y bus y tranvía compartirán plataforma entre la Via Augusta y el paseo de Gràcia."
+ "why": "Es la mayor obra de transporte urbano en superficie en marcha en España y cierra el debate abierto desde 2004 sobre unir las dos redes. La ATM prevé que la demanda del corredor pase de 31 a 62 millones de viajes anuales y el Ayuntamiento cifra en 12.500 los desplazamientos diarios en coche que desaparecen; la cifra de 75 millones no consta en los documentos oficiales. El tronco central queda para tranvía y bicicleta, con dos carriles por sentido en los laterales, y bus y tranvía compartirán plataforma entre la Via Augusta y el paseo de Gràcia.",
+ "modo": "tierra",
+ "submodo": "urbano",
+ "temas": [
+  "infraestructuras",
+  "concesiones"
+ ],
+ "territorios": [
+  "cataluna",
+  "estado"
+ ]
 }

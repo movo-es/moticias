@@ -119,5 +119,15 @@
   }
  ],
  "title": "Málaga licitará por 48,4 millones un nuevo muelle para graneles agroalimentarios",
- "why": "Málaga apuesta por el granel agroalimentario como segmento de crecimiento y reordena la dársena pesquera para ganar línea de atraque y superficie."
+ "why": "Málaga apuesta por el granel agroalimentario como segmento de crecimiento y reordena la dársena pesquera para ganar línea de atraque y superficie.",
+ "modo": "logistica",
+ "submodo": "logistica-mar",
+ "temas": [
+  "infraestructuras",
+  "concesiones"
+ ],
+ "territorios": [
+  "andalucia",
+  "estado"
+ ]
 }

@@ -218,5 +218,15 @@
   }
  ],
  "title": "Primer contrato-programa Generalitat–Renfe: 1.407,6 millones para Rodalies hasta 2028",
- "why": "Cierra quince años de prestación sin contrato y formaliza por primera vez penalizaciones económicas a Renfe en Cataluña, con una compensación media cercana a 470 millones anuales. Es el paso previo a la empresa mixta Rodalies de Catalunya, participada al 50,1 % por Renfe y al 49,9 % por la Generalitat, que prevé obtener los certificados de seguridad en 2027. El modelo puede servir de referencia para otras comunidades que reclaman control sobre sus Cercanías."
+ "why": "Cierra quince años de prestación sin contrato y formaliza por primera vez penalizaciones económicas a Renfe en Cataluña, con una compensación media cercana a 470 millones anuales. Es el paso previo a la empresa mixta Rodalies de Catalunya, participada al 50,1 % por Renfe y al 49,9 % por la Generalitat, que prevé obtener los certificados de seguridad en 2027. El modelo puede servir de referencia para otras comunidades que reclaman control sobre sus Cercanías.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "seguridad"
+ ],
+ "territorios": [
+  "cataluna",
+  "estado"
+ ]
 }

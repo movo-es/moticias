@@ -170,5 +170,13 @@
   }
  ],
  "title": "Ryanair gana un 15 % menos, recorta su objetivo de tráfico y señala a España",
- "why": "Es el primer gran operador europeo que cuantifica el golpe del queroseno tras el conflicto de Oriente Próximo y lo traslada a la red: crecimiento del 3 %, invierno plano y desvío de aviones desde la «España regional», Austria y Alemania hacia Albania, Italia, Marruecos, Eslovaquia y Suecia. Para España, con el DORA III ya aprobado y una senda del +0,33 % anual, el pulso con Aena deja de ser tarifario y se traslada a los incentivos comerciales de los aeropuertos regionales y a las comunidades autónomas. El sobrecoste de 2.000 millones de 2028 anticipa tarifas más altas en el verano de 2027."
+ "why": "Es el primer gran operador europeo que cuantifica el golpe del queroseno tras el conflicto de Oriente Próximo y lo traslada a la red: crecimiento del 3 %, invierno plano y desvío de aviones desde la «España regional», Austria y Alemania hacia Albania, Italia, Marruecos, Eslovaquia y Suecia. Para España, con el DORA III ya aprobado y una senda del +0,33 % anual, el pulso con Aena deja de ser tarifario y se traslada a los incentivos comerciales de los aeropuertos regionales y a las comunidades autónomas. El sobrecoste de 2.000 millones de 2028 anticipa tarifas más altas en el verano de 2027.",
+ "modo": "aire",
+ "submodo": "aerolineas",
+ "temas": [
+  "empresas"
+ ],
+ "territorios": [
+  "estado"
+ ]
 }

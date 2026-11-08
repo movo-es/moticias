@@ -376,5 +376,16 @@
    "text": "Fecha límite para aprobar el DORA 2032-2036 (art. 26.3 Ley 18/2014)."
   }
  ],
- "title": "El DORA III deja la tarifa de Aena casi plana hasta 2031 y multiplica por cuatro la inversión regulada"
+ "title": "El DORA III deja la tarifa de Aena casi plana hasta 2031 y multiplica por cuatro la inversión regulada",
+ "modo": "aire",
+ "submodo": "aeropuertos",
+ "temas": [
+  "regulacion",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "cataluna",
+  "madrid",
+  "estado"
+ ]
 }

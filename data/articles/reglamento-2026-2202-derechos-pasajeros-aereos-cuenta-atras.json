@@ -194,5 +194,13 @@
   }
  ],
  "title": "Reglamento (UE) 2026/2202: un año para adaptar la reforma de los derechos aéreos",
- "why": "La norma zanja parte del debate sobre el equipaje: el accesorio personal es gratuito, el bulto de mano depende de la capacidad de cabina y la tarifa que lo incluye debe mostrarse por defecto. Choca con el artículo 97 de la Ley de Navegación Aérea, que obliga a llevar gratis en cabina el equipaje de mano. Introduce obligaciones nuevas: informar de los derechos en las 96 horas siguientes a la conclusión del viaje, pagar o motivar en 30 días y una lista no exhaustiva de circunstancias extraordinarias, con la carga de la prueba en la compañía. El plazo de nueve meses para reclamar recorta el margen actual en España."
+ "why": "La norma zanja parte del debate sobre el equipaje: el accesorio personal es gratuito, el bulto de mano depende de la capacidad de cabina y la tarifa que lo incluye debe mostrarse por defecto. Choca con el artículo 97 de la Ley de Navegación Aérea, que obliga a llevar gratis en cabina el equipaje de mano. Introduce obligaciones nuevas: informar de los derechos en las 96 horas siguientes a la conclusión del viaje, pagar o motivar en 30 días y una lista no exhaustiva de circunstancias extraordinarias, con la carga de la prueba en la compañía. El plazo de nueve meses para reclamar recorta el margen actual en España.",
+ "modo": "aire",
+ "submodo": "aerolineas",
+ "temas": [
+  "regulacion"
+ ],
+ "territorios": [
+  "ue"
+ ]
 }

@@ -199,5 +199,15 @@
   }
  ],
  "title": "Dbus licita por 2,8 millones vehículos con conductor para sus líneas a la demanda",
- "why": "El contrato muestra cómo un operador público cubre líneas de baja demanda sin ampliar plantilla: compra capacidad externa con conductor y conserva planificación e imagen. Multiplica la escala del precedente de 2024 (TB7, 191.132,50 euros sin IVA, una sola oferta) y lo lleva al DOUE. Los seis años superan el límite general de cinco de la Ley 9/2017 (art. 29.4), lo que exige justificar la amortización de los vehículos. La exigencia de autorización de autobús excluye a taxis y VTC, que la LOTT limita al transporte interurbano en estos casos (art. 91.1)."
+ "why": "El contrato muestra cómo un operador público cubre líneas de baja demanda sin ampliar plantilla: compra capacidad externa con conductor y conserva planificación e imagen. Multiplica la escala del precedente de 2024 (TB7, 191.132,50 euros sin IVA, una sola oferta) y lo lleva al DOUE. Los seis años superan el límite general de cinco de la Ley 9/2017 (art. 29.4), lo que exige justificar la amortización de los vehículos. La exigencia de autorización de autobús excluye a taxis y VTC, que la LOTT limita al transporte interurbano en estos casos (art. 91.1).",
+ "modo": "tierra",
+ "submodo": "urbano",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "pais-vasco",
+  "ue"
+ ]
 }

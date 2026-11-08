@@ -218,5 +218,16 @@
   }
  ],
  "title": "Baleària pone a flote en Gijón el primer fast ferry 100 % eléctrico para Tarifa–Tánger",
- "why": "Es el primer intento de eliminar la combustión en la navegación ordinaria de una línea del Estrecho, y forma parte del compromiso con el que Baleària ganó la concesión de Tarifa por 15 años. Tarifa movió 1,52 millones de pasajeros en 2025, uno de cada cuatro de los puertos de la APBA. El proyecto ensaya recargas de 40 minutos en cada escala y da a Armon una referencia en propulsión eléctrica de alta velocidad. Su encaje con FuelEU Maritime y el ETS marítimo depende del arqueo del buque, que no consta."
+ "why": "Es el primer intento de eliminar la combustión en la navegación ordinaria de una línea del Estrecho, y forma parte del compromiso con el que Baleària ganó la concesión de Tarifa por 15 años. Tarifa movió 1,52 millones de pasajeros en 2025, uno de cada cuatro de los puertos de la APBA. El proyecto ensaya recargas de 40 minutos en cada escala y da a Armon una referencia en propulsión eléctrica de alta velocidad. Su encaje con FuelEU Maritime y el ETS marítimo depende del arqueo del buque, que no consta.",
+ "modo": "mar",
+ "submodo": "maritimo",
+ "temas": [
+  "infraestructuras",
+  "tecnologia"
+ ],
+ "territorios": [
+  "asturias",
+  "ceuta",
+  "estado"
+ ]
 }

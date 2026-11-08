@@ -187,5 +187,15 @@
   }
  ],
  "title": "Renfe relanza en 14 lotes su concurso de autobuses para planes alternativos",
- "why": "El importe adjudicado por Renfe en autobuses de sustitución pasó de unos 7 millones de euros en 2020 a más de 94 millones en 2025, y 26 de los 77 expedientes de 2024 y 2025 quedaron desiertos en primera convocatoria. El nuevo mapa de lotes decide quién se queda ese mercado: la solvencia baja a 250 autobuses en los lotes programados y a 40, 60 u 80 en los territoriales, con medios de terceros admitidos, lo que abre la puerta a operadores medianos. Los ocho años de los lotes programados se ajustan al máximo de los acuerdos marco del Real Decreto-ley 3/2020 (art. 92.3); el pliego anulado preveía quince."
+ "why": "El importe adjudicado por Renfe en autobuses de sustitución pasó de unos 7 millones de euros en 2020 a más de 94 millones en 2025, y 26 de los 77 expedientes de 2024 y 2025 quedaron desiertos en primera convocatoria. El nuevo mapa de lotes decide quién se queda ese mercado: la solvencia baja a 250 autobuses en los lotes programados y a 40, 60 u 80 en los territoriales, con medios de terceros admitidos, lo que abre la puerta a operadores medianos. Los ocho años de los lotes programados se ajustan al máximo de los acuerdos marco del Real Decreto-ley 3/2020 (art. 92.3); el pliego anulado preveía quince.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "madrid",
+  "estado"
+ ]
 }

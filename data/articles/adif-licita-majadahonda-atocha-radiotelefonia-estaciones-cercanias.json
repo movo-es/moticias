@@ -218,5 +218,17 @@
   }
  ],
  "title": "Adif saca a concurso la remodelación de Majadahonda y la radiotelefonía de Atocha Cercanías",
- "why": "Son contratos pequeños frente a la alta velocidad, pero describen dónde se juega la calidad diaria de las Cercanías: accesibilidad, pasos a distinto nivel, comunicaciones y aparcamientos disuasorios. La radiotelefonía de Atocha toca el nudo por el que pasan ocho líneas de Cercanías; el anuncio no precisa la tecnología. En Majadahonda el pliego vuelve sobre un aparcamiento de 1.060 plazas construido en 1991."
+ "why": "Son contratos pequeños frente a la alta velocidad, pero describen dónde se juega la calidad diaria de las Cercanías: accesibilidad, pasos a distinto nivel, comunicaciones y aparcamientos disuasorios. La radiotelefonía de Atocha toca el nudo por el que pasan ocho líneas de Cercanías; el anuncio no precisa la tecnología. En Majadahonda el pliego vuelve sobre un aparcamiento de 1.060 plazas construido en 1991.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "madrid",
+  "pais-vasco",
+  "cataluna",
+  "estado"
+ ]
 }

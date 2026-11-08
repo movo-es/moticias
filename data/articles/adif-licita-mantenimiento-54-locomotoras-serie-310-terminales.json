@@ -101,5 +101,14 @@
   }
  ],
  "title": "Adif licita el mantenimiento de las 54 locomotoras de maniobras de sus terminales de mercancías",
- "why": "Las locomotoras de maniobra de Adif hacen la última milla en sus terminales de mercancías: su disponibilidad condiciona cargas, descargas y formación de trenes en toda la red de terminales logísticas."
+ "why": "Las locomotoras de maniobra de Adif hacen la última milla en sus terminales de mercancías: su disponibilidad condiciona cargas, descargas y formación de trenes en toda la red de terminales logísticas.",
+ "modo": "logistica",
+ "submodo": "logistica-tierra",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "estado"
+ ]
 }

@@ -214,5 +214,17 @@
   }
  ],
  "title": "Renfe anula en horas su consigna de 40 km/h ante fallos del LZB en plena investigación",
- "why": "El episodio muestra la fractura de gobernanza del sistema: un operador difunde y retira en horas una regla de operación degradada que solo obligaba a sus trenes, al margen del gestor de infraestructura y del regulador, cuando el RCF reserva las consignas al administrador y la AESF certifica los sistemas de gestión de la seguridad. La nota de la AITAT confirma que ambos trenes compartían cantón bajo BSL y que, según los indicios, las barreras de mitigación no llegaron a actuar. Con 170 incidencias del LZB en el corredor en 2026 según el ministro, las reglas de operación degradada pasan a ser el núcleo regulatorio de la crisis."
+ "why": "El episodio muestra la fractura de gobernanza del sistema: un operador difunde y retira en horas una regla de operación degradada que solo obligaba a sus trenes, al margen del gestor de infraestructura y del regulador, cuando el RCF reserva las consignas al administrador y la AESF certifica los sistemas de gestión de la seguridad. La nota de la AITAT confirma que ambos trenes compartían cantón bajo BSL y que, según los indicios, las barreras de mitigación no llegaron a actuar. Con 170 incidencias del LZB en el corredor en 2026 según el ministro, las reglas de operación degradada pasan a ser el núcleo regulatorio de la crisis.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "seguridad",
+  "empresas"
+ ],
+ "territorios": [
+  "castilla-la-mancha",
+  "andalucia",
+  "madrid",
+  "estado"
+ ]
 }

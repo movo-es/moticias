@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOTICIAS · maqueta de navegación y buscador</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1f33;--ink-2:#27354a;--muted:#68717f;--paper:#f3f2ee;--paper-2:#fff;--paper-3:#e9e7e0;--line:#d8d5cc;--line-strong:#b9b5a9;--accent:#e9b532;--accent-ink:#7a5a05;
+--tierra:#4f6f3a;--mar:#1c5d74;--aire:#2e63a8;--logistica:#6b5a2e;--transversal:#4a4f5a;--analisis:#7a1f2b;
+--fd:"Newsreader","Iowan Old Style",Georgia,serif;--fb:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--wrap:1240px;--gut:clamp(14px,3vw,36px);--r:4px;
+--sh:0 1px 2px rgba(15,31,51,.06),0 8px 24px rgba(15,31,51,.08)}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink-2);font:16px/1.5 var(--fb);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img{display:block;max-width:100%}button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+h1,h2,h3{font-family:var(--fd);color:var(--ink);margin:0;font-weight:500;letter-spacing:-.005em;text-wrap:balance}
+.wrap{width:min(var(--wrap),100% - 2*var(--gut));margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* topbar + masthead */
+.topbar{background:var(--ink);color:#cfd6e0;font-size:12.5px}.topbar .wrap{display:flex;justify-content:space-between;min-height:34px;align-items:center;gap:12px}
+.mast .wrap{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:18px 0 12px;border-bottom:1px solid var(--line-strong)}
+.wordmark{font-family:var(--fd);font-weight:600;font-size:clamp(30px,5vw,44px);letter-spacing:-.02em;color:var(--ink);line-height:1}.wordmark .m{color:var(--accent-ink);background:var(--accent);padding:0 .12em;border-radius:3px;margin-right:.04em}
+.tagline{font-size:13px;color:var(--muted);margin-top:6px}.side{font-size:13px;color:var(--muted);max-width:34ch;text-align:right}
+/* barra de navegación por facetas */
+.navbar{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1px solid var(--line)}
+.navbar .wrap{display:flex;align-items:center;gap:8px;min-height:50px}
+.facets{display:flex;gap:6px;align-items:center;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;padding:6px 0}.facets::-webkit-scrollbar{display:none}
+.fbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);border-radius:999px;padding:7px 12px;font-size:13.5px;font-weight:500;background:var(--paper-2);white-space:nowrap}
+.fbtn[aria-expanded=true],.fbtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}.fbtn .car{font-size:10px;opacity:.7}
+.fbtn.fdir{border-color:var(--analisis);color:var(--analisis)}.fbtn.fdir.on{background:var(--analisis);color:#fff;border-color:var(--analisis)}
+.sbox{flex:0 1 320px;min-width:0;display:flex;align-items:center;gap:8px;border:1px solid var(--line-strong);border-radius:999px;background:var(--paper-2);padding:0 10px 0 12px;height:36px}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}.sbox input{border:0;outline:0;background:none;flex:1;min-width:0;font:inherit;font-size:14px}.sbox svg{flex:0 0 auto;color:var(--muted)}
+.sbox .x{display:none;color:var(--muted);font-size:18px;line-height:1}.sbox.has .x{display:block}
+/* menús desplegables */
+.menu{position:absolute;left:0;right:0;top:100%;background:var(--paper-2);border-bottom:1px solid var(--line-strong);box-shadow:var(--sh);display:none;z-index:31}
+.menu.open{display:block}.navbar .menu .wrap{display:block;padding:18px 0 20px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px 26px}
+.col h4{margin:0 0 6px;font:600 11px/1 var(--fb);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.col h4 i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.opt{display:flex;justify-content:space-between;align-items:center;width:100%;padding:6px 6px;border-radius:var(--r);font-size:14.5px;text-align:left}
+.opt:hover{background:var(--paper)}.opt.sel{background:var(--ink);color:#fff}.opt .n{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}.opt.sel .n{color:#cfd6e0}.opt.cero{opacity:.38}
+.opt.all{font-weight:600}
+.menu .foot{margin-top:14px;font-size:12.5px;color:var(--muted)}
+/* territorio: mapa + lista */
+.terr{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:20px 36px;align-items:start}
+.terr svg{width:100%;height:auto}.terr path{fill:#e2dfd5;stroke:#fff;stroke-width:1.2;cursor:pointer;transition:fill .15s}.terr path.c1{fill:#d6c58a}.terr path.c2{fill:#e9b532}.terr path.c3{fill:#c4891c}.terr path.sel{fill:var(--ink)!important}.terr path:hover{fill:#f0d47a}
+.terr .lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 18px}
+.amb{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.amb .opt{width:auto;border:1px solid var(--line);padding:5px 10px;gap:8px}
+/* filtros activos */
+.active{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 0 2px;font-size:13px}
+.active:empty{display:none}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--paper-3);border-radius:999px;padding:4px 10px;font-weight:500}.chip b{font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.chip button{color:var(--muted);font-size:15px;line-height:1}.chip button:hover{color:var(--ink)}
+.clear{color:var(--muted);text-decoration:underline;text-underline-offset:3px;margin-left:4px}
+/* lectura de la búsqueda */
+.lect{margin:14px 0 4px;padding:12px 14px;background:var(--paper-2);border-left:3px solid var(--accent);border-radius:var(--r);font-size:14px;display:none}.lect.show{display:block}
+.lect b{color:var(--ink)}.lect .sug button{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px;font-weight:500}
+.lect .pide{margin-top:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.lect .pide a{background:var(--ink);color:#fff;padding:7px 12px;border-radius:var(--r);font-size:13px;font-weight:500}
+/* portada */
+.home{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px 36px;padding:20px 0 40px}
+.lead{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.lead img{aspect-ratio:4/3;object-fit:cover;width:100%;border-radius:var(--r)}
+.kick{font:600 11.5px/1.2 var(--fb);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:center}.kick i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--muted)}
+.lead h2{font-size:clamp(24px,2.6vw,34px);line-height:1.12;margin:8px 0 10px}.lead p{color:var(--ink-2);font-size:15.5px}
+.meta{font-size:12.5px;color:var(--muted);margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}.meta .pat{color:var(--accent-ink);border:1px solid var(--accent);border-radius:3px;padding:0 5px;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px 20px;padding-top:22px}
+.card img{aspect-ratio:16/10;object-fit:cover;width:100%;border-radius:var(--r);background:var(--paper-3)}
+.card h3{font-size:18px;line-height:1.22;margin:8px 0 6px}.card p{font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .kick{margin-top:10px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:6px;margin-top:8px}.sechead h2{font-size:20px}.sechead span{font-size:13px;color:var(--muted)}
+/* análisis del director */
+.dir{background:var(--ink);color:#e6e9ef;border-radius:6px;padding:18px 18px 16px;position:sticky;top:64px}
+.dir .et{display:flex;align-items:center;gap:10px;font:600 11px/1 var(--fb);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}.dir .et i{width:26px;height:3px;background:var(--accent);display:inline-block}
+.dir h2{color:#fff;font-size:22px;line-height:1.2;margin:12px 0 8px}.dir .firma{font-size:12.5px;color:#aeb7c6;display:flex;justify-content:space-between;gap:8px}
+.dir .otros{margin:14px 0 0;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.14);list-style:none}.dir .otros li{padding:6px 0;font-family:var(--fd);font-size:16px;line-height:1.25;color:#e6e9ef}.dir .otros li small{display:block;font:12px var(--fb);color:#aeb7c6;margin-top:2px}
+.dir .todos{display:inline-block;margin-top:12px;font-size:13px;color:var(--accent);font-weight:500}
+.dir.m{display:none}
+.empty{padding:40px 0;color:var(--muted);text-align:center}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:12.5px;color:var(--muted)}
+/* hoja inferior (móvil) */
+.sheet{position:fixed;inset:auto 0 0 0;max-height:82vh;overflow:auto;background:var(--paper-2);border-radius:14px 14px 0 0;box-shadow:0 -8px 40px rgba(15,31,51,.25);transform:translateY(105%);transition:transform .22s;z-index:50;padding:10px 16px 28px}
+.sheet.open{transform:none}.sheet .handle{width:40px;height:4px;border-radius:2px;background:var(--line-strong);margin:0 auto 10px}
+.sheet .tabs{display:flex;gap:6px;margin-bottom:12px}.sheet .tabs button{flex:1;padding:8px;border-radius:var(--r);border:1px solid var(--line);font-size:13.5px;font-weight:500}.sheet .tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.scrim{position:fixed;inset:0;background:rgba(15,31,51,.35);display:none;z-index:40}.scrim.show{display:block}
+@media (max-width:760px){
+  .topbar,.tagline,.side,.menu{display:none!important}
+  .mast .wrap{padding:12px 0 8px;align-items:center}.wordmark{font-size:30px}
+  .navbar .wrap{gap:6px}.fbtn{padding:7px 10px;font-size:13px}.fbtn.fdir .l{display:none}.fbtn.fdir .c::after{content:"Análisis"}
+  .terr{grid-template-columns:1fr;gap:10px}.terr svg{max-height:210px;margin:0 auto}.terr .lista{grid-template-columns:1fr 1fr;gap:0 10px}.terr .opt{font-size:13.5px;padding:5px 4px}
+  .sbox{flex:0 0 38px;padding:0;justify-content:center}.sbox input,.sbox .x{display:none}.sbox.exp{flex:1 1 auto;padding:0 10px 0 12px;justify-content:flex-start}.sbox.exp input{display:block}.sbox.exp.has .x{display:block}
+  .navbar.exp .facets{display:none}
+  .home{display:block;padding:10px 0 30px}
+  .lead{grid-template-columns:1fr;gap:10px;padding-bottom:16px}.lead p{display:none}.lead h2{font-size:26px}
+  .card p{display:none}.card h3{font-size:17.5px}.grid{grid-template-columns:1fr 1fr;gap:16px 12px;padding-top:16px}.grid .card:nth-child(-n+2) h3{font-size:18px}
+  .dir{position:static;margin:16px 0 0;padding:14px 14px 12px}.dir.m{display:block}.dir.d{display:none}.dir h2{font-size:19px}.dir .otros li{font-size:15px}
+}
+@media (min-width:761px){.sheet,.scrim{display:none!important}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><span id="hoy"></span><span>Edición de la mañana · laborables · <a href="#" style="text-decoration:underline">Suscribirse</a></span></div></div>
+
+<header class="mast"><div class="wrap">
+  <div><div class="wordmark"><a href="#" id="home"><span class="m">M</span>OTICIAS</a></div><div class="tagline">con M de Movilidad y Transportes · tierra, mar, aire y logística</div></div>
+  <div class="side"><b>Información profesional para quien decide.</b><br>Regulación, contratos, redes y datos. Fuentes primarias, fechadas y enlazadas.</div>
+</div></header>
+
+<nav class="navbar" id="navbar" aria-label="Filtros"><div class="wrap">
+  <div class="facets" id="facets">
+    <button class="fbtn" data-m="modo" aria-expanded="false">Modo <span class="car">▼</span></button>
+    <button class="fbtn" data-m="tema" aria-expanded="false">Tema <span class="car">▼</span></button>
+    <button class="fbtn" data-m="terr" aria-expanded="false">Territorio <span class="car">▼</span></button>
+    <button class="fbtn fdir" id="btn-dir"><span class="l">Análisis del director</span><span class="c"></span></button>
+  </div>
+  <form class="sbox" id="sbox" role="search" onsubmit="return false">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Busca como hables: «concesiones caducadas en Asturias»" autocomplete="off" aria-label="Buscar">
+    <button type="button" class="x" id="qx" aria-label="Borrar">×</button>
+  </form>
+  <div class="menu" id="menu"><div class="wrap" id="menu-body"></div></div>
+</div></nav>
+
+<main class="wrap">
+  <div class="active" id="active"></div>
+  <div class="lect" id="lect"></div>
+  <div id="view"></div>
+</main>
+<footer><div class="wrap">Maqueta de navegación y buscador · cambio OpenSpec <code>navegacion-y-buscador</code> · datos reales de las piezas publicadas · las fotos son las de cada pieza, reducidas.</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="handle"></div><div class="tabs" id="tabs"></div><div id="sheet-body"></div></div>
+
+<script src="spain.js"></script>
+<script>
+/* ============ utilidades de texto (espejo de src/taxonomia.py y src/buscador.py) ============ */
+const VACIAS=new Set("a al algo ante bajo cabe como con contra cual cuales cuando de del desde donde dos e el ella ellas ellos en entre era es esa esas ese eso esos esta estan este esto estos fue ha hace hasta hay la las le les lo los mas me mi mis muy nos o otra otras otro otros para pero por que quien se segun ser si sin sobre son su sus tambien te tiene tras tu un una unas uno unos y ya noticias noticia acerca ultimas ultimo ultima informacion busco buscar quiero saber".split(" "));
+const plano=s=>(s||"").toString().normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9ñ\/ ]+/g," ").trim();
+function raiz(w){for(const suf of["ciones","siones","iones","es","s"]){if(w.endsWith(suf)&&w.length-suf.length>=4){w=w.slice(0,-suf.length)+(["ciones","siones","iones"].includes(suf)?"ion":"");break}}return w.length>7?w.slice(0,7):w}
+const terminos=q=>[...new Set(plano(q).split(" ").filter(w=>w&&!VACIAS.has(w)&&(w.length>=3||/^\d+$/.test(w))))];
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;let p=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let c=[i];for(let j=1;j<=b.length;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[b.length]}
+
+/* ============ estado ============ */
+const S={sel:{modo:null,sub:null,tema:null,terr:null},q:"",menu:null,sheet:null};
+let IX=null,SIN=new Map(),GRUPOS=[],TERR={},TEMAS={},SUBS={},MODOS={},VOC=[];
+const MAPA_CCAA={"Albacete":"castilla-la-mancha","Alacant/Alicante":"comunidad-valenciana","Almería":"andalucia","Ávila":"castilla-y-leon","Badajoz":"extremadura","Illes Balears":"baleares","Barcelona":"cataluna","Burgos":"castilla-y-leon","Cáceres":"extremadura","Cádiz":"andalucia","Castelló/Castellón":"comunidad-valenciana","Ciudad Real":"castilla-la-mancha","Córdoba":"andalucia","A Coruña":"galicia","Cuenca":"castilla-la-mancha","Girona":"cataluna","Granada":"andalucia","Guadalajara":"castilla-la-mancha","Gipuzkoa":"pais-vasco","Huelva":"andalucia","Huesca":"aragon","Jaén":"andalucia","León":"castilla-y-leon","Lleida":"cataluna","La Rioja":"la-rioja","Lugo":"galicia","Madrid":"madrid","Málaga":"andalucia","Murcia":"murcia","Navarra":"navarra","Ourense":"galicia","Asturias":"asturias","Palencia":"castilla-y-leon","Pontevedra":"galicia","Salamanca":"castilla-y-leon","Cantabria":"cantabria","Segovia":"castilla-y-leon","Sevilla":"andalucia","Soria":"castilla-y-leon","Tarragona":"cataluna","Teruel":"aragon","Toledo":"castilla-la-mancha","València/Valencia":"comunidad-valenciana","Valladolid":"castilla-y-leon","Bizkaia":"pais-vasco","Zamora":"castilla-y-leon","Zaragoza":"aragon","Ceuta":"ceuta","Melilla":"melilla","Araba/Álava":"pais-vasco","Las Palmas":"canarias","Santa Cruz de Tenerife":"canarias"};
+
+fetch("search-index.json").then(r=>r.json()).then(d=>{
+  IX=d;GRUPOS=d.sinonimos.map(g=>g.map(plano));
+  GRUPOS.forEach((g,i)=>g.forEach(w=>{for(const k of[w,raiz(w)]){if(!SIN.has(k))SIN.set(k,new Set());SIN.get(k).add(i)}}));
+  d.taxonomia.territorios.forEach(t=>TERR[t.id]=t);d.taxonomia.temas.forEach(t=>TEMAS[t.id]=t);
+  d.taxonomia.modos.forEach(m=>{MODOS[m.id]=m;m.submodos.forEach(s=>SUBS[s.id]={...s,modo:m.id})});
+  d.piezas.forEach(p=>{p.h=plano([p.k,p.t,p.s].join(" "));p.ht=new Set(p.h.split(" ").map(raiz));p.xt=new Set(p.x.split(" ").map(raiz))});
+  const v=new Set();d.piezas.forEach(p=>p.h.split(" ").forEach(w=>{if(w.length>=4&&!/^\d+$/.test(w))v.add(w)}));VOC=[...v];
+  document.getElementById("hoy").textContent=new Date().toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  leerURL();render();
+});
+
+/* ============ búsqueda ============ */
+const expandir=t=>{const out=new Set([t]);for(const k of[t,raiz(t)])(SIN.get(k)||[]).forEach(i=>GRUPOS[i].forEach(w=>out.add(w)));return[...out]};
+function hits(p,terms,enCab){const toks=enCab?p.ht:p.xt,txt=" "+(enCab?p.h:p.x)+" ";return terms.filter(t=>toks.has(raiz(t))||expandir(t).some(e=>e.includes(" ")?txt.includes(" "+e+" "):(e.length>=4&&toks.has(raiz(e)))))}
+function territorioEn(q){const t=" "+plano(q)+" ";let best=null,bn=0;for(const id in TERR){if(TERR[id].tipo!=="ccaa")continue;for(const a of TERR[id].alias){const pa=plano(a),n=t.split(" "+pa+" ").length-1;if(n){const w=n*(pa.includes(" ")?2:1);if(w>bn){bn=w;best=id}}}}return best}
+function corregir(terms){const corr={};return[terms.map(t=>{if(IX.piezas.some(p=>hits(p,[t],false).length))return t;let b=null,bd=3;for(const w of VOC){const d=lev(t,w);if(d<bd){bd=d;b=w}}if(b&&bd<=(t.length>=6?2:1)){corr[t]=b;return b}return t}),corr]}
+function buscar(q,base){
+  const ctx={terr:null,corr:{},vecinos:[],aviso:null,terms:[]};let terms=terminos(q);
+  const terr=S.sel.terr||territorioEn(q);
+  if(!S.sel.terr&&terr){ctx.terr=terr;const al=new Set(TERR[terr].alias.map(plano));terms=terms.filter(t=>!al.has(t))}
+  if(!terms.length&&!ctx.terr)return{res:base,ctx};
+  [terms,ctx.corr]=corregir(terms);ctx.terms=terms;
+  const punt=(filtro)=>{const r=[];for(const p of base){if(filtro&&!p.tr.includes(filtro))continue;const hc=hits(p,terms,true),hb=hits(p,terms,false).filter(t=>!hc.includes(t));if(terms.length&&!hc.length&&!hb.length)continue;let pts=5*hc.length+2*hb.length+(filtro?4:0);const dias=(Date.now()-new Date(p.d))/864e5;if(dias<=30)pts+=2;r.push({p,pts,cob:terms.length?(hc.length+hb.length)/terms.length:1,hc})}return r.sort((a,b)=>b.pts-a.pts||(a.p.d<b.p.d?1:-1))};
+  let res=punt(ctx.terr);
+  const floja=ctx.terr&&(!res.length||res[0].cob<.99||!res[0].hc.length);
+  if(floja){let vec=[];for(const v of TERR[ctx.terr].vecinos||[]){const rv=punt(v).filter(r=>r.cob>=.99&&r.hc.length);if(rv.length){ctx.vecinos.push(TERR[v].nombre);vec.push(...rv)}}
+    if(vec.length){const ids=new Set(res.map(r=>r.p.id));res=res.concat(vec.filter(r=>!ids.has(r.p.id))).sort((a,b)=>b.pts-a.pts);ctx.aviso=(res.some(r=>r.p.tr.includes(ctx.terr))?"Poco":"Nada")+" de "+TERR[ctx.terr].nombre+"; sí de "+ctx.vecinos.join(", ")+" (vecina"+(ctx.vecinos.length>1?"s":"")+")."}
+    else if(!res.length){ctx.aviso="No hay piezas de "+TERR[ctx.terr].nombre+" ni de sus comunidades vecinas.";res=punt(null)}}
+  return{res:res.map(r=>r.p),ctx};
+}
+
+/* ============ filtros ============ */
+function filtrar(piezas,omit){const s=S.sel;return piezas.filter(p=>(omit==="modo"||(!s.sub||p.sm===s.sub)&&(!s.modo||p.m===s.modo))&&(omit==="tema"||!s.tema||p.te.includes(s.tema))&&(omit==="terr"||!s.terr||p.tr.includes(s.terr)))}
+const cuenta=(piezas,f)=>piezas.reduce((n,p)=>n+(f(p)?1:0),0);
+function set(k,v){if(k==="modo"){S.sel.modo=v;S.sel.sub=null}else if(k==="sub"){S.sel.sub=v;S.sel.modo=v?SUBS[v].modo:null}else S.sel[k]=v;cerrar();render()}
+function cerrar(){S.menu=null;document.getElementById("menu").classList.remove("open");document.querySelectorAll(".fbtn[data-m]").forEach(b=>b.setAttribute("aria-expanded","false"));document.getElementById("sheet").classList.remove("open");document.getElementById("scrim").classList.remove("show")}
+
+/* ============ menús ============ */
+function menuHTML(tipo,base){
+  if(tipo==="modo"){return`<div class="cols">${IX.taxonomia.modos.map(m=>{const nm=cuenta(base,p=>p.m===m.id);return`<div class="col"><h4><i style="background:var(--${m.id})"></i>${m.nombre}</h4>
+    <button class="opt all ${S.sel.modo===m.id&&!S.sel.sub?"sel":""} ${nm?"":"cero"}" onclick="set('modo','${m.id}')"><span>Todo ${m.nombre.toLowerCase()}</span><span class="n">${nm}</span></button>
+    ${m.submodos.length>1?m.submodos.map(s=>{const n=cuenta(base,p=>p.sm===s.id);return`<button class="opt ${S.sel.sub===s.id?"sel":""} ${n?"":"cero"}" onclick="set('sub','${s.id}')"><span>${s.nombre}</span><span class="n">${n}</span></button>`}).join(""):""}</div>`}).join("")}</div>
+    <div class="foot">Qué se mueve. Cada pieza tiene un solo modo; los temas y el territorio se cruzan con él.</div>`}
+  if(tipo==="tema"){return`<div class="cols"><div class="col">${IX.taxonomia.temas.filter(t=>t.id!=="analisis").map(t=>{const n=cuenta(base,p=>p.te.includes(t.id));return`<button class="opt ${S.sel.tema===t.id?"sel":""} ${n?"":"cero"}" onclick="set('tema','${t.id}')"><span>${t.nombre}</span><span class="n">${n}</span></button>`}).join("")}</div></div>
+    <div class="foot">Qué tipo de hecho es. Una pieza puede estar en dos temas (p. ej. Regulación y Concesiones).</div>`}
+  const cc=IX.taxonomia.territorios.filter(t=>t.tipo==="ccaa"),am=IX.taxonomia.territorios.filter(t=>t.tipo==="ambito");
+  const n=id=>cuenta(base,p=>p.tr.includes(id)),max=Math.max(1,...cc.map(t=>n(t.id)));
+  const cls=id=>{const v=n(id);return S.sel.terr===id?"sel":v===0?"":v>=max*.66?"c3":v>=max*.33?"c2":"c1"};
+  const b=SPAIN_PATHS.bbox,cb=SPAIN_PATHS.canariasBox;
+  const svg=`<svg viewBox="${b[0]} ${b[1]} ${b[2]-b[0]} ${b[3]-b[1]}" role="img" aria-label="Mapa de comunidades autónomas">${SPAIN_PATHS.provinces.filter(p=>MAPA_CCAA[p.name]).map(p=>`<path d="${p.d}" class="${cls(MAPA_CCAA[p.name])}" data-t="${MAPA_CCAA[p.name]}" onclick="set('terr','${MAPA_CCAA[p.name]}')"><title>${TERR[MAPA_CCAA[p.name]].nombre} · ${n(MAPA_CCAA[p.name])}</title></path>`).join("")}<rect x="${cb[0]}" y="${cb[1]}" width="${cb[2]-cb[0]}" height="${cb[3]-cb[1]}" fill="none" stroke="#b9b5a9" stroke-dasharray="4 3"/></svg>`;
+  return`<div class="amb">${am.map(t=>`<button class="opt ${S.sel.terr===t.id?"sel":""} ${n(t.id)?"":"cero"}" onclick="set('terr','${t.id}')"><span>${t.nombre}</span><span class="n">${n(t.id)}</span></button>`).join("")}</div>
+    <div class="terr">${svg}<div class="lista">${cc.map(t=>`<button class="opt ${S.sel.terr===t.id?"sel":""} ${n(t.id)?"":"cero"}" onclick="set('terr','${t.id}')"><span>${t.nombre}</span><span class="n">${n(t.id)}</span></button>`).join("")}</div></div>
+    <div class="foot">Dónde se decide o a quién afecta. Una pieza puede tocar varias comunidades; el color del mapa indica cuántas piezas hay con los demás filtros puestos.</div>`;
+}
+function abrir(tipo){const base=filtrar(IX.piezas,tipo);const movil=matchMedia("(max-width:760px)").matches;
+  if(movil){S.sheet=tipo;document.getElementById("tabs").innerHTML=["modo","tema","terr"].map(t=>`<button class="${t===tipo?"on":""}" onclick="abrir('${t}')">${{modo:"Modo",tema:"Tema",terr:"Territorio"}[t]}</button>`).join("");
+    document.getElementById("sheet-body").innerHTML=menuHTML(tipo,base);document.getElementById("sheet").classList.add("open");document.getElementById("scrim").classList.add("show");return}
+  if(S.menu===tipo){cerrar();return}cerrar();S.menu=tipo;document.getElementById("menu-body").innerHTML=menuHTML(tipo,base);document.getElementById("menu").classList.add("open");document.querySelector(`.fbtn[data-m=${tipo}]`).setAttribute("aria-expanded","true")}
+document.querySelectorAll(".fbtn[data-m]").forEach(b=>b.onclick=()=>abrir(b.dataset.m));
+document.getElementById("scrim").onclick=cerrar;document.addEventListener("keydown",e=>{if(e.key==="Escape")cerrar()});
+document.getElementById("btn-dir").onclick=()=>{S.sel.tema=S.sel.tema==="analisis"?null:"analisis";render()};
+document.getElementById("home").onclick=e=>{e.preventDefault();S.sel={modo:null,sub:null,tema:null,terr:null};S.q="";q.value="";render()};
+const q=document.getElementById("q"),sbox=document.getElementById("sbox"),navbar=document.getElementById("navbar");let tmr;
+q.oninput=()=>{clearTimeout(tmr);tmr=setTimeout(()=>{S.q=q.value;render()},160)};
+document.getElementById("qx").onclick=()=>{q.value="";S.q="";render();q.focus()};
+sbox.onclick=()=>{if(matchMedia("(max-width:760px)").matches&&!sbox.classList.contains("exp")){sbox.classList.add("exp");navbar.classList.add("exp");q.focus()}};
+q.onblur=()=>{if(!q.value){sbox.classList.remove("exp");navbar.classList.remove("exp")}};
+function usar(t){q.value=t;S.q=t;render()}
+
+/* ============ URL ============ */
+/* En el tema real el estado va en la URL (?q=…&sub=…&tema=…&terr=…) para compartir y enlazar; la maqueta vive en un visor que no admite esas URL, así que aquí el estado es solo de la página. */
+function leerURL(){}
+function escribirURL(){}
+
+/* ============ render ============ */
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fecha=d=>new Date(d).toLocaleDateString("es-ES",{day:"numeric",month:"short"});
+const nomb=p=>[SUBS[p.sm]?.nombre,p.tr.filter(t=>TERR[t]?.tipo==="ccaa").slice(0,2).map(t=>TERR[t].nombre).join(" · ")].filter(Boolean).join(" · ");
+const card=p=>`<a class="card" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}" loading="lazy"><div class="kick"><i style="background:var(--${p.m})"></i>${esc(nomb(p))}</div><h3>${esc(p.t)}</h3><p>${esc(p.r)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.kind==="analisis"?"<span>Rainer, director</span>":""}${p.pat?'<span class="pat">patrocinio</span>':""}</div></a>`;
+const lead=p=>`<a class="lead" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}"><div><div class="kick"><i style="background:var(--${p.m})"></i>${esc(nomb(p))}</div><h2>${esc(p.t)}</h2><p>${esc(p.s)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.pat?'<span class="pat">patrocinio</span>':""}</div></div></a>`;
+function dirHTML(cls){const an=IX.piezas.filter(p=>p.kind==="analisis").sort((a,b)=>a.d<b.d?1:-1);if(!an.length)return"";const [a,...o]=an;
+  return`<aside class="dir ${cls}"><div class="et"><i></i>Análisis del director</div><a href="${a.url}" target="_blank" rel="noopener"><h2>${esc(a.t)}</h2></a><div class="firma"><span>Rainer, director de MOTICIAS</span><span>${fecha(a.d)}</span></div>
+  ${o.length?`<ul class="otros">${o.slice(0,3).map(p=>`<li><a href="${p.url}" target="_blank" rel="noopener">${esc(p.t)}<small>${fecha(p.d)}</small></a></li>`).join("")}</ul>`:""}<button class="todos" onclick="set('tema','analisis')">Todos los análisis →</button></aside>`}
+function render(){
+  if(!IX)return;escribirURL();
+  const base=filtrar(IX.piezas);const {res,ctx}=S.q.trim()?buscar(S.q,base):{res:base,ctx:null};
+  document.querySelectorAll(".fbtn[data-m]").forEach(b=>{const k=b.dataset.m,v=k==="modo"?(S.sel.sub?SUBS[S.sel.sub].nombre:S.sel.modo?MODOS[S.sel.modo].nombre:null):k==="tema"?(S.sel.tema&&S.sel.tema!=="analisis"?TEMAS[S.sel.tema].nombre:null):(S.sel.terr?TERR[S.sel.terr].nombre:null);b.classList.toggle("on",!!v);b.innerHTML=(v||{modo:"Modo",tema:"Tema",terr:"Territorio"}[k])+' <span class="car">▼</span>'});
+  document.getElementById("btn-dir").classList.toggle("on",S.sel.tema==="analisis");sbox.classList.toggle("has",!!S.q);
+  const chips=[];if(S.sel.sub||S.sel.modo)chips.push(["modo",S.sel.sub?SUBS[S.sel.sub].nombre:MODOS[S.sel.modo].nombre,"set('modo',null)"]);if(S.sel.tema)chips.push(["tema",TEMAS[S.sel.tema].nombre,"set('tema',null)"]);if(S.sel.terr)chips.push(["territorio",TERR[S.sel.terr].nombre,"set('terr',null)"]);
+  document.getElementById("active").innerHTML=chips.length?chips.map(c=>`<span class="chip"><b>${c[0]}</b>${c[1]}<button onclick="${c[2]}" aria-label="Quitar">×</button></span>`).join("")+`<button class="clear" onclick="S.sel={modo:null,sub:null,tema:null,terr:null};render()">Quitar filtros</button>`:"";
+  const L=document.getElementById("lect");
+  if(ctx){let h=`Buscas <b>${ctx.terms.map(esc).join(", ")||"—"}</b>`;if(ctx.terr)h+=` en <b>${TERR[ctx.terr].nombre}</b>`;h+=` · ${res.length} pieza${res.length===1?"":"s"}.`;
+    const c=Object.entries(ctx.corr);if(c.length)h+=` <span class="sug">¿Quisiste decir ${c.map(([a,b])=>`<button onclick="usar('${esc(S.q.replace(new RegExp(a,'i'),b))}')">${esc(b)}</button>`).join(", ")}?</span>`;
+    if(ctx.aviso)h+=`<br>${esc(ctx.aviso)}`;
+    if(!res.length||ctx.aviso)h+=`<div class="pide"><span>¿No está lo que buscas?</span><a href="#encargo" onclick="alert('Maqueta: aquí se abre el formulario de pieza bajo demanda (/pieza-bajo-demanda).');return false">Pídela: la investigamos y la escribimos</a><span style="color:var(--muted)">Sin coste para suscriptores profesionales.</span></div>`;
+    L.innerHTML=h;L.classList.add("show")}else{L.classList.remove("show");L.innerHTML=""}
+  const V=document.getElementById("view");const filtrado=ctx||chips.length;
+  if(!filtrado){const [a,...r]=res;V.innerHTML=`<div class="home"><div>${lead(a)}${dirHTML("m")}<div class="grid">${r.slice(0,24).map(card).join("")}</div></div><div>${dirHTML("d")}</div></div>`;return}
+  const titulo=S.sel.tema==="analisis"?"Análisis del director":chips.map(c=>c[1]).join(" · ")||"Resultados";
+  V.innerHTML=res.length?`<div class="sechead"><h2>${esc(titulo)}</h2><span>${res.length} pieza${res.length===1?"":"s"}${ctx?"":" · más recientes primero"}</span></div><div class="grid">${res.map(card).join("")}</div>`:`<div class="empty">No hay piezas con esa combinación. Prueba a quitar un filtro.</div>`;
+}
+</script>
+</body>
+</html>

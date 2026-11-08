@@ -158,5 +158,15 @@
   }
  ],
  "title": "Una oleada de falsas amenazas de bomba desvía y retiene vuelos en Europa, uno en Murcia",
- "why": "La concentración de alertas en dos días y en cinco países obliga a investigar si comparten origen, aunque ninguna autoridad lo ha afirmado y Bulgaria descarta por ahora la vinculación con actos terroristas concretos. Cada alerta obliga a aislar la aeronave, cerrar pistas o aeropuertos, como Modlin, y movilizar a los cuerpos de seguridad, con coste para aerolíneas y gestores. Para España confirma que los aeropuertos regionales entran en el patrón, tres semanas después de las detenciones de Málaga y Murcia por llamadas con voz alterada por inteligencia artificial."
+ "why": "La concentración de alertas en dos días y en cinco países obliga a investigar si comparten origen, aunque ninguna autoridad lo ha afirmado y Bulgaria descarta por ahora la vinculación con actos terroristas concretos. Cada alerta obliga a aislar la aeronave, cerrar pistas o aeropuertos, como Modlin, y movilizar a los cuerpos de seguridad, con coste para aerolíneas y gestores. Para España confirma que los aeropuertos regionales entran en el patrón, tres semanas después de las detenciones de Málaga y Murcia por llamadas con voz alterada por inteligencia artificial.",
+ "modo": "aire",
+ "submodo": "aeropuertos",
+ "temas": [
+  "seguridad"
+ ],
+ "territorios": [
+  "murcia",
+  "andalucia",
+  "ue"
+ ]
 }

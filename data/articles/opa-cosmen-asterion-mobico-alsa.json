@@ -190,5 +190,16 @@
   }
  ],
  "title": "Los Cosmen y Asterion formalizan la opa sobre Mobico para recuperar el control de Alsa",
- "why": "Devuelve a capital español el primer operador de autobuses del país, veintiún años después de que los Cosmen vendieran Alsa a National Express por 381 millones de euros. La entrada de Asterion, fondo de infraestructuras, indica que el transporte regular de viajeros se percibe como activo de largo plazo pese a la incertidumbre del mapa concesional. Con la matriz fuera de bolsa y reestructurada, Alsa gana margen para pujar en los corredores estatales y en los grandes contratos urbanos en licitación."
+ "why": "Devuelve a capital español el primer operador de autobuses del país, veintiún años después de que los Cosmen vendieran Alsa a National Express por 381 millones de euros. La entrada de Asterion, fondo de infraestructuras, indica que el transporte regular de viajeros se percibe como activo de largo plazo pese a la incertidumbre del mapa concesional. Con la matriz fuera de bolsa y reestructurada, Alsa gana margen para pujar en los corredores estatales y en los grandes contratos urbanos en licitación.",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "empresas",
+  "concesiones"
+ ],
+ "territorios": [
+  "madrid",
+  "castilla-y-leon",
+  "estado"
+ ]
 }

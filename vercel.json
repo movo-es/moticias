@@ -25,6 +25,19 @@
      "value": "DENY"
     }
    ]
+  },
+  {
+   "source": "/buscador/(.*)",
+   "headers": [
+    {
+     "key": "Access-Control-Allow-Origin",
+     "value": "https://www.moticias.com"
+    },
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=600, stale-while-revalidate=3600"
+    }
+   ]
   }
  ],
  "redirects": [

@@ -211,5 +211,14 @@
   }
  ],
  "title": "Acciona y Copcisa ejecutarán por 25,75 millones el soterramiento de FGC en Igualada",
- "why": "Es la actuación central de un programa de 37 millones que convierte la llegada del tren a Igualada en una estación soterrada con acceso directo desde la calle, ascensor y 7.500 m² de espacio público recuperado. La formalización llega en septiembre de 2026, unos ocho meses después del inicio de obras anunciado para principios de año. Con el precio en 30 puntos y 13 puntos para compromisos ambientales, el pliego anticipa el patrón de las próximas licitaciones ferroviarias de la Generalitat."
+ "why": "Es la actuación central de un programa de 37 millones que convierte la llegada del tren a Igualada en una estación soterrada con acceso directo desde la calle, ascensor y 7.500 m² de espacio público recuperado. La formalización llega en septiembre de 2026, unos ocho meses después del inicio de obras anunciado para principios de año. Con el precio en 30 puntos y 13 puntos para compromisos ambientales, el pliego anticipa el patrón de las próximas licitaciones ferroviarias de la Generalitat.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "concesiones",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "cataluna"
+ ]
 }

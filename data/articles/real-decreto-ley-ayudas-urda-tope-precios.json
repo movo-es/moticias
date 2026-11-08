@@ -202,5 +202,17 @@
   }
  ],
  "title": "Decreto-ley de Urda: 30 millones en ayudas y tope de precios al transporte alternativo",
- "why": "El decreto convierte en ley permanente un tope de precios de emergencia (nuevo artículo 20 ter de la Ley de Consumidores), pero su alcance real es menor de lo que anuncia: los autobuses concesionales, con tarifas máximas contractuales, se consideran cumplidores por definición, y el avión queda fuera hasta que la Comisión Europea autorice la medida conforme al Reglamento (CE) 1008/2008. Iberia ya había limitado sus tarifas a 99 euros hasta el 8 de noviembre. En el plano indemnizatorio, el Estado adelanta el dinero y se subroga en los créditos de responsabilidad civil mientras la AITAT investiga, con todas las hipótesis abiertas."
+ "why": "El decreto convierte en ley permanente un tope de precios de emergencia (nuevo artículo 20 ter de la Ley de Consumidores), pero su alcance real es menor de lo que anuncia: los autobuses concesionales, con tarifas máximas contractuales, se consideran cumplidores por definición, y el avión queda fuera hasta que la Comisión Europea autorice la medida conforme al Reglamento (CE) 1008/2008. Iberia ya había limitado sus tarifas a 99 euros hasta el 8 de noviembre. En el plano indemnizatorio, el Estado adelanta el dinero y se subroga en los créditos de responsabilidad civil mientras la AITAT investiga, con todas las hipótesis abiertas.",
+ "modo": "tierra",
+ "submodo": "ferrocarril",
+ "temas": [
+  "regulacion",
+  "seguridad"
+ ],
+ "territorios": [
+  "castilla-la-mancha",
+  "andalucia",
+  "madrid",
+  "ue"
+ ]
 }

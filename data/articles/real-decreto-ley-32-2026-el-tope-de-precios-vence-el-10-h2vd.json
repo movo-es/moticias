@@ -191,5 +191,17 @@
   }
  ],
  "title": "Real Decreto-ley 32/2026: el tope de precios vence el 10 de noviembre y deja fuera a las aerolíneas",
- "why": "El decreto-ley no es solo una norma para Urda. Introduce en la ley de consumidores un mecanismo permanente de congelación de precios que el Consejo de Ministros puede activar por acuerdo ante cualquier accidente, emergencia técnica o fuerza mayor. Y fija sus límites: una semana de vigencia inicial para el corte ferroviario, exclusión de los precios regulados y una cláusula que deja el transporte aéreo —el modo que ha absorbido el refuerzo de oferta— pendiente de Bruselas."
+ "why": "El decreto-ley no es solo una norma para Urda. Introduce en la ley de consumidores un mecanismo permanente de congelación de precios que el Consejo de Ministros puede activar por acuerdo ante cualquier accidente, emergencia técnica o fuerza mayor. Y fija sus límites: una semana de vigencia inicial para el corte ferroviario, exclusión de los precios regulados y una cláusula que deja el transporte aéreo —el modo que ha absorbido el refuerzo de oferta— pendiente de Bruselas.",
+ "modo": "transversal",
+ "submodo": "transversal",
+ "temas": [
+  "regulacion",
+  "seguridad"
+ ],
+ "territorios": [
+  "andalucia",
+  "castilla-la-mancha",
+  "madrid",
+  "ue"
+ ]
 }

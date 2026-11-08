@@ -126,5 +126,14 @@
   }
  ],
  "title": "Valencia licita por 7,9 millones la explotación de su plataforma ValenciaportPCS para 2027-2029",
- "why": "El PCS es la columna digital de un puerto que gestiona más de 5,6 millones de TEU en doce meses: por él pasan escalas, mercancías y trámites. Quién lo gestione y con qué presupuesto condiciona la continuidad del servicio y su evolución normativa."
+ "why": "El PCS es la columna digital de un puerto que gestiona más de 5,6 millones de TEU en doce meses: por él pasan escalas, mercancías y trámites. Quién lo gestione y con qué presupuesto condiciona la continuidad del servicio y su evolución normativa.",
+ "modo": "logistica",
+ "submodo": "logistica-mar",
+ "temas": [
+  "concesiones",
+  "tecnologia"
+ ],
+ "territorios": [
+  "comunidad-valenciana"
+ ]
 }

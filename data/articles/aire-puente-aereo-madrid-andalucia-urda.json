@@ -210,5 +210,17 @@
   }
  ],
  "title": "Las aerolíneas sustituyen al AVE con Andalucía y el Gobierno topa los precios",
- "why": "Es la segunda vez en 2026 que el avión sustituye al tren en el mismo corredor: tras el accidente de Adamuz (18 de enero, 46 muertos) la línea estuvo cerrada hasta el 17 de febrero. El decreto-ley crea por primera vez un tope legal de precios en emergencias, un mecanismo que el Congreso había rechazado, pero su alcance real es menor de lo anunciado: vigencia de seis días salvo prórroga, tarifas reguladas o contratadas exentas y transporte aéreo suspendido hasta el aval de Bruselas por el Reglamento (CE) 1008/2008. Los topes de Iberia y Volotea son compromisos comerciales."
+ "why": "Es la segunda vez en 2026 que el avión sustituye al tren en el mismo corredor: tras el accidente de Adamuz (18 de enero, 46 muertos) la línea estuvo cerrada hasta el 17 de febrero. El decreto-ley crea por primera vez un tope legal de precios en emergencias, un mecanismo que el Congreso había rechazado, pero su alcance real es menor de lo anunciado: vigencia de seis días salvo prórroga, tarifas reguladas o contratadas exentas y transporte aéreo suspendido hasta el aval de Bruselas por el Reglamento (CE) 1008/2008. Los topes de Iberia y Volotea son compromisos comerciales.",
+ "modo": "aire",
+ "submodo": "aerolineas",
+ "temas": [
+  "regulacion",
+  "concesiones"
+ ],
+ "territorios": [
+  "andalucia",
+  "madrid",
+  "castilla-la-mancha",
+  "ue"
+ ]
 }

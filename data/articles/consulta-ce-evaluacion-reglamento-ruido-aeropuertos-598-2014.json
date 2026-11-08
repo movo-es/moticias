@@ -199,5 +199,17 @@
   }
  ],
  "title": "Consulta europea sobre el reglamento de ruido en aeropuertos hasta el 19 de noviembre",
- "why": "Las restricciones operativas por ruido determinan cuántos vuelos nocturnos caben en un aeropuerto y con qué aviones. El caso Schiphol, en el que la Comisión objetó en 2025 el recorte de 500.000 a 478.000 movimientos, demostró que Bruselas puede frenar decisiones nacionales. La ampliación de El Prat, prevista en el DORA 2027-2031, tendrá que convivir con lo que salga de esta evaluación, que puede desembocar en una propuesta de revisión al amparo del artículo 13 del reglamento."
+ "why": "Las restricciones operativas por ruido determinan cuántos vuelos nocturnos caben en un aeropuerto y con qué aviones. El caso Schiphol, en el que la Comisión objetó en 2025 el recorte de 500.000 a 478.000 movimientos, demostró que Bruselas puede frenar decisiones nacionales. La ampliación de El Prat, prevista en el DORA 2027-2031, tendrá que convivir con lo que salga de esta evaluación, que puede desembocar en una propuesta de revisión al amparo del artículo 13 del reglamento.",
+ "modo": "aire",
+ "submodo": "aeropuertos",
+ "temas": [
+  "regulacion",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "baleares",
+  "madrid",
+  "cataluna",
+  "ue"
+ ]
 }

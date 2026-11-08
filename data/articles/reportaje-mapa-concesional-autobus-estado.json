@@ -439,5 +439,14 @@
    "text": "Inicio previsto del contrato Madrid–Valencia"
   }
  ],
- "title": "El mapa concesional del autobús llega a su plazo con dos corredores licitados de 34"
+ "title": "El mapa concesional del autobús llega a su plazo con dos corredores licitados de 34",
+ "modo": "tierra",
+ "submodo": "autobus",
+ "temas": [
+  "concesiones",
+  "regulacion"
+ ],
+ "territorios": [
+  "estado"
+ ]
 }
