@@ -65,6 +65,11 @@
    "en": "2026-11-09T16:28+00:00",
    "origen": "manual",
    "por": "Rainer Uphoff"
+  },
+  {
+   "accion": "aprobar y publicar",
+   "en": "2026-11-09T19:16+00:00",
+   "por": "Acceso común (superadmin)"
   }
  ],
  "risk": "critica",
@@ -128,7 +133,7 @@
    "url": "https://noticiasobreras.es/2026/10/coo-y-ugt-piden-a-transportes-negociar-los-servicios-minimos-de-la-huelga-general-del-11-de-noviembre/"
   }
  ],
- "status": "pendiente",
+ "status": "publicado",
  "submodo": "aerolineas",
  "subsector": "aéreo",
  "subtitle": "El corte de Urda y la semana de huelgas dejan el corredor Madrid–Andalucía en manos de un modo cuyo precio y cuya oferta el Estado no controla",
