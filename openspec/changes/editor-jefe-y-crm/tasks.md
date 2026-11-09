@@ -8,5 +8,5 @@
 - [x] Migración `003_gestor_crm.sql`.
 - [x] Pruebas: recorrido completo en Chrome a 390 px contra un banco local (editor, IA, cifras, firma, retirar, publicidad, CRM, suscriptores, equipo, permisos de oficina) y el script del sitio sobre copias de las páginas reales.
 - [x] Proyecto Supabase «moticias» (Frankfurt, `cjrntzaqmvhgscdgiehs`, creado el 9-11-2026 con el visto bueno de Rainer al coste), migraciones 003 y 004 aplicadas, huella de la llave guardada, y en Vercel `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `MOTICIAS_BD_CLAVE` (esta última generada en el navegador: no la ha visto nadie). Comprobado: sin la llave no se lee ni se escribe nada.
-- [ ] Ghost → Code injection → Site footer: añadir `<script src="https://app.moticias.com/sitio/m.js" defer></script>` (`ghost/inyeccion-pie.html`).
-- [ ] Rainer: entrar en el gestor con su cuenta (o la contraseña común) y darse de alta como editor jefe en «Equipo»; probar la IA en una pieza.
+- [x] Ghost → Code injection → Site footer: `<script src="https://app.moticias.com/sitio/m.js" defer></script>` añadido el 9-11-2026 (`ghost/inyeccion-pie.html`); comprobado en www.moticias.com sin errores.
+- [ ] Desplegar en producción con las variables de la base (fusionar #11). Rainer: entrar en el gestor con su cuenta (o la contraseña común) y darse de alta como editor jefe en «Equipo»; probar la IA en una pieza.
