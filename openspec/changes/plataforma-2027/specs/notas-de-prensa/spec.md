@@ -1,5 +1,7 @@
 # Capacidad: sala de prensa (delta)
 
+> Sustituida el 9-11-2026 por `openspec/changes/sala-de-prensa-v1/specs/sala-de-prensa/spec.md`. Se conserva como histórico.
+
 ## ADDED Requisito: recepción con emisor verificado
 Un comunicado entra por el formulario de `app.moticias.com/prensa/enviar` o por el buzón `prensa@moticias.com`. Queda ligado a una organización (`organizations`) y a un contacto profesional. No se publica sin verificar al emisor: correo de dominio corporativo de la organización o enlace de confirmación.
 

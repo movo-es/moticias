@@ -6,6 +6,10 @@
   "api/gestor.py": {
    "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques}/**",
    "maxDuration": 30
+  },
+  "api/prensa.py": {
+   "includeFiles": "{src,verticals,data/medios,data/articles}/**",
+   "maxDuration": 120
   }
  },
  "headers": [
@@ -36,6 +40,19 @@
     {
      "key": "Cache-Control",
      "value": "public, max-age=600, stale-while-revalidate=3600"
+    }
+   ]
+  },
+  {
+   "source": "/prensa/(.*)",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    },
+    {
+     "key": "X-Frame-Options",
+     "value": "SAMEORIGIN"
     }
    ]
   }

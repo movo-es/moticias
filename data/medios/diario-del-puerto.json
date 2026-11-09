@@ -1,0 +1,29 @@
+{
+ "acepta_notas": "sin-confirmar",
+ "alias": [],
+ "audiencia": {
+  "fecha": null,
+  "fuente": null,
+  "tipo": "no-declarada",
+  "unidad": null,
+  "valor": null
+ },
+ "id": "diario-del-puerto",
+ "idioma": "es",
+ "nombre": "Diario del Puerto",
+ "nota": "Audiencia: solo se rellena con la cifra que el propio medio declare (kit de medios, OJD/PGD, página de publicidad), con fuente y fecha. Sin eso, el informe no suma su alcance.",
+ "origen": "docs/fuentes.md (inventario verificado 4-11-2026)",
+ "pagina_contacto": null,
+ "rss": null,
+ "submodos": [
+  "puertos",
+  "maritimo",
+  "logistica-mar"
+ ],
+ "temas": [],
+ "territorios": [
+  "estado"
+ ],
+ "tipo": "medio-digital",
+ "url": "https://www.diariodelpuerto.com/"
+}

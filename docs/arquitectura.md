@@ -34,7 +34,8 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | Índice del buscador web y navegación por facetas | `app/public/buscador/index.json` (lo genera `src/export_search_index.py`; Vercel lo sirve con CORS); maqueta y JavaScript de referencia en `openspec/changes/navegacion-y-buscador/maqueta/` hasta que el tema de Ghost se versione | la rutina (7 ter); tema por OpenSpec |
 | Buscador y piezas bajo demanda | `src/buscador.py` (veredicto sobre `data/`, con sinónimos, territorio, vecinas y erratas); `data/encargos/<id>.json` (sin datos personales); piezas con `origen: bajo-demanda` | `/pieza-bajo-demanda` (tarea cada 2 h, prevista) y a mano |
 | «Quién decide» (módulo 7) | `data/cargos/<id>.json`, `data/organizaciones/`, listas revisadas en `docs/quien-decide/` | `/quien-decide-actualizar` (mensual); altas a mano con `src/quien_decide_semilla.py sembrar` |
-| Sala de prensa (módulo 8) | `data/notas-de-prensa/<id>.json`, plantillas en `docs/prensa/` | `/prensa-buzon` |
+| Sala de prensa (módulo 8; cambio `sala-de-prensa-v1`) | Público: `data/notas-de-prensa/<id>.json`, `data/medios/<id>.json`, `docs/prensa/` (oferta, método, legal, plantillas), página `app/public/prensa/` + `api/prensa.py`. Privado (`movo-es/moticias-equipo/prensa/`): `contactos.json`, `entrantes/`, `pedidos/`, `impacto/`, `informes/` | `/prensa-buzon`, `/prensa-difusion`, `/prensa-impacto`; `src/prensa_*.py`, `src/contactos.py` |
+| Tema de Ghost | `ghost/theme/` y `ghost/theme.json` | `src/ghost_theme.py` (descargar · reemplazar · subir) |
 | Conocimiento (módulo 6, hasta Supabase) | `data/conocimiento/` (fuentes, propuestas, estado) | `/conocimiento-ingesta` |
 | Textos legales | `docs/legal/` (con los datos de Avionline) → páginas de Ghost | Rainer (revisión profesional después) |
 | Tema de moticias.com y textos de referencia de `llms.txt` | `ghost/theme/`, `ghost/` | `src/ghost_theme.py`; nunca el panel de Ghost |

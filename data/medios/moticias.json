@@ -1,0 +1,29 @@
+{
+ "acepta_notas": true,
+ "alias": [
+  "moticias.com"
+ ],
+ "audiencia": {
+  "fecha": null,
+  "fuente": "Ghost Admin API (members) en el momento del informe",
+  "tipo": "medida",
+  "unidad": "miembros de Ghost",
+  "valor": null
+ },
+ "id": "moticias",
+ "idioma": "es",
+ "nombre": "MOTICIAS (canales propios)",
+ "nota": "Lista de notas de prensa, resumen semanal B2C y redes de MOTICIAS. Sus métricas son medidas (Ghost, Brevo), no estimadas.",
+ "origen": "propio",
+ "pagina_contacto": "https://www.moticias.com/",
+ "rss": "https://www.moticias.com/rss/",
+ "submodos": [
+  "transversal"
+ ],
+ "temas": [],
+ "territorios": [
+  "estado"
+ ],
+ "tipo": "canal-propio",
+ "url": "https://www.moticias.com/"
+}

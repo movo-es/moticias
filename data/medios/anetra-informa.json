@@ -1,0 +1,29 @@
+{
+ "acepta_notas": "sin-confirmar",
+ "alias": [
+  "ANETRA"
+ ],
+ "audiencia": {
+  "fecha": null,
+  "fuente": null,
+  "tipo": "no-declarada",
+  "unidad": null,
+  "valor": null
+ },
+ "id": "anetra-informa",
+ "idioma": "es",
+ "nombre": "ANETRA Informa",
+ "nota": "Audiencia: solo se rellena con la cifra que el propio medio declare (kit de medios, OJD/PGD, página de publicidad), con fuente y fecha. Sin eso, el informe no suma su alcance.",
+ "origen": "docs/fuentes.md (inventario verificado 4-11-2026)",
+ "pagina_contacto": null,
+ "rss": "https://anetra-informa.es/feed/",
+ "submodos": [
+  "autobus"
+ ],
+ "temas": [],
+ "territorios": [
+  "estado"
+ ],
+ "tipo": "asociacion",
+ "url": "https://anetra-informa.es/"
+}

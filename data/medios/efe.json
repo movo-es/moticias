@@ -1,0 +1,29 @@
+{
+ "acepta_notas": "sin-confirmar",
+ "alias": [
+  "EFE"
+ ],
+ "audiencia": {
+  "fecha": null,
+  "fuente": null,
+  "tipo": "no-declarada",
+  "unidad": null,
+  "valor": null
+ },
+ "id": "efe",
+ "idioma": "es",
+ "nombre": "Agencia EFE",
+ "nota": "Audiencia: solo se rellena con la cifra que el propio medio declare (kit de medios, OJD/PGD, página de publicidad), con fuente y fecha. Sin eso, el informe no suma su alcance.",
+ "origen": "alta manual 9-11-2026",
+ "pagina_contacto": null,
+ "rss": null,
+ "submodos": [
+  "transversal"
+ ],
+ "temas": [],
+ "territorios": [
+  "estado"
+ ],
+ "tipo": "agencia",
+ "url": "https://www.efe.com/"
+}

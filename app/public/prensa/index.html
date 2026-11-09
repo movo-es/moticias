@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>Sala de prensa · Publique y difunda su nota · MOTICIAS</title>
+<meta name="description" content="Publique gratis su nota de prensa del sector del transporte en MOTICIAS, mejórela con el asesor de comunicación y difúndala solo a quien le interesa, con informe de repercusión verificado.">
+<style>
+:root{--bg:#f6f6f4;--card:#fff;--ink:#141414;--mute:#6b6f6c;--line:#e3e4e1;--acc:#1c6b4a;--acc2:#e3f1ea;--warn:#a15c00;--warn2:#fff1dd;--bad:#a12b2b;--bad2:#f8e5e5}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+header{background:#111;color:#fff;padding:14px 16px}
+header .w{max-width:760px;margin:0 auto;display:flex;align-items:baseline;gap:10px}
+header b{font:700 19px/1 Georgia,serif;letter-spacing:.01em}header span{opacity:.7;font-size:13px}
+main{max-width:760px;margin:0 auto;padding:16px 12px 48px}
+h1{font:700 26px/1.2 Georgia,serif;margin:8px 0 10px}h2{font-size:17px;margin:0 0 10px}h3{font-size:15px;margin:14px 0 6px}
+.lead{font-size:17px;color:#2b2d2b;margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px}
+.paso{font:600 11px/1 system-ui;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+input,select,textarea{width:100%;font:16px/1.45 inherit;font-family:inherit;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff;color:var(--ink)}
+textarea{min-height:260px;resize:vertical}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:560px){.dos{grid-template-columns:1fr}}
+button.b{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:12px 16px;font-size:16px;min-height:46px;cursor:pointer}
+button.b2{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:10px 14px;font-size:15px;min-height:44px;cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+.mute{color:var(--mute);font-size:13px}.oculto{display:none}
+.nota{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.anillo{--p:0;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--c,#1c6b4a) calc(var(--p)*1%),#ececea 0);display:grid;place-items:center;flex:none}
+.anillo div{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;font:700 26px/1 Georgia,serif}
+.veredicto{font-weight:700;font-size:18px}
+.dim{display:grid;grid-template-columns:150px 1fr 48px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.dim i{display:block;height:8px;border-radius:4px;background:#ececea;position:relative;overflow:hidden}.dim i b{position:absolute;inset:0 auto 0 0;background:var(--acc);border-radius:4px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.chip{font-size:12px;border-radius:12px;padding:3px 10px;background:#eee;color:#333}
+.av{border-left:3px solid var(--line);padding:6px 10px;margin:8px 0;background:#fafaf9;border-radius:0 8px 8px 0}
+.av.alta{border-color:var(--bad);background:var(--bad2)}.av.media{border-color:var(--warn);background:var(--warn2)}
+.av q{display:block;font-size:13px;color:#444;margin-top:4px;font-style:italic}.av q:before,.av q:after{content:""}
+.av small{display:block;margin-top:4px}
+.plan{border:1px solid var(--line);border-radius:10px;padding:12px;margin:8px 0;cursor:pointer;display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start}
+.plan.rec{border-color:var(--acc);background:var(--acc2)}.plan.sel{outline:2px solid var(--ink)}
+.plan .p{font-weight:700;white-space:nowrap}.plan .tag{font:600 11px system-ui;color:var(--acc);text-transform:uppercase;letter-spacing:.05em}
+.plan .no{color:var(--mute)}
+.reglas li{margin:6px 0}
+.ia pre{white-space:pre-wrap;font:14px/1.5 inherit;font-family:inherit;background:#fafaf9;border:1px solid var(--line);border-radius:8px;padding:10px}
+.ok{background:var(--acc2);border:1px solid var(--acc);border-radius:10px;padding:12px}
+.err{color:var(--bad);font-size:14px;margin-top:8px}
+footer{max-width:760px;margin:0 auto;padding:0 12px 32px;font-size:12px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header><div class="w"><b>MOTICIAS</b><span>Sala de prensa</span></div></header>
+<main>
+<h1>Su nota de prensa, ante quien decide en el transporte</h1>
+<p class="lead">Publique gratis su comunicado en la lista de notas de prensa de MOTICIAS, clasificado por modo de transporte, tema y comunidad. Antes, nuestro asesor de comunicación lo puntúa y le dice cómo mejorarlo. Si lo quiere difundir, se lo enviamos solo a los periodistas, medios y profesionales a los que de verdad interesa, y le entregamos un informe de repercusión verificado.</p>
+
+<section class="card" id="s1">
+ <div class="paso">Paso 1 · Su nota</div>
+ <div class="dos">
+  <div><label for="org">Organización emisora</label><input id="org" autocomplete="organization" placeholder="Nombre de la empresa o institución"></div>
+  <div><label for="obj">Qué quiere conseguir</label>
+   <select id="obj"><option value="noticia">Dar a conocer un hecho (contrato, servicio, resultado, nombramiento)</option><option value="lanzamiento">Presentar un lanzamiento</option><option value="marca">Ganar presencia de marca en un sector</option><option value="venta">Vender un producto o servicio</option></select></div>
+ </div>
+ <label for="tit">Titular</label><input id="tit" maxlength="300" placeholder="Quién hace qué, dónde, con la cifra">
+ <label for="sub">Subtítulo (opcional)</label><input id="sub" maxlength="400">
+ <label for="cue">Texto completo (incluya, si lo tiene, «Sobre …» y el contacto de prensa al final)</label>
+ <textarea id="cue" placeholder="Pegue aquí el texto de la nota"></textarea>
+ <p style="margin:12px 0 0"><button class="b" id="analizar">Analizar mi nota</button> <span class="mute">Gratis y al momento. No guardamos nada hasta que usted la envíe.</span></p>
+ <div class="err" id="e1"></div>
+</section>
+
+<section class="card oculto" id="s2">
+ <div class="paso">Paso 2 · Lo que dice el asesor</div>
+ <div class="nota"><div class="anillo" id="anillo"><div id="punt">–</div></div>
+  <div><div class="veredicto" id="ver"></div><div class="mute" id="tipo"></div><div class="chips" id="ejes"></div></div></div>
+ <div id="dims" style="margin-top:10px"></div>
+ <h3>Qué mejorar, por orden</h3><div id="avisos"></div>
+ <h3>Cómo construir el titular y la entradilla</h3><div id="props" class="mute"></div>
+ <div class="ia" style="margin-top:14px">
+  <h3>Revisión con IA (opcional)</h3>
+  <p class="mute">Le proponemos tres titulares, una entradilla y una versión recortada <b>sin añadir ningún dato</b>: lo que falte aparece como [DATO].</p>
+  <div class="dos"><input id="iaemail" type="email" autocomplete="email" placeholder="Su correo profesional"><button class="b2" id="iabtn">Revisar con IA</button></div>
+  <div id="iares"></div>
+ </div>
+</section>
+
+<section class="card oculto" id="s3">
+ <div class="paso">Paso 3 · Qué le conviene, con honestidad</div>
+ <p class="mute" id="aud"></p>
+ <div id="planes"></div>
+ <p class="mute">Le decimos que no cuando pagar no le compensa. Nunca vendemos cobertura editorial: la difusión y la visibilidad se pagan; la noticia la decide la redacción con sus propias fuentes.</p>
+</section>
+
+<section class="card oculto" id="s4">
+ <div class="paso">Paso 4 · Envíenos la nota</div>
+ <div class="dos">
+  <div><label for="nom">Su nombre</label><input id="nom" autocomplete="name"></div>
+  <div><label for="car">Cargo</label><input id="car" autocomplete="organization-title"></div>
+  <div><label for="mail">Correo profesional</label><input id="mail" type="email" autocomplete="email"></div>
+  <div><label for="tel">Teléfono (opcional)</label><input id="tel" type="tel" autocomplete="tel"></div>
+  <div><label for="web">Web de la organización</label><input id="web" placeholder="https://"></div>
+  <div><label for="emb">Embargo hasta (opcional)</label><input id="emb" type="datetime-local"></div>
+ </div>
+ <label style="display:flex;gap:8px;align-items:flex-start;color:var(--ink);font-size:14px"><input type="checkbox" id="cond" style="width:auto;margin-top:3px"> Acepto que MOTICIAS publique el texto marcado como «Nota de prensa · Comunicado de empresa», y que la redacción decida con independencia si lo trata como noticia. Declaro tener derecho a publicar el texto y las imágenes.</label>
+ <label style="display:flex;gap:8px;align-items:flex-start;color:var(--ink);font-size:14px"><input type="checkbox" id="com" style="width:auto;margin-top:3px"> Quiero recibir información de MOTICIAS sobre la sala de prensa (opcional).</label>
+ <p class="mute">Si su correo no es del dominio de su organización, le pediremos confirmarlo antes de publicar. Responsable: Avionline S.L. · <a href="https://www.moticias.com/privacidad/">Privacidad</a></p>
+ <p><button class="b" id="enviar">Enviar la nota</button></p>
+ <div class="err" id="e4"></div><div id="hecho"></div>
+</section>
+
+<section class="card">
+ <h2>Cómo trabajamos</h2>
+ <ul class="reglas">
+  <li><b>Marcado siempre.</b> Su nota sale como «Nota de prensa · Comunicado de empresa», nunca disfrazada de noticia ni en la portada editorial.</li>
+  <li><b>Filtro de valor.</b> Solo difundimos notas que superan 60 puntos del asesor, y solo a quien sigue su modo de transporte o su comunidad, con un máximo de envíos por persona y semana. Por eso nuestros envíos se abren.</li>
+  <li><b>Informe sin humo.</b> Cada impacto, con enlace, fecha y prueba de que procede de su nota. Alcance solo con audiencias declaradas por los medios. Nada de «valor publicitario equivalente».</li>
+  <li><b>Sus datos y los de nuestros contactos</b> no se ceden a nadie. Cada destinatario puede darse de baja con un clic.</li>
+ </ul>
+</section>
+</main>
+<footer>MOTICIAS · Noticias con M de Movilidad y Transportes · Titular: Avionline S.L. · <a href="https://www.moticias.com/notas-de-prensa/">Notas de prensa publicadas</a> · <a href="https://www.moticias.com/como-trabajamos/">Cómo trabajamos</a></footer>
+<script>
+const $=s=>document.querySelector(s), E=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const API="/api/prensa";let ultimo=null, planSel="publicacion";
+const NOM={noticiabilidad:"Noticiabilidad",estructura:"Estructura",claridad:"Claridad y longitud",tono:"Tono",datos:"Datos y verificabilidad"};
+const TIPO={noticia:"Es una noticia",mixta:"Mezcla noticia y promoción",promocion:"Hoy es publicidad, no una nota de prensa"};
+async function post(a,d){const r=await fetch(API+"?a="+a,{method:"POST",headers:{"Content-Type":"application/json","X-Prensa":"1"},body:JSON.stringify(d)});const j=await r.json().catch(()=>({error:"Respuesta no válida"}));if(!r.ok)throw new Error(j.error||("Error "+r.status));return j}
+function datos(){return{organizacion:$("#org").value.trim(),titulo:$("#tit").value.trim(),subtitulo:$("#sub").value.trim(),cuerpo:$("#cue").value.trim(),objetivo:$("#obj").value}}
+$("#analizar").onclick=async()=>{$("#e1").textContent="";const b=$("#analizar");b.disabled=true;b.textContent="Analizando…";
+ try{ultimo=await post("asesor",datos());pinta(ultimo);["#s2","#s3","#s4"].forEach(s=>$(s).classList.remove("oculto"));$("#s2").scrollIntoView({behavior:"smooth"})}
+ catch(e){$("#e1").textContent=e.message}finally{b.disabled=false;b.textContent="Volver a analizar"}};
+function pinta(r){const a=r.analisis,p=a.puntuacion;const c=p>=75?"#1c6b4a":p>=60?"#3d7a3a":p>=40?"#a15c00":"#a12b2b";
+ $("#anillo").style.setProperty("--p",p);$("#anillo").style.setProperty("--c",c);$("#punt").textContent=p;
+ $("#ver").textContent=a.veredicto;$("#tipo").textContent=TIPO[a.tipo]+" · "+a.palabras.cuerpo+" palabras";
+ const n=r.ejes_nombres;$("#ejes").innerHTML=["Saldría en: "+n.submodo].concat(n.temas,n.territorios).map(x=>'<span class="chip">'+E(x)+"</span>").join("");
+ $("#dims").innerHTML=Object.entries(a.dimensiones).map(([k,v])=>`<div class="dim"><span>${NOM[k]}</span><i><b style="width:${100*v/a.maximos[k]}%"></b></i><span>${v}/${a.maximos[k]}</span></div>`).join("");
+ $("#avisos").innerHTML=a.avisos.length?a.avisos.map(x=>`<div class="av ${x.gravedad}"><b>${E(x.que)}</b><small>${E(x.arreglo)}</small>${x.frase?"<q>«"+E(x.frase)+"»</q>":""}</div>`).join(""):'<p class="mute">Nada importante que corregir.</p>';
+ const pr=a.propuestas;$("#props").innerHTML=`<p>Fórmula: <b>${E(pr.formula_titular)}</b></p><p>Entradilla: ${E(pr.esqueleto_entradilla)}</p>`;
+ const au=r.audiencia;$("#aud").innerHTML=au?`Hoy, para esta nota, <b>${au.individual}</b> destinatarios profesionales pasan nuestro filtro de valor (${au.prensa} de ellos periodistas, redacciones o boletines), ${au.resumen_b2c} lectores la verían en el resumen semanal, y <b>${r.medios.length}</b> medios de nuestro catálogo cubren su sector.`:`Medios de nuestro catálogo que cubren su sector: <b>${r.medios.length}</b>.`;
+ const rec=r.recomendacion.find(x=>x.recomendado);planSel=rec?rec.id:"publicacion";pintaPlanes(r.recomendacion)}
+function pintaPlanes(rs){$("#planes").innerHTML=rs.map(x=>`<div class="plan ${x.recomendado?"rec":""} ${x.id==planSel?"sel":""}" data-id="${x.id}"><input type="radio" name="plan" ${x.id==planSel?"checked":""} style="width:auto;margin-top:4px"><div>${x.recomendado?'<div class="tag">Le recomendamos</div>':""}<b>${E(x.nombre)}</b><div class="${x.recomendado?"":"no"}" style="font-size:14px">${E(x.porque)}</div></div><div class="p">${x.precio_eur===0?"Gratis":x.precio_eur==null?"Consúltenos":(x.desde?"desde ":"")+x.precio_eur+" €"}</div></div>`).join("");
+ document.querySelectorAll(".plan").forEach(el=>el.onclick=()=>{planSel=el.dataset.id;pintaPlanes(rs)})}
+$("#iabtn").onclick=async()=>{const b=$("#iabtn");b.disabled=true;b.textContent="Revisando…";$("#iares").innerHTML="";
+ try{const r=await post("ia",Object.assign(datos(),{email:$("#iaemail").value.trim()}));const x=r.ia;if(x.error)throw new Error(x.error);
+  $("#iares").innerHTML=`<h3>Titulares</h3><pre>${(x.titulares||[]).map(E).join("\n")}</pre><h3>Entradilla</h3><pre>${E(x.entradilla)}</pre><h3>Preguntas que le hará un periodista</h3><pre>${(x.preguntas_periodista||[]).map(E).join("\n")}</pre>${(x.riesgos||[]).length?"<h3>Frases que un periodista no daría por buenas</h3><pre>"+x.riesgos.map(E).join("\n")+"</pre>":""}<h3>Versión recortada</h3><pre>${E(x.recortada)}</pre><p><button class="b2" id="usar">Usar esta versión en el texto</button></p>`;
+  $("#usar").onclick=()=>{$("#cue").value=x.recortada;if(x.titulares&&x.titulares[0])$("#tit").value=x.titulares[0];$("#s1").scrollIntoView({behavior:"smooth"})}}
+ catch(e){$("#iares").innerHTML='<p class="err">'+E(e.message)+"</p>"}finally{b.disabled=false;b.textContent="Revisar con IA"}};
+$("#enviar").onclick=async()=>{$("#e4").textContent="";const b=$("#enviar");b.disabled=true;
+ try{const d=datos();const r=await post("enviar",Object.assign(d,{plan:planSel,embargo_hasta:$("#emb").value||null,acepta_condiciones:$("#cond").checked,acepta_comunicaciones:$("#com").checked,
+  cliente:{nombre:$("#nom").value.trim(),cargo:$("#car").value.trim(),email:$("#mail").value.trim(),telefono:$("#tel").value.trim(),web:$("#web").value.trim()}}));
+  $("#hecho").innerHTML='<div class="ok"><b>Nota recibida.</b> '+E(r.mensaje)+"</div>";b.textContent="Enviada"}
+ catch(e){$("#e4").textContent=e.message;b.disabled=false}};
+</script>
+</body>
+</html>
