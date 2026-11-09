@@ -87,6 +87,8 @@ Lo que ya está en `plataforma-v1` (sala de redacción, suscripciones, CRM, camp
 
 ### 4.1 Sala de prensa (`notas-de-prensa-v1`)
 
+**Actualización del 9-11-2026:** adelantado y ampliado por el cambio `sala-de-prensa-v1`, unido a la base de prensa (`prensa-y-medios`): asesor de comunicación y recomendador honesto, difusión con filtro de valor, informe de repercusión verificado y tarifas de lanzamiento confirmadas. Manda `openspec/changes/sala-de-prensa-v1/` sobre lo que sigue.
+
 **Para qué.** Es la puerta de entrada a las empresas. Quien envía una nota deja organización, responsable de comunicación, correo y teléfono profesional: la base de contactos crece con quien tiene interés en hablar con el sector. Y la valoración de la nota es un servicio que ningún medio español ofrece.
 
 **Lo que verá el usuario.** En `moticias.com/notas-de-prensa/`, una sección con los comunicados tal cual, cada uno con la marca «Comunicado de empresa · no es contenido editorial», la organización, la fecha y los documentos adjuntos. Un formulario de envío (en `app.moticias.com/prensa/enviar`, incrustado en la página de Ghost) y un buzón `prensa@moticias.com` (Hostinger Mail, ya conectado) que un agente vacía dos veces al día.

@@ -10,7 +10,7 @@ Perfiles (decisiones de Rainer, 9-11-2026; los suscriptores y la redacción de G
   jefe» (9-11-2026, tarde): los demás proponen y él publica.
 - editor: propone cajas en las piezas y trabaja en el CRM (fuentes, medios); ve suscriptores.
 - comercial: propone publicidad y patrocinios y trabaja en el CRM con sus contratos; ve suscriptores.
-- oficina: propone cajas y trabaja en el CRM; ve suscriptores.
+- oficina: propone cajas y trabaja en el CRM; ve suscriptores; aprueba y envía las notas de prensa pagadas de clientes (no las de MOTICIAS).
 Nadie salvo el superadministrador ve ni cambia el equipo. Nunca se borra a nadie: se suspende.
 Los datos de las personas viven en la base privada del gestor (Supabase «moticias», tabla `equipo`) y, si no está
 configurada, en el repositorio privado `movo-es/moticias-equipo`.
@@ -22,7 +22,7 @@ PERFILES = {
                    "permisos": ["piezas", "redaccion", "productos", "publicidad", "equipo", "suscriptores", "crm", "contratos", "proponer"]},
     "editor": {"nombre": "Editor", "permisos": ["proponer", "crm", "suscriptores"]},
     "comercial": {"nombre": "Comercial", "permisos": ["proponer", "crm", "contratos", "suscriptores"]},
-    "oficina": {"nombre": "Oficina", "permisos": ["proponer", "crm", "suscriptores"]},
+    "oficina": {"nombre": "Oficina", "permisos": ["proponer", "crm", "suscriptores", "notas_clientes"]},  # notas_clientes: aprueba y envía notas de prensa pagadas de clientes (decisión de Rainer, 9-11-2026)
 }
 ITERACIONES = 210_000
 DIAS_INVITACION = 7

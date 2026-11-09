@@ -1706,5 +1706,264 @@
     "nota": "El 9-11-2026 buq.es solo se ve con sesión (401 para el público y robots.txt cerrado) y anuncia «desde diciembre»: no se enlaza ni se declara en los datos estructurados hasta que abra. Al abrir: poner publica: true y el producto buq en activo."
    }
   ]
+ },
+ "prensa": {
+  "nota": "Sala de prensa (cambio sala-de-prensa-v1, 9-11-2026, unido a prensa-y-medios). Tarifas de lanzamiento confirmadas por Rainer el 9-11-2026 (más IVA). Destinatarios: la base de prensa (Supabase, medios y periodistas); pedidos en prensa_notas; nunca datos personales en este repositorio.",
+  "tarifas_publicas": true,
+  "remitente": {
+   "nota": "El remitente real es el de src/prensa.py (PRENSA_REMITENTE en Vercel); prensa@moticias.com recibe las notas."
+  },
+  "aviso_director": "ruphoff@avionline.es",
+  "ghost": {
+   "tag_publica": "notas-de-prensa",
+   "tag_interna": "#comunicado",
+   "autor": "Comunicado",
+   "newsletter": "notas-de-prensa",
+   "prefijo_label_b2c": "np-",
+   "ruta_lista": "/notas-de-prensa/"
+  },
+  "marca": {
+   "etiqueta": "Nota de prensa",
+   "aviso": "Comunicado de empresa · no es contenido editorial de MOTICIAS",
+   "aviso_grupo": "Empresa del grupo editor"
+  },
+  "planes": [
+   {
+    "id": "publicacion",
+    "nombre": "Publicación",
+    "precio_eur": 0,
+    "incluye": [
+     "Ficha en /notas-de-prensa/, segmentada por modo, tema y comunidad",
+     "Aparece en el buscador de MOTICIAS",
+     "Asesor de comunicación automático",
+     "Enlace permanente con datos estructurados"
+    ],
+    "para_quien": "Cualquier comunicado con hecho noticiable; también los de ámbito local"
+   },
+   {
+    "id": "difusion",
+    "nombre": "Difusión sectorial",
+    "precio_eur": 190,
+    "incluye": [
+     "Todo lo de Publicación",
+     "Envío individual a los medios, newsletters y periodistas del segmento que pasan el filtro de valor",
+     "Inclusión en el boletín semanal «Notas de prensa» para los lectores que lo pidieron en ese sector",
+     "Publicación en los canales sociales de MOTICIAS",
+     "Informe de repercusión a 14 días"
+    ],
+    "para_quien": "Hecho noticiable con interés más allá de su municipio y audiencia suficiente en el segmento",
+    "requiere": {
+     "puntuacion_min": 60,
+     "destinatarios_min": 15
+    }
+   },
+   {
+    "id": "difusion-plus",
+    "nombre": "Difusión Plus",
+    "precio_eur": 390,
+    "incluye": [
+     "Todo lo de Difusión sectorial",
+     "Revisión de la nota por un editor antes del envío",
+     "Destacada 7 días en la lista de notas de prensa",
+     "Envío también a periodistas de medios generalistas y regionales del territorio",
+     "Informe de repercusión a 30 días con análisis de mensajes y recomendaciones"
+    ],
+    "para_quien": "Lanzamientos, contratos o resultados con interés regional o estatal",
+    "requiere": {
+     "puntuacion_min": 70,
+     "destinatarios_min": 30
+    }
+   },
+   {
+    "id": "bono",
+    "nombre": "Bono anual",
+    "precio_eur": 1900,
+    "incluye": [
+     "12 Difusiones sectoriales en 12 meses",
+     "Una Difusión Plus",
+     "Ficha de empresa en la sala de prensa con histórico",
+     "Informe anual de repercusión"
+    ],
+    "para_quien": "Organizaciones que comunican al menos una vez al mes"
+   }
+  ],
+  "visibilidad": [
+   {
+    "id": "patrocinado",
+    "nombre": "Contenido patrocinado",
+    "desde_eur": 450,
+    "que_es": "Pieza propia del cliente o redactada a petición, señalizada «Contenido patrocinado», con su enlace y sin pasar por el filtro editorial",
+    "cuando_conviene": "Cuando el objetivo es explicar o vender un producto o servicio, no anunciar un hecho noticiable",
+    "cuando_no": "Cuando hay un hecho noticiable: la nota de prensa rinde más y cuesta menos"
+   },
+   {
+    "id": "publicidad",
+    "nombre": "Publicidad en secciones",
+    "desde_eur": 300,
+    "que_es": "Hueco señalizado en las secciones y piezas del modo y comunidad elegidos (gestor de publicidad), por periodo",
+    "cuando_conviene": "Para presencia sostenida de marca ante un segmento durante semanas",
+    "cuando_no": "Para un anuncio puntual de un hecho: el lector lo trata como publicidad y lo ignora"
+   }
+  ],
+  "filtro_valor": {
+   "puntuacion_min_difusion": 60,
+   "relevancia_min_destinatario": 3,
+   "max_envios_semana": {
+    "periodista": 2,
+    "redaccion": 3
+   },
+   "b2c_formato": "resumen semanal por el boletín «Notas de prensa» de Ghost (martes), un correo por modo a quien tiene la etiqueta np-<modo>; nunca un envío por nota",
+   "hora_envio": "laborables entre 08:30 y 11:30, nunca fines de semana ni festivos nacionales",
+   "aprobacion": "editor jefe; la oficina también en notas de prensa pagadas de clientes (decisión de Rainer, 9-11-2026)"
+  },
+  "asesor": {
+   "titular_max": 90,
+   "titular_ideal": [
+    55,
+    80
+   ],
+   "entradilla_max_palabras": 60,
+   "cuerpo_ideal_palabras": [
+    300,
+    650
+   ],
+   "cuerpo_max_palabras": 900,
+   "parrafo_max_palabras": 80,
+   "palabras_humo": [
+    "líder",
+    "lider",
+    "pionero",
+    "pionera",
+    "revolucionario",
+    "revolucionaria",
+    "único",
+    "única",
+    "innovador",
+    "innovadora",
+    "referente",
+    "disruptivo",
+    "disruptiva",
+    "vanguardia",
+    "excelencia",
+    "de primer nivel",
+    "el mejor",
+    "la mejor",
+    "sin precedentes",
+    "inigualable",
+    "puntero",
+    "puntera",
+    "de referencia",
+    "apuesta decidida",
+    "firme compromiso",
+    "comprometidos con",
+    "orgullosos",
+    "orgullosas",
+    "ilusión",
+    "encantados",
+    "solución integral",
+    "valor añadido",
+    "sinergias",
+    "ecosistema",
+    "holístico"
+   ],
+   "anglicismos": [
+    "partner",
+    "stakeholder",
+    "stakeholders",
+    "engagement",
+    "insights",
+    "roadmap",
+    "kick-off",
+    "kick off",
+    "know-how",
+    "target",
+    "feedback",
+    "smart",
+    "hub",
+    "best-in-class",
+    "game changer",
+    "end-to-end",
+    "player",
+    "players",
+    "networking",
+    "workshop",
+    "partnership"
+   ],
+   "fechas_relativas": [
+    "hoy",
+    "mañana",
+    "ayer",
+    "esta semana",
+    "la próxima semana",
+    "este mes",
+    "el próximo mes",
+    "recientemente",
+    "próximamente",
+    "en breve"
+   ],
+   "superlativos_a_probar": [
+    "el primero",
+    "la primera",
+    "el mayor",
+    "la mayor",
+    "el más",
+    "la más",
+    "el único",
+    "la única",
+    "récord",
+    "nunca antes"
+   ]
+  },
+  "impacto": {
+   "nota": "Método del informe de repercusión: docs/prensa/metodo-repercusion.md. Sin valor publicitario equivalente (AVE): los Principios de Barcelona 3.0 de AMEC lo descartan. Los coeficientes son hipótesis de método declaradas al cliente, no datos medidos; se revisan con los datos propios de Brevo y Ghost.",
+   "calendario_dias": [
+    1,
+    2,
+    3,
+    5,
+    7,
+    10,
+    14,
+    21,
+    30
+   ],
+   "umbral_reproduccion": 0.5,
+   "umbral_adaptacion": 0.15,
+   "tamano_huella": 6,
+   "coeficientes": {
+    "web": {
+     "base": "usuarios únicos mensuales declarados",
+     "lectura_pieza": [
+      0.002,
+      0.01
+     ],
+     "explicacion": "Entre el 0,2 % y el 1 % de los usuarios únicos mensuales del medio ve una pieza concreta de su sección de noticias (hipótesis prudente para medios sectoriales)"
+    },
+    "newsletter": {
+     "base": "suscriptores declarados",
+     "apertura": [
+      0.25,
+      0.45
+     ],
+     "explicacion": "Tasa de apertura habitual de boletines B2B sectoriales; si el medio declara la suya, se usa la suya"
+    },
+    "red-social": {
+     "base": "impresiones que muestra la plataforma",
+     "lectura_pieza": [
+      1,
+      1
+     ],
+     "explicacion": "Se usan las impresiones reales que da la plataforma; sin ese dato, no se estima"
+    },
+    "agencia": {
+     "base": "piezas derivadas detectadas",
+     "lectura_pieza": [
+      0,
+      0
+     ],
+     "explicacion": "Una agencia no tiene audiencia propia: cuentan las reproducciones detectadas en sus clientes"
+    }
+   }
+  }
  }
 }

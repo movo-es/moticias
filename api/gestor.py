@@ -1099,8 +1099,12 @@ def accion_prensa(ses, d, base):
             eid, n = PR.crear_envio(quien, d)
             return 200, {"ok": True, "id": eid, "destinatarios": n}
         elif acc == "envio_enviar":
-            if not jefe:
-                return 403, {"error": "solo el editor jefe aprueba y envía"}
+            # La oficina aprueba y envía las notas de prensa pagadas de clientes (sala de prensa; decisión de Rainer,
+            # 9-11-2026); los envíos en nombre de MOTICIAS siguen siendo solo del editor jefe.
+            e = (PR.envio(int(d.get("id") or 0)) or {}).get("envio") or {}
+            de_cliente = e.get("tipo") == "nota_de_prensa" and e.get("por_cuenta_de")
+            if not (jefe or ("notas_clientes" in per and de_cliente)):
+                return 403, {"error": "solo el editor jefe aprueba y envía" + ("" if de_cliente else " los envíos de MOTICIAS")}
             return 200, dict(PR.enviar(quien, int(d.get("id") or 0), base), ok=True)
         elif acc == "envio_anular":
             BD.actualizar("prensa_envios", {"id": "eq.%d" % int(d.get("id") or 0), "estado": "in.(borrador,aprobado)"}, {"estado": "anulado"})

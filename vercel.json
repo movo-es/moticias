@@ -6,6 +6,10 @@
   "api/gestor.py": {
    "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques,portal/data}/**",
    "maxDuration": 300
+  },
+  "api/prensa.py": {
+   "includeFiles": "{src,verticals,data/notas-de-prensa,data/articles}/**",
+   "maxDuration": 120
   }
  },
  "headers": [
@@ -49,6 +53,19 @@
     {
      "key": "Cache-Control",
      "value": "public, max-age=300, stale-while-revalidate=86400"
+    }
+   ]
+  },
+  {
+   "source": "/prensa/(.*)",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    },
+    {
+     "key": "X-Frame-Options",
+     "value": "SAMEORIGIN"
     }
    ]
   }
