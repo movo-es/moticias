@@ -2,7 +2,7 @@
 
 Nota pública   → data/notas-de-prensa/<id>.json  (lo que se publica; sin correo ni teléfono de nadie salvo el contacto de
                  prensa que el propio emisor publica en su nota).
-Pedido privado → tabla prensa_notas de la base privada (migración 006): cliente (cuenta y persona del CRM), plan,
+Pedido privado → tabla prensa_notas de la base privada (migración 007): cliente (cuenta y persona del CRM), plan,
                  valoración, verificación, envío asociado (prensa_envios) e informe. Coberturas en prensa_coberturas.
 Destinatarios  → la base de prensa (medios, periodistas; src/prensa.py), filtrada por src/prensa_valor.py.
 """

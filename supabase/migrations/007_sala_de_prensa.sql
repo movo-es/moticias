@@ -1,8 +1,8 @@
 -- =====================================================================
--- MOTICIAS · 006 · SALA DE PRENSA SOBRE LA BASE DE PRENSA (9 nov 2026)
+-- MOTICIAS · 007 · SALA DE PRENSA SOBRE LA BASE DE PRENSA (9 nov 2026)
 --
 -- Cambio `sala-de-prensa-v1` unido a `prensa-y-medios` (decisión de Rainer, 9-11-2026: «lo unes tú sobre su base»).
--- Requiere la 005_prensa_medios (medios, periodistas, prensa_envios, prensa_destinatarios, prensa_coberturas).
+-- Requiere la 005_prensa_medios y la 006_prensa_cargar (medios, periodistas, prensa_envios, prensa_destinatarios, prensa_coberturas).
 --
 -- · prensa_notas: el pedido de cada nota de un cliente (o del grupo): texto recibido, cliente (cuenta y persona del CRM),
 --   plan, valoración del asesor, verificación del emisor, consentimientos, envío asociado y publicación. El texto

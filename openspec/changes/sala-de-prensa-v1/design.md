@@ -1,6 +1,6 @@
 # Diseño: sala-de-prensa-v1
 
-**Unión con `prensa-y-medios` (9-11-2026, noche; decisión de Rainer: «lo unes tú sobre su base»).** No hay lista de contactos propia de la sala de prensa: los destinatarios son los medios y periodistas de la base de prensa (Supabase «moticias», migración 005, `src/prensa.py`); el plan de difusión es un envío en borrador de esa base y se aprueba y envía en la pestaña «Prensa» del gestor; las coberturas verificadas van a `prensa_coberturas`; los pedidos, a `prensa_notas` (migración 006). Donde este documento dice otra cosa, manda este párrafo.
+**Unión con `prensa-y-medios` (9-11-2026, noche; decisión de Rainer: «lo unes tú sobre su base»).** No hay lista de contactos propia de la sala de prensa: los destinatarios son los medios y periodistas de la base de prensa (Supabase «moticias», migración 005, `src/prensa.py`); el plan de difusión es un envío en borrador de esa base y se aprueba y envía en la pestaña «Prensa» del gestor; las coberturas verificadas van a `prensa_coberturas`; los pedidos, a `prensa_notas` (migración 007). Donde este documento dice otra cosa, manda este párrafo.
 
 Respuesta corta: la nota entra (formulario o buzón), el asesor la puntúa y recomienda un plan, se publica marcada en `/notas-de-prensa/` con los tres ejes, y si el cliente paga difusión sale a los contactos que pasan tres filtros de valor, con aprobación humana. Desde ese día, `/prensa-impacto` busca lo que se publica a raíz de ella y el cliente recibe un informe con cada impacto probado, su alcance con fuente y una estimación de impactos con método declarado.
 
@@ -24,10 +24,10 @@ buzón prensa@ ─► /prensa-buzon ──────────────�
 | Dato | Dónde |
 |---|---|
 | Nota publicada (título, cuerpo, organización, ejes, fechas, huellas) | `data/notas-de-prensa/<id>.json` (público) |
-| Pedido: cliente (cuenta y persona del CRM), plan, valoración del asesor, verificación, consentimientos, envío, candidatos y métricas del informe | `prensa_notas` (migración 006) |
+| Pedido: cliente (cuenta y persona del CRM), plan, valoración del asesor, verificación, consentimientos, envío, candidatos y métricas del informe | `prensa_notas` (migración 007) |
 | Medios, periodistas, redacciones, audiencias declaradas con fuente | base de prensa (`medios`, `periodistas`; migración 005) |
 | Difusión: envío, destinatarios con su motivo, estados de Brevo | `prensa_envios`, `prensa_destinatarios` (005) |
-| Impactos verificados | `prensa_coberturas` (005, ampliada en la 006 con tipo, estado, evidencia, contención y revisión) |
+| Impactos verificados | `prensa_coberturas` (005, ampliada en la 007 con tipo, estado, evidencia, contención y revisión) |
 
 ## 3. Bases legales
 

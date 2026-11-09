@@ -8,7 +8,7 @@ Rainer: «Crea una plataforma de difusión de noticias y notas de prensa. A un c
 
 ## Qué cambia
 
-**Unido a `prensa-y-medios` el 9-11-2026 (noche)**: la base de contactos, los envíos y las coberturas son los de la base de prensa de Supabase; la sala de prensa pone encima el asesor, el filtro de valor, la página de clientes, los pedidos (`prensa_notas`, migración 006) y el informe. Los puntos 4 y 5 quedan así.
+**Unido a `prensa-y-medios` el 9-11-2026 (noche)**: la base de contactos, los envíos y las coberturas son los de la base de prensa de Supabase; la sala de prensa pone encima el asesor, el filtro de valor, la página de clientes, los pedidos (`prensa_notas`, migración 007) y el informe. Los puntos 4 y 5 quedan así.
 
 1. **Lista pública «Notas de prensa»** en `moticias.com/notas-de-prensa/`, con los tres ejes de siempre (modo · tema · territorio, `verticals/movilidad.json → taxonomia`): cada nota lleva las etiquetas `m-`, `tema-` y `t-`, así que se filtra igual que las piezas. Marca visible «Nota de prensa · Comunicado de empresa · no es contenido editorial de MOTICIAS». Nunca en la portada editorial ni en el boletín diario (regla de siempre).
 2. **Asesor de comunicación virtual** (`src/prensa_asesor.py`; página `app.moticias.com/prensa/`): puntúa la nota en cinco dimensiones (noticiabilidad, estructura, claridad, tono, datos y verificabilidad), señala cada problema con la frase concreta, propone titular y entradilla answer-first, y dice lo que falta. Con la API de Claude, además, reescritura sugerida que **no añade hechos** (los huecos se marcan `[DATO]`).
