@@ -1,8 +1,13 @@
 <style>
-/* MOTICIAS · claim visible en móvil (provisional hasta versionar el tema) */
+/* MOTICIAS · ajustes provisionales hasta versionar el tema. Fuente de verdad: ghost/inyeccion-cabecera.html;
+   lo sube src/ghost_edicion.py --inyeccion (Settings → Code injection → Site header). */
+/* Claim visible en móvil */
 @media (max-width: 560px) {
   .masthead .logo { flex: 1 1 auto; min-width: 0; max-width: 100%; }
   .masthead .logo-compact { display: none !important; }
   .masthead .logo-full { display: block !important; width: 100% !important; max-width: 420px; height: auto !important; }
 }
+/* El resumen de la edición no va bajo el título (decisión de Rainer, 9-11-2026): el tema lo pintaba desde la
+   descripción de la página «edicion-hoy»; ahora va al final de la edición, en pequeño (p.m-resumen-ed). */
+.home-template .edition-head .answer { display: none !important; }
 </style>

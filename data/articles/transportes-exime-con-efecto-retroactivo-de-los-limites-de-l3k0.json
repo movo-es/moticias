@@ -64,6 +64,23 @@
  "key_fact": "Conducción diaria de hasta 11 horas para los autobuses del corte de Urda entre el 28 de octubre y el 1 de noviembre",
  "kicker": "Tiempos de conducción · Autobús",
  "kind": "noticia",
+ "menciones": [
+  {
+   "cta": "Cómo trabaja Movenbus con operadores y contratantes",
+   "en_web": "2026-11-09T13:02+01:00",
+   "estado": "publicada",
+   "exclusividad": "compartida",
+   "motivo": "subsector autobús; sección tierra; «transporte alternativo»; autobús (cabecera); autobuses (cabecera); discrecional; planes alternativos (cabecera); sustitución; lotes",
+   "nombre": "Movenbus",
+   "origen": "automatica",
+   "posicion": "estandar",
+   "producto": "movenbus",
+   "propuesta_en": "2026-11-09T13:02+01:00",
+   "puntuacion": 15,
+   "texto": "Coordinar decenas de autocares de pymes distintas para un mismo contratante —un plan alternativo de transporte, una sustitución por obras, un gran evento— es el problema que resuelve Movenbus: una sola interlocución que agrupa operadores pequeños y medianos de toda España.",
+   "url": "https://movenbus.com?utm_source=moticias&utm_medium=contenido-patrocinado&utm_campaign=moticias-nota-de-la-casa-movenbus&utm_content=transportes-exime-con-efecto-retroactivo-de-los-limites-de-l3k0"
+  }
+ ],
  "modo": "tierra",
  "next": "Recurso de alzada hasta el 9 de diciembre. El 10 de noviembre vence la limitación de precios del transporte alternativo, salvo prórroga del Consejo de Ministros. El plan de Renfe por carretera está previsto hasta el 12 de noviembre. El artículo 14.2 permite ampliar la excepción hasta treinta días si el Ministerio lo motiva y lo comunica a Bruselas.",
  "published_at": "2026-11-09T08:35:29+01:00",

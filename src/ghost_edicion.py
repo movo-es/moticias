@@ -109,7 +109,9 @@ def construir(dia, vertical):
     publicadas = [a for a in arts.values() if a.get("date") == dia and a.get("status") == "publicado"]  # las del día que van a la web
     lead = arts.get(ed.get("lead_id")) or {}
 
-    h = ['<div class="m-ed" data-date="%s">' % e(dia)]
+    # Todo el cuerpo va como una sola tarjeta HTML de Ghost (marcas kg-card-begin/end): sin ellas, Ghost convierte el HTML
+    # a su editor y pierde clases, atributos data-* y las secciones, y el tema deja de pintar el mapa y los bloques.
+    h = ['<!--kg-card-begin: html-->', '<div class="m-ed" data-date="%s">' % e(dia)]
     # Teletipo del BOE (el tema lo sube bajo la cabecera).
     h.append('<div class="m-ticker"><span class="m-ticker-label">%s %s</span><ul>%s</ul></div>' % (
         e(ed.get("ticker_label") or "Boletines"), e(corta(dia)),
@@ -164,8 +166,12 @@ def construir(dia, vertical):
     h.append('<p class="m-resumen-ed" style="font-size:.8em;opacity:.7;margin-top:1.5em">%s</p>' % e(resumen))
     h.append('<p class="m-fin-ed">FIN DE EDICIÓN · %s, %s CET</p>' % (e(sin_dia(dia)), e(ed.get("closed_at") or "")))
     h.append("</div>")
+    h.append("<!--kg-card-end: html-->")
     pagina = {"title": "Edición nº %s · %s" % (ed.get("number"), larga(dia)), "custom_excerpt": "Cierre %s CET" % (ed.get("closed_at") or ""),
-              "meta_description": "", "html": "\n".join(h)}
+              # Un espacio de anchura cero: con la descripción vacía, Ghost pinta en su lugar la descripción del sitio, y el tema
+              # la mostraba bajo el título. Hasta que el tema versionado quite ese párrafo (y la regla CSS de
+              # ghost/inyeccion-cabecera.html lo oculte), así queda en blanco.
+              "meta_description": "\u200b", "html": "\n".join(h)}
     return pagina, {"piezas": len(publicadas), "boletines": len(bols), "plazos": len(plazos), "con_lugar": len(con_lugar), "resumen": resumen}
 
 
@@ -183,13 +189,34 @@ def subir(pagina, base_url, token):
     return {"id": p["id"], "url": p.get("url"), "updated_at": p.get("updated_at")}, None
 
 
+def subir_inyeccion(base_url, token):
+    """Sube ghost/inyeccion-cabecera.html y ghost/inyeccion-pie.html a Settings → Code injection (la clave de integración
+    puede editar ajustes, pero no el tema: los temas solo se suben desde el panel con sesión de usuario)."""
+    base = admin_base(base_url)
+    cab = open(os.path.join(ROOT, "ghost", "inyeccion-cabecera.html"), encoding="utf-8").read().strip()
+    pie = open(os.path.join(ROOT, "ghost", "inyeccion-pie.html"), encoding="utf-8").read().strip()
+    st, r = api("PUT", base + "/ghost/api/admin/settings/", token,
+                {"settings": [{"key": "codeinjection_head", "value": cab}, {"key": "codeinjection_foot", "value": pie}]})
+    return st, (None if st == 200 else r)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", required=True)
+    ap.add_argument("--date", help="AAAA-MM-DD de la edición (obligatorio salvo con --inyeccion)")
     ap.add_argument("--vertical", default="movilidad")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--inyeccion", action="store_true", help="sube solo ghost/inyeccion-*.html a Code injection, sin tocar la página")
     a = ap.parse_args()
     vertical = json.load(open(os.path.join(ROOT, "verticals", a.vertical + ".json"), encoding="utf-8"))
+    if a.inyeccion:
+        key = os.environ.get("GHOST_ADMIN_KEY")
+        if not key or ":" not in key:
+            sys.exit("Falta GHOST_ADMIN_KEY (id:secret) en el entorno")
+        base_url = os.environ.get("GHOST_URL", "https://%s" % vertical.get("domain", "")).rstrip("/")
+        st, err = subir_inyeccion(base_url, ghost_token(key))
+        print(json.dumps({"inyeccion": "subida" if st == 200 else "error", "detalle": err}, ensure_ascii=False)); return
+    if not a.date:
+        sys.exit("Falta --date AAAA-MM-DD")
     pagina, cifras = construir(a.date, vertical)
     os.makedirs(os.path.join(ROOT, "work", "ghost"), exist_ok=True)
     with open(os.path.join(ROOT, "work", "ghost", SLUG + ".html"), "w", encoding="utf-8") as fh:
