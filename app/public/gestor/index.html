@@ -151,6 +151,7 @@ async function arrancar() {
   if (p) return abrirPieza(p, true);
   if (volverAlSitio() && jefe()) { location.href = volverAlSitio(); return; }  // entró desde moticias.com#editor: vuelve con sus herramientas
   const v = params().get("vista"); if (v && $(`#nav [data-v="${v}"]`)) vista = v;
+  const en = params().get("envio"); if (en && puede("crm")) { vista = "prensa"; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === "prensa")); return verEnvio(en); }  // enlace del aviso de la sala de prensa
   ir(vista);
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
@@ -799,7 +800,7 @@ async function verEnvio(id) {
   app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p><div class="card"><span class="mute">${E(C.envios[e.tipo] || e.tipo)} · ${E(e.estado)}${e.enviado_at ? " · enviado el " + E(e.enviado_at.slice(0, 16).replace("T", " ")) : ""}</span><h1>${E(e.asunto)}</h1>
     <div class="prev">${md(e.cuerpo || "")}${e.pieza_url ? `<p>${enlace(e.pieza_url)}</p>` : ""}</div>
     <div class="kpi" style="margin:10px 0">${Object.entries(d.estados).map(([k, n]) => `<div><b>${n}</b><span class="mute">${E(k)}</span></div>`).join("")}</div>
-    <div class="row">${["borrador", "aprobado"].includes(e.estado) && jefe() ? `<button class="b" id="x-env">Aprobar y enviar a ${d.destinatarios.filter(x => x.estado === "pendiente").length}</button>` : ""}
+    <div class="row">${["borrador", "aprobado"].includes(e.estado) && (jefe() || (puede("notas_clientes") && e.tipo === "nota_de_prensa" && e.por_cuenta_de)) ? `<button class="b" id="x-env">Aprobar y enviar a ${d.destinatarios.filter(x => x.estado === "pendiente").length}</button>` : ""}
     ${["borrador", "aprobado"].includes(e.estado) ? `<button class="b2 bad" id="x-anu">Anular</button>` : ""}${e.estado === "enviado" ? `<button class="b2" id="x-sync">Actualizar estados</button>` : ""}</div>
     ${["borrador", "aprobado"].includes(e.estado) && !jefe() ? `<p class="mute">Lo aprueba y lo envía el editor jefe.</p>` : ""}</div>
     <div class="card"><h2>Destinatarios (${d.destinatarios.length})</h2>${d.destinatarios.map(x => `<div class="paso"><div>${E((x.crm_personas || {}).nombre || "Buzón")} · ${E((x.crm_cuentas || {}).nombre || "")}<br><span class="mute">${E(x.correo)} · ${E(x.estado)}</span></div>${e.estado === "enviado" && x.estado !== "respondido" ? `<button class="b2" data-r="${x.id}" data-c="${x.cuenta_id || ""}" data-p="${x.persona_id || ""}">Respondió</button>` : ""}</div>`).join("")}</div>`;
