@@ -59,5 +59,11 @@
    "destination": "/gestor/",
    "permanent": false
   }
+ ],
+ "crons": [
+  {
+   "path": "/api/gestor?a=prensa_cron",
+   "schedule": "45 14 * * 3"
+  }
  ]
 }
