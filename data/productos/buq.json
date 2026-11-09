@@ -1,23 +1,52 @@
 {
- "contexto": "Por confirmar con Rainer: buq.es no es público todavía (401 el 9-11-2026). No se menciona mientras esté en borrador.",
+ "contexto": "Queremos aparecer cuando la noticia trate de turismo en grupo, excursiones y viajes en autocar, turismo escolar, de mayores o de asociaciones, incentivos y MICE, y turismo de temporada baja. No mientras buq.es no esté abierto al público (en borrador; empieza en diciembre de 2026).",
  "disparadores": {
-  "frases": [],
-  "palabras_clave": []
+  "frases": [
+   "viajes en grupo",
+   "turismo de grupos",
+   "excursiones en autocar",
+   "turismo escolar",
+   "viajes de estudios"
+  ],
+  "palabras_clave": [
+   "excursión",
+   "excursiones",
+   "grupo",
+   "grupos",
+   "turismo",
+   "MICE",
+   "incentivos",
+   "autocar",
+   "temporada baja"
+  ],
+  "secciones": [
+   "turismo",
+   "tierra"
+  ],
+  "subsectores": [
+   "autobús",
+   "carretera"
+  ]
  },
- "excluir": [],
+ "excluir": [
+  "BUQ",
+  "Movenbus",
+  "Avionline"
+ ],
  "exclusividad": "compartida",
  "id": "buq",
  "max_por_semana": 3,
  "modo": "apagado",
- "name": "BUQ · turismo",
- "one_liner": "Turismo.",
+ "name": "BUQ · viajes en grupo",
+ "one_liner": "BUQ organiza salidas y viajes en grupo en autocar, con fecha y mínimo claro, en los que cada persona paga lo suyo.",
  "owner": "Avionline S.L.",
+ "posicion": "referencia",
  "status": "borrador",
  "textos": {
-  "corto": "Turismo.",
-  "cta": "Conocer BUQ"
+  "corto": "BUQ organiza salidas y viajes en grupo en autocar, con fecha y mínimo claro: cada persona reserva y paga su plaza desde el enlace del grupo.",
+  "cta": "Ver salidas en BUQ"
  },
  "umbral": 10,
- "updated_at": "2026-11-09T18:30+01:00",
+ "updated_at": "2026-11-09T20:15+01:00",
  "url": "https://buq.es"
 }

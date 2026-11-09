@@ -13,4 +13,5 @@
 - [x] Inyección de cabecera de Ghost con el bloque de organización y página `/empresas-del-grupo/` publicadas el 9-11-2026 (copia en `ghost/paginas/`); datos estructurados válidos.
 - [ ] (Pendiente de la aprobación de Rainer: el sistema no deja cambiar las tareas programadas sin ella) Tarea «retoques» con el paso de noticias del gestor; prompt de la edición diaria con la firma con apellido y cupo.
 - [ ] Republicar en Ghost las piezas firmadas por el director (nota de intereses con apellido) y todas para el JSON-LD nuevo (rutina de mañana o «Volver a subir»).
-- [ ] Rainer: una frase para Avionline y otra para BUQ, y cuándo debe salir cada una; abrir buq.es.
+- [x] Avionline y BUQ redactados a partir de avionline.es y buq.es (9-11-2026): Avionline activo «con revisión» (autoridades y consorcios de transporte, digitalización, redes, crisis); BUQ en borrador hasta que buq.es abra al público (hoy 401 y robots cerrado; anuncia «desde diciembre»).
+- [ ] Al abrir buq.es: `grupo.marcas[buq].publica: true`, producto `buq` activo, `python3 -I src/ghost_grupo.py --publicar` y bloque de organización de la cabecera.
