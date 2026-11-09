@@ -1649,7 +1649,7 @@
   "editor": {
    "nombre": "Avionline S.L.",
    "url": "https://avionline.es",
-   "descripcion": "Sociedad editora de MOTICIAS y titular del grupo; innovación en movilidad y turismo."
+   "descripcion": "Sociedad editora de MOTICIAS. Diseña, digitaliza y opera sistemas de transporte público («Innovando la movilidad desde Canarias»), con sede en Santa Cruz de Tenerife y oficina en Granada; titular de MUFMI, MOVENBUS, MOVO y BUQ."
   },
   "marcas": [
    {
@@ -1657,7 +1657,7 @@
     "nombre": "MOVO",
     "url": "https://movo.es",
     "especialidad": "planes de movilidad sostenible al trabajo (PMST) y consultoría de movilidad",
-    "descripcion": "Plataforma y consultoría para que empresas y administraciones elaboren, negocien y presenten su plan de movilidad sostenible al trabajo.",
+    "descripcion": "Servicio digital que prepara los planes de movilidad sostenible al trabajo que exige la Ley 9/2025 a empresas y centros de trabajo, con consultoría de movilidad.",
     "productos": [
      "movo-pmst",
      "movo-licitaciones"
@@ -1668,7 +1668,7 @@
     "nombre": "Movenbus",
     "url": "https://movenbus.com",
     "especialidad": "soluciones tecnológicas y comerciales para el autobús por carretera",
-    "descripcion": "Plataforma que agrupa a pymes de autobús y autocar para cubrir servicios discrecionales con una sola interlocución.",
+    "descripcion": "Reserva y gestión en línea de servicios de autobús discrecional y de grupos, con operadores de autocar de toda España.",
     "productos": [
      "movenbus"
     ]
@@ -1678,7 +1678,7 @@
     "nombre": "MUFMI",
     "url": "https://mufmi.com",
     "especialidad": "transporte a la demanda",
-    "descripcion": "Transporte de viajeros a la demanda y servicios de movilidad para administraciones.",
+    "descripcion": "Transporte público a la demanda para territorios de baja densidad; su red recibió el Premio Nacional de Movilidad en 2021 (según Avionline).",
     "productos": [
      "mufmi"
     ]
@@ -1688,7 +1688,7 @@
     "nombre": "Avionline",
     "url": "https://avionline.es",
     "especialidad": "innovación en movilidad y turismo",
-    "descripcion": "Sociedad editora de MOTICIAS; innovación en movilidad y turismo.",
+    "descripcion": "Diseño, digitalización y operación de sistemas de transporte público para consorcios, cabildos y ayuntamientos (la autoridad de transporte como servicio), consultoría de innovación y reputación en crisis; en turismo, a través de BUQ.",
     "productos": [
      "avionline"
     ]
@@ -1697,13 +1697,13 @@
     "id": "buq",
     "nombre": "BUQ",
     "url": "https://buq.es",
-    "especialidad": "turismo",
-    "descripcion": "Turismo.",
+    "especialidad": "turismo y viajes en grupo",
+    "descripcion": "Salidas y viajes en grupo en autocar con fecha y mínimo claro, en los que cada persona paga lo suyo, para colegios, clubes, asociaciones y empresas; agrupa las propuestas irjuntos, bienvenido (receptivo y MICE), experiensia y tripinventor. Empieza en Granada, Málaga y Gran Canaria en diciembre de 2026.",
     "productos": [
      "buq"
     ],
     "publica": false,
-    "nota": "buq.es responde 401 (no público) el 9-11-2026: no se enlaza hasta que esté abierto."
+    "nota": "El 9-11-2026 buq.es solo se ve con sesión (401 para el público y robots.txt cerrado) y anuncia «desde diciembre»: no se enlaza ni se declara en los datos estructurados hasta que abra. Al abrir: poner publica: true y el producto buq en activo."
    }
   ]
  }

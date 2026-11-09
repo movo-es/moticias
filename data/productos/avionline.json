@@ -1,23 +1,66 @@
 {
- "contexto": "Por confirmar con Rainer: en qué noticias de innovación o turismo debe aparecer y con qué texto. No se menciona mientras esté en borrador.",
+ "contexto": "Queremos aparecer cuando la noticia trate de cómo una administración organiza, digitaliza o gestiona su transporte público: autoridades y consorcios de transporte, cabildos, rediseño de redes, integración tarifaria y billetaje, digitalización y automatización de la gestión, y gestión de crisis o reputación de operadores. Avionline diseña, digitaliza y opera esos sistemas (la autoridad de transporte como servicio). No queremos aparecer cuando la pieza trate de transporte a la demanda (eso es MUFMI), de autobús discrecional (Movenbus) ni de planes de movilidad al trabajo (MOVO), ni en piezas sobre el propio grupo.",
  "disparadores": {
-  "frases": [],
-  "palabras_clave": []
+  "frases": [
+   "autoridad de transporte",
+   "consorcio de transporte",
+   "integración tarifaria",
+   "red de transporte público",
+   "rediseño de la red",
+   "digitalización del transporte",
+   "billete único",
+   "título único"
+  ],
+  "palabras_clave": [
+   "consorcio",
+   "cabildo",
+   "autoridad",
+   "billetaje",
+   "tarifaria",
+   "digitalización",
+   "red de autobuses",
+   "horarios",
+   "planificación",
+   "crisis",
+   "reputación",
+   "innovación"
+  ],
+  "secciones": [
+   "tierra",
+   "regulacion",
+   "tecnologia"
+  ],
+  "subsectores": [
+   "autobús",
+   "urbano",
+   "carretera"
+  ]
  },
- "excluir": [],
+ "excluir": [
+  "a la demanda",
+  "discrecional",
+  "PMST",
+  "plan de movilidad",
+  "MUFMI",
+  "Movenbus",
+  "MOVO",
+  "Avionline",
+  "aéreo"
+ ],
  "exclusividad": "compartida",
  "id": "avionline",
- "max_por_semana": 3,
- "modo": "apagado",
- "name": "Avionline · innovación en movilidad y turismo",
- "one_liner": "Innovación en movilidad y turismo (sociedad editora de MOTICIAS).",
+ "max_por_semana": 2,
+ "modo": "revision",
+ "name": "Avionline · innovación en movilidad",
+ "one_liner": "Avionline diseña, digitaliza y opera sistemas de transporte público para consorcios, cabildos y ayuntamientos.",
  "owner": "Avionline S.L.",
- "status": "borrador",
+ "posicion": "referencia",
+ "status": "activo",
  "textos": {
-  "corto": "Innovación en movilidad y turismo (sociedad editora de MOTICIAS).",
+  "corto": "Avionline diseña, digitaliza y opera sistemas de transporte público para consorcios, cabildos y ayuntamientos: red, horarios, billetaje y gestión, llave en mano.",
   "cta": "Conocer Avionline"
  },
  "umbral": 10,
- "updated_at": "2026-11-09T18:30+01:00",
+ "updated_at": "2026-11-09T20:15+01:00",
  "url": "https://avionline.es"
 }
