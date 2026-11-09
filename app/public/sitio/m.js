@@ -121,20 +121,21 @@
     return API + "/gestor/?" + new URLSearchParams({pieza: slug, accion: accion || "", volver: location.href}).toString();
   }
   function herramientas() {
-    var m = location.pathname.match(SLUG);
-    if (d.body.classList.contains("post-template") && m) {
-      var s = m[1], f = d.createElement("div");
-      f.className = "mtx-fab";
-      f.innerHTML = '<button type="button" aria-label="Herramientas del editor jefe" title="Editor jefe">✎</button><ul>' +
-        '<li class="t">Editor jefe</li>' +
-        '<li><a href="' + E(enlace(s, "editar")) + '">Editar</a></li>' +
-        '<li><a href="' + E(enlace(s, "ia")) + '">Otro enfoque con IA</a></li>' +
-        '<li><a href="' + E(enlace(s, "")) + '">Patrocinio y retoques</a></li>' +
-        '<li><a class="r" href="' + E(enlace(s, "retirar")) + '">Retirar</a></li></ul>';
-      f.querySelector("button").onclick = function () { f.classList.toggle("on"); };
-      d.addEventListener("click", function (ev) { if (!f.contains(ev.target)) f.classList.remove("on"); });
-      d.body.appendChild(f);
-    }
+    var m = location.pathname.match(SLUG), pieza = d.body.classList.contains("post-template") && m;
+    // «Iniciar barrido de noticias ahora» (decisión de Rainer, 9-11-2026): en todas las páginas; lo lanza el gestor.
+    var barrido = API + "/gestor/?" + new URLSearchParams({barrido: "1", volver: location.href}).toString();
+    var f = d.createElement("div");
+    f.className = "mtx-fab";
+    f.innerHTML = '<button type="button" aria-label="Herramientas del editor jefe" title="Editor jefe">✎</button><ul>' +
+      '<li class="t">Editor jefe</li>' +
+      (pieza ? '<li><a href="' + E(enlace(m[1], "editar")) + '">Editar</a></li>' +
+        '<li><a href="' + E(enlace(m[1], "ia")) + '">Otro enfoque con IA</a></li>' +
+        '<li><a href="' + E(enlace(m[1], "")) + '">Patrocinio y retoques</a></li>' +
+        '<li><a class="r" href="' + E(enlace(m[1], "retirar")) + '">Retirar</a></li>' : '') +
+      '<li><a href="' + E(barrido) + '">Iniciar barrido de noticias ahora</a></li></ul>';
+    f.querySelector("button").onclick = function () { f.classList.toggle("on"); };
+    d.addEventListener("click", function (ev) { if (!f.contains(ev.target)) f.classList.remove("on"); });
+    d.body.appendChild(f);
     // En listados: un icono pequeño junto a cada titular que lleva a una pieza.
     [].forEach.call(d.querySelectorAll("main h1 a[href], main h2 a[href], main h3 a[href], .lead h2 a, .second h3 a"), function (a) {
       try { var u = new URL(a.href, location.href); } catch (e) { return; }

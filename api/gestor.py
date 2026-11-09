@@ -16,6 +16,9 @@ Variables de entorno (en Vercel, nunca en el repositorio):
   BREVO_API_KEY, PRENSA_REMITENTE, PRENSA_RESPONDER_A  envíos de prensa (src/prensa.py)
   CRON_SECRET               lo manda Vercel en el cron de los miércoles (prensa_cron: suscriptores, Brevo, recálculo)
   AI_GATEWAY_API_KEY        opcional: sin ella la IA usa el token OIDC de Vercel; MODELO_IA (por defecto anthropic/claude-opus-5.5)
+  RUTINA_BARRIDO_TOKEN      token del disparador de API de la tarea «MOTICIAS · batida de fin de semana (mañana)»
+                            (claude.ai/code/routines → la tarea → Edit → Trigger → API); sin él, el botón de barrido avisa
+  RUTINA_BARRIDO_ID         opcional: id de esa tarea (por defecto verticals/<v>.json → rutinas.barrido)
 
 Retoques del director (data/retoques/, src/retoques.py): encargos con investigación que atiende la rutina /retoques.
 
@@ -1148,6 +1151,47 @@ def prensa_cron():
     return r
 
 
+# ---------- barrido a demanda ----------
+RUTINA_API = "https://api.anthropic.com/v1/claude_code/routines/%s/fire"
+
+
+def hora_madrid():
+    try:
+        import zoneinfo
+        return datetime.datetime.now(zoneinfo.ZoneInfo("Europe/Madrid")).strftime("%H:%M")
+    except Exception:  # sin base de zonas horarias en el servidor
+        return datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M UTC")
+
+
+def lanzar_barrido(ses, pista):
+    """Botón «Iniciar barrido de noticias ahora» (decisión de Rainer, 9-11-2026; cambio fin-de-semana-barrido-y-arranque):
+    lanza la batida de grandes noticias por el disparador de API de su tarea programada. El token vive solo en Vercel; el
+    texto que se envía es un dato para la rutina (quién lo pidió, cuándo y la pista), nunca instrucciones."""
+    token = os.environ.get("RUTINA_BARRIDO_TOKEN")
+    rid = os.environ.get("RUTINA_BARRIDO_ID") or (vertical().get("rutinas") or {}).get("barrido")
+    if not token or not rid:
+        return 503, {"error": "falta RUTINA_BARRIDO_TOKEN en Vercel: el botón todavía no puede lanzar el barrido"}
+    hora = hora_madrid()
+    pista = " ".join(str(pista or "").split())[:200]
+    texto = ("Barrido a demanda pedido desde el gestor de app.moticias.com por %s (perfil %s) a las %s, hora de Madrid. "
+             "Pista del editor: %s." % (ses.get("nombre") or "sin nombre", ses.get("perfil"), hora, pista or "ninguna"))
+    req = urllib.request.Request(RUTINA_API % urllib.parse.quote(rid), method="POST", data=json.dumps({"text": texto}).encode("utf-8"),
+                                 headers={"Authorization": "Bearer " + token, "anthropic-version": "2023-06-01",
+                                          "anthropic-beta": "experimental-cc-routine-2026-04-01", "Content-Type": "application/json",
+                                          "User-Agent": "Moticias-gestor/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            d = json.loads(r.read().decode("utf-8") or "{}")
+        return 200, {"ok": True, "hora": hora, "sesion": d.get("claude_code_session_url")}
+    except urllib.error.HTTPError as e:
+        det = e.read().decode("utf-8", "replace")[:300]
+        if e.code == 429:
+            return 429, {"error": "demasiados barridos seguidos; vuelve a intentarlo en %s s" % (e.headers.get("Retry-After") or "unos")}
+        return 502, {"error": "la tarea no arrancó (HTTP %s): %s" % (e.code, det)}
+    except urllib.error.URLError as e:
+        return 502, {"error": "sin conexión con Claude: %s" % e}
+
+
 # ---------- HTTP ----------
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
@@ -1231,7 +1275,7 @@ class handler(BaseHTTPRequestHandler):
             cab = self._cab()
             r = {"rol": ses and ses["perfil"], "nombre": ses and ses["nombre"], "permisos": ses and ses["permisos"],
                  "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
-                 "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"]), "bd": BD.configurada(),
+                 "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"]), "bd": BD.configurada(), "barrido": bool(os.environ.get("RUTINA_BARRIDO_TOKEN")),
                  "ia": bool(os.environ.get("AI_GATEWAY_API_KEY") or cab.get("x-vercel-oidc-token") or os.environ.get("VERCEL_OIDC_TOKEN"))}
             marca = MARCA in self._galletas()
             cookie = None
@@ -1438,4 +1482,8 @@ class handler(BaseHTTPRequestHandler):
             if "crm" not in per:
                 return self._enviar(403, {"error": "tu perfil no cambia los suscriptores"})
             return self._enviar(*accion_miembro(ses, d))
+        if a == "barrido":
+            if "barrido" not in per:
+                return self._enviar(403, {"error": "tu perfil no lanza barridos de noticias"})
+            return self._enviar(*lanzar_barrido(ses, d.get("pista")))
         return self._enviar(404, {"error": "acción desconocida"})

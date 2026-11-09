@@ -154,6 +154,7 @@ async function arrancar() {
   if (volverAlSitio() && jefe()) { location.href = volverAlSitio(); return; }  // entró desde moticias.com#editor: vuelve con sus herramientas
   const v = params().get("vista"); if (v && $(`#nav [data-v="${v}"]`)) vista = v;
   const en = params().get("envio"); if (en && puede("crm")) { vista = "prensa"; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === "prensa")); return verEnvio(en); }  // enlace del aviso de la sala de prensa
+  if (params().get("barrido")) { vista = "piezas"; window._irBarrido = true; }  // desde el menú ✎ de moticias.com
   ir(vista);
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
@@ -164,6 +165,7 @@ function avisoConfig() {
   const e = window._est || {}; const f = [];
   if (!e.escritura) f.push("GITHUB_TOKEN (sin él, el gestor solo puede mirar)");
   if (!e.ghost) f.push("GHOST_ADMIN_KEY y GHOST_URL (sin ellas, los cambios se ven en la web en la próxima publicación)");
+  if (puede("barrido") && !e.barrido) f.push("RUTINA_BARRIDO_TOKEN (sin él, el botón «Iniciar barrido de noticias ahora» no puede lanzar la tarea)");
   return f.length ? `<div class="card" style="border-color:#e7c48d"><b>Configuración pendiente en Vercel</b><p class="mute">Falta: ${f.map(E).join("; ")}.</p></div>` : "";
 }
 
@@ -194,7 +196,8 @@ function pintarPiezas() {
   const nombres = {pendientes:"Pendientes", web:"Falta en la web", publicadas:"Con caja", candidatas:"Posibles", todas:"Todas"};
   const lista = grupos[filtro];
   const subir = grupos.web.length && puede("piezas") ? `<div class="card"><b>${grupos.web.length} pieza(s) con caja aprobada que aún no está en la web.</b><p><button class="b" id="subir" style="width:100%">Subir todo a la web ahora</button></p></div>` : "";
-  app.innerHTML = avisoConfig() + cajaFirma() + subir + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
+  const barr = puede("barrido") ? `<div class="card jefe" id="caja-barrido"><h2>✎ ¿Ha pasado algo gordo que aún no está?</h2><p class="mute">Lanza ahora la batida de grandes noticias. Si algo merece edición extra, se publica y llega el aviso al móvil; si no, queda guardado para la edición siguiente.</p><p><input id="pista" maxlength="200" placeholder="Pista opcional: tema, lugar o empresa" style="width:100%;box-sizing:border-box"></p><p><button class="b" id="barrido" style="width:100%">Iniciar barrido de noticias ahora</button></p></div>` : "";
+  app.innerHTML = avisoConfig() + barr + cajaFirma() + subir + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
     + (lista.length ? lista.map(p => {
       const act = p.menciones.filter(m => m.estado !== "retirada");
       const c = p.candidatos[0];
@@ -207,6 +210,10 @@ function pintarPiezas() {
     try { const d = await api("republicar_pendientes", {}); const mal = d.piezas.filter(r => !r.ok);
       aviso(mal.length ? `${d.piezas.length - mal.length} subidas; ${mal.length} con error: ${mal[0].detalle}` : `${d.piezas.length} pieza(s) actualizadas en la web`, !!mal.length); verPiezas(); }
     catch (e) { aviso(e.message, true); bs.disabled = false; } };
+  const bb = $("#barrido"); if (bb) bb.onclick = async () => { if (!confirm("¿Lanzar ahora un barrido de noticias?")) return; bb.disabled = true; bb.textContent = "Lanzando…";
+    try { const d = await api("barrido", {pista: ($("#pista") || {}).value || ""}); bb.textContent = "Barrido lanzado a las " + d.hora; aviso("Barrido lanzado a las " + d.hora + ". El resultado llega como aviso al móvil."); }
+    catch (e) { aviso(e.message, true); bb.disabled = false; bb.textContent = "Iniciar barrido de noticias ahora"; } };
+  if (window._irBarrido && $("#caja-barrido")) { window._irBarrido = false; $("#caja-barrido").scrollIntoView({block: "center"}); ($("#pista") || {}).focus && $("#pista").focus(); }
   app.querySelector(".filtros").onclick = ev => { const b = ev.target.closest("button"); if (b) { filtro = b.dataset.f; pintarPiezas(); } };
   app.querySelectorAll(".item").forEach(b => b.onclick = () => abrirPieza(b.dataset.id));
 }

@@ -21,7 +21,11 @@
   "weekly_advisor": "CRON_TZ=Europe/Madrid 17 9 * * 1",
   "regulatory_radar": "lunes",
   "tenders_week": "viernes",
-  "monthly_dashboard": "día 12"
+  "monthly_dashboard": "día 12",
+  "weekend_sweeps": [
+   "CRON_TZ=Europe/Madrid 55 10 * * 6,0",
+   "CRON_TZ=Europe/Madrid 26 17 * * 6,0"
+  ]
  },
  "sections": [
   "tierra",
@@ -220,7 +224,12 @@
   },
   "director_firma_antigua": [
    "Rainer"
-  ]
+  ],
+  "commits": {
+   "name": "G. Jordan",
+   "email": "redaccion@moticias.com",
+   "nota": "decisión de Rainer, 9-11-2026: los commits de la redacción automática"
+  }
  },
  "campaigns": {
   "dir": "data/campanas/",
@@ -1965,5 +1974,33 @@
     }
    }
   }
+ },
+ "fin_de_semana": {
+  "batidas": [
+   "11:00",
+   "17:30"
+  ],
+  "dias": [
+   "sábado",
+   "domingo",
+   "festivo nacional"
+  ],
+  "liston": [
+   "interrupción grave de servicio",
+   "accidente grave o catástrofe",
+   "huelga de ámbito estatal",
+   "ley, real decreto o real decreto-ley",
+   "cese o nombramiento en Transportes y sus empresas",
+   "decisión europea de primer orden para España"
+  ],
+  "reserva_dir": "data/reserva/",
+  "doc": "docs/tarea-batida.md"
+ },
+ "rutinas": {
+  "edicion_diaria": "trig_0172GECYAmmfyxR7zajD9tp9",
+  "batida_manana": "trig_012Sc1jheY62WPUukGPstLqk",
+  "batida_tarde": "trig_01A5CAWQfbfusMNxU3krTUVU",
+  "barrido": "trig_012Sc1jheY62WPUukGPstLqk",
+  "nota": "ids de las tareas programadas de la cuenta de Rainer; el botón «Iniciar barrido de noticias ahora» lanza «barrido» con RUTINA_BARRIDO_TOKEN (solo en Vercel)"
  }
 }
