@@ -9,7 +9,7 @@ El nombre del director firma como mucho el `max_pct` (10 %) de las piezas public
 
 #### Escenario: análisis importante con cupo
 - CUANDO el análisis es de relevancia ALTA, tiene `motivo_importante` y queda cupo hasta el objetivo
-- ENTONCES lo firma «Rainer, Director de MOTICIAS» y queda `pendiente` hasta su aprobación.
+- ENTONCES lo firma «Rainer Uphoff, Director de MOTICIAS» y queda `pendiente` hasta su aprobación.
 
 #### Escenario: el director quiere firmar sin cupo
 - CUANDO el editor jefe pide en el gestor su firma y ya está en el tope del 10 %

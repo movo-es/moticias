@@ -12,9 +12,9 @@
  "language": "es-ES",
  "timezone": "Europe/Madrid",
  "editor": {
-  "name": "Rainer",
+  "name": "Rainer Uphoff",
   "role": "Director de MOTICIAS",
-  "interests_note": "Rainer es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."
+  "interests_note": "Rainer Uphoff es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."
  },
  "schedule": {
   "daily_edition": "CRON_TZ=Europe/Madrid 38 6 * * 1-5",
@@ -177,7 +177,7 @@
  "editorial": {
   "default_author": "G. Jordan",
   "default_author_role": "Redactor responsable",
-  "director": "Rainer",
+  "director": "Rainer Uphoff",
   "director_role": "Director de MOTICIAS",
   "approval": {
    "routine": "ninguna (publicación directa)",
@@ -213,10 +213,14 @@
   },
   "interests_note_redaccion": "El director de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado.",
   "ghost_autores": {
+   "Rainer Uphoff": "rainer",
    "Rainer": "rainer",
    "G. Jordan": "g",
    "Redacción": "g"
-  }
+  },
+  "director_firma_antigua": [
+   "Rainer"
+  ]
  },
  "campaigns": {
   "dir": "data/campanas/",
@@ -1637,6 +1641,70 @@
    "activo",
    "pausado",
    "terminado"
+  ]
+ },
+ "grupo": {
+  "decidido": "2026-11-09",
+  "regla": "Las empresas del grupo editor se presentan siempre como tales (declaración de relación) y con su especialidad, para que lectores, buscadores y modelos de lenguaje las asocien a su campo: en la página «Empresas del grupo» (/empresas-del-grupo/), en los datos estructurados de cada pieza que lleva su caja «Contenido patrocinado» y en el bloque de organización de todo el sitio. Nunca como juicio editorial de MOTICIAS dentro de una noticia: eso le quitaría la credibilidad que da valor a la mención.",
+  "editor": {
+   "nombre": "Avionline S.L.",
+   "url": "https://avionline.es",
+   "descripcion": "Sociedad editora de MOTICIAS y titular del grupo; innovación en movilidad y turismo."
+  },
+  "marcas": [
+   {
+    "id": "movo",
+    "nombre": "MOVO",
+    "url": "https://movo.es",
+    "especialidad": "planes de movilidad sostenible al trabajo (PMST) y consultoría de movilidad",
+    "descripcion": "Plataforma y consultoría para que empresas y administraciones elaboren, negocien y presenten su plan de movilidad sostenible al trabajo.",
+    "productos": [
+     "movo-pmst",
+     "movo-licitaciones"
+    ]
+   },
+   {
+    "id": "movenbus",
+    "nombre": "Movenbus",
+    "url": "https://movenbus.com",
+    "especialidad": "soluciones tecnológicas y comerciales para el autobús por carretera",
+    "descripcion": "Plataforma que agrupa a pymes de autobús y autocar para cubrir servicios discrecionales con una sola interlocución.",
+    "productos": [
+     "movenbus"
+    ]
+   },
+   {
+    "id": "mufmi",
+    "nombre": "MUFMI",
+    "url": "https://mufmi.com",
+    "especialidad": "transporte a la demanda",
+    "descripcion": "Transporte de viajeros a la demanda y servicios de movilidad para administraciones.",
+    "productos": [
+     "mufmi"
+    ]
+   },
+   {
+    "id": "avionline",
+    "nombre": "Avionline",
+    "url": "https://avionline.es",
+    "especialidad": "innovación en movilidad y turismo",
+    "descripcion": "Sociedad editora de MOTICIAS; innovación en movilidad y turismo.",
+    "productos": [
+     "avionline"
+    ]
+   },
+   {
+    "id": "buq",
+    "nombre": "BUQ",
+    "url": "https://buq.es",
+    "especialidad": "turismo",
+    "descripcion": "Turismo.",
+    "productos": [
+     "buq"
+    ],
+    "publica": false,
+    "nota": "buq.es responde 401 (no público) el 9-11-2026: no se enlaza hasta que esté abierto."
+   }
   ]
  }
 }

@@ -8,6 +8,9 @@
    2. Editor jefe: si este navegador tiene la marca «moticias_jefe» (la pone el gestor al entrar el superadministrador), pregunta
       al gestor si de verdad lo es (con su sesión) y, solo entonces, enseña un icono discreto en cada noticia con Editar, Otro
       enfoque con IA, Patrocinio y retoques, y Retirar. La marca no da ningún permiso: todo se comprueba en el servidor.
+   3. Seguimiento: cuenta una visualización cuando una caja (publicidad, patrocinio o «Contenido patrocinado» del texto) se ve
+      al menos a medias, y un clic cuando se pulsa su enlace (POST /api/gestor?a=evento). No cuenta las visitas del editor jefe
+      ni de navegadores automatizados.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
   "use strict";
@@ -29,6 +32,11 @@
     ".mtx-fab li.t{padding:6px 12px 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#888}.mtx-fab li a.r{color:#a12b2b}";
   d.head.appendChild(css);
 
+  // ---------- 0. La marca no se traduce ----------
+  // Los traductores automáticos del navegador tienden a convertir «MOTICIAS» en «noticias»/«news»: la marca se marca como no
+  // traducible donde aparece como marca (cabecera, logo, pie).
+  [].forEach.call(d.querySelectorAll(".brand, .logo, header.masthead a[aria-label], footer.site .brand, footer.site .wrap > :first-child"), function (el) { el.setAttribute("translate", "no"); el.classList.add("notranslate"); });
+
   // ---------- 1. Publicidad ----------
   var seccion = (function () {
     var a = d.querySelector("article.article");
@@ -49,7 +57,7 @@
   }
   function caja(x, hueco, ancha) {
     var rel = x.tipo === "autopromocion" ? "noopener" : "sponsored noopener";
-    return '<aside class="ad ' + (ancha ? "ad-wide" : "ad-side") + (x.tipo === "autopromocion" ? " house" : "") + '" aria-label="' + E(x.etiqueta) + '" data-mtx="' + E(x.id) + '">' +
+    return '<aside class="ad ' + (ancha ? "ad-wide" : "ad-side") + (x.tipo === "autopromocion" ? " house" : "") + '" aria-label="' + E(x.etiqueta) + '" data-mtx="' + E(x.id) + '" data-mtx-h="' + E(hueco) + '">' +
       '<span class="ad-label">' + E(x.etiqueta) + (x.anunciante ? " · " + E(x.anunciante) : "") + "</span>" +
       '<a class="ad-body" href="' + E(utm(x.url, x, hueco)) + '" rel="' + rel + '" target="_blank">' +
       (x.imagen ? '<img class="ad-img" src="' + E(x.imagen) + '" alt="" loading="lazy">' : "") +
@@ -73,11 +81,39 @@
     var pie = d.querySelector("footer.site");
     if (pie && (x = elegir(H.pie, usadas))) { var p = d.createElement("div"); p.className = "mtx-hueco mtx-cab"; p.innerHTML = caja(x, "pie", true); pie.parentNode.insertBefore(p, pie); }
   }
+  // ---------- 3. Seguimiento ----------
+  var JEFE = /(?:^|;\s*)moticias_jefe=1/.test(d.cookie);
+  function contar(id, h, t) {
+    if (JEFE || navigator.webdriver || !id) return;
+    var cuerpo = JSON.stringify({a: id, h: h || "?", p: location.pathname, t: t});
+    try { if (navigator.sendBeacon && navigator.sendBeacon(API + "/api/gestor?a=evento", new Blob([cuerpo], {type: "text/plain"}))) return; } catch (e) {}
+    try { fetch(API + "/api/gestor?a=evento", {method: "POST", body: cuerpo, keepalive: true, mode: "no-cors"}); } catch (e) {}
+  }
+  function datos(el) {
+    if (el.hasAttribute("data-mtx")) return [el.getAttribute("data-mtx"), el.getAttribute("data-mtx-h")];
+    return ["caja:" + el.getAttribute("data-producto"), "texto-" + (el.getAttribute("data-posicion") || "estandar")];
+  }
+  var vistos = typeof WeakSet === "function" ? new WeakSet() : null;
+  var mirador = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting && vistos && !vistos.has(e.target)) { vistos.add(e.target); var x = datos(e.target); contar(x[0], x[1], "i"); mirador.unobserve(e.target); }
+    });
+  }, {threshold: 0.5}) : null;
+  function vigilarCajas() {
+    if (!mirador) return;
+    [].forEach.call(d.querySelectorAll("[data-mtx], aside.contenido-patrocinado[data-producto]"), function (el) { mirador.observe(el); });
+  }
+  d.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("a[href]");
+    var c = a && a.closest("[data-mtx], aside.contenido-patrocinado[data-producto]");
+    if (c) { var x = datos(c); contar(x[0], x[1], "c"); }
+  }, true);
+
   function cuandoEste(sel, fn, n) { if (d.querySelector(sel) || (n || 0) > 20) return fn(); setTimeout(function () { cuandoEste(sel, fn, (n || 0) + 1); }, 150); }
   fetch(API + "/api/gestor?a=publicidad").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
     if (!j) return;
-    if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); }); else publicidad(j);
-  }).catch(function () {});
+    if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); vigilarCajas(); }); else { publicidad(j); vigilarCajas(); }
+  }).catch(function () { vigilarCajas(); });
 
   // ---------- 2. Editor jefe ----------
   var SLUG = /^\/([a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]{4})\/?$/;

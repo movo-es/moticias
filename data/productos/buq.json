@@ -1,0 +1,23 @@
+{
+ "contexto": "Por confirmar con Rainer: buq.es no es público todavía (401 el 9-11-2026). No se menciona mientras esté en borrador.",
+ "disparadores": {
+  "frases": [],
+  "palabras_clave": []
+ },
+ "excluir": [],
+ "exclusividad": "compartida",
+ "id": "buq",
+ "max_por_semana": 3,
+ "modo": "apagado",
+ "name": "BUQ · turismo",
+ "one_liner": "Turismo.",
+ "owner": "Avionline S.L.",
+ "status": "borrador",
+ "textos": {
+  "corto": "Turismo.",
+  "cta": "Conocer BUQ"
+ },
+ "umbral": 10,
+ "updated_at": "2026-11-09T18:30+01:00",
+ "url": "https://buq.es"
+}

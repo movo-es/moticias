@@ -1,0 +1,23 @@
+{
+ "contexto": "Por confirmar con Rainer: en qué noticias de innovación o turismo debe aparecer y con qué texto. No se menciona mientras esté en borrador.",
+ "disparadores": {
+  "frases": [],
+  "palabras_clave": []
+ },
+ "excluir": [],
+ "exclusividad": "compartida",
+ "id": "avionline",
+ "max_por_semana": 3,
+ "modo": "apagado",
+ "name": "Avionline · innovación en movilidad y turismo",
+ "one_liner": "Innovación en movilidad y turismo (sociedad editora de MOTICIAS).",
+ "owner": "Avionline S.L.",
+ "status": "borrador",
+ "textos": {
+  "corto": "Innovación en movilidad y turismo (sociedad editora de MOTICIAS).",
+  "cta": "Conocer Avionline"
+ },
+ "umbral": 10,
+ "updated_at": "2026-11-09T18:30+01:00",
+ "url": "https://avionline.es"
+}

@@ -22,7 +22,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def config(vertical):
     ed = vertical.get("editorial") or {}
     c = dict({"max_pct": 10, "objetivo_pct": 7, "ventana_dias": 30, "tipos": ["analisis", "reportaje"]}, **(ed.get("firma_director") or {}))
-    c["director"] = ed.get("director", "Rainer")
+    c["director"] = ed.get("director", "Rainer Uphoff")  # siempre con apellido (Rainer, 9-11-2026)
+    c["director_antes"] = set(ed.get("director_firma_antigua") or [])
     c["director_role"] = ed.get("director_role", "Director de MOTICIAS")
     c["redaccion"] = ed.get("default_author", "G. Jordan")
     c["redaccion_role"] = ed.get("default_author_role", "Redactor responsable")
@@ -43,7 +44,7 @@ def cuenta(a):
 
 
 def es_del_director(a, c):
-    return (a.get("author") or "") == c["director"]
+    return (a.get("author") or "") == c["director"] or (a.get("author") or "") in c.get("director_antes", set())
 
 
 def cupo(arts, dia, c, excluir=None):

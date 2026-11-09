@@ -70,6 +70,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 <header><b>MOTICIAS · Gestor</b><small id="quien"></small><button id="salir" hidden style="margin-left:8px;background:none;border:1px solid #555;color:#ddd;border-radius:14px;padding:4px 10px;font-size:12px">Salir</button></header>
 <nav id="nav" hidden>
   <button data-v="piezas" class="on">Piezas</button>
+  <button data-v="noticia" hidden>Nueva noticia</button>
   <button data-v="anuncios">Publicidad</button>
   <button data-v="crm" hidden>CRM</button>
   <button data-v="suscriptores" hidden>Suscriptores</button>
@@ -144,6 +145,7 @@ async function arrancar() {
   $("#nav").querySelector('[data-v="suscriptores"]').hidden = !puede("suscriptores");
   $("#nav").querySelector('[data-v="equipo"]').hidden = !puede("equipo");
   $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
+  $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
   const p = params().get("pieza"), acc = params().get("accion");
   if (p && jefe() && ["editar", "ia", "retirar"].includes(acc)) return abrirEditor(p, acc);
   if (p) return abrirPieza(p, true);
@@ -153,7 +155,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, productos:verProductos, anuncios:verAnuncios, crm:verCrm, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -478,7 +480,7 @@ async function verAnuncios() {
   const lista = [...cache.anuncios].sort((a, b) => grupos.indexOf(a.status) - grupos.indexOf(b.status));
   app.innerHTML = avisoConfig() + `<div class="card"><h1>Publicidad y patrocinios</h1>
     <p class="mute">Cajas con enlace fuera del texto de las piezas, en tres niveles: <b>Premium</b> (bajo la cabecera y junto al texto del artículo), <b>Estándar</b> (entre bloques de la portada y tras el artículo) y <b>Básico</b> (antes del pie y en el boletín). Llevan siempre su etiqueta visible. ${sa ? "Solo tú las activas." : "Tú las propones; las activa el editor jefe."}</p>
-    <p><button class="b" id="nueva" style="width:100%">Nueva caja de publicidad o patrocinio</button></p></div>
+    <div class="row"><button class="b" id="nueva">Nueva caja de publicidad o patrocinio</button>${sa || puede("contratos") ? `<button class="b2" id="seg">Seguimiento: vistas, clics y comprobaciones</button>` : ""}</div></div>
     <div id="form"></div>`
    + lista.map(a => `<div class="card" data-a="${E(a.id)}"><div class="row" style="justify-content:space-between"><h2>${E(a.name)}</h2><span class="chip ${(EST_AD[a.status]||[""])[0]}">${E((EST_AD[a.status]||["",a.status])[1])}</span></div>
     <p class="mute">${E(a.advertiser)} · ${E((P.tipos||{})[a.type] || a.type)} · ${E(((P.niveles||{})[a.nivel]||{}).nombre || a.nivel || "sin nivel")} · ${E((a.slots||[]).join(", ") || "sin huecos")}<br>${E(a.start || "")} → ${E(a.end || "")}${a.propuesto_por ? " · propuesta de " + E(a.propuesto_por) : ""}</p>
@@ -486,6 +488,7 @@ async function verAnuncios() {
     <div class="row" style="margin-top:8px">${sa ? (a.status === "activo" ? `<button class="b2" data-st="pausado">Pausar</button><button class="b2 bad" data-st="terminado">Terminar</button>` : `<button class="b" data-st="activo">Activar</button>${a.status !== "terminado" ? `<button class="b2 bad" data-st="terminado">Terminar</button>` : ""}`) : ""}
     ${sa || a.status === "propuesta" ? `<button class="b2" data-edit>Editar</button>` : ""}</div></div>`).join("");
   $("#nueva").onclick = () => formAd(null);
+  const sg = $("#seg"); if (sg) sg.onclick = () => ir("seguimiento");
   app.querySelectorAll("[data-st]").forEach(b => b.onclick = async () => {
     b.disabled = true;
     try { const r = await api("anuncio", {accion: "editar", id: b.closest("[data-a]").dataset.a, cambios: {status: b.dataset.st}}); aviso(r.nota || "Guardado"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; }
@@ -705,6 +708,76 @@ async function verEquipo() {
     try { const r = await api("equipo", {accion:b.dataset.acc, id:c.dataset.id});
       if (r.enlace) { mostrar(c.querySelector(".enl"), r.enlace, r.persona); b.disabled = false; } else { aviso("Hecho"); verEquipo(); } }
     catch (e) { aviso(e.message, true); b.disabled = false; } });
+}
+
+// ---------- Seguimiento de publicidad, patrocinios y contenido patrocinado ----------
+const fh = t => t ? String(t).replace("T", " ").slice(0, 16) : "—";
+const pct = (c, i) => i ? (100 * c / i).toLocaleString("es-ES", {maximumFractionDigits: 2}) + " %" : "—";
+async function verSeguimiento(dias) {
+  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === "anuncios"));
+  app.innerHTML = `<div class="vacio">Cargando el seguimiento…</div>`;
+  let d; try { d = await api("seguimiento", null, {dias: dias || 30}); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const vivas = d.cajas.filter(c => c.estado === "activo" || (c.cifras && c.cifras.impresiones) || (c.piezas || []).length);
+  const resto = d.cajas.filter(c => !vivas.includes(c));
+  const tot = vivas.reduce((t, c) => [t[0] + ((c.cifras||{}).impresiones||0), t[1] + ((c.cifras||{}).clics||0)], [0, 0]);
+  const tabla = (o, n) => Object.entries(o || {}).sort((a, b) => b[1][0] - a[1][0]).slice(0, n).map(([k, v]) => `<div class="paso"><span>${E(k)}</span><span class="mute">${num(v[0])} vistas · ${num(v[1])} clics</span></div>`).join("") || `<p class="mute">Sin datos.</p>`;
+  const caja = c => { const x = c.cifras || {}, comp = c.comprobaciones || [], u = comp[0];
+    return `<div class="card" data-c="${E(c.id)}"><div class="row" style="justify-content:space-between"><h2>${E(c.nombre)}</h2><span class="chip ${c.estado==="activo"?"pub":""}">${E(c.estado || "")}</span></div>
+    <p class="mute">${E(c.anunciante || "")} · ${E(c.tipo || "")}${c.nivel ? " · " + E(c.nivel) : ""}<br>Publicada: ${fh(c.publicada)} · Retirada: ${fh(c.retirada)}${c.inicio || c.fin ? `<br>Programada: ${E(c.inicio || "")} → ${E(c.fin || "")}` : ""}</p>
+    <div class="kpi"><div><b>${num(x.impresiones || 0)}</b><span class="mute">vistas</span></div><div><b>${num(x.clics || 0)}</b><span class="mute">clics</span></div><div><b>${pct(x.clics || 0, x.impresiones || 0)}</b><span class="mute">CTR</span></div></div>
+    <p class="mute" style="margin-top:8px">${u ? `Comprobador: ${u.ok ? "✓ funciona" : "✗ " + E(u.error || "falla")} · ${fh(u.at)} · ${u.estado || "—"} · ${u.ms} ms${u.origen === "manual" ? " · a mano" : ""}` : "Comprobador: todavía sin pasar."}</p>
+    <details><summary>Posiciones (${(c.huecos || []).length})</summary><p class="mute">Configuradas: ${E((c.huecos || []).join(", ") || "—")}</p>${tabla(x.huecos, 10)}</details>
+    <details><summary>Dónde se vio (contextos)</summary>${tabla(x.paginas, 15)}</details>
+    ${(c.piezas || []).length ? `<details><summary>Piezas con esta caja (${c.piezas.length})</summary>${c.piezas.map(p => `<div class="paso"><div>${E(p.titulo)}<br><span class="mute">${E(p.posicion)} · ${E(p.estado)} · publicada ${fh(p.publicada)}${p.retirada ? " · retirada " + fh(p.retirada) : ""}</span></div></div>`).join("")}</details>` : ""}
+    ${comp.length > 1 ? `<details><summary>Últimas comprobaciones</summary>${comp.map(k => `<div class="paso"><span>${k.ok ? "✓" : "✗"} ${fh(k.at)} · ${k.estado || "—"} · ${k.ms} ms</span><span class="mute">${E(k.origen)}${k.error ? " · " + E(k.error) : ""}</span></div>`).join("")}</details>` : ""}
+    ${puede("publicidad") && c.url ? `<p><button class="b2" data-comp="${E(c.id)}">Comprobar ahora</button></p>` : ""}</div>`; };
+  app.innerHTML = `<p class="row"><button class="b2" id="volver">← Publicidad</button></p>
+    <div class="card"><h1>Seguimiento</h1><p class="mute">Últimos ${d.dias} días. Vistas: la caja se vio al menos a medias en pantalla. Clics: un lector pulsó su enlace. No cuentan ni los robots, ni tus propias visitas como editor jefe, ni el comprobador, que visita cada enlace a horas al azar de los laborables para confirmar que el destino responde.</p>
+    <div class="kpi"><div><b>${num(tot[0])}</b><span class="mute">vistas</span></div><div><b>${num(tot[1])}</b><span class="mute">clics</span></div><div><b>${pct(tot[1], tot[0])}</b><span class="mute">CTR</span></div></div>
+    <div class="filtros" style="margin-top:10px">${[7, 30, 90].map(n => `<button data-d="${n}" class="${n===d.dias?"on":""}">${n} días</button>`).join("")}</div>
+    ${puede("publicidad") ? `<button class="b2" id="todas">Comprobar todos los enlaces ahora</button>` : ""}</div>
+    ${vivas.map(caja).join("")}${resto.length ? `<details class="card"><summary>Sin actividad (${resto.length})</summary>${resto.map(caja).join("")}</details>` : ""}`;
+  $("#volver").onclick = () => ir("anuncios");
+  app.querySelectorAll("[data-d]").forEach(b => b.onclick = () => verSeguimiento(+b.dataset.d));
+  const comprobar = async (b, anuncio) => { b.disabled = true; b.innerHTML = `<span class="spin"></span>Comprobando…`;
+    try { const r = await api("comprobar", anuncio ? {anuncio} : {}); const mal = r.resultados.filter(x => !x.ok);
+      aviso(mal.length ? `${mal.length} enlace(s) fallan: ${mal.map(x => x.nombre).join(", ")}` : `${r.resultados.length} enlace(s) funcionan`, !!mal.length); verSeguimiento(d.dias); }
+    catch (e) { aviso(e.message, true); b.disabled = false; } };
+  const t = $("#todas"); if (t) t.onclick = () => comprobar(t);
+  app.querySelectorAll("[data-comp]").forEach(b => b.onclick = () => comprobar(b, b.dataset.comp));
+}
+
+// ---------- Nueva noticia desde el gestor (editor y editor jefe) ----------
+async function verNoticia() {
+  app.innerHTML = `<div class="vacio">Cargando…</div>`;
+  let d = {encargos: [], dominios: [], clases: {}}; try { d = await api("encargos"); } catch (e) { if (e.message === "sin sesión") return; }
+  const EST_E = {pendiente: ["pro", "En cola"], en_curso: ["pro", "La redacción está en ello"], publicada: ["pub", "Publicada"], pendiente_aprobacion: ["pro", "Espera al editor jefe"], sin_fuentes: ["ret", "Sin fuente primaria: no se publicó"], descartado: ["", "Descartada"]};
+  app.innerHTML = `<div class="card jefe"><h1>Nueva noticia</h1>
+    <p class="mute">Pega un texto (una nota de prensa, un aviso, una idea) o un enlace, o las dos cosas. La redacción lo investiga con el método de siempre —fuente primaria, verificación, reportaje completo— y escribe la pieza. Sin fuente primaria no se publica.</p>
+    <label>Texto o enlace</label><textarea id="nt" style="min-height:220px" placeholder="Pega aquí el texto o el enlace (https://…)"></textarea>
+    <label>Qué hacer</label>
+    <label class="chk"><input type="radio" name="op" value="1" checked> <span><b>1. Investiga y crea la noticia</b> con publicación hoy mismo${jefe() ? "" : " (como editor, queda escrita para que el editor jefe la apruebe)"}.</span></label>
+    <label class="chk"><input type="radio" name="op" value="2"> <span><b>2. Igual que 1 y registra el dominio de la fuente</b> (todas sus noticias, no solo esta) como:</span></label>
+    <div id="clases" hidden style="margin-left:26px">${Object.entries(d.clases || {}).map(([k, t]) => `<label class="chk"><input type="radio" name="cl" value="${k}"> <span>${E(t)}</span></label>`).join("")}
+      <p class="mute">«No de confianza»: lo que venga de ese dominio se revisa siempre y pasa a la cola del editor jefe antes de publicarse.${jefe() ? "" : " Lo que registres tú queda sin confirmar (y se trata como no de confianza) hasta que lo vea el editor jefe."}</p></div>
+    <p><button class="b" id="enviar" style="width:100%">Encargar a la redacción</button></p>
+    <p class="mute">La rutina de la redacción pasa cada hora en laborables, de 8 a 21. Lo que pegues se guarda en la base privada, no en el repositorio.</p></div>
+    <div class="card"><h2>Encargos recientes</h2>${(d.encargos || []).map(e => { const x = EST_E[e.estado] || ["", e.estado];
+      return `<div class="paso"><div><span class="mute">${fh(e.creado_at)} · ${E(e.pedido_por)}${e.dominio ? " · " + E(e.dominio) : ""}</span><br>${E(e.texto)}${e.pieza ? `<br><a href="https://www.moticias.com/${E(e.pieza)}/" target="_blank" rel="noopener">Ver la pieza ↗</a>` : ""}${e.resultado ? `<br><span class="mute">${E(e.resultado)}</span>` : ""}</div><span class="chip ${x[0]}">${E(x[1])}</span></div>`; }).join("") || `<p class="mute">Ninguno todavía.</p>`}</div>
+    <details class="card"><summary>Fuentes registradas por dominio (${(d.dominios || []).length})</summary>${(d.dominios || []).map(x => `<div class="paso"><div><b>${E(x.dominio)}</b><br><span class="mute">${E((d.clases || {})[x.clase] || x.clase)}${x.confirmado ? "" : " · sin confirmar"} · ${E(x.por || "")}</span></div>
+      ${jefe() ? `<select data-dom="${E(x.dominio)}">${Object.entries(d.clases || {}).map(([k, t]) => `<option value="${k}" ${k===x.clase?"selected":""}>${E(t.split(" (")[0])}</option>`).join("")}</select>${x.confirmado ? "" : `<button class="b2" data-conf="${E(x.dominio)}" data-cl="${E(x.clase)}">Confirmar</button>`}` : ""}</div>`).join("") || `<p class="mute">Ninguna.</p>`}</details>`;
+  app.querySelectorAll('input[name="op"]').forEach(r => r.onchange = () => { $("#clases").hidden = app.querySelector('input[name="op"]:checked').value !== "2"; });
+  $("#enviar").onclick = async ev => {
+    const texto = $("#nt").value.trim(), op = +app.querySelector('input[name="op"]:checked').value, cl = app.querySelector('input[name="cl"]:checked');
+    if (texto.length < 10) return aviso("Pega un texto o un enlace", true);
+    if (op === 2 && !cl) return aviso("Elige cómo registrar la fuente", true);
+    ev.target.disabled = true;
+    try { const r = await api("encargo", {texto, opcion: op, clase_fuente: cl ? cl.value : null}); aviso(r.aviso + (r.fuente ? " · " + r.fuente : "")); verNoticia(); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; }
+  };
+  const dom = async (dominio, clase) => { try { const r = await api("dominio", {dominio, clase}); aviso(r.detalle); verNoticia(); } catch (e) { aviso(e.message, true); } };
+  app.querySelectorAll("[data-dom]").forEach(s => s.onchange = () => dom(s.dataset.dom, s.value));
+  app.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => dom(b.dataset.conf, b.dataset.cl));
 }
 arrancar();
 </script>
