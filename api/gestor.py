@@ -13,6 +13,8 @@ Variables de entorno (en Vercel, nunca en el repositorio):
   GITHUB_TOKEN              token de GitHub con permiso de escritura en contenidos de movo-es/moticias
   GHOST_URL, GHOST_ADMIN_KEY  para publicar al momento
   SUPABASE_URL, SUPABASE_ANON_KEY, MOTICIAS_BD_CLAVE  base privada del equipo y del CRM (src/bd.py)
+  BREVO_API_KEY, PRENSA_REMITENTE, PRENSA_RESPONDER_A  envíos de prensa (src/prensa.py)
+  CRON_SECRET               lo manda Vercel en el cron de los miércoles (prensa_cron: suscriptores, Brevo, recálculo)
   AI_GATEWAY_API_KEY        opcional: sin ella la IA usa el token OIDC de Vercel; MODELO_IA (por defecto anthropic/claude-opus-5.5)
 
 Retoques del director (data/retoques/, src/retoques.py): encargos con investigación que atiende la rutina /retoques.
@@ -34,6 +36,7 @@ import bd as BD  # noqa: E402
 import redaccion as R  # noqa: E402
 import firma as F  # noqa: E402
 import seguimiento as S  # noqa: E402
+import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
 EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
@@ -1077,6 +1080,70 @@ def accion_dominio(ses, d):
     return (200, {"ok": True, "detalle": det}) if ok else (502, {"error": det})
 
 
+# ---------- prensa (src/prensa.py) ----------
+def accion_prensa(ses, d, base):
+    quien, acc, per = ses["nombre"], d.get("accion"), ses["permisos"]
+    jefe = "piezas" in per  # solo el editor jefe envía, anula y lanza la detección de suscriptores
+    try:
+        if acc == "medio_guardar":
+            PR.guardar_medio(quien, d["cuenta_id"], d.get("cambios") or {})
+        elif acc == "medio_nuevo":
+            return 200, {"ok": True, "id": PR.nuevo_medio(quien, d)}
+        elif acc == "periodista":
+            return 200, {"ok": True, "id": PR.guardar_periodista(quien, d)}
+        elif acc == "cobertura":
+            PR.cobertura(quien, d)
+        elif acc == "respuesta":
+            PR.respuesta(quien, d)
+        elif acc == "envio_crear":
+            eid, n = PR.crear_envio(quien, d)
+            return 200, {"ok": True, "id": eid, "destinatarios": n}
+        elif acc == "envio_enviar":
+            if not jefe:
+                return 403, {"error": "solo el editor jefe aprueba y envía"}
+            return 200, dict(PR.enviar(quien, int(d.get("id") or 0), base), ok=True)
+        elif acc == "envio_anular":
+            BD.actualizar("prensa_envios", {"id": "eq.%d" % int(d.get("id") or 0), "estado": "in.(borrador,aprobado)"}, {"estado": "anulado"})
+            BD.registrar(quien, "prensa_envio_anulado", str(d.get("id")))
+        elif acc == "sincronizar":
+            return 200, dict(PR.sincronizar(d.get("id")), ok=True)
+        elif acc == "suscriptores":
+            if not jefe:
+                return 403, {"error": "solo el editor jefe lanza la detección"}
+            base_g, tok = _ghost()
+            if not base_g:
+                return 503, {"error": "sin clave de Ghost"}
+            return 200, dict(PR.detectar_suscriptores(base_g, tok, G.api), ok=True)
+        elif acc == "recalcular":
+            return 200, {"ok": True, "r": PR.recalcular()}
+        else:
+            return 400, {"error": "acción desconocida"}
+    except (ValueError, KeyError) as e:
+        return 400, {"error": str(e)}
+    except BD.ErrorBD as e:
+        return 502, {"error": str(e)}
+    return 200, {"ok": True}
+
+
+def prensa_cron():
+    """Miércoles (Vercel Cron): suscriptores de MOTICIAS entre los periodistas, estados de Brevo y recálculo."""
+    r = {"at": datetime.datetime.now().astimezone().isoformat(timespec="seconds")}
+    if not BD.configurada():
+        return dict(r, error="base sin configurar")
+    base_g, tok = _ghost()
+    try:
+        r["suscriptores"] = PR.detectar_suscriptores(base_g, tok, G.api) if base_g else "sin clave de Ghost"
+    except BD.ErrorBD as e:
+        r["suscriptores"] = str(e)
+    try:
+        r["brevo"] = PR.sincronizar() if os.environ.get("BREVO_API_KEY") else "sin BREVO_API_KEY"
+    except BD.ErrorBD as e:
+        r["brevo"] = str(e)
+    r["recalculo"] = PR.recalcular()
+    BD.registrar("cron", "prensa_cron", None, {k: v for k, v in r.items() if k != "at"})
+    return r
+
+
 # ---------- HTTP ----------
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
@@ -1131,6 +1198,26 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]]})
         if a == "publicidad":  # pública: la pide el script de moticias.com
             return self._enviar(200, publicidad_publica(), cors="*", cache="public, max-age=120, s-maxage=300, stale-while-revalidate=3600")
+        if a == "prensa_baja":  # pública: enlace de baja de cada envío de prensa (firmado)
+            ok = False
+            try:
+                ok = PR.baja(q.get("p", ""), q.get("f", ""))
+            except BD.ErrorBD:
+                pass
+            txt = ("Hecho: no volverá a recibir correos de MOTICIAS." if ok else "El enlace no es válido. Escriba a redaccion@moticias.com y le daremos de baja.")
+            b = ("<!DOCTYPE html><meta charset=utf-8><meta name=viewport content='width=device-width'><meta name=robots content=noindex>"
+                 "<title>MOTICIAS</title><p style='font:18px/1.5 Georgia,serif;max-width:560px;margin:15vh auto;padding:0 20px'>%s</p>" % txt).encode()
+            self.send_response(200 if ok else 400)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("X-Robots-Tag", "noindex")
+            self.end_headers()
+            self.wfile.write(b)
+            return
+        if a == "prensa_cron":  # Vercel Cron (miércoles): suscriptores en Ghost, estados de Brevo y recálculo
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            return self._enviar(200, prensa_cron())
         if a == "yo":
             origen = self.headers.get("Origin")
             if origen == ORIGEN_SITIO:  # desde moticias.com: solo «¿es el editor jefe?»; nada más sale de aquí
@@ -1212,6 +1299,23 @@ class handler(BaseHTTPRequestHandler):
                     return self._enviar(200, {"cuentas": crm_cuentas(q)})
                 r = crm_ficha(q.get("id"), per)
                 return self._enviar(200 if r else 404, r or {"error": "cuenta no encontrada"})
+            if a in ("prensa_resumen", "prensa_medios", "prensa_medio", "prensa_envio", "prensa_destinatarios"):
+                if "crm" not in per:
+                    return self._enviar(403, {"error": "tu perfil no entra en prensa"})
+                if not BD.configurada():
+                    return self._enviar(503, {"error": "la base privada aún no está conectada"})
+                if a == "prensa_resumen":
+                    return self._enviar(200, dict(PR.resumen(), brevo=bool(os.environ.get("BREVO_API_KEY")), ghost=bool(os.environ.get("GHOST_ADMIN_KEY"))))
+                if a == "prensa_medios":
+                    return self._enviar(200, {"medios": PR.medios(q)})
+                if a == "prensa_medio":
+                    r = PR.ficha(q.get("id", ""))
+                    return self._enviar(200 if r else 404, r or {"error": "medio no encontrado"})
+                if a == "prensa_envio":
+                    r = PR.envio(int(q.get("id") or 0))
+                    return self._enviar(200 if r else 404, r or {"error": "envío no encontrado"})
+                lista = PR.destinatarios(json.loads(q.get("filtro") or "{}"), q.get("tipo") or "nota_de_prensa")
+                return self._enviar(200, {"n": len(lista), "muestra": lista[:40]})
         except BD.ErrorBD as e:
             return self._enviar(502, {"error": str(e)})
         return self._enviar(404, {"error": "acción desconocida"})
@@ -1320,6 +1424,12 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
+        if a == "prensa":
+            if "crm" not in per:
+                return self._enviar(403, {"error": "tu perfil no entra en prensa"})
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada aún no está conectada"})
+            return self._enviar(*accion_prensa(ses, d, self._base()))
         if a == "miembro":
             if "crm" not in per:
                 return self._enviar(403, {"error": "tu perfil no cambia los suscriptores"})

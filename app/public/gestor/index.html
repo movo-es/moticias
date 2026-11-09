@@ -73,6 +73,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
   <button data-v="noticia" hidden>Nueva noticia</button>
   <button data-v="anuncios">Publicidad</button>
   <button data-v="crm" hidden>CRM</button>
+  <button data-v="prensa" hidden>Prensa</button>
   <button data-v="suscriptores" hidden>Suscriptores</button>
   <button data-v="productos">Productos</button>
   <button data-v="equipo" hidden>Equipo</button>
@@ -146,6 +147,7 @@ async function arrancar() {
   $("#nav").querySelector('[data-v="equipo"]').hidden = !puede("equipo");
   $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
   $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
+  $("#nav").querySelector('[data-v="prensa"]').hidden = !puede("crm");
   const p = params().get("pieza"), acc = params().get("accion");
   if (p && jefe() && ["editar", "ia", "retirar"].includes(acc)) return abrirEditor(p, acc);
   if (p) return abrirPieza(p, true);
@@ -155,7 +157,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -635,6 +637,181 @@ async function fichaCrm(id) {
   $("#arch").onclick = async ev => { if (!confirm("¿Archivar esta cuenta?")) return; ev.target.disabled = true;
     try { await api("crm", {accion: "cuenta_archivar", cuenta_id: id, motivo: $("#arch-mot").value}); aviso("Archivada"); verCrm(); } catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
   scrollTo(0,0);
+}
+
+// ---------- Prensa: medios, periodistas, envíos y coberturas (src/prensa.py) ----------
+let PRE = {tipo: "", ambito: "", colab: "", imp: "", suscriptores: "", q: "", cfg: null};
+const COLAB = {colaborador: ["pub", "Colaborador"], neutral: ["", "En observación"], poco_colaborador: ["ret", "Poco colaborador"]};
+const colabChip = c => c ? `<span class="chip ${COLAB[c][0]}">${COLAB[c][1]}</span>` : `<span class="chip" title="Sin contacto todavía">Sin contacto aún</span>`;
+const estrellas = n => n ? "★".repeat(n) + "☆".repeat(5 - n) : "—";
+const pctPrensa = p => p == null ? "—" : Math.round(p * 100) + " %";
+const seguir = rs => (rs || []).map(r => `<a class="b2" style="text-decoration:none;padding:6px 10px;min-height:0;font-size:13px" href="${E(r.seguir || r.url)}" target="_blank" rel="noopener">Seguir · ${E(r.red)}${r.seguidores ? " · " + num(r.seguidores) : ""}</a>`).join(" ");
+const enlace = u => u ? `<a href="${E(u)}" target="_blank" rel="noopener">${E(u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 60))}</a>` : "";
+async function verPrensa() {
+  if (!window._est.bd) { app.innerHTML = `<div class="card"><h1>Prensa</h1><p>La base privada aún no está conectada.</p></div>`; return; }
+  app.innerHTML = `<div class="vacio">Cargando la base de prensa…</div>`;
+  let r; try { r = await api("prensa_resumen"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  PRE.cfg = r.cfg; const C = r.cfg;
+  app.innerHTML = `<div class="card"><h1>Prensa</h1><p class="mute">Medios, periodistas, newsletters y boletines para notas de prensa, noticias y comunicados. Se actualiza cada miércoles a las 15:30. La colaboración está vacía hasta el primer contacto; después se calcula y puedes fijarla a mano.</p>
+    <div class="kpi" style="margin:10px 0"><div><b>${num(r.medios)}</b><span class="mute">medios</span></div><div><b>${num(r.periodistas)}</b><span class="mute">periodistas</span></div><div><b>${num(r.con_correo)}</b><span class="mute">con correo</span></div><div><b>${num(r.suscriptores)}</b><span class="mute">suscriptores de MOTICIAS</span></div><div><b>${num(r.colaboradores)}</b><span class="mute">colaboradores</span></div><div><b>${num(r.coberturas)}</b><span class="mute">coberturas</span></div></div>
+    ${r.brevo ? "" : `<div class="warn">Falta <b>BREVO_API_KEY</b> en Vercel: puedes preparar envíos, pero no mandarlos.</div>`}
+    <div class="row"><button class="b" id="p-nuevo">Nuevo envío</button>${jefe() ? `<button class="b2" id="p-sus">Detectar suscriptores</button>` : ""}<button class="b2" id="p-sync">Actualizar estados</button><button class="b2" id="p-medio">Añadir medio</button></div></div>
+    ${r.envios.length ? `<div class="card"><h2>Últimos envíos</h2>${r.envios.map(e => `<div class="paso"><div><b>${E(e.asunto)}</b><br><span class="mute">${E(C.envios[e.tipo])} · ${E(e.estado)} · ${E((e.enviado_at || e.creado_at || "").slice(0, 10))}</span></div><button class="b2" data-env="${e.id}">Abrir</button></div>`).join("")}</div>` : ""}
+    <div class="filtros" id="p-tipo"><button data-v="" class="${PRE.tipo===""?"on":""}">Todos</button>${Object.entries(C.tipos).map(([k, t]) => `<button data-v="${k}" class="${PRE.tipo===k?"on":""}">${E(t)} · ${r.tipos[k] || 0}</button>`).join("")}</div>
+    <div class="filtros" id="p-colab">${[["", "Cualquier relación"], ["sin", "Sin contacto aún"], ["colaborador", "Colaboradores"], ["neutral", "En observación"], ["poco_colaborador", "Poco colaboradores"]].map(([k, t]) => `<button data-v="${k}" class="${PRE.colab===k?"on":""}">${t}</button>`).join("")}</div>
+    <div class="row" style="margin-bottom:10px"><select id="p-amb" style="flex:1"><option value="">Todos los ámbitos</option>${C.ambitos.map(a => `<option ${PRE.ambito===a?"selected":""}>${a}</option>`).join("")}</select>
+      <select id="p-imp" style="flex:1"><option value="">Cualquier importancia</option>${[5,4,3,2].map(n => `<option value="${n}" ${PRE.imp==n?"selected":""}>${n} o más</option>`).join("")}</select>
+      <label class="chk" style="margin:0"><input type="checkbox" id="p-sub" ${PRE.suscriptores?"checked":""}> con suscriptores</label></div>
+    <input id="p-q" placeholder="Buscar medio, dominio o ciudad" value="${E(PRE.q)}"><div id="p-lista" style="margin-top:10px"></div>`;
+  const fil = (id, k) => $(id).onclick = ev => { const b = ev.target.closest("button"); if (!b) return; PRE[k] = b.dataset.v; $(id).querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); listaPrensa(); };
+  fil("#p-tipo", "tipo"); fil("#p-colab", "colab");
+  $("#p-amb").onchange = () => { PRE.ambito = $("#p-amb").value; listaPrensa(); };
+  $("#p-imp").onchange = () => { PRE.imp = $("#p-imp").value; listaPrensa(); };
+  $("#p-sub").onchange = () => { PRE.suscriptores = $("#p-sub").checked ? "1" : ""; listaPrensa(); };
+  $("#p-q").oninput = () => { clearTimeout(verPrensa.t); verPrensa.t = setTimeout(() => { PRE.q = $("#p-q").value.trim(); listaPrensa(); }, 300); };
+  $("#p-nuevo").onclick = () => nuevoEnvio();
+  $("#p-medio").onclick = () => nuevoMedio();
+  app.querySelectorAll("[data-env]").forEach(b => b.onclick = () => verEnvio(b.dataset.env));
+  const sus = $("#p-sus"); if (sus) sus.onclick = async () => { sus.disabled = true; try { const d = await api("prensa", {accion: "suscriptores"}); aviso(`${d.miembros} miembros revisados · ${d.marcados} periodistas marcados · ${d.nuevos} nuevos por el dominio de su medio`); verPrensa(); } catch (e) { aviso(e.message, true); sus.disabled = false; } };
+  $("#p-sync").onclick = async ev => { ev.target.disabled = true; try { const d = await api("prensa", {accion: "sincronizar"}); aviso(d.cambios + " cambios de estado traídos de Brevo"); verPrensa(); } catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  listaPrensa();
+}
+async function listaPrensa() {
+  const l = $("#p-lista"); if (!l) return; l.innerHTML = `<div class="vacio">Buscando…</div>`;
+  let d; try { d = await api("prensa_medios", null, {tipo: PRE.tipo, ambito: PRE.ambito, colab: PRE.colab, imp: PRE.imp, suscriptores: PRE.suscriptores, q: PRE.q}); } catch (e) { l.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  l.innerHTML = `<p class="mute">${d.medios.length} medio(s)</p>` + (d.medios.map(m => `<button class="item" data-id="${m.id}"><span class="mute">${E(PRE.cfg.tipos[m.tipo_medio] || m.tipo_medio)}${m.alcance ? " · " + E(m.alcance) : ""}${m.region ? " · " + E(m.region) : ""}${m.ambitos && m.ambitos.length ? " · " + E(m.ambitos.slice(0, 3).join(", ")) : ""}</span>
+    <div class="t">${E(m.nombre)}</div><div class="row"><span title="Importancia">${estrellas(m.importancia)}</span><span class="chip" title="Probabilidad de publicar">${pctPrensa(m.prob_publicacion ?? m.prob_previa)}</span>${colabChip(m.colaboracion)}
+    <span class="mute">${m.personas} periodista(s)${m.suscriptores ? " · ★ " + m.suscriptores + " suscriptor(es)" : ""}${m.coberturas ? " · " + m.coberturas + " cobertura(s)" : ""}${m.correo_redaccion ? " · buzón" : ""}${m.verificado_at ? "" : " · por verificar"}</span></div></button>`).join("") || `<div class="vacio">Nada con ese filtro.</div>`);
+  l.querySelectorAll("[data-id]").forEach(b => b.onclick = () => fichaMedio(b.dataset.id));
+}
+async function fichaMedio(id) {
+  app.innerHTML = `<div class="vacio">Cargando…</div>`;
+  let f; try { f = await api("prensa_medio", null, {id}); } catch (e) { app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const m = f.medio, C = PRE.cfg, R = C.roles;
+  const campo = (t, v) => v ? `<div><span class="mute">${t}</span><br>${v}</div>` : "";
+  const sel = (id, opts, v, vacio) => `<select id="${id}">${vacio ? `<option value="">${vacio}</option>` : ""}${Object.entries(opts).map(([k, t]) => `<option value="${k}" ${v===k?"selected":""}>${E(t)}</option>`).join("")}</select>`;
+  app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p>
+  <div class="card"><span class="mute">${E(C.tipos[m.tipo_medio])} · ${E(m.alcance || "")} · ${E((m.ambitos || []).join(", "))}</span><h1>${E(m.nombre)}</h1>
+    <div class="row"><span>${estrellas(m.importancia)}</span><span class="chip">Probabilidad ${pctPrensa(m.prob_publicacion ?? m.prob_previa)}${m.prob_manual ? " (fijada)" : ""}</span>${colabChip(m.colaboracion)}${m.colaboracion_manual ? `<span class="mute">fijada a mano</span>` : ""}</div>
+    ${m.comentario_ia ? `<div class="caja"><p class="et">Comentario (IA)</p>${E(m.comentario_ia)}</div>` : ""}
+    <div class="grid2" style="margin-top:8px">${campo("Web", enlace(m.web))}${campo("Correo de redacción", m.correo_redaccion ? `<a href="mailto:${E(m.correo_redaccion)}">${E(m.correo_redaccion)}</a>` : "")}${campo("Correo para notas", m.correo_notas ? `<a href="mailto:${E(m.correo_notas)}">${E(m.correo_notas)}</a>` : "")}
+      ${campo("Teléfono", m.telefono_corporativo ? `<a href="tel:${E(m.telefono_corporativo.replace(/\s/g, ""))}">${E(m.telefono_corporativo)}</a>` : "")}${campo("Dirección", E([m.direccion, m.cp, m.ciudad, m.region, m.pais].filter(Boolean).join(", ")))}
+      ${campo("Grupo o editora", E(m.grupo))}${campo("Periodicidad", E(m.periodicidad))}${campo("Formatos", E((m.formatos || []).join(", ")))}${campo("Acepta notas de terceros", m.acepta_notas == null ? "" : (m.acepta_notas ? "Sí" : "No"))}
+      ${campo("Audiencia", E(Object.entries(m.audiencia || {}).filter(([k]) => k !== "fuente").map(([k, v]) => k.replace(/_/g, " ") + ": " + v).join(" · ")))}${campo("Referencias externas", E(m.referencias))}</div>
+    ${(m.redes || []).length ? `<div class="row" style="margin-top:10px">${seguir(m.redes)}</div>` : ""}
+    <p class="mute" style="margin-top:10px">${m.verificado_at ? "Verificado el " + E(m.verificado_at) : "Datos de contacto por verificar"} · Fuentes: ${(m.fuentes || []).map(enlace).join(" · ") || "—"}</p>
+    <details><summary>Editar el medio</summary>
+      <label>Relación (vacío = calculada)</label>${sel("e-col", C.colaboracion, m.colaboracion_manual ? m.colaboracion : "", "Calculada")}
+      <label>Importancia (1–5)</label><input id="e-imp" type="number" min="1" max="5" value="${m.importancia ?? ""}">
+      <label>Probabilidad de publicar (%, vacío = calculada)</label><input id="e-prob" type="number" min="0" max="100" value="${m.prob_manual ? Math.round(m.prob_publicacion * 100) : ""}">
+      <label>Correo de redacción</label><input id="e-cr" value="${E(m.correo_redaccion || "")}"><label>Correo para notas de prensa</label><input id="e-cn" value="${E(m.correo_notas || "")}">
+      <label>Teléfono corporativo</label><input id="e-tel" value="${E(m.telefono_corporativo || "")}"><label>Dirección</label><input id="e-dir" value="${E(m.direccion || "")}">
+      <div class="row"><input id="e-cp" placeholder="CP" style="flex:1" value="${E(m.cp || "")}"><input id="e-ciu" placeholder="Ciudad" style="flex:2" value="${E(m.ciudad || "")}"></div>
+      <div class="row"><input id="e-reg" placeholder="Comunidad, estado o provincia" style="flex:2" value="${E(m.region || "")}"><input id="e-pais" placeholder="País" style="flex:1" value="${E(m.pais || "")}"></div>
+      <label>Comentario</label><textarea id="e-com">${E(m.comentario_ia || "")}</textarea><p><button class="b" id="e-ok">Guardar</button></p></details></div>
+  <div class="card"><h2>Periodistas y contactos (${f.periodistas.length})</h2>
+    ${f.periodistas.map(p => `<div class="cand" style="display:block" data-p="${p.id}"><div class="row" style="justify-content:space-between"><b>${E(p.nombre || p.correo)}</b><span>${p.suscriptor_moticias ? `<span class="chip pub" title="Suscriptor de MOTICIAS">★ Suscriptor</span> ` : ""}${colabChip(p.colaboracion)}</span></div>
+      <span class="mute">${E(p.cargo || R[p.rol] || "")}${p.temas && p.temas.length ? " · " + E(p.temas.join(", ")) : ""} · ${estrellas(p.importancia)} · ${pctPrensa(p.prob_publicacion)}</span><br>
+      ${p.no_contactar_at ? `<span class="chip ret">No contactar</span>` : ""}${p.correo ? `<a href="mailto:${E(p.correo)}">${E(p.correo)}</a> ` : `<span class="mute">sin correo</span> `}${p.telefono ? ` · <a href="tel:${E(p.telefono.replace(/\s/g, ""))}">${E(p.telefono)}</a> (directo)` : ""}${p.telefono_corporativo ? " · " + E(p.telefono_corporativo) : ""}${p.linkedin ? ` · <a href="${E(p.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>` : ""}
+      ${p.articulo_url ? `<br><span class="mute">Artículo:</span> <a href="${E(p.articulo_url)}" target="_blank" rel="noopener">${E(p.articulo_titulo || p.articulo_url)}</a>${p.articulo_fecha ? " · " + E(p.articulo_fecha) : ""}` : ""}
+      ${p.comentario_ia ? `<br><span class="mute">${E(p.comentario_ia)}</span>` : ""}${(p.redes || []).length ? `<div class="row" style="margin-top:6px">${seguir(p.redes)}</div>` : ""}
+      <details><summary>Editar</summary><label>Nombre</label><input data-k="nombre" value="${E(p.nombre || "")}"><label>Cargo</label><input data-k="cargo" value="${E(p.cargo || "")}">
+        <label>Correo</label><input data-k="correo" value="${E(p.correo || "")}"><label>Teléfono directo</label><input data-k="telefono" value="${E(p.telefono || "")}">
+        <label>LinkedIn</label><input data-k="linkedin" value="${E(p.linkedin || "")}"><label>Relación (vacío = calculada)</label>${sel("", C.colaboracion, p.colaboracion_manual ? p.colaboracion : "", "Calculada").replace("<select", '<select data-k="colaboracion"')}
+        <label>Importancia (1–5)</label><input data-k="importancia" type="number" min="1" max="5" value="${p.importancia_manual ? p.importancia : ""}">
+        <div class="row" style="margin-top:8px"><button class="b2" data-guardar>Guardar</button><button class="b2" data-resp>Respondió</button>${p.no_contactar_at ? "" : `<button class="b2 bad" data-noc>No contactar</button>`}</div></details></div>`).join("") || `<p class="mute">Todavía no hay nadie con nombre: los envíos irán al buzón de redacción si lo eliges.</p>`}
+    <details><summary>Añadir periodista</summary><label>Nombre</label><input id="n-nom"><label>Cargo</label><input id="n-car" placeholder="Redactor jefe, colaborador de movilidad…">
+      <label>Rol</label>${sel("n-rol", R, "redactor")}<label>Correo profesional</label><input id="n-cor" type="email"><label>Teléfono directo</label><input id="n-tel">
+      <label>Enlace a un artículo suyo</label><input id="n-art" placeholder="https://…"><label>De dónde sale el dato (enlace)</label><input id="n-fue" placeholder="https://… (página del medio, firma, perfil)">
+      <p><button class="b" id="n-ok">Añadir</button></p></details></div>
+  <div class="card"><h2>Coberturas a raíz de nuestros envíos (${f.coberturas.length})</h2>
+    ${f.coberturas.map(k => `<div class="paso"><div>${enlace(k.url)}<br><span class="mute">${E(k.titulo || "")} ${k.fecha ? "· " + E(k.fecha) : ""} ${k.alcance ? "· " + E(k.alcance) : ""} · ${E(k.detectada)}</span></div></div>`).join("") || `<p class="mute">Ninguna todavía.</p>`}
+    <details><summary>Añadir cobertura</summary><label>Enlace</label><input id="k-url" placeholder="https://…"><label>Titular</label><input id="k-tit"><label>Fecha</label><input id="k-fec" type="date">
+      <label>Alcance</label><select id="k-alc"><option value="integra">Íntegra</option><option value="parcial">Parcial</option><option value="mencion">Mención</option><option value="cita">Cita</option></select><p><button class="b" id="k-ok">Guardar</button></p></details></div>
+  <div class="card"><h2>Lo que ha recibido</h2>${f.recibidos.map(x => `<div class="paso"><div>${E((x.prensa_envios || {}).asunto || "")}<br><span class="mute">${E(x.correo)} · ${E(x.estado)} · ${E((x.at || "").slice(0, 10))}</span></div><button class="b2" data-env="${x.envio_id}">Abrir</button></div>`).join("") || `<p class="mute">Nada todavía.</p>`}</div>`;
+  $("#volver").onclick = () => verPrensa();
+  app.querySelectorAll("[data-env]").forEach(b => b.onclick = () => verEnvio(b.dataset.env));
+  $("#e-ok").onclick = async ev => { ev.target.disabled = true;
+    const c = {colaboracion: $("#e-col").value || null, importancia: $("#e-imp").value || null, prob_publicacion: $("#e-prob").value === "" ? null : Number($("#e-prob").value) / 100,
+      correo_redaccion: $("#e-cr").value.trim() || null, correo_notas: $("#e-cn").value.trim() || null, telefono_corporativo: $("#e-tel").value.trim() || null, direccion: $("#e-dir").value.trim() || null,
+      cp: $("#e-cp").value.trim() || null, ciudad: $("#e-ciu").value.trim() || null, region: $("#e-reg").value.trim() || null, pais: $("#e-pais").value.trim() || "España", comentario_ia: $("#e-com").value.trim() || null};
+    try { await api("prensa", {accion: "medio_guardar", cuenta_id: id, cambios: c}); await api("prensa", {accion: "recalcular"}); aviso("Guardado"); fichaMedio(id); } catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  app.querySelectorAll("[data-p]").forEach(box => {
+    const pid = box.dataset.p, val = k => { const x = box.querySelector(`[data-k="${k}"]`); return x ? x.value.trim() : undefined; };
+    const g = box.querySelector("[data-guardar]"); if (g) g.onclick = async () => { g.disabled = true;
+      try { await api("prensa", {accion: "periodista", persona_id: pid, nombre: val("nombre"), cargo: val("cargo"), correo: val("correo"), telefono: val("telefono"), linkedin: val("linkedin"), colaboracion: val("colaboracion") || null, importancia: val("importancia") || null}); aviso("Guardado"); fichaMedio(id); }
+      catch (e) { aviso(e.message, true); g.disabled = false; } };
+    const rs = box.querySelector("[data-resp]"); if (rs) rs.onclick = async () => { const n = prompt("¿Qué contestó? (queda en el historial)", ""); if (n === null) return;
+      try { await api("prensa", {accion: "respuesta", cuenta_id: id, persona_id: pid, notas: n || "Respondió"}); aviso("Anotado"); fichaMedio(id); } catch (e) { aviso(e.message, true); } };
+    const nc = box.querySelector("[data-noc]"); if (nc) nc.onclick = async () => { if (!confirm("«No contactar» es para siempre: no volverá a recibir nada. ¿Seguro?")) return;
+      try { await api("prensa", {accion: "periodista", persona_id: pid, no_contactar: true, motivo: "marcado en el gestor"}); aviso("No se le volverá a contactar"); fichaMedio(id); } catch (e) { aviso(e.message, true); } };
+  });
+  $("#n-ok").onclick = async ev => { ev.target.disabled = true; const art = $("#n-art").value.trim(), fue = $("#n-fue").value.trim();
+    try { await api("prensa", {accion: "periodista", cuenta_id: id, nombre: $("#n-nom").value.trim(), cargo: $("#n-car").value.trim(), rol: $("#n-rol").value, correo: $("#n-cor").value.trim(), telefono: $("#n-tel").value.trim(), articulo_url: art || null, fuentes: fue ? [fue] : [], verificado_at: fue ? new Date().toISOString().slice(0, 10) : null}); aviso("Añadido"); fichaMedio(id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  $("#k-ok").onclick = async ev => { ev.target.disabled = true;
+    try { await api("prensa", {accion: "cobertura", cuenta_id: id, url: $("#k-url").value.trim(), titulo: $("#k-tit").value.trim(), fecha: $("#k-fec").value || null, alcance: $("#k-alc").value}); aviso("Cobertura guardada"); fichaMedio(id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+}
+function nuevoMedio() {
+  const C = PRE.cfg;
+  app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p><div class="card"><h1>Añadir medio</h1>
+    <label>Nombre</label><input id="m-nom"><label>Web</label><input id="m-web" placeholder="https://…"><label>Tipo</label><select id="m-tipo">${Object.entries(C.tipos).map(([k, t]) => `<option value="${k}">${E(t)}</option>`).join("")}</select>
+    <label>Alcance</label><select id="m-alc"><option value="nacional">Nacional</option><option value="autonomico">Autonómico</option><option value="provincial">Provincial</option><option value="local">Local</option><option value="internacional">Internacional</option></select>
+    <label>Ámbitos</label>${C.ambitos.map(a => `<label class="chk"><input type="checkbox" value="${a}"> ${a}</label>`).join("")}
+    <label>Importancia (1–5)</label><input id="m-imp" type="number" min="1" max="5" value="3"><p><button class="b" id="m-ok">Guardar</button></p></div>`;
+  $("#volver").onclick = () => verPrensa();
+  $("#m-ok").onclick = async ev => { ev.target.disabled = true;
+    try { const r = await api("prensa", {accion: "medio_nuevo", nombre: $("#m-nom").value.trim(), web: $("#m-web").value.trim(), tipo_medio: $("#m-tipo").value, alcance: $("#m-alc").value, importancia: $("#m-imp").value, ambitos: [...app.querySelectorAll(".chk input:checked")].map(i => i.value), revisar_at: new Date().toISOString().slice(0, 10)}); aviso("Medio añadido: el miércoles se completan sus datos"); fichaMedio(r.id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+}
+const TEXTOS_ENVIO = {
+  invitacion_suscripcion: ["MOTICIAS: información profesional de transporte y movilidad, gratis para periodistas", "Le escribo porque cubre transporte y movilidad. MOTICIAS publica cada mañana laborable reportajes con fuente primaria sobre regulación, concesiones, licitaciones y operadores de tierra, mar y aire, con los plazos del BOE y de los boletines autonómicos.\n\nPara su trabajo puede suscribirse gratis y recibir la edición diaria. Si alguna pieza le resulta útil, puede citarla con enlace."],
+  mensaje_editor: ["", "\n\nRainer Uphoff\nDirector de MOTICIAS"], mensaje_redaccion: ["", "\n\nRedacción de MOTICIAS"]};
+function nuevoEnvio() {
+  const C = PRE.cfg;
+  app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p><div class="card"><h1>Nuevo envío</h1>
+    <p class="mute">Se guarda como borrador con su lista de destinatarios. Solo el editor jefe lo aprueba y lo envía (por Brevo, uno a uno, con enlace de baja). «No contactar» se respeta siempre; a quien ya es suscriptor no le llega una invitación, y nadie recibe dos invitaciones en 90 días.</p>
+    <label>Tipo</label><select id="v-tipo">${Object.entries(C.envios).map(([k, t]) => `<option value="${k}">${E(t)}</option>`).join("")}</select>
+    <label>Asunto</label><input id="v-asu" maxlength="200"><label>Texto</label><textarea id="v-cue" style="min-height:200px"></textarea>
+    <label>Enlace a la pieza o nota (opcional)</label><input id="v-url" placeholder="https://www.moticias.com/…">
+    <h2 style="margin-top:14px">A quién</h2>
+    <label>Tipos de medio (ninguno = todos)</label>${Object.entries(C.tipos).map(([k, t]) => `<label class="chk"><input type="checkbox" name="t" value="${k}"> ${E(t)}</label>`).join("")}
+    <label>Ámbitos (ninguno = todos)</label>${C.ambitos.map(a => `<label class="chk"><input type="checkbox" name="a" value="${a}"> ${a}</label>`).join("")}
+    <label>Importancia mínima</label><select id="v-imp"><option value="">Cualquiera</option>${[5,4,3,2].map(n => `<option value="${n}">${n} o más</option>`).join("")}</select>
+    <label class="chk"><input type="checkbox" id="v-poco" checked> Excluir medios poco colaboradores</label>
+    <label class="chk"><input type="checkbox" id="v-solo"> Solo periodistas colaboradores</label>
+    <label class="chk"><input type="checkbox" id="v-buz" checked> Incluir buzones de redacción (notas, noticias y comunicados)</label>
+    <div class="row" style="margin-top:10px"><button class="b2" id="v-contar">Contar destinatarios</button><button class="b" id="v-ok">Guardar borrador</button></div><div id="v-res"></div></div>`;
+  $("#volver").onclick = () => verPrensa();
+  $("#v-tipo").onchange = () => { const t = TEXTOS_ENVIO[$("#v-tipo").value]; if (t) { if (!$("#v-asu").value && t[0]) $("#v-asu").value = t[0]; if (!$("#v-cue").value) $("#v-cue").value = t[1]; } };
+  const filtro = () => ({tipos: [...app.querySelectorAll('input[name="t"]:checked')].map(i => i.value), ambitos: [...app.querySelectorAll('input[name="a"]:checked')].map(i => i.value),
+    imp: $("#v-imp").value || null, excluir_poco_colaboradores: $("#v-poco").checked, solo_colaboradores: $("#v-solo").checked, incluir_buzones: $("#v-buz").checked});
+  $("#v-contar").onclick = async ev => { ev.target.disabled = true;
+    try { const d = await api("prensa_destinatarios", null, {tipo: $("#v-tipo").value, filtro: JSON.stringify(filtro())});
+      $("#v-res").innerHTML = `<div class="okbox"><b>${d.n}</b> destinatario(s).<br>${d.muestra.map(x => E((x.nombre ? x.nombre + " · " : "") + x.medio + " · " + x.correo)).join("<br>")}${d.n > d.muestra.length ? "<br>…" : ""}</div>`; }
+    catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
+  $("#v-ok").onclick = async ev => { ev.target.disabled = true;
+    try { const r = await api("prensa", {accion: "envio_crear", tipo: $("#v-tipo").value, asunto: $("#v-asu").value.trim(), cuerpo: $("#v-cue").value, pieza_url: $("#v-url").value.trim() || null, filtro: filtro()}); aviso(`Borrador guardado con ${r.destinatarios} destinatario(s)`); verEnvio(r.id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+}
+async function verEnvio(id) {
+  app.innerHTML = `<div class="vacio">Cargando el envío…</div>`;
+  let d; try { d = await api("prensa_envio", null, {id}); } catch (e) { app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const e = d.envio, C = PRE.cfg || {envios: {}};
+  app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p><div class="card"><span class="mute">${E(C.envios[e.tipo] || e.tipo)} · ${E(e.estado)}${e.enviado_at ? " · enviado el " + E(e.enviado_at.slice(0, 16).replace("T", " ")) : ""}</span><h1>${E(e.asunto)}</h1>
+    <div class="prev">${md(e.cuerpo || "")}${e.pieza_url ? `<p>${enlace(e.pieza_url)}</p>` : ""}</div>
+    <div class="kpi" style="margin:10px 0">${Object.entries(d.estados).map(([k, n]) => `<div><b>${n}</b><span class="mute">${E(k)}</span></div>`).join("")}</div>
+    <div class="row">${["borrador", "aprobado"].includes(e.estado) && jefe() ? `<button class="b" id="x-env">Aprobar y enviar a ${d.destinatarios.filter(x => x.estado === "pendiente").length}</button>` : ""}
+    ${["borrador", "aprobado"].includes(e.estado) ? `<button class="b2 bad" id="x-anu">Anular</button>` : ""}${e.estado === "enviado" ? `<button class="b2" id="x-sync">Actualizar estados</button>` : ""}</div>
+    ${["borrador", "aprobado"].includes(e.estado) && !jefe() ? `<p class="mute">Lo aprueba y lo envía el editor jefe.</p>` : ""}</div>
+    <div class="card"><h2>Destinatarios (${d.destinatarios.length})</h2>${d.destinatarios.map(x => `<div class="paso"><div>${E((x.crm_personas || {}).nombre || "Buzón")} · ${E((x.crm_cuentas || {}).nombre || "")}<br><span class="mute">${E(x.correo)} · ${E(x.estado)}</span></div>${e.estado === "enviado" && x.estado !== "respondido" ? `<button class="b2" data-r="${x.id}" data-c="${x.cuenta_id || ""}" data-p="${x.persona_id || ""}">Respondió</button>` : ""}</div>`).join("")}</div>`;
+  $("#volver").onclick = () => verPrensa();
+  const env = $("#x-env"); if (env) env.onclick = async () => { if (!confirm("Se envía ahora, uno a uno, por Brevo. ¿Adelante?")) return; env.disabled = true;
+    try { const r = await api("prensa", {accion: "envio_enviar", id: Number(id)}); aviso(`Enviados: ${r.enviados}${r.errores ? " · errores: " + r.errores : ""}`); verEnvio(id); } catch (er) { aviso(er.message, true); env.disabled = false; } };
+  const anu = $("#x-anu"); if (anu) anu.onclick = async () => { if (!confirm("¿Anular este envío?")) return; try { await api("prensa", {accion: "envio_anular", id: Number(id)}); verEnvio(id); } catch (er) { aviso(er.message, true); } };
+  const sy = $("#x-sync"); if (sy) sy.onclick = async () => { sy.disabled = true; try { const r = await api("prensa", {accion: "sincronizar", id: Number(id)}); aviso(r.cambios + " cambios"); verEnvio(id); } catch (er) { aviso(er.message, true); sy.disabled = false; } };
+  app.querySelectorAll("[data-r]").forEach(b => b.onclick = async () => { try { await api("prensa", {accion: "respuesta", destinatario_id: Number(b.dataset.r), cuenta_id: b.dataset.c || null, persona_id: b.dataset.p || null}); aviso("Anotado"); verEnvio(id); } catch (er) { aviso(er.message, true); } });
 }
 
 // ---------- Suscriptores (miembros de Ghost) ----------
