@@ -37,6 +37,14 @@ def piezas_por_marca(vertical):
     return out
 
 
+def _y(xs):
+    return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " y " + xs[-1]
+
+
+def _corta(t, n):
+    return t if len(t) <= n else t[:n].rsplit(" ", 1)[0].rstrip(",;(") + "…"
+
+
 def construir(vertical):
     g = vertical.get("grupo") or {}
     ed = g.get("editor") or {}
@@ -63,9 +71,10 @@ def construir(vertical):
     ld = {"@context": "https://schema.org", "@type": "AboutPage", "name": "Empresas del grupo editor de MOTICIAS", "url": base + SLUG + "/",
           "about": org, "inLanguage": "es-ES"}
     return {"title": "Empresas del grupo editor de MOTICIAS", "slug": SLUG, "html": "\n".join(partes),
-            "custom_excerpt": "Quién edita MOTICIAS y qué hace cada empresa del grupo: %s." % lista[:240],
-            "meta_title": "Empresas del grupo editor de MOTICIAS: %s" % ", ".join(m["nombre"] for m in marcas),
-            "meta_description": ("MOTICIAS, medio de movilidad y transportes editado por %s. Grupo: %s." % (ed.get("nombre"), lista))[:300],
+            "custom_excerpt": "Quién edita MOTICIAS y qué hace cada empresa del grupo: %s." % _y([m["nombre"] for m in marcas]),
+            "meta_title": "Empresas del grupo editor de MOTICIAS: %s" % _y([m["nombre"] for m in marcas]),
+            "meta_description": _corta("MOTICIAS, medio de movilidad y transportes, lo edita %s Su grupo: %s." % (
+                str(ed.get("nombre") or "").rstrip(".") + ".", lista), 300),
             "codeinjection_head": '<script type="application/ld+json">%s</script>' % json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")}
 
 
