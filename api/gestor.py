@@ -35,6 +35,7 @@ import retoques as RT  # noqa: E402  (retoques del director: data/retoques/READM
 import bd as BD  # noqa: E402
 import redaccion as R  # noqa: E402
 import firma as F  # noqa: E402
+import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
@@ -484,6 +485,9 @@ def accion_anuncio(ses, d):
             return 403, {"error": "esta caja ya la ha aprobado el editor jefe: solo él la cambia"}
     if "type" in cambios:
         a["label"] = (pub.get("tipos") or {}).get(cambios["type"], a.get("label"))
+    if cambios.get("status") and cambios["status"] != a.get("status"):  # fechas de publicación y retirada para el seguimiento
+        a.setdefault("historial", []).append({"en": datetime.datetime.now().astimezone().isoformat(timespec="minutes"), "estado": cambios["status"],
+                                              "por": ses["perfil"]})
     a.update(cambios)
     if a.get("status") == "activo" and (not a.get("url") or not a.get("slots") or not a.get("headline")):
         return 400, {"error": "para activarla necesita titular, enlace https:// y al menos un hueco"}
@@ -596,7 +600,7 @@ def ficha_redaccion(pid):
             "revised_at": a.get("revised_at"), "revisiones": (a.get("revisiones") or [])[-8:], "correcciones": a.get("correcciones") or [],
             "fuentes": [{"medio": x.get("outlet"), "titulo": x.get("title"), "url": x.get("url")} for x in a.get("sources") or []],
             "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()},
-            "firma": {"actual": "director" if a.get("author") == c["director"] else "redaccion", "director": c["director"], "redaccion": c["redaccion"],
+            "firma": {"actual": "director" if F.es_del_director(a, c) else "redaccion", "director": c["director"], "redaccion": c["redaccion"],
                       "importante": imp, "motivo": mot, "propuesta": dec["firma"], "cupo": dec["cupo"]}}
 
 
@@ -605,7 +609,7 @@ def _aplicar_firma(a, quiere, v):
     c = F.config(v)
     if quiere == "director":
         q = F.cupo(F.cargar(ROOT), a.get("date") or _hoy(), c, excluir=a["id"])
-        if a.get("author") != c["director"] and q["libres_max"] <= 0:
+        if not F.es_del_director(a, c) and q["libres_max"] <= 0:
             raise ValueError("tu firma ya está en el %s %% de las piezas de los últimos %s días (tope %s %%): firma la redacción" % (q["pct"], c["ventana_dias"], c["max_pct"]))
         a["firma_director"] = True
         a["author"], a["author_role"] = c["director"], c["director_role"]
@@ -696,7 +700,7 @@ def informe_firma():
     arts = F.cargar(ROOT)
     q = F.cupo(arts, _hoy(), c)
     suyas = sorted([{"id": a["id"], "title": a.get("title"), "date": a.get("date"), "status": a.get("status")} for a in arts.values()
-                    if a.get("author") == c["director"] and q["desde"] <= (a.get("date") or "") <= q["hasta"]], key=lambda x: x["date"], reverse=True)
+                    if F.es_del_director(a, c) and q["desde"] <= (a.get("date") or "") <= q["hasta"]], key=lambda x: x["date"], reverse=True)
     return {"cupo": q, "piezas": suyas, "regla": ((v.get("editorial") or {}).get("firma_director") or {}).get("regla")}
 
 
@@ -982,6 +986,100 @@ def accion_miembro(ses, d):
     return 400, {"error": "acción desconocida"}
 
 
+# ---------- noticias desde el gestor y dominios de confianza ----------
+CLASES_FUENTE = {"notas_de_prensa": "Notas de prensa (fuente de comunicados)", "informacion": "Información (fuente de confianza)",
+                 "no_confianza": "No de confianza (siempre revisión del editor jefe)"}
+DOMINIOS = "data/fuentes/dominios.json"
+
+
+def accion_encargo(ses, d):
+    """Texto o enlace pegado en el gestor → encargo para la redacción (rutina horaria). Opción 1: investiga y publica hoy.
+    Opción 2: además registra el dominio de la fuente con su clase. Solo el editor jefe publica directo; lo del editor y lo
+    que venga de un dominio no de confianza queda pendiente de su aprobación."""
+    texto, enlace = str(d.get("texto") or "").strip(), str(d.get("enlace") or "").strip()
+    if not enlace:
+        m = re.search(r"https?://[^\s<>\"']+", texto)
+        enlace = m.group(0).rstrip(".,);") if m else ""
+    if len(texto) < 10 and not enlace:
+        return 400, {"error": "pega un texto o un enlace"}
+    if len(texto) < 10:
+        texto = "Enlace: " + enlace
+    dom = _dominio(enlace) if enlace else None
+    clase = d.get("clase_fuente") if d.get("opcion") == 2 else None
+    if d.get("opcion") == 2:
+        if clase not in CLASES_FUENTE:
+            return 400, {"error": "elige la clase de la fuente"}
+        if not dom:
+            return 400, {"error": "para registrar la fuente hace falta un enlace"}
+    jefe = "redaccion" in ses["permisos"]
+    no_conf = clase == "no_confianza" or _clase_dominio(dom) == "no_confianza"
+    pub = "inmediata" if jefe and not no_conf else "revision"
+    try:
+        fila = BD.insertar("encargos_gestor", {"texto": texto[:20000], "enlace": enlace[:600] or None, "dominio": dom, "clase_fuente": clase,
+                                               "pedido_por": ses["nombre"], "perfil": ses["perfil"], "publicacion": pub})[0]
+    except BD.ErrorBD as e:
+        return 502, {"error": str(e)}
+    nota = None
+    if clase:
+        ok, nota = registrar_dominio(dom, clase, ses, jefe)
+        if not ok:
+            nota = "el encargo está guardado, pero no pude registrar la fuente: %s" % nota
+    BD.registrar(ses["nombre"], "encargo_noticia", str(fila["id"]), {"dominio": dom, "clase": clase, "publicacion": pub})
+    return 200, {"ok": True, "id": fila["id"], "publicacion": pub, "fuente": nota,
+                 "aviso": ("La redacción la investiga y la publica en la próxima hora (laborables de 8 a 21)." if pub == "inmediata"
+                           else "La redacción la investiga y la deja escrita para que el editor jefe la apruebe.")}
+
+
+def _dominios():
+    d, sha = leer(DOMINIOS)
+    return (d or {"dominios": []}), sha
+
+
+def _clase_dominio(dom):
+    if not dom:
+        return None
+    d, _ = _dominios()
+    x = next((x for x in d["dominios"] if x["dominio"] == dom), None)
+    if not x:
+        return None
+    return x["clase"] if x.get("confirmado") else "no_confianza"
+
+
+def registrar_dominio(dom, clase, ses, jefe):
+    d, sha = _dominios()
+    x = next((x for x in d["dominios"] if x["dominio"] == dom), None)
+    ahora = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
+    if x and not jefe and x.get("confirmado"):
+        return True, "la fuente %s ya está registrada como «%s»; solo el editor jefe la cambia" % (dom, CLASES_FUENTE[x["clase"]])
+    if not x:
+        x = {"dominio": dom, "alta": ahora}
+        d["dominios"].append(x)
+    # Lo que no clasifica el editor jefe cuenta como «no de confianza» hasta que él lo confirme.
+    x.update(clase=clase, por=ses["perfil"], actualizado=ahora, confirmado=bool(jefe) or clase == "no_confianza")
+    d["dominios"].sort(key=lambda y: y["dominio"])
+    ok, det = escribir(DOMINIOS, d, sha, "Fuentes: %s → %s (%s)" % (dom, clase, ses["perfil"]))
+    if ok and BD.configurada():  # y su ficha de fuente en el CRM, si no existe
+        try:
+            if not BD.leer("crm_cuentas", select="id", producto="eq.moticias", tipo="eq.fuente", dominio="eq." + dom):
+                c = BD.insertar("crm_cuentas", {"producto": "moticias", "tipo": "fuente", "nombre": dom, "web": "https://" + dom, "dominio": dom,
+                                                "subtipo": clase, "origen": "gestor", "creada_por": ses["nombre"]})[0]
+                BD.insertar("crm_estados", {"cuenta_id": c["id"], "estado": "activa" if clase != "no_confianza" else "en_seguimiento", "quien": ses["nombre"],
+                                            "motivo": CLASES_FUENTE[clase]})
+        except BD.ErrorBD:
+            pass
+    return ok, ("fuente %s registrada como «%s»%s" % (dom, CLASES_FUENTE[clase], "" if x["confirmado"] else "; queda sin confirmar hasta que la vea el editor jefe")) if ok else det
+
+
+def accion_dominio(ses, d):
+    if "redaccion" not in ses["permisos"]:
+        return 403, {"error": "solo el editor jefe confirma o cambia las fuentes"}
+    dom, clase = str(d.get("dominio") or ""), d.get("clase")
+    if clase not in CLASES_FUENTE:
+        return 400, {"error": "clase no válida"}
+    ok, det = registrar_dominio(dom, clase, ses, True)
+    return (200, {"ok": True, "detalle": det}) if ok else (502, {"error": det})
+
+
 # ---------- prensa (src/prensa.py) ----------
 def accion_prensa(ses, d, base):
     quien, acc, per = ses["nombre"], d.get("accion"), ses["permisos"]
@@ -1053,7 +1151,7 @@ def prensa_cron():
 # ---------- HTTP ----------
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
-        b = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+        b = b"" if st == 204 else json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(st)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Cache-Control", cache)
@@ -1096,6 +1194,12 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         q, ses = self._q(), self._ses()
         a = q.get("a", "yo")
+        if a == "comprobar":  # el cron de Vercel (cabecera Authorization: Bearer CRON_SECRET)
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "no autorizado"})
+            r = S.comprobar(origen="agente", azar=True)
+            return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]]})
         if a == "publicidad":  # pública: la pide el script de moticias.com
             return self._enviar(200, publicidad_publica(), cors="*", cache="public, max-age=120, s-maxage=300, stale-while-revalidate=3600")
         if a == "prensa_baja":  # pública: enlace de baja de cada envío de prensa (firmado)
@@ -1170,6 +1274,18 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
             if a == "firma":
                 return self._enviar(200, informe_firma())
+            if a == "seguimiento":
+                if "publicidad" not in per and "contratos" not in per:
+                    return self._enviar(403, {"error": "tu perfil no ve el seguimiento de la publicidad"})
+                return self._enviar(200, S.panel(int(q.get("dias") or 30)))
+            if a == "encargos":
+                if "proponer" not in per and "redaccion" not in per:
+                    return self._enviar(403, {"error": "tu perfil no encarga noticias"})
+                filas = BD.leer("encargos_gestor", select="id,texto,enlace,dominio,clase_fuente,pedido_por,perfil,publicacion,estado,pieza,resultado,creado_at,cerrado_at",
+                                order="creado_at.desc", limit="30") if BD.configurada() else []
+                for f in filas:
+                    f["texto"] = (f.get("texto") or "")[:280]
+                return self._enviar(200, {"encargos": filas, "dominios": _dominios()[0]["dominios"], "clases": CLASES_FUENTE})
             if a == "retoques":
                 return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
             if a == "productos":
@@ -1216,6 +1332,9 @@ class handler(BaseHTTPRequestHandler):
             d = json.loads(self.rfile.read(min(n, 400000)) or b"{}") if n else {}
         except (ValueError, json.JSONDecodeError):
             return self._enviar(400, {"error": "JSON no válido"})
+        if a == "evento":  # pública: visualizaciones y clics que manda el script de moticias.com (sendBeacon, texto plano)
+            S.evento(d, self.headers.get("User-Agent"))
+            return self._enviar(204, {}, cors="*")
         if a == "entrar":
             clave, email = str(d.get("clave") or ""), str(d.get("email") or "").strip()
             if email:  # cuenta personal del equipo
@@ -1292,6 +1411,23 @@ class handler(BaseHTTPRequestHandler):
             if not BD.configurada():
                 return self._enviar(503, {"error": "la base privada del CRM aún no está conectada"})
             return self._enviar(*accion_crm(ses, d))
+        if a == "comprobar":
+            if "publicidad" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe lanza el comprobador"})
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada no está conectada"})
+            r = S.comprobar(origen="manual", azar=False, solo=d.get("anuncio"))
+            return self._enviar(200, {"resultados": r})
+        if a == "encargo":
+            if "proponer" not in per and "redaccion" not in per:
+                return self._enviar(403, {"error": "tu perfil no encarga noticias"})
+            if ses["perfil"] not in ("superadmin", "editor"):
+                return self._enviar(403, {"error": "encargan noticias el editor y el editor jefe"})
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada no está conectada"})
+            return self._enviar(*accion_encargo(ses, d))
+        if a == "dominio":
+            return self._enviar(*accion_dominio(ses, d))
         if a == "prensa":
             if "crm" not in per:
                 return self._enviar(403, {"error": "tu perfil no entra en prensa"})

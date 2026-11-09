@@ -191,7 +191,8 @@ def build_html(a, vertical):
     if a.get("author_note"):
         nota, edt = a["author_note"], vertical.get("editorial") or {}
         # El nombre del director solo aparece en lo que él firma (cupo de firma, 9-11-2026).
-        if (a.get("author") or "") != edt.get("director") and edt.get("director") and edt["director"] in nota:
+        firmas_director = {edt.get("director")} | set(edt.get("director_firma_antigua") or [])
+        if (a.get("author") or "") not in firmas_director and edt.get("director") and edt["director"].split()[0] in nota:
             nota = edt.get("interests_note_redaccion") or nota
         parts.append('<p class="intereses"><small>%s</small></p>' % inline(nota))
     ed = vertical.get("editor", {})
@@ -199,15 +200,72 @@ def build_html(a, vertical):
     return "\n".join(parts)
 
 
+def organizacion(vertical):
+    """La casa en datos estructurados: medio, editor y empresas del grupo (con su especialidad), para buscadores y modelos
+    de lenguaje. Las marcas van declaradas como del grupo, nunca como juicio editorial (verticals → grupo)."""
+    g = vertical.get("grupo") or {}
+    dom = "https://%s/" % vertical.get("domain", "www.moticias.com").replace("moticias.com", "www.moticias.com").replace("www.www.", "www.")
+    ed = g.get("editor") or {}
+    org = {"@type": "NewsMediaOrganization", "@id": dom + "#organizacion", "name": vertical.get("name", "MOTICIAS"),
+           "alternateName": ["MOTICIAS", "Moticias", "moticias.com", "MOTICIAS.com"], "url": dom,
+           "slogan": "Noticias con M de Movilidad y Transportes", "inLanguage": "es-ES",
+           "logo": {"@type": "ImageObject", "url": dom + "assets/marca/icon-512.png", "width": 512, "height": 512},
+           "publishingPrinciples": dom + "como-trabajamos/", "ownershipFundingInfo": dom + "empresas-del-grupo/",
+           "knowsAbout": ["movilidad", "transporte de viajeros", "autobús", "ferrocarril", "transporte aéreo", "transporte marítimo", "logística",
+                          "regulación del transporte", "planes de movilidad sostenible al trabajo", "transporte a la demanda"]}
+    if ed.get("nombre"):
+        org["parentOrganization"] = {"@type": "Organization", "name": ed["nombre"], "url": ed.get("url"), "description": ed.get("descripcion")}
+    marcas = [m for m in g.get("marcas") or [] if m.get("publica", True)]
+    if marcas:
+        org["subOrganization"] = [{"@type": "Organization", "name": m["nombre"], "url": m["url"], "description": m.get("descripcion"),
+                                   "knowsAbout": m.get("especialidad")} for m in marcas]
+    return org
+
+
+def _marca_de(vertical, producto_id):
+    for m in (vertical.get("grupo") or {}).get("marcas") or []:
+        if producto_id in (m.get("productos") or []) and m.get("publica", True):
+            return m
+    return None
+
+
 def jsonld(a, vertical, url):
-    d = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": a.get("title"), "description": a.get("summary"),
+    """NewsArticle con autor, medio y editor, fuentes citadas, temas, lugar y respuesta directa (speakable); si la pieza lleva
+    caja «Contenido patrocinado», además las empresas del grupo que menciona (`mentions`, declaradas) y la guía rápida como
+    preguntas y respuestas: así se «activa» para buscadores y modelos de lenguaje (decisión de Rainer, 9-11-2026)."""
+    org = organizacion(vertical)
+    edt = vertical.get("editorial") or {}
+    autor = a.get("author") or edt.get("default_author") or "Redacción"
+    d = {"@context": "https://schema.org", "@type": "NewsArticle", "@id": url + "#pieza", "headline": (a.get("title") or "")[:110],
+         "alternativeHeadline": a.get("subtitle"), "description": a.get("summary"), "abstract": a.get("key_fact"),
          "datePublished": a.get("published_at"), "dateModified": a.get("revised_at") or a.get("published_at"), "inLanguage": "es-ES",
-         "author": {"@type": "Person", "name": a.get("author") or "Redacción"},
-         "publisher": {"@type": "Organization", "name": vertical.get("name"), "url": "https://%s/" % vertical.get("domain", "")},
-         "mainEntityOfPage": url, "articleSection": a.get("section"), "keywords": ", ".join(a.get("tags") or [])}
+         "author": {"@type": "Person", "name": autor, "jobTitle": a.get("author_role") or edt.get("default_author_role"),
+                    "worksFor": {"@id": org["@id"]}},
+         "publisher": org, "mainEntityOfPage": url, "url": url, "articleSection": a.get("section"), "isAccessibleForFree": True,
+         "keywords": ", ".join(a.get("tags") or []), "wordCount": len((a.get("body_md") or "").split()),
+         "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".respuesta-directa"]}}
     if a.get("sources"):
-        d["citation"] = [s.get("url") for s in a["sources"] if s.get("url")]
-    return '<script type="application/ld+json">%s</script>' % json.dumps(d, ensure_ascii=False)
+        d["citation"] = [{"@type": "CreativeWork", "name": s.get("title"), "url": s.get("url"), "publisher": s.get("outlet"),
+                          "datePublished": s.get("published") or None} for s in a["sources"] if s.get("url")]
+    temas = [t for t in (a.get("temas") or [])] + [x for x in (a.get("modo"), a.get("submodo")) if x]
+    if temas:
+        d["about"] = [{"@type": "Thing", "name": t} for t in temas]
+    if (a.get("geo") or {}).get("place"):
+        g = a["geo"]
+        d["contentLocation"] = {"@type": "Place", "name": g["place"], "geo": {"@type": "GeoCoordinates", "latitude": g.get("lat"), "longitude": g.get("lon")}}
+    pub = [m for m in a.get("menciones") or [] if m.get("estado") == "publicada"]
+    marcas = [x for x in (_marca_de(vertical, m.get("producto")) for m in pub) if x]
+    grafo = [d]
+    if marcas:
+        d["mentions"] = [{"@type": "Organization", "name": m["nombre"], "url": m["url"], "description": "%s. Empresa del grupo editor de MOTICIAS." % (m["especialidad"][:1].upper() + m["especialidad"][1:])} for m in marcas]
+        preguntas = [("¿De qué trata?", a.get("summary")), ("¿Quiénes son los protagonistas?", a.get("actors")), ("¿Para quién es relevante?", a.get("relevance_for")),
+                     ("¿Por qué es importante?", a.get("why")), ("¿Qué puede pasar ahora?", a.get("next"))]
+        qa = [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": r}} for q, r in preguntas if r]
+        if qa:
+            grafo.append({"@context": "https://schema.org", "@type": "FAQPage", "@id": url + "#guia", "about": {"@id": url + "#pieza"}, "mainEntity": qa})
+    out = grafo[0] if len(grafo) == 1 else {"@context": "https://schema.org", "@graph": [dict(x, **{"@context": None}) for x in grafo]}
+    txt = json.dumps(out, ensure_ascii=False).replace('"@context": null, ', "").replace(', "@context": null', "")
+    return '<script type="application/ld+json">%s</script>' % txt.replace("</", "<\\/")
 
 
 _TX = {}
@@ -341,6 +399,8 @@ def build_post(a, vertical, base_url, token=None):
     tags = etiquetas_pieza(a, taxonomia(vertical))
     if a.get("featured") == 2:
         tags.insert(0, {"name": "#segunda"})  # la segunda de la portada, para el tema
+    if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
+        tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}

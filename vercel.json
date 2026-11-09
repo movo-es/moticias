@@ -79,6 +79,10 @@
  ],
  "crons": [
   {
+   "path": "/api/gestor?a=comprobar",
+   "schedule": "23 7-19 * * 1-5"
+  },
+  {
    "path": "/api/gestor?a=prensa_cron",
    "schedule": "45 14 * * 3"
   }

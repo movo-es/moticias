@@ -40,7 +40,7 @@ Colección `articles/{id}` — una pieza (noticia, análisis o reportaje):
 | `key_data` | Cifras clave: lista de `{label, value, source}` (4–8) que la página muestra en la columna lateral |
 | `timeline` | Cronología: lista de `{date, text}` (4–10) pasados y futuros; los futuros se marcan en color |
 | `scope` | Ámbito del análisis (rotación diaria) |
-| `author`, `author_role`, `author_note` | Firma («G. Jordan» por defecto; «Rainer» solo en piezas importantes y dentro del cupo del 10 %, `src/firma.py`), cargo y declaración de intereses (sin nombre si firma la redacción). `firma_director` (true/false) fija la firma a mano; `motivo_importante` y `firma_motivo` explican la decisión |
+| `author`, `author_role`, `author_note` | Firma («G. Jordan» por defecto; «Rainer Uphoff» solo en piezas importantes y dentro del cupo del 10 %, `src/firma.py`), cargo y declaración de intereses (sin nombre si firma la redacción). `firma_director` (true/false) fija la firma a mano; `motivo_importante` y `firma_motivo` explican la decisión |
 | `risk`, `review_note` | `rutinaria` o `critica`, y la frase que lo justifica (ver § 3, aprobación) |
 | `campaign` | id de la campaña temática activa a la que pertenece la pieza (`data/campanas/`), o `null` |
 | `menciones` | Lista (dos publicadas como mucho; una si es exclusiva) de `{producto, nombre, texto, cta, url, exclusividad, estado: publicada · propuesta · retirada, motivo, puntuacion, origen: automatica · manual, propuesta_en, historial}`: las cajas «Contenido patrocinado» que el publicador pinta en medio del texto. Se gestionan en `app.moticias.com/gestor/`. La escribe `src/menciones.py` desde `data/productos/`; retirar es cambiar `estado`, nunca borrar |
@@ -140,7 +140,7 @@ Artefacto aparte, «Hemeroteca MOTICIAS», con todas las ediciones archivadas ta
 ## 9. Pendiente y hoja de ruta
 
 - Publicación en moticias.com con Ghost(Pro) (plan Publisher), decidido el 7-11-2026: `src/ghost_publish.py` (posts) y `src/ghost_edicion.py` (página `edicion-hoy`, la portada), paso 7 quater de la rutina. El resumen de la edición va al final de la portada, en pequeño, nunca bajo el título (decisión de Rainer, 9-11-2026).
-- Apellido para la firma de los análisis (hoy «Rainer»).
+- Apellido para la firma de los análisis («Rainer Uphoff», siempre con apellido).
 - Flujo de aprobación (borrador → publicado) desde el móvil y gestión de usuarios/suscriptores.
 - Dominio propio moticias.com y correo (Brevo) para el briefing de las 7:30.
 - Radar regulatorio semanal (lunes), licitaciones de la semana (viernes) y cuadro de mando mensual con CSV, según el benchmark.
