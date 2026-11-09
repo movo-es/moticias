@@ -12,10 +12,10 @@ Variables de entorno (en Vercel, nunca en el repositorio):
   GITHUB_REPO               opcional, por defecto movo-es/moticias; GITHUB_BRANCH, por defecto main
 
 Rutas: GET/POST /api/gestor?a=<acción>  (yo, entrar, aceptar, salir, piezas, pieza, mencion, republicar,
-republicar_pendientes, productos, producto, anuncios, anuncio, equipo, suscriptores). Equipo: src/equipo.py y el
+republicar_pendientes, productos, producto, anuncios, anuncio, equipo, suscriptores, retoques, retoque). Equipo: src/equipo.py y el
 repositorio privado EQUIPO_REPO (por defecto movo-es/moticias-equipo), al que debe llegar también GITHUB_TOKEN. Reglas: openspec/changes/patrocinios-en-linea/.
 """
-import base64, datetime, glob, hashlib, hmac, http.cookies, json, os, sys, time, urllib.error, urllib.parse, urllib.request
+import base64, datetime, glob, hashlib, hmac, http.cookies, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
 import equipo as EQ  # noqa: E402
+import retoques as RT  # noqa: E402  (retoques del director: data/retoques/README.md)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
 EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
@@ -181,7 +182,53 @@ def detalle(pid):
     r["summary"] = a.get("summary")
     r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
     r["url"] = "https://%s/%s/" % (v.get("domain", "www.moticias.com"), a["id"])
+    r["retoques"] = retoques_de(pid)
     return r
+
+
+# ---------- retoques del director ----------
+def retoques_de(pid=None):
+    """Retoques (frescos de GitHub si hay token; si no, los del despliegue), los más recientes primero."""
+    out = []
+    st, lista = gh("GET", "contents/data/retoques?ref=%s" % BRANCH)
+    if st == 200 and isinstance(lista, list):
+        for f in lista:
+            if not f.get("name", "").endswith(".json"):
+                continue
+            if pid and ("-%s-" % pid[:40].rstrip("-")) not in f["name"]:
+                continue
+            r, _ = leer("data/retoques/" + f["name"])
+            if r and (not pid or r.get("pieza") == pid):
+                out.append(r)
+    else:
+        out = [r for r in RT.cargar_todos() if not pid or r.get("pieza") == pid]
+    out.sort(key=lambda r: r.get("pedido_en") or "", reverse=True)
+    return out
+
+
+def accion_retoque(ses, d):
+    acc, pid = d.get("accion") or "crear", d.get("id")
+    if acc == "crear":
+        try:
+            r = RT.construir(str(d.get("pieza") or ""), str(d.get("instruccion") or ""), ses["perfil"])
+        except ValueError as e:
+            return 400, {"error": str(e)}
+        ok, det = escribir("data/retoques/%s.json" % r["id"], r, None, "Retoque pedido: %s" % r["pieza"])
+        if not ok:
+            return 502, {"error": det}
+        return 200, {"ok": True, "commit": det, "retoque": r, "aviso": "La redacción lo atiende en menos de una hora y te avisa al publicarlo."}
+    if acc == "cancelar":
+        ruta = "data/retoques/%s.json" % re.sub(r"[^a-z0-9-]", "", str(pid or ""))
+        r, sha = leer(ruta)
+        if not r:
+            return 404, {"error": "retoque no encontrado"}
+        if r.get("estado") != "pendiente":
+            return 400, {"error": "solo se cancela un retoque pendiente"}
+        r["estado"] = "cancelado"
+        r["resultado"] = {"en": RT.ahora(), "resumen": "cancelado desde el gestor", "fuentes": [], "cambios": []}
+        ok, det = escribir(ruta, r, sha, "Retoque cancelado: %s" % r["pieza"])
+        return (200, {"ok": True, "commit": det, "retoque": r}) if ok else (502, {"error": det})
+    return 400, {"error": "acción desconocida"}
 
 
 def accion_mencion(rol, d):
@@ -434,6 +481,8 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(200, {"productos": productos(), "modos": list(M.MODOS)})
         if a == "anuncios":
             return self._enviar(200, {"anuncios": anuncios()})
+        if a == "retoques":
+            return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
         return self._enviar(404, {"error": "acción desconocida"})
 
     def do_POST(self):
@@ -479,8 +528,10 @@ class handler(BaseHTTPRequestHandler):
         if self.headers.get("X-Gestor") != "1":  # protección CSRF: solo la página del gestor envía esta cabecera
             return self._enviar(403, {"error": "petición no válida"})
         permisos = ses["permisos"]
-        if a in ("mencion", "republicar", "republicar_pendientes") and "piezas" not in permisos:
-            return self._enviar(403, {"error": "tu perfil no cambia las cajas de las piezas"})
+        if a in ("mencion", "republicar", "republicar_pendientes", "retoque") and "piezas" not in permisos:
+            return self._enviar(403, {"error": "tu perfil no cambia las piezas"})
+        if a == "retoque":
+            return self._enviar(*accion_retoque(ses, d))
         if a == "mencion":
             return self._enviar(*accion_mencion(ses["nombre"], d))
         if a == "republicar":

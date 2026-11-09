@@ -4,7 +4,7 @@
  "outputDirectory": "app/public",
  "functions": {
   "api/gestor.py": {
-   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads}/**",
+   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques}/**",
    "maxDuration": 30
   }
  },

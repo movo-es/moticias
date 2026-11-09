@@ -188,12 +188,25 @@ function pintarPieza(p, desdeCorreo) {
     ${c.puntuacion !== null ? `<div class="barra"><i style="width:${Math.min(100, 100 * c.puntuacion / Math.max(1, c.umbral))}%"></i></div>` : ""}</div>
     <button class="b2" data-anadir="${E(c.producto)}">Añadir</button></div>`).join("")}</div>` : ""}
   ${ret.length ? `<details class="card"><summary>Retiradas (${ret.length})</summary>${ret.map(m => `<div class="cand"><span>${E(m.nombre || m.producto)}</span><button class="b2" data-anadir="${E(m.producto)}">Volver a poner</button></div>`).join("")}</details>` : ""}
+  <div class="card" id="retoque"><h2>Pedir un toque a la redacción</h2>
+  <p class="mute">Un enfoque, un titular o una referencia que falta. La redacción lo verifica en fuente primaria, reescribe lo que haga falta, lo publica en menos de una hora y te avisa. Si no encuentra fuente, no cambia nada y te lo dice.</p>
+  <textarea id="rt-tx" placeholder="Ej.: Iberia incluye Granada en su operación especial a Andalucía tras el accidente del AVE — titular y párrafo con la fuente."></textarea>
+  <p class="row"><button class="b" id="rt-env">Pedir a la redacción</button></p>
+  ${(p.retoques || []).map(r => cajaRetoque(r)).join("")}</div>
   <details class="card"><summary>Ver cómo queda en el texto</summary><div class="vista">${p.vista || ""}</div></details>
   <p><button class="b2" id="repub" style="width:100%">Volver a subir a la web</button></p>
   <p class="mute">Cada cambio se sube solo a la web. Este botón solo hace falta si un cambio quedó marcado «Falta en la web».</p>`;
   $("#volver").onclick = () => { history.replaceState(null, "", location.pathname); ir("piezas"); };
   $("#repub").onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Subida a la web" : d.detalle, !d.ok); if (d.ok) abrirPieza(p.id); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
-  if (!puede("piezas")) app.querySelectorAll("[data-acc],[data-anadir],[data-editar],[data-pos],#repub").forEach(b => { b.disabled = true; b.title = "Tu perfil solo consulta las piezas"; });
+  $("#rt-env").onclick = async ev => {
+    const tx = $("#rt-tx").value.trim(); if (tx.length < 8) { aviso("Escribe qué quieres que cambie", true); return; }
+    ev.target.disabled = true;
+    try { const d = await api("retoque", {accion: "crear", pieza: p.id, instruccion: tx}); aviso(d.aviso || "Encargo guardado"); abrirPieza(p.id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; }
+  };
+  app.querySelectorAll("[data-rt-cancel]").forEach(b => b.onclick = async () => { b.disabled = true;
+    try { await api("retoque", {accion: "cancelar", id: b.dataset.rtCancel}); aviso("Encargo cancelado"); abrirPieza(p.id); } catch (e) { aviso(e.message, true); b.disabled = false; } });
+  if (!puede("piezas")) app.querySelectorAll("[data-acc],[data-anadir],[data-editar],[data-pos],#repub,#rt-env,[data-rt-cancel]").forEach(b => { b.disabled = true; b.title = "Tu perfil solo consulta las piezas"; });
   app.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => mencion(p, b.dataset.prod, b.dataset.acc, b));
   app.querySelectorAll("[data-pos]").forEach(b => b.onclick = () => { if (!b.classList.contains("on")) mencion(p, b.dataset.prod, "posicion", b, {posicion: b.dataset.pos}); });
   app.querySelectorAll("[data-anadir]").forEach(b => b.onclick = () => mencion(p, b.dataset.anadir, "anadir", b));
@@ -205,6 +218,15 @@ function pintarPieza(p, desdeCorreo) {
     box.querySelector("#g").onclick = ev => mencion(p, m.producto, "editar", ev.target, {texto: box.querySelector("#tx").value, cta: box.querySelector("#cta").value});
   });
   scrollTo(0,0);
+}
+function cajaRetoque(r) {
+  const est = {pendiente: ["pro", "Pendiente · la redacción lo atiende en menos de una hora"], aplicado: ["pub", "Aplicado y publicado"], sin_fuentes: ["ret", "Sin fuente primaria: la pieza no cambió"], cancelado: ["", "Cancelado"]}[r.estado] || ["", r.estado];
+  const res = r.resultado || {};
+  return `<div class="caja"><p class="et">${E((r.pedido_en || "").replace("T", " ").slice(0, 16))} · ${E(r.pedido_por || "")}</p>${E(r.instruccion)}
+  <p><span class="chip ${est[0]}">${est[1]}</span></p>
+  ${res.resumen ? `<p class="mute">${E(res.resumen)}${(res.cambios || []).length ? " · cambios: " + E(res.cambios.join(", ")) : ""}</p>` : ""}
+  ${(res.fuentes || []).length ? `<p class="mute">${res.fuentes.map(u => `<a href="${E(u)}" target="_blank" rel="noopener">fuente</a>`).join(" · ")}</p>` : ""}
+  ${r.estado === "pendiente" ? `<p><button class="b2 bad" data-rt-cancel="${E(r.id)}">Cancelar</button></p>` : ""}</div>`;
 }
 function cajaMencion(m) {
   const pos = m.posicion || "estandar";
