@@ -3,6 +3,12 @@
  "name": "MOTICIAS",
  "tagline": "con M de Movilidad",
  "domain": "moticias.com",
+ "ghost": {
+  "url": "https://www.moticias.com",
+  "admin_url": "https://moticias.ghost.io",
+  "content_key": "b1993884438a2f5f7fb2b878c1",
+  "nota": "La Content API key es pública por diseño de Ghost (va en el HTML de cada página); sirve solo para leer lo publicado. La Admin API key NUNCA va aquí: GHOST_ADMIN_KEY en el entorno."
+ },
  "language": "es-ES",
  "timezone": "Europe/Madrid",
  "editor": {

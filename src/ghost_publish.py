@@ -21,6 +21,12 @@ Qué hace con cada pieza de data/articles/<id>.json:
   codeinjection_head con JSON-LD NewsArticle.
 - Crea o actualiza el post por slug (busca antes con GET /posts/slug/<slug>/) y guarda el resultado en
   work/ghost/<id>.json (id de Ghost, url, updated_at) para la sala de redacción.
+- Estado en Ghost: una pieza con `status` `pendiente` o `borrador` en data/ (firma del director sin aprobar) va SIEMPRE
+  como borrador, aunque se pida --status published; solo las `publicado` se publican.
+- Portada: la pieza con `featured: 1` se marca destacada en Ghost (es la apertura que pinta el tema) y la de `featured: 2`
+  lleva la etiqueta interna #segunda; al publicar una edición (--date) se quita el destacado a las piezas de días anteriores.
+- Fotos: `image.src` relativo (`img/<nombre>.jpg`) se sube a Ghost desde portal/img/ con /images/upload/ una sola vez;
+  la URL que devuelve Ghost se guarda en portal/img/ghost-urls.json para reutilizarla (misma foto, misma URL).
 Limitaciones conocidas (se resuelven por OpenSpec): el Markdown se convierte con un conversor mínimo (títulos, negrita,
 cursiva, enlaces, listas, citas); las fotos /_blob/ requieren subirlas con /images/upload/ (pendiente).
 """
@@ -246,19 +252,95 @@ def etiquetas_pieza(a, tx):
     return tags
 
 
-def build_post(a, vertical, base_url):
+def estado_ghost(a, pedido):
+    """Estado con el que va la pieza a Ghost. Las piezas del director sin aprobar (`pendiente`) y los borradores nunca se
+    publican por mucho que se pida --status published: quedan en borrador hasta que Rainer pulse «Publicar»."""
+    return "draft" if a.get("status") in ("pendiente", "borrador") else pedido
+
+
+URLS_FOTOS = os.path.join(ROOT, "portal", "img", "ghost-urls.json")
+
+
+def urls_fotos():
+    try:
+        return json.load(open(URLS_FOTOS, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def subir_imagen(ruta, base_url, token):
+    """Sube una foto a Ghost (POST /images/upload/, multipart) y devuelve su URL pública, o None."""
+    nombre = os.path.basename(ruta)
+    limite = "----MoticiasGhost%d" % int(time.time() * 1000)
+    cuerpo = b"".join([
+        ("--%s\r\nContent-Disposition: form-data; name=\"purpose\"\r\n\r\nimage\r\n" % limite).encode(),
+        ("--%s\r\nContent-Disposition: form-data; name=\"ref\"\r\n\r\n%s\r\n" % (limite, nombre)).encode(),
+        ("--%s\r\nContent-Disposition: form-data; name=\"file\"; filename=\"%s\"\r\nContent-Type: image/jpeg\r\n\r\n" % (limite, nombre)).encode(),
+        open(ruta, "rb").read(), ("\r\n--%s--\r\n" % limite).encode()])
+    req = urllib.request.Request(admin_base(base_url) + "/ghost/api/admin/images/upload/", data=cuerpo, method="POST", headers={
+        "Authorization": "Ghost " + token, "Content-Type": "multipart/form-data; boundary=" + limite, "Accept-Version": "v5.0", "User-Agent": UA})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            res = _json(r.read(), r.status)
+    except urllib.error.HTTPError as e:
+        res = _json(e.read(), e.code)
+    return ((res.get("images") or [{}])[0]).get("url")
+
+
+def imagen_ghost(a, base_url, token):
+    """URL pública de la foto de la pieza en Ghost: la propia si ya es http; si es `img/<nombre>`, la que ya se subió
+    (portal/img/ghost-urls.json) o, con token, la sube ahora desde portal/img/ y la anota. Sin foto: None."""
+    im = a.get("image") or {}
+    src = im.get("src") or ""
+    if src.startswith("http"):
+        return src
+    if not src.startswith("img/"):
+        return None
+    nombre = src[4:]
+    urls = urls_fotos()
+    if urls.get(nombre):
+        return urls[nombre]
+    ruta = os.path.join(ROOT, "portal", "img", nombre)
+    if not token or not os.path.exists(ruta):
+        return None
+    url = subir_imagen(ruta, base_url, token)
+    if url:
+        urls[nombre] = url
+        with open(URLS_FOTOS, "w", encoding="utf-8") as fh:
+            json.dump(urls, fh, ensure_ascii=False, indent=1, sort_keys=True)
+            fh.write("\n")
+    return url
+
+
+def build_post(a, vertical, base_url, token=None):
     slug = a["id"]
     url = "%s/%s/" % (base_url.rstrip("/"), slug)  # Ghost sirve /<slug>/ (comprobado el 8-11-2026 en www.moticias.com)
     tags = etiquetas_pieza(a, taxonomia(vertical))
+    if a.get("featured") == 2:
+        tags.insert(0, {"name": "#segunda"})  # la segunda de la portada, para el tema
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
-            "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"),
+            "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
     im = a.get("image") or {}
-    if im.get("src", "").startswith("http"):
-        post["feature_image"] = im["src"]
+    foto = imagen_ghost(a, base_url, token)
+    if foto:
+        post["feature_image"] = foto
         post["feature_image_caption"] = "%s · %s" % (im.get("credit", ""), im.get("license", ""))
         post["feature_image_alt"] = im.get("alt")
     return post
+
+
+def fijar_portada(slug_lead, base_url, token):
+    """Deja destacada en Ghost solo la apertura del día: quita `featured` a cualquier otro post destacado."""
+    base = admin_base(base_url)
+    st, r = api("GET", base + "/ghost/api/admin/posts/?filter=featured:true&fields=id,slug,updated_at&limit=all", token)
+    quitados = []
+    for p in (r.get("posts") or []) if st == 200 else []:
+        if p["slug"] != slug_lead:
+            st2, _ = api("PUT", base + "/ghost/api/admin/posts/%s/" % p["id"], token, {"posts": [{"featured": False, "updated_at": p["updated_at"]}]})
+            if st2 == 200:
+                quitados.append(p["slug"])
+    return quitados
 
 
 # ---------- etiquetas de los tres ejes en Ghost ----------
@@ -336,7 +418,7 @@ def republicar(a, vertical, base_url, admin_key):
         return None, "la pieza aún no está en Ghost (la subirá la rutina)"
     if st != 200 or not found.get("posts"):
         return None, "Ghost respondió %s: %s" % (st, ((found.get("errors") or [{}])[0].get("message") or "")[:200])
-    return upsert(build_post(a, vertical, base_url), found["posts"][0].get("status") or "draft", base_url, token)
+    return upsert(build_post(a, vertical, base_url, token), found["posts"][0].get("status") or "draft", base_url, token)
 
 
 def main():
@@ -381,9 +463,9 @@ def main():
         if not key or ":" not in key:
             sys.exit("Falta GHOST_ADMIN_KEY (id:secret) en el entorno; usa --dry-run para probar sin Ghost")
         token = ghost_token(key)
-    ok, bad = 0, []
+    ok, bad, lead = 0, [], None
     for art in arts:
-        post = build_post(art, vertical, base_url)
+        post = build_post(art, vertical, base_url, token)
         if a.dry_run:
             with open(os.path.join(outdir, art["id"] + ".html"), "w", encoding="utf-8") as fh:
                 fh.write(post["html"])
@@ -391,11 +473,13 @@ def main():
                 json.dump({k: v for k, v in post.items() if k != "html"}, fh, ensure_ascii=False, indent=1)
             ok += 1
             continue
-        res, err = upsert(post, a.status, base_url, token)
+        res, err = upsert(post, estado_ghost(art, a.status), base_url, token)
         if err:
             bad.append((art["id"], err))
         else:
             ok += 1
+            if art.get("featured") == 1 and estado_ghost(art, a.status) == "published":
+                lead = art["id"]
             if marcar_en_web(art):  # las cajas ya están en la web: el gestor lo muestra
                 with open(os.path.join(ROOT, "data", "articles", art["id"] + ".json"), "w", encoding="utf-8") as fh:
                     json.dump(art, fh, ensure_ascii=False, indent=1, sort_keys=True)
@@ -403,7 +487,9 @@ def main():
             with open(os.path.join(outdir, art["id"] + ".json"), "w", encoding="utf-8") as fh:
                 json.dump(res, fh, ensure_ascii=False, indent=1)
         time.sleep(0.5)
-    print(json.dumps({"modo": "prueba" if a.dry_run else a.status, "piezas": len(arts), "ok": ok, "errores": bad}, ensure_ascii=False))
+    quitados = fijar_portada(lead, base_url, token) if (lead and a.date and not a.dry_run) else []
+    print(json.dumps({"modo": "prueba" if a.dry_run else a.status, "piezas": len(arts), "ok": ok, "errores": bad,
+                      "borradores": [x["id"] for x in arts if estado_ghost(x, a.status) == "draft"], "portada": lead, "destacado_quitado_a": quitados}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
