@@ -14,11 +14,11 @@
 - [x] 11. Pruebas sin base con datos ficticios (`ejemplo/`).
 
 ## Pendiente
-- [ ] 12. Aplicar en Supabase la `005_prensa_medios` (de `prensa-y-medios`) , la `006_prensa_cargar` y después la `007_sala_de_prensa`. En la base ya hay otra «005» (`005_seguimiento_y_encargos`): se aplican con su nombre tal cual.
-- [ ] 13. Rainer: exportación de LinkedIn (`Connections.csv`).
-- [ ] 14. Ghost (con GHOST_ADMIN_KEY): etiqueta `notas-de-prensa` (`prensa_publicar.py lista`), boletín «Notas de prensa» con etiquetas `np-<modo>` en el alta, página `/difunde-tu-nota/` con `docs/prensa/oferta.md` y enlace a `app.moticias.com/prensa/`; pie del tema con «Rainer Uphoff».
+- [x] 12. (9-11-2026, Rainer desde su sesión de Code) Aplicar en Supabase la `005_prensa_medios` (de `prensa-y-medios`) , la `006_prensa_cargar` y después la `007_sala_de_prensa`. En la base ya hay otra «005» (`005_seguimiento_y_encargos`): se aplican con su nombre tal cual.
+- [ ] 13. Exportación de LinkedIn: solicitada el 9-11-2026 a las 20:57 desde el navegador de la app (archivo completo; LinkedIn avisa por correo). Al llegar: `src/prensa_valor.py linkedin` → `src/prensa.py sql`.
+- [x] 14. Ghost (9-11-2026, desde la sesión de Rainer en el panel): etiqueta `notas-de-prensa` creada; boletín «Notas de prensa» creado (sin alta automática ni suscripción de los miembros existentes); página publicada https://www.moticias.com/difunde-tu-nota/ con Service + FAQPage; tema `moticias`: pie y `llms.hbs` con «Rainer Uphoff», y `home.hbs` y `llms.hbs` excluyen `tag:hash-comunicado`. Falta versionar el tema en `ghost/theme/` (`src/ghost_theme.py descargar` con la clave) y añadir las etiquetas `np-<modo>` al formulario de alta.
 - [ ] 15. Brevo: dominio moticias.com autenticado (DNS en Hostinger) y remitente de `PRENSA_REMITENTE`.
 - [ ] 16. Vercel (proyecto `moticias-app`): `ANTHROPIC_API_KEY` (opcional) y `BREVO_API_KEY` si no está.
 - [ ] 17. Tarea programada «MOTICIAS · sala de prensa» (laborables 09:3x): `/prensa-buzon`, `/prensa-difusion`, `/prensa-impacto`, en el entorno con las claves.
-- [ ] 18. Al versionar el tema de Ghost: excluir `tag:hash-comunicado` de la portada y del boletín diario.
+- [x] 18. Portada y `llms.txt` del tema excluyen `tag:hash-comunicado` (9-11-2026); las secciones filtran por etiqueta principal, que en una nota es `notas-de-prensa`.
 - [ ] 19. Revisión de `docs/prensa/legal-contactos.md` por un abogado antes del primer envío a periodistas en nombre de un cliente.
