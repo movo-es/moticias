@@ -209,7 +209,7 @@ def organizacion(vertical):
     org = {"@type": "NewsMediaOrganization", "@id": dom + "#organizacion", "name": vertical.get("name", "MOTICIAS"),
            "alternateName": ["MOTICIAS", "Moticias", "moticias.com", "MOTICIAS.com"], "url": dom,
            "slogan": "Noticias con M de Movilidad y Transportes", "inLanguage": "es-ES",
-           "logo": {"@type": "ImageObject", "url": dom + "assets/marca/moticias-logo.png"},
+           "logo": {"@type": "ImageObject", "url": dom + "assets/marca/icon-512.png", "width": 512, "height": 512},
            "publishingPrinciples": dom + "como-trabajamos/", "ownershipFundingInfo": dom + "empresas-del-grupo/",
            "knowsAbout": ["movilidad", "transporte de viajeros", "autobús", "ferrocarril", "transporte aéreo", "transporte marítimo", "logística",
                           "regulación del transporte", "planes de movilidad sostenible al trabajo", "transporte a la demanda"]}
