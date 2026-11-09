@@ -1,0 +1,148 @@
+{
+ "analysis_id": "el-avion-hace-de-ave-sin-las-reglas-del-ave-3ciu",
+ "boe_range": [
+  "2026-11-07",
+  "2026-11-09"
+ ],
+ "boe_series": {
+  "2026-10-24": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-10-26": {
+   "disp": 9,
+   "lic": 17,
+   "total": 26
+  },
+  "2026-10-27": {
+   "disp": 1,
+   "lic": 24,
+   "total": 25
+  },
+  "2026-10-28": {
+   "disp": 6,
+   "lic": 25,
+   "total": 31
+  },
+  "2026-10-29": {
+   "disp": 13,
+   "lic": 36,
+   "total": 49
+  },
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  }
+ },
+ "closed_at": "08:35",
+ "date": "2026-11-09",
+ "document": {
+  "date": "2026-11-09",
+  "kicker": "Resolución · BOE",
+  "ref": "BOE-A-2026-23486",
+  "source": "BOE núm. 279",
+  "summary": "Qué es: la resolución de la Dirección General de Transporte por Carretera y Ferrocarril firmada el 5 de noviembre y publicada en el BOE de hoy.\nQué hace: exceptúa cinco reglas del Reglamento (CE) 561/2006 para los autobuses de los planes alternativos y de los refuerzos de líneas regulares del corte de Urda.\nCuánto: conducción diaria de 11 horas, semanal de 60 y bisemanal de 120; descanso diario de 9.\nCuándo: del 28 de octubre (00:00) al 1 de noviembre (23:59), con efecto retroactivo.\nQué exige: comunicar las matrículas a la Subdirección General de Inspección; recurso de alzada en un mes.",
+  "title": "Resolución de 5 de noviembre de 2026, de la Dirección General de Transporte por Carretera y Ferrocarril, por la que se exceptúa temporalmente el cumplimiento de las normas de tiempos de conducción y descanso en los transportes de viajeros",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23486"
+ },
+ "id": "2026-11-09",
+ "lead_id": "transportes-fija-el-72-en-la-alta-velocidad-para-la-huelga-3qfo",
+ "note_metodologica": "Edición nº 4, cerrada el 9 de noviembre de 2026 a las 08:35 CET, después de la hora prevista (08:30). Tres noticias y un análisis, por debajo del mínimo de cinco piezas: la sesión y los agentes de lectura web superaron el tope de 450.000 tokens durante el barrido, y una interrupción de la sesión de cerca de hora y media retrasó la redacción, de modo que la edición se cierra con lo ya verificado y sin nuevas lecturas. Fuentes primarias abiertas en esta sesión: BOE por su API de datos abiertos (Resolución de la Dirección General de Transporte por Carretera y Ferrocarril BOE-A-2026-23486, Real Decreto-ley 32/2026 BOE-A-2026-23104, Real Decreto-ley 17/1977 y extracto BOE-B-2026-36584), la resolución de servicios mínimos del transporte aéreo para la huelga general del 11 de noviembre y las páginas de resoluciones de servicios mínimos ferroviarios y de aviación civil del Ministerio de Transportes y Movilidad Sostenible, su sala de prensa (notas del 3 y el 6 de noviembre), la sala de prensa de Renfe y la portada de Adif; se contrastan con agencias y prensa, cada enlace con su fecha de publicación y de consulta. Periodo barrido en el BOE: 7 y 9 de noviembre (números 278 y 279; el domingo no hay BOE), con dos referencias de valor editorial, por debajo de las cinco habituales porque ambos sumarios traen muy pocas disposiciones de transporte. El análisis rota al ámbito Aéreo, el que más días llevaba sin usarse, y queda pendiente de la aprobación del director. No hay pieza de la campaña de planes de movilidad al trabajo, que empieza el 10 de noviembre. Las fotos reutilizan imágenes ya publicadas, con su licencia y crédito. Sigue pendiente de pieza el concurso del Bus Nàutic de Eivissa (BOE-B-2026-36291). La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 4,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23486",
+   "text": "Transportes exime con efecto retroactivo de los límites de conducción a los autobuses del corte de Urda (28-10 a 01-11)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23486"
+  },
+  {
+   "ref": "BOE-B-2026-36584",
+   "text": "Melilla amplía a 500.000 euros el crédito para compensar el transporte marítimo y aéreo de mercancías de 2025",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36584"
+  },
+  {
+   "ref": "BOE-B-2026-36291",
+   "text": "Baleares convoca el concurso del Bus Nàutic de Eivissa: concesión de 15 años y ofertas hasta el 7 de enero",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36291"
+  },
+  {
+   "ref": "BOE-B-2026-36255",
+   "text": "Adif licita el mantenimiento de las locomotoras de la serie 310: 30,59 M€ y ofertas hasta el 30 de noviembre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36255"
+  },
+  {
+   "ref": "BOE-B-2026-36260",
+   "text": "Adif formaliza con Citracc Rail la subestación de tracción Ronda–Algeciras por 24,47 M€",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36260"
+  },
+  {
+   "ref": "BOE-B-2026-36259",
+   "text": "Adif licita el control de calidad de las obras de supresión de pasos a nivel: 9,6 M€, ofertas hasta el 14 de diciembre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36259"
+  },
+  {
+   "ref": "BOE-B-2026-36161",
+   "text": "A-32 en Jaén: aprobado el trazado Villanueva del Arzobispo–Beas de Segura, unos 12,5 km y 198 M€",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36161"
+  },
+  {
+   "ref": "BOE-B-2026-36160",
+   "text": "A-32 en Jaén: aprobado el trazado Beas de Segura–Arroyo del Ojanco, unos 8 km y 80,8 M€",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36160"
+  },
+  {
+   "ref": "BOE-B-2026-36256",
+   "text": "Adif formaliza por emergencia la reparación de los túneles de Toses: 1,71 M€ para Nortunel",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36256"
+  },
+  {
+   "ref": "BOE-B-2026-36258",
+   "text": "Adif AV aplaza al 20 de noviembre la apertura de ofertas de las protecciones acústicas Murcia–Lorca",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36258"
+  }
+ ],
+ "ticker_label": "Boletines",
+ "updated_at": "2026-11-09T08:35:08+01:00"
+}
