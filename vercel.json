@@ -4,8 +4,8 @@
  "outputDirectory": "app/public",
  "functions": {
   "api/gestor.py": {
-   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques}/**",
-   "maxDuration": 30
+   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques,portal/data}/**",
+   "maxDuration": 300
   }
  },
  "headers": [
@@ -36,6 +36,19 @@
     {
      "key": "Cache-Control",
      "value": "public, max-age=600, stale-while-revalidate=3600"
+    }
+   ]
+  },
+  {
+   "source": "/sitio/(.*)",
+   "headers": [
+    {
+     "key": "Access-Control-Allow-Origin",
+     "value": "*"
+    },
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=300, stale-while-revalidate=86400"
     }
    ]
   }

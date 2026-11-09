@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#111111">
-<title>Patrocinios · MOTICIAS</title>
+<title>Gestor · MOTICIAS</title>
 <style>
 :root{--bg:#f6f6f4;--card:#fff;--ink:#141414;--mute:#6b6f6c;--line:#e3e4e1;--acc:#1c6b4a;--warn:#a15c00;--bad:#a12b2b;--soft:#f4f6f5}
 *{box-sizing:border-box}html,body{margin:0}
@@ -49,15 +49,31 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 .cand{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
 .cand:first-child{border-top:0}
 .barra{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:4px}.barra i{display:block;height:100%;background:var(--acc)}
+.tabs{display:flex;gap:6px;margin:0 0 10px;overflow-x:auto}.tabs button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:6px 12px;font-size:14px;white-space:nowrap}.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.jefe{border-color:#111}.jefe h2{display:flex;align-items:center;gap:6px}
+.grid2{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:900px){main.ancho{max-width:1180px}.grid2{grid-template-columns:1fr 1fr}}
+.prev{font-family:Georgia,serif;font-size:15px;line-height:1.55;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fffdf8}
+.prev h3{font-family:inherit;font-size:20px;margin:0 0 6px}.prev .sub{color:#555;margin:0 0 10px}
+.marca{background:#fff1c2;padding:0 2px;border-radius:3px}
+.warn{background:#fff6e6;border:1px solid #e7c48d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.okbox{background:#eef6f1;border:1px solid #bcd9c8;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.chk{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:14px}.chk input{width:auto;margin-top:3px}
+.ad-prev{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff}.ad-prev .l{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#7a837e}
+.ad-prev b{display:block;margin:4px 0}.ad-prev u{color:var(--acc)}
+.kpi{display:flex;gap:16px;flex-wrap:wrap}.kpi div b{font-size:22px;display:block}
+.paso{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}.paso:first-child{border-top:0}
+.venc{color:var(--bad);font-weight:600}.hoy{color:var(--warn);font-weight:600}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #ccc;border-top-color:#111;border-radius:50%;animation:g 1s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes g{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <header><b>MOTICIAS · Gestor</b><small id="quien"></small><button id="salir" hidden style="margin-left:8px;background:none;border:1px solid #555;color:#ddd;border-radius:14px;padding:4px 10px;font-size:12px">Salir</button></header>
 <nav id="nav" hidden>
   <button data-v="piezas" class="on">Piezas</button>
-  <button data-v="productos">Productos</button>
   <button data-v="anuncios">Publicidad</button>
+  <button data-v="crm" hidden>CRM</button>
   <button data-v="suscriptores" hidden>Suscriptores</button>
+  <button data-v="productos">Productos</button>
   <button data-v="equipo" hidden>Equipo</button>
 </nav>
 <main id="app"><div class="vacio">Cargando…</div></main>
@@ -71,6 +87,8 @@ const POS = {premium:["Premium","tras el primer párrafo"], estandar:["Estándar
 const enWeb = m => m.estado === "publicada" ? (m.en_web ? `<span class="chip pub">En la web</span>` : `<span class="chip pro">Falta en la web</span>`) : "";
 const EST = {publicada:["pub","Publicada"], propuesta:["pro","Pendiente"], retirada:["ret","Retirada"]};
 const puede = k => ((window._est || {}).permisos || []).includes(k);
+const jefe = () => puede("redaccion");
+const num = n => n == null ? "—" : Number(n).toLocaleString("es-ES");
 let yo = null, vista = "piezas", filtro = "pendientes", cache = {piezas:null, productos:null, anuncios:null};
 
 async function api(a, body, params) {
@@ -78,19 +96,27 @@ async function api(a, body, params) {
   const r = await fetch("/api/gestor?" + q, body ? {method:"POST", headers:{"Content-Type":"application/json","X-Gestor":"1"}, body:JSON.stringify(body), credentials:"same-origin"} : {credentials:"same-origin"});
   let d = {}; try { d = await r.json(); } catch (e) {}
   if (r.status === 401 && a !== "entrar" && a !== "aceptar") { yo = null; login(); throw new Error("sin sesión"); }
-  if (!r.ok) throw new Error(d.error || ("Error " + r.status));
+  if (!r.ok) { const er = new Error(d.error || ("Error " + r.status)); er.datos = d; er.status = r.status; throw er; }
   return d;
 }
-function aviso(t, err) { const n = $("#aviso"); n.textContent = t; n.className = err ? "err" : ""; n.style.display = "block"; clearTimeout(aviso.t); aviso.t = setTimeout(() => n.style.display = "none", err ? 6000 : 3500); }
+function aviso(t, err) { const n = $("#aviso"); n.textContent = t; n.className = err ? "err" : ""; n.style.display = "block"; clearTimeout(aviso.t); aviso.t = setTimeout(() => n.style.display = "none", err ? 7000 : 3500); }
 const chip = e => { const x = EST[e] || ["", e]; return `<span class="chip ${x[0]}">${E(x[1])}</span>`; };
+const params = () => new URLSearchParams(location.search);
+function volverAlSitio() { const v = params().get("volver"); return v && /^https:\/\/(www\.)?moticias\.com\//.test(v) ? v : null; }
+
+// Markdown mínimo para la vista previa (el de la web lo pinta Ghost): párrafos, ##, **negrita**, enlaces.
+function md(t) {
+  const inl = s => E(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return String(t || "").split(/\n{2,}/).map(b => b.trim()).filter(Boolean).map(b => /^##\s/.test(b) ? `<h4>${inl(b.replace(/^##\s*/, ""))}</h4>` : /^>/.test(b) ? `<blockquote>${inl(b.replace(/^>+\s?/gm, ""))}</blockquote>` : `<p>${inl(b).replace(/\n/g, "<br>")}</p>`).join("");
+}
 
 function login(msg) {
   $("#nav").hidden = true; $("#quien").textContent = ""; $("#salir").hidden = true;
-  app.innerHTML = `<div class="card"><h1>Entrar</h1><p class="mute">${msg || "Gestor de MOTICIAS: contenido patrocinado, publicidad, suscriptores y equipo."}</p>
+  app.innerHTML = `<div class="card"><h1>Entrar</h1><p class="mute">${msg || "Gestor de MOTICIAS: redacción, contenido patrocinado, publicidad, CRM y equipo."}</p>
   <form id="f"><label>Correo</label><input type="email" id="email" autocomplete="username" inputmode="email" placeholder="tu@correo">
   <label>Contraseña</label><input type="password" id="clave" autocomplete="current-password" required>
   <p><button class="b" style="width:100%">Entrar</button></p></form>
-  <p class="mute">La sesión dura 90 días en este móvil. Acceso de emergencia del superadministrador: deja el correo vacío y usa la contraseña común.</p></div>`;
+  <p class="mute">La sesión dura 90 días en este dispositivo. Si entras como editor jefe, moticias.com te enseña tus herramientas en cada noticia mientras dure la sesión. Acceso de emergencia del superadministrador: deja el correo vacío y usa la contraseña común.</p></div>`;
   $("#f").onsubmit = async ev => { ev.preventDefault(); try { await api("entrar", {email: $("#email").value.trim(), clave: $("#clave").value}); arrancar(); } catch (e) { aviso(e.message, true); } };
 }
 
@@ -107,23 +133,27 @@ function aceptarInvitacion(inv) {
 }
 
 async function arrancar() {
-  const inv = new URLSearchParams(location.search).get("invitacion");
+  const inv = params().get("invitacion");
   if (inv) return aceptarInvitacion(inv);
   let est; try { est = await api("yo"); } catch (e) { return; }
   if (!est.configurado) { app.innerHTML = `<div class="card"><h1>Falta configurar</h1><p>Añade en Vercel la variable <b>GESTOR_CLAVE_SUPERADMIN</b> y vuelve a desplegar.</p></div>`; return; }
   yo = est.rol; if (!yo) return login();
   window._est = est;
   $("#nav").hidden = false; $("#salir").hidden = false;
-  $("#quien").textContent = est.nombre && !/^Acceso común/.test(est.nombre) ? est.nombre.split(" ")[0] + " · " + yo : yo + " (común)";
+  $("#quien").textContent = est.nombre && !/^Acceso común/.test(est.nombre) ? est.nombre.split(" ")[0] + " · " + (jefe() ? "editor jefe" : yo) : (jefe() ? "editor jefe" : yo) + " (común)";
   $("#nav").querySelector('[data-v="suscriptores"]').hidden = !puede("suscriptores");
   $("#nav").querySelector('[data-v="equipo"]').hidden = !puede("equipo");
-  const p = new URLSearchParams(location.search).get("pieza");
+  $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
+  const p = params().get("pieza"), acc = params().get("accion");
+  if (p && jefe() && ["editar", "ia", "retirar"].includes(acc)) return abrirEditor(p, acc);
   if (p) return abrirPieza(p, true);
+  if (volverAlSitio() && jefe()) { location.href = volverAlSitio(); return; }  // entró desde moticias.com#editor: vuelve con sus herramientas
+  const v = params().get("vista"); if (v && $(`#nav [data-v="${v}"]`)) vista = v;
   ir(vista);
 }
-$("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada."); };
+$("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, productos:verProductos, anuncios:verAnuncios, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, productos:verProductos, anuncios:verAnuncios, crm:verCrm, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -136,28 +166,36 @@ function avisoConfig() {
 async function verPiezas() {
   app.innerHTML = `<div class="vacio">Cargando piezas…</div>`;
   try { cache.piezas = (await api("piezas", null, {dias: 30})).piezas; } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  if (jefe()) { try { cache.firma = await api("firma"); } catch (e) { cache.firma = null; } }
   pintarPiezas();
+}
+function cajaFirma() {
+  const f = cache.firma; if (!f || !jefe()) return "";
+  const q = f.cupo, ok = q.pct <= q.max;
+  return `<div class="card ${ok ? "" : "jefe"}"><div class="row" style="justify-content:space-between"><b>Tu firma</b><span class="chip ${ok ? "pub" : "ret"}">${String(q.pct).replace(".", ",")} % · tope ${q.max} %</span></div>
+  <p class="mute">${q.director} de ${q.total} piezas en los últimos 30 días llevan tu nombre. Puedes firmar ${q.libres_objetivo} más sin pasar del objetivo (${q.objetivo} %). Solo las importantes; lo demás lo firma la redacción.</p></div>`;
 }
 function pintarPiezas() {
   const ps = cache.piezas || [];
   const grupos = {
-    pendientes: ps.filter(p => p.menciones.some(m => m.estado === "propuesta")),
+    pendientes: ps.filter(p => p.menciones.some(m => m.estado === "propuesta") || p.status === "pendiente"),
     publicadas: ps.filter(p => p.menciones.some(m => m.estado === "publicada")),
     web: ps.filter(p => p.menciones.some(m => m.estado === "publicada" && !m.en_web)),
     candidatas: ps.filter(p => !p.menciones.some(m => m.estado !== "retirada") && p.candidatos.length && p.kind !== "analisis"),
     todas: ps
   };
-  if (filtro === "pendientes" && !grupos.pendientes.length && !grupos.web.length) filtro = "publicadas";
+  if (filtro === "pendientes" && !grupos.pendientes.length && !grupos.web.length) filtro = "todas";
   if (filtro === "pendientes" && !grupos.pendientes.length && grupos.web.length) filtro = "web";
   const nombres = {pendientes:"Pendientes", web:"Falta en la web", publicadas:"Con caja", candidatas:"Posibles", todas:"Todas"};
   const lista = grupos[filtro];
   const subir = grupos.web.length && puede("piezas") ? `<div class="card"><b>${grupos.web.length} pieza(s) con caja aprobada que aún no está en la web.</b><p><button class="b" id="subir" style="width:100%">Subir todo a la web ahora</button></p></div>` : "";
-  app.innerHTML = avisoConfig() + subir + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
+  app.innerHTML = avisoConfig() + cajaFirma() + subir + `<div class="filtros">${Object.keys(grupos).map(k => `<button data-f="${k}" class="${k===filtro?"on":""}">${nombres[k]} · ${grupos[k].length}</button>`).join("")}</div>`
     + (lista.length ? lista.map(p => {
       const act = p.menciones.filter(m => m.estado !== "retirada");
       const c = p.candidatos[0];
-      return `<button class="item" data-id="${E(p.id)}"><span class="mute">${E(p.date)} · ${E(p.section || "")}${p.kind === "analisis" ? " · análisis" : ""}</span>
-        <div class="t">${E(p.title)}</div>
+      const st = p.status === "retirada" ? ` <span class="chip ret">Retirada</span>` : p.status === "pendiente" ? ` <span class="chip pro">Espera tu aprobación</span>` : "";
+      return `<button class="item" data-id="${E(p.id)}"><span class="mute">${E(p.date)} · ${E(p.section || "")}${p.kind === "analisis" ? " · análisis" : ""} · ${E(p.author || "")}</span>
+        <div class="t">${E(p.title)}${st}</div>
         <div class="row">${act.length ? act.map(m => `${chip(m.estado)} ${enWeb(m)} <span class="mute">${E(m.nombre || m.producto)} · ${POS[m.posicion || "estandar"][0]}</span>`).join(" ") : (c ? `<span class="mute">Posible: ${E(c.nombre)} · ${c.puntuacion}/${c.umbral}</span>` : `<span class="mute">Sin coincidencias</span>`)}</div></button>`;
     }).join("") : `<div class="vacio">Nada en «${nombres[filtro]}» en los últimos 30 días.</div>`);
   const bs = $("#subir"); if (bs) bs.onclick = async () => { bs.disabled = true; bs.textContent = "Subiendo…";
@@ -173,32 +211,52 @@ async function abrirPieza(id, desdeCorreo) {
   let p; try { p = await api("pieza", null, {id}); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
   pintarPieza(p, desdeCorreo);
 }
+function cajaJefe(p) {
+  if (!jefe()) return "";
+  const ret = p.status === "retirada", pend = p.status === "pendiente";
+  return `<div class="card jefe"><h2>✎ Editor jefe</h2>
+  ${ret ? `<div class="warn">Retirada: no se ve en moticias.com. Se conserva entera y se puede restaurar.</div>` : ""}
+  ${pend ? `<div class="warn">Espera tu aprobación: está en borrador en Ghost.</div>` : ""}
+  <div class="row"><button class="b" data-ed="editar">Editar</button><button class="b2" data-ed="ia">Otro enfoque con IA</button>
+  ${pend ? `<button class="b2" data-ed="publicar">Aprobar y publicar</button>` : ""}
+  ${ret ? `<button class="b2" data-ed="restaurar">Restaurar</button>` : `<button class="b2 bad" data-ed="retirar">Retirar</button>`}</div>
+  <p class="mute" style="margin-bottom:0">Editar y la IA te enseñan el resultado antes de publicar. Retirar la quita de la web sin borrarla.</p></div>`;
+}
 function pintarPieza(p, desdeCorreo) {
   const act = p.menciones.filter(m => m.estado !== "retirada"), ret = p.menciones.filter(m => m.estado === "retirada");
   const usados = new Set(act.map(m => m.producto));
   const cands = (p.candidatos || []).filter(c => !usados.has(c.producto) && c.modo !== "apagado");
-  app.innerHTML = `<p><button class="b2" id="volver">← ${desdeCorreo ? "Todas las piezas" : "Volver"}</button></p>
+  const pub = puede("piezas"), prop = puede("proponer");
+  const vuelta = volverAlSitio();
+  app.innerHTML = `<p class="row"><button class="b2" id="volver">← ${desdeCorreo ? "Todas las piezas" : "Volver"}</button>${vuelta ? `<a class="b2" href="${E(vuelta)}">Volver a moticias.com</a>` : ""}</p>
   <div class="card"><span class="mute">${E(p.date)} · ${E(p.section || "")} · ${E(p.author || "")}</span><h1>${E(p.title)}</h1>
   <a href="${E(p.url)}" target="_blank" rel="noopener" class="mute">Ver en moticias.com ↗</a></div>
-  ${p.kind === "analisis" ? `<div class="card"><b>Análisis del director</b><p class="mute">Los análisis no llevan contenido patrocinado.</p></div>` : ""}
-  ${act.map(m => cajaMencion(m)).join("")}
-  ${cands.length && p.kind !== "analisis" ? `<div class="card"><h2>Añadir contenido patrocinado</h2><p class="mute">Puntuación de cada producto contra esta pieza (umbral del producto).</p>${cands.map(c => `
+  ${cajaJefe(p)}
+  ${!pub && prop ? `<div class="card mute">Puedes proponer cajas de contenido patrocinado: quedan pendientes hasta que el editor jefe las publique.</div>` : ""}
+  ${p.kind === "analisis" ? `<div class="card"><b>Análisis</b><p class="mute">Los análisis no llevan contenido patrocinado.</p></div>` : ""}
+  ${act.map(m => cajaMencion(m, pub)).join("")}
+  ${cands.length && p.kind !== "analisis" && (pub || prop) ? `<div class="card"><h2>${pub ? "Añadir" : "Proponer"} contenido patrocinado</h2><p class="mute">Puntuación de cada producto contra esta pieza (umbral del producto).</p>${cands.map(c => `
     <div class="cand"><div style="flex:1"><b>${E(c.nombre)}</b> <span class="mute">${MODOS[c.modo]} · ${c.exclusividad}</span>
     <div class="mute">${c.puntuacion === null ? E(c.motivo) : c.puntuacion + " / " + c.umbral + (c.supera ? " · supera el umbral" : "")}</div>
     ${c.puntuacion !== null ? `<div class="barra"><i style="width:${Math.min(100, 100 * c.puntuacion / Math.max(1, c.umbral))}%"></i></div>` : ""}</div>
-    <button class="b2" data-anadir="${E(c.producto)}">Añadir</button></div>`).join("")}</div>` : ""}
-  ${ret.length ? `<details class="card"><summary>Retiradas (${ret.length})</summary>${ret.map(m => `<div class="cand"><span>${E(m.nombre || m.producto)}</span><button class="b2" data-anadir="${E(m.producto)}">Volver a poner</button></div>`).join("")}</details>` : ""}
-  <div class="card" id="retoque"><h2>Pedir un toque a la redacción</h2>
-  <p class="mute">Un enfoque, un titular o una referencia que falta. La redacción lo verifica en fuente primaria, reescribe lo que haga falta, lo publica en menos de una hora y te avisa. Si no encuentra fuente, no cambia nada y te lo dice.</p>
+    <button class="b2" data-anadir="${E(c.producto)}">${pub ? "Añadir" : "Proponer"}</button></div>`).join("")}</div>` : ""}
+  ${ret.length && pub ? `<details class="card"><summary>Retiradas (${ret.length})</summary>${ret.map(m => `<div class="cand"><span>${E(m.nombre || m.producto)}</span><button class="b2" data-anadir="${E(m.producto)}">Volver a poner</button></div>`).join("")}</details>` : ""}
+  ${jefe() ? `<div class="card" id="retoque"><h2>Pedir un toque a la redacción</h2>
+  <p class="mute">Para lo que necesita investigar: un dato o una referencia que falta. La redacción lo verifica en fuente primaria, lo escribe, lo publica en menos de una hora y te avisa. Si no encuentra fuente, no cambia nada y te lo dice. Para cambiar el enfoque al momento y verlo antes, usa «Otro enfoque con IA».</p>
   <textarea id="rt-tx" placeholder="Ej.: Iberia incluye Granada en su operación especial a Andalucía tras el accidente del AVE — titular y párrafo con la fuente."></textarea>
   <p class="row"><button class="b" id="rt-env">Pedir a la redacción</button></p>
-  ${(p.retoques || []).map(r => cajaRetoque(r)).join("")}</div>
+  ${(p.retoques || []).map(r => cajaRetoque(r)).join("")}</div>` : ""}
   <details class="card"><summary>Ver cómo queda en el texto</summary><div class="vista">${p.vista || ""}</div></details>
-  <p><button class="b2" id="repub" style="width:100%">Volver a subir a la web</button></p>
-  <p class="mute">Cada cambio se sube solo a la web. Este botón solo hace falta si un cambio quedó marcado «Falta en la web».</p>`;
+  ${pub ? `<p><button class="b2" id="repub" style="width:100%">Volver a subir a la web</button></p>
+  <p class="mute">Cada cambio se sube solo a la web. Este botón solo hace falta si un cambio quedó marcado «Falta en la web».</p>` : ""}`;
   $("#volver").onclick = () => { history.replaceState(null, "", location.pathname); ir("piezas"); };
-  $("#repub").onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Subida a la web" : d.detalle, !d.ok); if (d.ok) abrirPieza(p.id); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
-  $("#rt-env").onclick = async ev => {
+  app.querySelectorAll("[data-ed]").forEach(b => b.onclick = () => {
+    const a = b.dataset.ed;
+    if (a === "editar" || a === "ia" || a === "retirar") return abrirEditor(p.id, a);
+    redaccion(p.id, a, {}, b).then(() => abrirPieza(p.id));
+  });
+  const rp = $("#repub"); if (rp) rp.onclick = async ev => { ev.target.disabled = true; try { const d = await api("republicar", {id: p.id}); aviso(d.ok ? "Subida a la web" : d.detalle, !d.ok); if (d.ok) abrirPieza(p.id); } catch (e) { aviso(e.message, true); } ev.target.disabled = false; };
+  const rt = $("#rt-env"); if (rt) rt.onclick = async ev => {
     const tx = $("#rt-tx").value.trim(); if (tx.length < 8) { aviso("Escribe qué quieres que cambie", true); return; }
     ev.target.disabled = true;
     try { const d = await api("retoque", {accion: "crear", pieza: p.id, instruccion: tx}); aviso(d.aviso || "Encargo guardado"); abrirPieza(p.id); }
@@ -206,7 +264,6 @@ function pintarPieza(p, desdeCorreo) {
   };
   app.querySelectorAll("[data-rt-cancel]").forEach(b => b.onclick = async () => { b.disabled = true;
     try { await api("retoque", {accion: "cancelar", id: b.dataset.rtCancel}); aviso("Encargo cancelado"); abrirPieza(p.id); } catch (e) { aviso(e.message, true); b.disabled = false; } });
-  if (!puede("piezas")) app.querySelectorAll("[data-acc],[data-anadir],[data-editar],[data-pos],#repub,#rt-env,[data-rt-cancel]").forEach(b => { b.disabled = true; b.title = "Tu perfil solo consulta las piezas"; });
   app.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => mencion(p, b.dataset.prod, b.dataset.acc, b));
   app.querySelectorAll("[data-pos]").forEach(b => b.onclick = () => { if (!b.classList.contains("on")) mencion(p, b.dataset.prod, "posicion", b, {posicion: b.dataset.pos}); });
   app.querySelectorAll("[data-anadir]").forEach(b => b.onclick = () => mencion(p, b.dataset.anadir, "anadir", b));
@@ -228,26 +285,151 @@ function cajaRetoque(r) {
   ${(res.fuentes || []).length ? `<p class="mute">${res.fuentes.map(u => `<a href="${E(u)}" target="_blank" rel="noopener">fuente</a>`).join(" · ")}</p>` : ""}
   ${r.estado === "pendiente" ? `<p><button class="b2 bad" data-rt-cancel="${E(r.id)}">Cancelar</button></p>` : ""}</div>`;
 }
-function cajaMencion(m) {
+function cajaMencion(m, pub) {
   const pos = m.posicion || "estandar";
+  const editable = pub || m.estado === "propuesta";
   return `<div class="card"><div class="row" style="justify-content:space-between"><h2>${E(m.nombre || m.producto)}</h2><span>${chip(m.estado)} ${enWeb(m)}</span></div>
   <div class="caja"><p class="et">Contenido patrocinado</p>${E(m.texto)} <u>${E(m.cta)}</u></div>
-  <label>Posición en el texto</label><div class="seg">${Object.keys(POS).map(k => `<button data-pos="${k}" data-prod="${E(m.producto)}" class="${k===pos?"on":""}">${POS[k][0]}<br><small>${POS[k][1]}</small></button>`).join("")}</div>
+  ${pub ? `<label>Posición en el texto</label><div class="seg">${Object.keys(POS).map(k => `<button data-pos="${k}" data-prod="${E(m.producto)}" class="${k===pos?"on":""}">${POS[k][0]}<br><small>${POS[k][1]}</small></button>`).join("")}</div>` : `<p class="mute">Posición: ${POS[pos][0]} (${POS[pos][1]})</p>`}
   <p class="mute">${m.origen === "manual" ? "Puesta a mano" : "Automática"} · puntuación ${E(m.puntuacion)} · ${E(m.exclusividad || "compartida")}</p>
   <details><summary>Por qué</summary><p class="mute">${E(m.motivo)}</p></details>
   <div class="editor"></div>
-  <div class="row">${m.estado !== "publicada" ? `<button class="b" data-acc="publicar" data-prod="${E(m.producto)}">Publicar</button>` : ""}
-  <button class="b2" data-editar="${E(m.producto)}">Editar texto</button>
-  <button class="b2 bad" data-acc="retirar" data-prod="${E(m.producto)}">Retirar</button></div></div>`;
+  <div class="row">${pub && m.estado !== "publicada" ? `<button class="b" data-acc="publicar" data-prod="${E(m.producto)}">Publicar</button>` : ""}
+  ${editable ? `<button class="b2" data-editar="${E(m.producto)}">Editar texto</button>` : ""}
+  ${pub ? `<button class="b2 bad" data-acc="retirar" data-prod="${E(m.producto)}">Retirar</button>` : ""}</div></div>`;
 }
 async function mencion(p, producto, accion, btn, extra) {
   btn.disabled = true;
   try {
     const d = await api("mencion", Object.assign({id: p.id, producto, accion}, extra || {}));
-    const i = (cache.piezas || []).findIndex(x => x.id === p.id); if (i >= 0) cache.piezas[i] = d.pieza;
-    aviso({publicar:"Publicada", retirar:"Retirada", editar:"Texto guardado", anadir:"Caja añadida", proponer:"Pendiente", posicion:"Posición cambiada"}[accion] + (d.ghost.ok ? " · web actualizada" : " · " + d.ghost.detalle), false);
+    const i = (cache.piezas || []).findIndex(x => x.id === p.id); if (i >= 0) cache.piezas[i] = Object.assign({}, cache.piezas[i], d.pieza);
+    aviso({publicar:"Publicada", retirar:"Retirada", editar:"Texto guardado", anadir: puede("piezas") ? "Caja añadida" : "Propuesta enviada al editor jefe", proponer:"Pendiente", posicion:"Posición cambiada"}[accion] + (d.ghost.ok ? (puede("piezas") ? " · web actualizada" : "") : " · " + d.ghost.detalle), false);
     pintarPieza(Object.assign({}, p, d.pieza));
   } catch (e) { aviso(e.message, true); btn.disabled = false; }
+}
+async function redaccion(id, accion, extra, btn) {
+  if (btn) btn.disabled = true;
+  try {
+    const d = await api("redaccion", Object.assign({id, accion}, extra || {}));
+    aviso({retirar:"Retirada de la web", restaurar:"Restaurada", publicar:"Aprobada y publicada", editar:"Cambios publicados"}[accion] + (d.ghost && !d.ghost.ok ? " · " + d.ghost.detalle : ""), d.ghost && !d.ghost.ok);
+    return d;
+  } catch (e) { if (btn) btn.disabled = false; throw e; }
+}
+
+// ---------- Editor del editor jefe: editar, otro enfoque con IA, retirar ----------
+let ED = null;
+async function abrirEditor(id, modo) {
+  app.innerHTML = `<div class="vacio">Abriendo el editor…</div>`;
+  let f; try { f = await api("redaccion", null, {id}); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  ED = {f, campos: Object.assign({}, f.campos), origen: "manual", modo: modo || "editar", prop: null};
+  app.className = "ancho";
+  pintarEditor();
+}
+function campoEd(k) {
+  const largo = ["title", "subtitle", "body_md", "summary", "actors", "relevance_for", "why", "next", "key_fact"].includes(k);
+  const alto = {body_md: 420, title: 64, subtitle: 80, key_fact: 64}[k] || 90;
+  return `<label>${E(ED.f.nombres[k])}${k === "summary" ? ` · <span id="pal-summary"></span>` : k === "body_md" ? ` · <span id="pal-body"></span>` : ""}</label>${largo ? `<textarea data-c="${k}" style="min-height:${alto}px">${E(ED.campos[k])}</textarea>` : `<input data-c="${k}" value="${E(ED.campos[k])}">`}`;
+}
+const palabras = t => (String(t || "").trim().match(/\S+/g) || []).length;
+function pintarEditor() {
+  const f = ED.f, fi = f.firma, q = fi.cupo;
+  const vuelta = volverAlSitio();
+  const tabs = `<div class="tabs"><button data-m="editar" class="${ED.modo==="editar"?"on":""}">Editar</button><button data-m="ia" class="${ED.modo==="ia"?"on":""}">Otro enfoque con IA</button><button data-m="retirar" class="${ED.modo==="retirar"?"on":""}">${f.status === "retirada" ? "Restaurar" : "Retirar"}</button></div>`;
+  const cab = `<p class="row"><button class="b2" id="volver">← La pieza</button>${vuelta ? `<a class="b2" href="${E(vuelta)}">Volver a moticias.com</a>` : ""}<a class="b2" href="${E(f.url)}" target="_blank" rel="noopener">Ver en la web ↗</a></p>
+  <div class="card"><span class="mute">${E(f.date)} · ${E(f.section || "")} · ${E(f.kind || "")} · ${E(f.author || "")}${f.status !== "publicado" ? " · " + E(f.status) : ""}</span><h1>${E(f.campos.title)}</h1></div>` + tabs;
+  if (ED.modo === "retirar") {
+    app.innerHTML = cab + (f.status === "retirada"
+      ? `<div class="card"><h2>Restaurar</h2><p class="mute">Vuelve a publicarse tal como estaba.</p><p><button class="b" id="rest">Restaurar y publicar</button></p></div>`
+      : `<div class="card"><h2>Retirar de la web</h2><p class="mute">La pieza deja de verse en moticias.com al momento. No se borra: queda guardada con su historial y se puede restaurar cuando quieras.</p>
+         <label>Motivo (queda en el historial)</label><input id="mot" placeholder="Ej.: dato en revisión; duplicada; a petición de la fuente">
+         <p><button class="b bad" id="ret" style="background:var(--bad);color:#fff">Retirar ahora</button></p></div>`);
+  } else if (ED.modo === "ia") {
+    app.innerHTML = cab + `<div class="card"><h2>Otro enfoque con IA</h2>
+      <p class="mute">La IA reescribe con lo que la pieza ya sabe: no puede añadir cifras, fechas ni hechos nuevos (si aparece alguno, te lo marco). Lo que propone no se publica: lo ves junto al original, lo pasas al editor si te gusta, lo retocas y publicas. Para añadir información nueva, «Pedir un toque a la redacción» en la ficha de la pieza.</p>
+      <label>Enfoque</label><div class="filtros" id="enf">${Object.entries(f.enfoques).map(([k, t]) => `<button data-e="${k}">${E(t)}</button>`).join("")}</div>
+      <label>Indicación tuya (opcional)</label><textarea id="ins" placeholder="Ej.: abre con lo que significa para los operadores canarios y deja la cronología para el final"></textarea>
+      <p><button class="b" id="proponer" style="width:100%">Proponer versión</button></p></div><div id="res"></div>`;
+  } else {
+    app.innerHTML = cab + `<div class="grid2"><div class="card"><h2>Texto</h2>${["title", "subtitle", "kicker", "summary", "body_md"].map(campoEd).join("")}
+      <details><summary>Guía rápida y dato clave</summary>${["key_fact", "actors", "relevance_for", "why", "next"].map(campoEd).join("")}</details></div>
+      <div><div class="card"><h2>Vista previa</h2><div class="prev" id="prev"></div></div>
+      <div class="card"><h2>Firma</h2>
+        <div class="seg" id="firma"><button data-f="redaccion" class="${fi.actual==="redaccion"?"on":""}">${E(fi.redaccion)}<br><small>redacción</small></button><button data-f="director" class="${fi.actual==="director"?"on":""}">${E(fi.director)}<br><small>director</small></button></div>
+        <p class="mute">Tu nombre: ${q.director} de ${q.total} piezas en 30 días (${String(q.pct).replace(".", ",")} %), tope ${q.max} %. ${fi.importante ? "Esta pieza cuenta como importante: " + E(fi.motivo) + "." : "Esta pieza no es de las importantes (" + E(fi.motivo) + ")."}</p></div>
+      <div class="card"><h2>Publicar</h2>
+        <label class="chk"><input type="checkbox" id="escorr"> <span>Es la corrección de un dato: se añade una nota «Corrección» al final de la pieza, con la fecha.</span></label>
+        <div id="corrbox" hidden><label>Texto de la nota</label><input id="corr" placeholder="Ej.: El importe es de 12,5 millones, no de 15 como se publicó."></div>
+        ${ED.origen === "ia" ? `<div class="okbox">Versión propuesta por la IA cargada en el editor. Revísala antes de publicar.</div>` : ""}
+        <div id="cifras"></div>
+        <p><button class="b" id="pub" style="width:100%">Publicar cambios</button></p>
+        <p class="mute">Se guarda en el repositorio (con su historial) y se actualiza en moticias.com al momento. Queda la fecha de revisión.</p></div></div></div>`;
+  }
+  $("#volver").onclick = () => { app.className = ""; abrirPieza(f.id); };
+  app.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { leerCampos(); ED.modo = b.dataset.m; pintarEditor(); });
+  if (ED.modo === "retirar") {
+    const r = $("#ret"); if (r) r.onclick = async () => { if (!confirm("¿Retirar la pieza de moticias.com? Se conserva y se puede restaurar.")) return;
+      try { await redaccion(f.id, "retirar", {motivo: $("#mot").value}, r); app.className = ""; abrirPieza(f.id); } catch (e) { aviso(e.message, true); } };
+    const s = $("#rest"); if (s) s.onclick = async () => { try { await redaccion(f.id, "restaurar", {}, s); app.className = ""; abrirPieza(f.id); } catch (e) { aviso(e.message, true); } };
+  } else if (ED.modo === "ia") {
+    let enf = "";
+    $("#enf").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; enf = b.classList.contains("on") ? "" : b.dataset.e; $("#enf").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.e === enf)); };
+    $("#proponer").onclick = async ev => {
+      const ins = $("#ins").value.trim(); if (!enf && ins.length < 6) { aviso("Elige un enfoque o escribe una indicación", true); return; }
+      const b = ev.target; b.disabled = true; b.innerHTML = `<span class="spin"></span>La IA está escribiendo (1–2 minutos)…`;
+      try { ED.prop = await api("redaccion", {accion: "enfoque", id: f.id, enfoque: enf, instruccion: ins}); pintarPropuesta(); }
+      catch (e) { aviso(e.message, true); }
+      b.disabled = false; b.textContent = "Proponer otra versión";
+    };
+    if (ED.prop) pintarPropuesta();
+  } else {
+    const prev = () => { leerCampos(); $("#prev").innerHTML = `<p class="mute" style="margin:0">${E(ED.campos.kicker)}</p><h3>${E(ED.campos.title)}</h3><p class="sub">${E(ED.campos.subtitle)}</p><p><b>${E(ED.campos.summary)}</b></p>${md(ED.campos.body_md)}`;
+      const ps = $("#pal-summary"); if (ps) ps.textContent = palabras(ED.campos.summary) + " palabras"; const pb = $("#pal-body"); if (pb) pb.textContent = palabras(ED.campos.body_md) + " palabras"; };
+    app.querySelectorAll("[data-c]").forEach(i => i.oninput = () => { clearTimeout(prev.t); prev.t = setTimeout(prev, 250); });
+    prev();
+    $("#firma").onclick = ev => { const b = ev.target.closest("button"); if (b) $("#firma").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); };
+    $("#escorr").onchange = ev => { $("#corrbox").hidden = !ev.target.checked; };
+    $("#pub").onclick = ev => publicarEdicion(ev.target, false);
+  }
+  scrollTo(0,0);
+}
+function leerCampos() { app.querySelectorAll("[data-c]").forEach(i => ED.campos[i.dataset.c] = i.value); }
+function marcar(t, nuevas) {
+  let h = E(t);
+  (nuevas || []).forEach(n => { const re = new RegExp("(\\d[\\d.,]*)", "g"); h = h.replace(re, m => (m.replace(/\./g, "").replace(",", ".").replace(/^0+(?=\d)/, "") === n ? `<span class="marca">${m}</span>` : m)); });
+  return h;
+}
+function pintarPropuesta() {
+  const r = ED.prop, o = r.original, p = r.propuesta;
+  const bloque = (x, cls) => `<div class="prev ${cls||""}"><p class="mute" style="margin:0">${E(x.kicker)}</p><h3>${x === p ? marcar(x.title, r.cifras_nuevas) : E(x.title)}</h3><p class="sub">${E(x.subtitle)}</p><p><b>${E(x.summary)}</b></p>${md(x.body_md)}</div>`;
+  $("#res").innerHTML = `<div class="card"><h2>Propuesta</h2>${r.nota ? `<p class="mute">${E(r.nota)}</p>` : ""}
+    ${r.cifras_nuevas.length ? `<div class="warn"><b>Cifras o fechas que no están en la pieza ni en sus fuentes:</b> ${r.cifras_nuevas.map(E).join(", ")}. Quítalas o confírmalas antes de publicar.</div>` : `<div class="okbox">Ninguna cifra ni fecha nueva: todo lo que dice ya estaba en la pieza o en sus fuentes.</div>`}
+    <div class="tabs" id="vt"><button data-v="p" class="on">Propuesta</button><button data-v="o">Original</button></div><div id="vv">${bloque(p)}</div>
+    <div class="row" style="margin-top:10px"><button class="b" id="usar">Pasar al editor para revisar y publicar</button><button class="b2" id="desc">Descartar</button></div>
+    <p class="mute">Modelo: ${E(r.modelo)}. Nada se publica sin que pulses «Publicar cambios» en el editor.</p></div>`;
+  $("#vt").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; $("#vt").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); $("#vv").innerHTML = bloque(b.dataset.v === "p" ? p : o); };
+  $("#usar").onclick = () => { ED.campos = Object.assign({}, ED.campos, p); ED.origen = "ia"; ED.modo = "editar"; pintarEditor(); aviso("Propuesta cargada en el editor: revisa y publica"); };
+  $("#desc").onclick = () => { ED.prop = null; $("#res").innerHTML = ""; };
+  $("#res").scrollIntoView({behavior: "smooth"});
+}
+async function publicarEdicion(btn, confirmo) {
+  leerCampos();
+  const cambios = {}; Object.keys(ED.campos).forEach(k => { if ((ED.campos[k] || "") !== (ED.f.campos[k] || "")) cambios[k] = ED.campos[k]; });
+  const firma = ($("#firma .on") || {}).dataset ? $("#firma .on").dataset.f : null;
+  const corr = $("#escorr").checked ? $("#corr").value.trim() : "";
+  if ($("#escorr").checked && corr.length < 10) return aviso("Escribe la nota de corrección", true);
+  if (!Object.keys(cambios).length && firma === ED.f.firma.actual && !corr) return aviso("No hay cambios", true);
+  btn.disabled = true; btn.innerHTML = `<span class="spin"></span>Publicando…`;
+  try {
+    const d = await api("redaccion", {accion: "editar", id: ED.f.id, cambios, firma, correccion: corr || null, origen: ED.origen, confirmo_cifras: !!confirmo});
+    aviso("Publicado" + (d.ghost.ok ? " · moticias.com actualizada" : " · " + d.ghost.detalle), !d.ghost.ok);
+    ED.f = d.pieza; ED.campos = Object.assign({}, d.pieza.campos); ED.origen = "manual"; ED.prop = null; pintarEditor();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = "Publicar cambios";
+    if (e.status === 409 && e.datos && e.datos.cifras) {
+      $("#cifras").innerHTML = `<div class="warn"><b>Cifras o fechas nuevas:</b> ${e.datos.cifras.map(E).join(", ")}. No están en la pieza ni en sus fuentes. Si son tuyas y respondes de ellas, publica igualmente; si no, quítalas.</div><p><button class="b2 bad" id="igual">Publicar igualmente (respondo de estas cifras)</button></p>`;
+      $("#igual").onclick = ev => publicarEdicion(ev.target, true);
+    } else aviso(e.message, true);
+  }
 }
 
 // ---------- Productos ----------
@@ -255,7 +437,7 @@ async function verProductos() {
   app.innerHTML = `<div class="vacio">Cargando productos…</div>`;
   try { cache.productos = (await api("productos")).productos; } catch (e) { return; }
   const sa = puede("productos");
-  app.innerHTML = avisoConfig() + (sa ? "" : `<div class="card mute">Tu perfil puede consultar los ajustes; los cambia el superadministrador o el perfil comercial.</div>`)
+  app.innerHTML = avisoConfig() + (sa ? "" : `<div class="card mute">Puedes consultar los ajustes; los cambia el editor jefe.</div>`)
    + cache.productos.map(p => `<div class="card" data-p="${E(p.id)}">
     <div class="row" style="justify-content:space-between"><h2>${E(p.name)}</h2><span class="chip ${p.modo === "apagado" ? "ret" : "pub"}">${MODOS[p.modo] || p.modo}</span></div>
     <p class="mute">${E(p.one_liner || "")}${p.url ? "" : " · <b>sin URL: no se puede mencionar</b>"}</p>
@@ -285,46 +467,214 @@ async function verProductos() {
   });
 }
 
-// ---------- Publicidad ----------
+// ---------- Publicidad y patrocinios ----------
+const EST_AD = {propuesta:["pro","Propuesta"], activo:["pub","Activa"], pausado:["","Pausada"], terminado:["ret","Terminada"], borrador:["","Borrador"]};
 async function verAnuncios() {
   app.innerHTML = `<div class="vacio">Cargando publicidad…</div>`;
-  try { cache.anuncios = (await api("anuncios")).anuncios; } catch (e) { return; }
-  const sa = puede("publicidad");
-  app.innerHTML = avisoConfig() + `<p class="mute">Huecos de publicidad fuera del texto (portada, artículo, boletín). Las cajas dentro del texto se gestionan en «Piezas» y «Productos».</p>`
-   + cache.anuncios.map(a => `<div class="card" data-a="${E(a.id)}"><div class="row" style="justify-content:space-between"><h2>${E(a.name)}</h2><span class="chip ${a.status==="activo"?"pub":"ret"}">${E(a.status)}</span></div>
-    <p class="mute">${E(a.advertiser)} · ${E(a.type)} · ${E((a.slots||[]).join(", "))}<br>${E(a.start || "")} → ${E(a.end || "")}</p>
-    <div class="caja"><p class="et">${E(a.label || "Publicidad")}</p><b>${E(a.headline)}</b><br>${E(a.text)}</div>
-    ${sa ? `<div class="row"><button class="b2" data-st="${a.status==="activo"?"pausado":"activo"}">${a.status==="activo"?"Pausar":"Activar"}</button></div>` : ""}</div>`).join("");
+  let d; try { d = await api("anuncios"); } catch (e) { return; }
+  cache.anuncios = d.anuncios; cache.pub = d.publicidad || {};
+  const P = cache.pub, sa = puede("publicidad");
+  const grupos = ["propuesta", "activo", "pausado", "borrador", "terminado"];
+  const lista = [...cache.anuncios].sort((a, b) => grupos.indexOf(a.status) - grupos.indexOf(b.status));
+  app.innerHTML = avisoConfig() + `<div class="card"><h1>Publicidad y patrocinios</h1>
+    <p class="mute">Cajas con enlace fuera del texto de las piezas, en tres niveles: <b>Premium</b> (bajo la cabecera y junto al texto del artículo), <b>Estándar</b> (entre bloques de la portada y tras el artículo) y <b>Básico</b> (antes del pie y en el boletín). Llevan siempre su etiqueta visible. ${sa ? "Solo tú las activas." : "Tú las propones; las activa el editor jefe."}</p>
+    <p><button class="b" id="nueva" style="width:100%">Nueva caja de publicidad o patrocinio</button></p></div>
+    <div id="form"></div>`
+   + lista.map(a => `<div class="card" data-a="${E(a.id)}"><div class="row" style="justify-content:space-between"><h2>${E(a.name)}</h2><span class="chip ${(EST_AD[a.status]||[""])[0]}">${E((EST_AD[a.status]||["",a.status])[1])}</span></div>
+    <p class="mute">${E(a.advertiser)} · ${E((P.tipos||{})[a.type] || a.type)} · ${E(((P.niveles||{})[a.nivel]||{}).nombre || a.nivel || "sin nivel")} · ${E((a.slots||[]).join(", ") || "sin huecos")}<br>${E(a.start || "")} → ${E(a.end || "")}${a.propuesto_por ? " · propuesta de " + E(a.propuesto_por) : ""}</p>
+    ${prevAd(a)}
+    <div class="row" style="margin-top:8px">${sa ? (a.status === "activo" ? `<button class="b2" data-st="pausado">Pausar</button><button class="b2 bad" data-st="terminado">Terminar</button>` : `<button class="b" data-st="activo">Activar</button>${a.status !== "terminado" ? `<button class="b2 bad" data-st="terminado">Terminar</button>` : ""}`) : ""}
+    ${sa || a.status === "propuesta" ? `<button class="b2" data-edit>Editar</button>` : ""}</div></div>`).join("");
+  $("#nueva").onclick = () => formAd(null);
   app.querySelectorAll("[data-st]").forEach(b => b.onclick = async () => {
     b.disabled = true;
-    try { await api("anuncio", {id: b.closest("[data-a]").dataset.a, cambios: {status: b.dataset.st}}); aviso("Guardado"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; }
+    try { const r = await api("anuncio", {accion: "editar", id: b.closest("[data-a]").dataset.a, cambios: {status: b.dataset.st}}); aviso(r.nota || "Guardado"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; }
   });
+  app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => formAd(cache.anuncios.find(x => x.id === b.closest("[data-a]").dataset.a)));
 }
-// ---------- Suscriptores (Ghost) ----------
+function prevAd(a) {
+  const P = cache.pub || {};
+  return `<div class="ad-prev"><span class="l">${E(a.label || (P.tipos||{})[a.type] || "Publicidad")}${a.advertiser ? " · " + E(a.advertiser) : ""}</span><b>${E(a.headline)}</b><span>${E(a.text)}</span> <u>${E(a.cta || "Más información")} →</u></div>`;
+}
+async function formAd(a) {
+  const P = cache.pub, sa = puede("publicidad"), nuevo = !a; a = a || {type: "publicidad", nivel: "estandar", slots: [], weight: 1, start: new Date().toISOString().slice(0, 10)};
+  let cuentas = [];
+  if (window._est.bd && puede("crm")) { try { cuentas = (await api("crm_cuentas", null, {})).cuentas.filter(c => ["anunciante", "patrocinador"].includes(c.tipo)); } catch (e) {} }
+  const huecos = Object.entries(P.huecos || {});
+  $("#form").innerHTML = `<div class="card jefe"><h2>${nuevo ? "Nueva caja" : "Editar caja"}</h2>
+    <label>Tipo</label><div class="seg" id="f-tipo">${Object.entries(P.tipos || {}).map(([k, t]) => `<button data-v="${k}" class="${a.type===k?"on":""}">${E(t)}</button>`).join("")}</div>
+    <label>Anunciante (como aparece en la etiqueta)</label><input id="f-adv" value="${E(a.advertiser)}">
+    ${cuentas.length ? `<label>Cliente en el CRM</label><select id="f-cuenta"><option value="">—</option>${cuentas.map(c => `<option value="${c.id}" ${a.crm_cuenta_id===c.id?"selected":""}>${E(c.nombre)}</option>`).join("")}</select>` : ""}
+    <label>Nombre interno</label><input id="f-name" value="${E(a.name)}" placeholder="Ej.: Alsa · campaña de invierno · premium">
+    <label>Nivel</label><div class="seg" id="f-nivel">${Object.entries(P.niveles || {}).map(([k, n]) => `<button data-v="${k}" class="${a.nivel===k?"on":""}">${E(n.nombre)}</button>`).join("")}</div>
+    <label>Huecos</label>${huecos.map(([k, t]) => `<label class="chk"><input type="checkbox" value="${k}" ${(a.slots||[]).includes(k)?"checked":""}> <span><b>${k}</b> — ${E(t)}</span></label>`).join("")}
+    <label>Titular</label><input id="f-h" maxlength="140" value="${E(a.headline)}">
+    <label>Texto</label><textarea id="f-t" maxlength="400" style="min-height:70px">${E(a.text)}</textarea>
+    <label>Texto del enlace</label><input id="f-cta" maxlength="60" value="${E(a.cta)}" placeholder="Más información">
+    <label>Enlace (https://…)</label><input id="f-url" value="${E(a.url)}" inputmode="url">
+    <div class="row" style="gap:12px"><div style="flex:1"><label>Desde</label><input type="date" id="f-ini" value="${E(a.start)}"></div><div style="flex:1"><label>Hasta</label><input type="date" id="f-fin" value="${E(a.end)}"></div><div style="flex:1"><label>Peso (1–10)</label><input type="number" id="f-peso" min="1" max="10" value="${E(a.weight || 1)}"></div></div>
+    <label>Vista previa</label><div id="f-prev"></div>
+    <p class="mute">El importe, la factura y el contacto van en la ficha del cliente en el CRM (privado), nunca aquí: esta caja se guarda en el repositorio público.</p>
+    <div class="row"><button class="b" id="f-ok">${sa ? "Guardar" : "Proponer al editor jefe"}</button>${sa && (nuevo || a.status !== "activo") ? `<button class="b2" id="f-act">Guardar y activar</button>` : ""}<button class="b2" id="f-no">Cancelar</button></div></div>`;
+  const seg = id => { const s = $(id); s.onclick = ev => { const b = ev.target.closest("button"); if (b) { s.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); upd(); } }; };
+  const leer = () => ({type: $("#f-tipo .on")?.dataset.v, nivel: $("#f-nivel .on")?.dataset.v, advertiser: $("#f-adv").value, name: $("#f-name").value, headline: $("#f-h").value, text: $("#f-t").value, cta: $("#f-cta").value, url: $("#f-url").value.trim(), start: $("#f-ini").value || null, end: $("#f-fin").value || null, weight: $("#f-peso").value, slots: [...$("#form").querySelectorAll(".chk input:checked")].map(i => i.value), crm_cuenta_id: $("#f-cuenta") ? $("#f-cuenta").value || null : a.crm_cuenta_id || null});
+  const upd = () => { const x = leer(); x.label = (P.tipos || {})[x.type]; $("#f-prev").innerHTML = prevAd(x); };
+  seg("#f-tipo"); seg("#f-nivel");
+  $("#f-nivel").addEventListener("click", () => { const n = $("#f-nivel .on")?.dataset.v; if (!n) return; const hs = (P.niveles[n] || {}).huecos || []; $("#form").querySelectorAll(".chk input").forEach(i => i.checked = hs.includes(i.value)); upd(); });
+  $("#form").querySelectorAll("input,textarea,select").forEach(i => i.oninput = upd); upd();
+  const guardar = async (activar, b) => { b.disabled = true; const c = leer(); if (activar) c.status = "activo";
+    try { const r = await api("anuncio", nuevo ? {accion: "crear", cambios: c} : {accion: "editar", id: a.id, cambios: c}); aviso(r.nota || "Guardada"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; } };
+  $("#f-ok").onclick = ev => guardar(false, ev.target);
+  const fa = $("#f-act"); if (fa) fa.onclick = ev => guardar(true, ev.target);
+  $("#f-no").onclick = () => $("#form").innerHTML = "";
+  $("#form").scrollIntoView({behavior: "smooth"});
+}
+
+// ---------- CRM ----------
+let CRM = {tipo: "", q: "", cfg: null};
+const nomEst = e => ((CRM.cfg || {}).estados || {})[e] || e || "—";
+const fechaClase = f => { const h = new Date().toISOString().slice(0, 10); return !f ? "" : f < h ? "venc" : f === h ? "hoy" : ""; };
+async function verCrm() {
+  if (!window._est.bd) { app.innerHTML = `<div class="card"><h1>CRM</h1><p>La base privada del CRM aún no está conectada.</p><p class="mute">Cuando lo esté, aquí estarán los suscriptores corporativos, los anunciantes y patrocinadores, las fuentes, los medios y las instituciones, con sus personas, su estado, su siguiente paso y su historial (el mismo CRM de MOVO).</p></div>`; return; }
+  app.innerHTML = `<div class="vacio">Cargando el CRM…</div>`;
+  let r; try { r = await api("crm_resumen"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  CRM.cfg = r.cfg; const T = r.cfg.tipos || {};
+  app.innerHTML = `<div class="card"><h1>CRM</h1><p class="mute">${E(r.cfg.regla_de_oro || "")}</p>
+    <div class="row"><button class="b" id="nc">Nueva cuenta</button>${jefe() ? `<button class="b2" id="imp">Importar las fuentes del repositorio</button>` : ""}</div></div>
+    <div class="card"><h2>Hoy y esta semana</h2>${r.pasos.length ? r.pasos.map(p => `<div class="paso"><div><span class="${fechaClase(p.fecha)}">${E(p.fecha)}</span> · <b>${E((p.crm_cuentas||{}).nombre)}</b><br><span class="mute">${E(p.que)} · ${E(p.responsable || "")}</span></div><div class="row"><button class="b2" data-ver="${p.cuenta_id}">Abrir</button><button class="b2" data-hecho="${p.id}">Hecho</button></div></div>`).join("") : `<p class="mute">Nada pendiente.</p>`}</div>
+    <div class="filtros" id="tipos"><button data-t="" class="${CRM.tipo===""?"on":""}">Todas</button>${Object.entries(T).map(([k, t]) => `<button data-t="${k}" class="${CRM.tipo===k?"on":""}">${E(t.nombre)} · ${(r.tipos[k]||{}).total || 0}</button>`).join("")}</div>
+    <input id="bus" placeholder="Buscar por nombre o dominio" value="${E(CRM.q)}"><div id="lista" style="margin-top:10px"></div><div id="nueva"></div>`;
+  $("#tipos").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; CRM.tipo = b.dataset.t; $("#tipos").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); listaCrm(); };
+  $("#bus").oninput = () => { clearTimeout(verCrm.t); verCrm.t = setTimeout(() => { CRM.q = $("#bus").value.trim(); listaCrm(); }, 300); };
+  app.querySelectorAll("[data-ver]").forEach(b => b.onclick = () => fichaCrm(b.dataset.ver));
+  app.querySelectorAll("[data-hecho]").forEach(b => b.onclick = async () => { b.disabled = true; try { await api("crm", {accion: "paso_hecho", paso_id: b.dataset.hecho}); verCrm(); } catch (e) { aviso(e.message, true); b.disabled = false; } });
+  $("#nc").onclick = () => nuevaCuenta();
+  const im = $("#imp"); if (im) im.onclick = async () => { im.disabled = true; try { const d = await api("crm", {accion: "importar_fuentes"}); aviso(d.nuevas + " fuentes nuevas en el CRM"); verCrm(); } catch (e) { aviso(e.message, true); im.disabled = false; } };
+  listaCrm();
+}
+async function listaCrm() {
+  const l = $("#lista"); if (!l) return; l.innerHTML = `<div class="vacio">Buscando…</div>`;
+  let d; try { d = await api("crm_cuentas", null, {tipo: CRM.tipo, q: CRM.q}); } catch (e) { l.innerHTML = `<div class="vacio">${E(e.message)}</div>`; return; }
+  l.innerHTML = d.cuentas.length ? d.cuentas.map(c => `<button class="item" data-id="${c.id}"><span class="mute">${E(((CRM.cfg.tipos||{})[c.tipo]||{}).nombre || c.tipo)}${c.comunidad ? " · " + E(c.comunidad) : ""} · ${c.personas} persona(s)</span>
+    <div class="t">${E(c.nombre)}</div><div class="row"><span class="chip">${E(nomEst(c.estado))}</span>${c.paso_fecha ? `<span class="mute"><span class="${fechaClase(c.paso_fecha)}">${E(c.paso_fecha)}</span> · ${E(c.paso_que)}</span>` : `<span class="mute">sin siguiente paso</span>`}</div></button>`).join("") : `<div class="vacio">No hay cuentas${CRM.q ? " con «" + E(CRM.q) + "»" : ""}.</div>`;
+  l.querySelectorAll(".item").forEach(b => b.onclick = () => fichaCrm(b.dataset.id));
+}
+function nuevaCuenta() {
+  const T = CRM.cfg.tipos || {}, t0 = CRM.tipo || "anunciante";
+  $("#nueva").innerHTML = `<div class="card jefe"><h2>Nueva cuenta</h2>
+    <label>Tipo</label><select id="n-tipo">${Object.entries(T).map(([k, t]) => `<option value="${k}" ${k===t0?"selected":""}>${E(t.nombre)}</option>`).join("")}</select>
+    <label>Nombre</label><input id="n-nom"><label>Web</label><input id="n-web" inputmode="url" placeholder="https://…">
+    <div class="row" style="gap:12px"><div style="flex:1"><label>Comunidad</label><input id="n-com"></div><div style="flex:1"><label>Sector</label><input id="n-sec"></div></div>
+    <label>Estado</label><select id="n-est"></select>
+    <label>Persona de contacto (opcional)</label><input id="n-pn" placeholder="Nombre"><input id="n-pc" placeholder="Cargo" style="margin-top:6px"><input id="n-pe" type="email" placeholder="Correo" style="margin-top:6px"><input id="n-pt" placeholder="Teléfono" style="margin-top:6px">
+    <label>Siguiente paso</label><input id="n-que" placeholder="Qué (p. ej., llamar para presentar las tarifas)"><input type="date" id="n-fec" style="margin-top:6px">
+    <label>Notas</label><textarea id="n-not" style="min-height:60px"></textarea>
+    <div class="row"><button class="b" id="n-ok">Crear</button><button class="b2" id="n-no">Cancelar</button></div></div>`;
+  const est = () => { $("#n-est").innerHTML = (T[$("#n-tipo").value].estados || []).map(e => `<option value="${e}">${E(nomEst(e))}</option>`).join(""); };
+  $("#n-tipo").onchange = est; est();
+  $("#n-no").onclick = () => $("#nueva").innerHTML = "";
+  $("#n-ok").onclick = async ev => { ev.target.disabled = true;
+    const persona = {nombre: $("#n-pn").value, cargo: $("#n-pc").value, correo: $("#n-pe").value, telefono: $("#n-pt").value};
+    try { const d = await api("crm", {accion: "cuenta_nueva", tipo: $("#n-tipo").value, nombre: $("#n-nom").value, web: $("#n-web").value, comunidad: $("#n-com").value, sector: $("#n-sec").value, notas: $("#n-not").value, estado: $("#n-est").value, persona, paso: {que: $("#n-que").value, fecha: $("#n-fec").value}});
+      aviso("Cuenta creada"); fichaCrm(d.id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  $("#nueva").scrollIntoView({behavior: "smooth"});
+}
+async function fichaCrm(id) {
+  app.innerHTML = `<div class="vacio">Abriendo la ficha…</div>`;
+  let f; try { f = await api("crm_cuenta", null, {id}); } catch (e) { app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const c = f.cuenta, cfg = CRM.cfg, T = cfg.tipos || {}, PER = cfg.perfiles_persona || {}, ACT = cfg.actividades || {};
+  const noc = c.estado === "no_contactar";
+  app.innerHTML = `<p><button class="b2" id="volver">← CRM</button></p>
+  <div class="card"><span class="mute">${E((T[c.tipo]||{}).nombre || c.tipo)}${c.subtipo ? " · " + E(c.subtipo) : ""}${c.comunidad ? " · " + E(c.comunidad) : ""}</span><h1>${E(c.nombre)}</h1>
+    ${c.web ? `<a class="mute" href="${E(c.web)}" target="_blank" rel="noopener">${E(c.web)} ↗</a>` : ""}
+    <div class="row" style="margin-top:8px"><span class="chip ${noc ? "ret" : "pub"}">${E(nomEst(c.estado))}</span>${c.paso_fecha ? `<span class="mute">Siguiente: <span class="${fechaClase(c.paso_fecha)}">${E(c.paso_fecha)}</span> · ${E(c.paso_que)}</span>` : `<span class="mute">Sin siguiente paso</span>`}</div>
+    ${c.notas ? `<p class="mute">${E(c.notas)}</p>` : ""}</div>
+  ${noc ? `<div class="warn">No contactar: es para siempre. No se registra ningún contacto saliente.</div>` : `<div class="card"><h2>Registrar</h2>
+    <label>Qué ha pasado</label><select id="a-tipo">${Object.entries(ACT).map(([k, t]) => `<option value="${k}">${E(t)}</option>`).join("")}</select>
+    ${f.personas.length ? `<label>Con quién</label><select id="a-per"><option value="">—</option>${f.personas.map(p => `<option value="${p.id}">${E(p.nombre || p.correo)}</option>`).join("")}</select>` : ""}
+    <label>Notas (quién; qué dijo; qué le preocupa; siguiente paso)</label><textarea id="a-not" style="min-height:80px"></textarea>
+    <label>Estado</label><select id="a-est"><option value="">Sin cambio (${E(nomEst(c.estado))})</option>${(T[c.tipo]||{}).estados.map(e => `<option value="${e}">${E(nomEst(e))}</option>`).join("")}</select>
+    <div id="nutrir" hidden><label>Nutrir hasta</label><input type="date" id="a-nut"></div>
+    <label>Siguiente paso</label><input id="a-que" placeholder="Qué"><input type="date" id="a-fec" style="margin-top:6px">
+    <p><button class="b" id="a-ok" style="width:100%">Guardar</button></p></div>`}
+  <div class="card"><h2>Pasos</h2>${f.pasos.length ? f.pasos.map(p => `<div class="paso"><div><span class="${p.hecho_at ? "" : fechaClase(p.fecha)}">${E(p.fecha)}</span> · ${E(p.que)}<br><span class="mute">${E(p.responsable || "")}${p.hecho_at ? " · hecho por " + E(p.hecho_por) : ""}</span></div>${p.hecho_at ? `<span class="chip pub">Hecho</span>` : `<button class="b2" data-hecho="${p.id}">Hecho</button>`}</div>`).join("") : `<p class="mute">Ninguno.</p>`}</div>
+  <div class="card"><h2>Personas</h2>${f.personas.map(p => `<div class="paso"><div><b>${E(p.nombre || "—")}</b>${p.cargo ? " · " + E(p.cargo) : ""}<br><span class="mute">${E(PER[p.perfil] || p.perfil)}${p.correo ? " · " + E(p.correo) : ""}${p.telefono ? " · " + E(p.telefono) : ""}${p.ghost_member_id ? " · suscriptor" : ""}${p.no_contactar_at ? " · <b>no contactar</b>" : ""}</span></div>${p.no_contactar_at ? "" : `<button class="b2 bad" data-noc="${p.id}">No contactar</button>`}</div>`).join("") || `<p class="mute">Nadie todavía.</p>`}
+    <details><summary>Añadir persona</summary><label>Nombre</label><input id="p-nom"><label>Cargo</label><input id="p-car"><label>Perfil</label><select id="p-per">${Object.entries(PER).map(([k, t]) => `<option value="${k}">${E(t)}</option>`).join("")}</select>
+    <label>Correo</label><input id="p-cor" type="email"><label>Teléfono</label><input id="p-tel"><label>LinkedIn</label><input id="p-li">
+    <label>Permiso para escribirle (cómo lo dio; vacío si no lo dio)</label><input id="p-perm" placeholder="Ej.: lo pidió por teléfono el 9-11">
+    <p><button class="b2" id="p-ok">Añadir</button></p></details></div>
+  ${f.contratos ? `<div class="card"><h2>Contratos</h2>${f.contratos.map(k => `<div class="paso"><div><b>${E(k.concepto)}</b><br><span class="mute">${E(k.nivel || "")} · ${k.importe_cent != null ? (k.importe_cent/100).toLocaleString("es-ES", {minimumFractionDigits: 0, maximumFractionDigits: 2}) + " € + impuestos" : "sin importe"} · ${E(k.desde || "")} → ${E(k.hasta || "")}${k.anuncio_id ? " · caja " + E(k.anuncio_id) : ""}</span></div><span class="chip">${E(k.estado)}</span></div>`).join("") || `<p class="mute">Ninguno.</p>`}
+    <details><summary>Añadir contrato</summary><label>Concepto</label><input id="k-con" placeholder="Ej.: Patrocinio sección Tierra, enero–marzo"><label>Nivel</label><select id="k-niv"><option value="">—</option><option value="premium">Premium</option><option value="estandar">Estándar</option><option value="basico">Básico</option><option value="texto">Contenido patrocinado</option></select>
+    <label>Importe (€, sin impuestos)</label><input id="k-imp" inputmode="decimal"><div class="row" style="gap:12px"><div style="flex:1"><label>Desde</label><input type="date" id="k-des"></div><div style="flex:1"><label>Hasta</label><input type="date" id="k-has"></div></div>
+    <label>Estado</label><select id="k-est"><option>propuesta</option><option>firmado</option><option>facturado</option><option>cobrado</option><option>anulado</option></select>
+    <label>Caja de publicidad (id, opcional)</label><input id="k-ad"><p><button class="b2" id="k-ok">Añadir</button></p></details></div>` : ""}
+  <div class="card"><h2>Historial</h2>${[...f.actividades.map(x => ({at: x.at, t: (ACT[x.tipo] || x.tipo) + (x.notas ? ": " + x.notas : ""), q: x.quien})), ...f.estados.map(x => ({at: x.at, t: "Estado → " + nomEst(x.estado) + (x.motivo ? " (" + x.motivo + ")" : ""), q: x.quien}))].sort((a, b) => b.at < a.at ? -1 : 1).map(x => `<div class="paso"><div>${E(x.t)}<br><span class="mute">${E((x.at || "").slice(0, 16).replace("T", " "))} · ${E(x.q || "")}</span></div></div>`).join("") || `<p class="mute">Sin historial.</p>`}</div>
+  <details class="card"><summary>Archivar la cuenta</summary><p class="mute">Nada se borra: archivada deja de salir en las listas.</p><input id="arch-mot" placeholder="Motivo"><p><button class="b2 bad" id="arch">Archivar</button></p></details>`;
+  $("#volver").onclick = () => verCrm();
+  const ae = $("#a-est"); if (ae) ae.onchange = () => { $("#nutrir").hidden = ae.value !== "nutrir"; };
+  const aok = $("#a-ok"); if (aok) aok.onclick = async () => { aok.disabled = true;
+    try {
+      const paso = {que: $("#a-que").value.trim(), fecha: $("#a-fec").value};
+      if ($("#a-not").value.trim() || !$("#a-est").value) await api("crm", {accion: "actividad", cuenta_id: id, tipo: $("#a-tipo").value, persona_id: $("#a-per") ? $("#a-per").value || null : null, notas: $("#a-not").value, paso: $("#a-est").value ? null : paso});
+      if ($("#a-est").value) await api("crm", {accion: "estado", cuenta_id: id, estado: $("#a-est").value, motivo: $("#a-not").value.slice(0, 300), nutrir_hasta: $("#a-nut").value || null, paso});
+      aviso("Guardado"); fichaCrm(id);
+    } catch (e) { aviso(e.message, true); aok.disabled = false; } };
+  app.querySelectorAll("[data-hecho]").forEach(b => b.onclick = async () => { b.disabled = true; try { await api("crm", {accion: "paso_hecho", paso_id: b.dataset.hecho}); fichaCrm(id); } catch (e) { aviso(e.message, true); b.disabled = false; } });
+  app.querySelectorAll("[data-noc]").forEach(b => b.onclick = async () => { const m = prompt("Motivo de «No contactar» (es para siempre):"); if (!m) return;
+    try { await api("crm", {accion: "persona", persona_id: b.dataset.noc, no_contactar: true, no_contactar_motivo: m}); fichaCrm(id); } catch (e) { aviso(e.message, true); } });
+  $("#p-ok").onclick = async ev => { ev.target.disabled = true;
+    try { await api("crm", {accion: "persona", cuenta_id: id, nombre: $("#p-nom").value, cargo: $("#p-car").value, perfil: $("#p-per").value, correo: $("#p-cor").value, telefono: $("#p-tel").value, linkedin: $("#p-li").value, permiso_correo_como: $("#p-perm").value || null}); aviso("Persona añadida"); fichaCrm(id); }
+    catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  const kok = $("#k-ok"); if (kok) kok.onclick = async () => { kok.disabled = true;
+    try { await api("crm", {accion: "contrato", cuenta_id: id, concepto: $("#k-con").value, nivel: $("#k-niv").value || null, importe_cent: $("#k-imp").value || null, en_euros: true, desde: $("#k-des").value || null, hasta: $("#k-has").value || null, estado: $("#k-est").value, anuncio_id: $("#k-ad").value || null}); aviso("Contrato añadido"); fichaCrm(id); }
+    catch (e) { aviso(e.message, true); kok.disabled = false; } };
+  $("#arch").onclick = async ev => { if (!confirm("¿Archivar esta cuenta?")) return; ev.target.disabled = true;
+    try { await api("crm", {accion: "cuenta_archivar", cuenta_id: id, motivo: $("#arch-mot").value}); aviso("Archivada"); verCrm(); } catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+  scrollTo(0,0);
+}
+
+// ---------- Suscriptores (miembros de Ghost) ----------
+let SUS = {estado: "", cat: "", q: "", pagina: 1};
 async function verSuscriptores() {
   app.innerHTML = `<div class="vacio">Cargando suscriptores…</div>`;
-  let d; try { d = await api("suscriptores"); } catch (e) { return; }
+  let d, m; try { [d, m] = await Promise.all([api("suscriptores"), api("miembros", null, SUS)]); } catch (e) { return; }
   if (d.error) { app.innerHTML = `<div class="card">${E(d.error)}</div>`; return; }
-  const n = v => v == null ? "—" : v.toLocaleString("es-ES");
-  app.innerHTML = `<div class="card"><h1>Suscriptores</h1><p class="mute">Las altas, bajas, boletines y planes se gestionan en Ghost. Aquí, el resumen.</p>
-    <div class="row" style="gap:18px;margin:10px 0"><div><b style="font-size:26px">${n(d.total)}</b><br><span class="mute">en total</span></div>
-    <div><b style="font-size:20px">${n(d.gratuitos)}</b><br><span class="mute">gratuitos</span></div><div><b style="font-size:20px">${n(d.pago)}</b><br><span class="mute">de pago</span></div>
-    <div><b style="font-size:20px">${n(d.cortesia)}</b><br><span class="mute">cortesía</span></div></div>
-    <p><a class="b" style="display:block;text-align:center;text-decoration:none" href="${E(d.ghost_members)}" target="_blank" rel="noopener">Gestionar suscriptores en Ghost ↗</a></p></div>
-  <div class="card"><h2>Últimas altas</h2>${(d.ultimos || []).length ? d.ultimos.map(m => `<div class="cand"><div><b>${E(m.nombre || m.email)}</b><br><span class="mute">${E(m.nombre ? m.email : "")}</span></div><span class="mute">${E(m.alta)} · ${E({free:"gratuito", paid:"pago", comped:"cortesía"}[m.estado] || m.estado)}</span></div>`).join("") : `<p class="mute">Todavía no hay altas.</p>`}</div>
-  ${puede("equipo") ? `<div class="card"><h2>Redacción en Ghost</h2><p class="mute">Quien escriba o edite piezas directamente en Ghost (Administrador, Editor, Autor, Colaborador) se invita en Ghost. El equipo de este gestor está en la pestaña «Equipo».</p><p><a class="b2" style="display:block;text-align:center;text-decoration:none" href="${E(d.ghost_staff)}" target="_blank" rel="noopener">Equipo de Ghost ↗</a></p></div>` : ""}`;
+  const edita = puede("crm");
+  app.innerHTML = `<div class="card"><h1>Suscriptores</h1><p class="mute">Son los miembros de Ghost: altas, bajas, boletines y planes se gestionan allí. Aquí los ves por categoría y les pones la suya (queda como etiqueta en Ghost para segmentar envíos).</p>
+    <div class="kpi" style="margin:10px 0"><div><b>${num(d.total)}</b><span class="mute">en total</span></div><div><b>${num(d.gratuitos)}</b><span class="mute">gratuitos</span></div><div><b>${num(d.pago)}</b><span class="mute">de pago</span></div><div><b>${num(d.cortesia)}</b><span class="mute">cortesía</span></div></div>
+    <p><a class="b" style="display:block;text-align:center;text-decoration:none" href="${E(d.ghost_members)}" target="_blank" rel="noopener">Gestionar en Ghost ↗</a></p></div>
+    ${m.error ? `<div class="card">${E(m.error)}</div>` : `
+    <div class="filtros" id="s-est">${[["", "Todos"], ["free", "Gratuitos"], ["paid", "De pago"], ["comped", "Cortesía"]].map(([k, t]) => `<button data-v="${k}" class="${SUS.estado===k?"on":""}">${t}</button>`).join("")}</div>
+    <div class="filtros" id="s-cat"><button data-v="" class="${SUS.cat===""?"on":""}">Todas las categorías</button>${m.categorias.map(c => `<button data-v="${E(c.nombre)}" class="${SUS.cat===c.nombre?"on":""}">${E(c.nombre)} · ${c.n}</button>`).join("")}</div>
+    <input id="s-q" placeholder="Buscar por nombre o correo" value="${E(SUS.q)}">
+    <p class="mute">${num(m.total)} resultado(s)${m.paginas > 1 ? " · página " + m.pagina + " de " + m.paginas : ""}</p>
+    ${m.miembros.map(x => `<div class="card" data-m="${x.id}"><div class="row" style="justify-content:space-between"><b>${E(x.nombre || x.email)}</b><span class="mute">${E(x.alta)} · ${E({free:"gratuito", paid:"de pago", comped:"cortesía"}[x.estado] || x.estado)}</span></div>
+      <span class="mute">${E(x.nombre ? x.email : "")}${x.boletines ? " · " + x.boletines + " boletín(es)" : " · sin boletín"}</span>
+      <div class="row" style="margin-top:6px">${x.categorias.map(c => `<span class="chip pub">${E(c)}</span>`).join("") || `<span class="mute">Sin categoría</span>`}${x.etiquetas.map(c => `<span class="chip">${E(c)}</span>`).join("")}</div>
+      ${edita ? `<details><summary>Categoría</summary>${m.categorias.map(c => `<label class="chk"><input type="checkbox" value="${E(c.nombre)}" ${x.categorias.includes(c.nombre)?"checked":""}> <span>${E(c.nombre)}</span></label>`).join("")}<p><button class="b2" data-cat>Guardar categoría</button></p></details>` : ""}</div>`).join("")}
+    <div class="row">${m.pagina > 1 ? `<button class="b2" id="s-ant">← Anteriores</button>` : ""}${m.pagina < m.paginas ? `<button class="b2" id="s-sig">Siguientes →</button>` : ""}</div>`}
+    ${puede("equipo") ? `<div class="card"><h2>Redacción en Ghost</h2><p class="mute">Quien escriba o edite piezas directamente en Ghost se invita en Ghost. El equipo de este gestor está en la pestaña «Equipo».</p><p><a class="b2" style="display:block;text-align:center;text-decoration:none" href="${E(d.ghost_staff)}" target="_blank" rel="noopener">Equipo de Ghost ↗</a></p></div>` : ""}`;
+  const f = (id, k) => { const s = $(id); if (s) s.onclick = ev => { const b = ev.target.closest("button"); if (b) { SUS[k] = b.dataset.v; SUS.pagina = 1; verSuscriptores(); } }; };
+  f("#s-est", "estado"); f("#s-cat", "cat");
+  const q = $("#s-q"); if (q) q.onchange = () => { SUS.q = q.value.trim(); SUS.pagina = 1; verSuscriptores(); };
+  const an = $("#s-ant"); if (an) an.onclick = () => { SUS.pagina--; verSuscriptores(); };
+  const si = $("#s-sig"); if (si) si.onclick = () => { SUS.pagina++; verSuscriptores(); };
+  app.querySelectorAll("[data-cat]").forEach(b => b.onclick = async () => { const c = b.closest("[data-m]"); b.disabled = true;
+    try { await api("miembro", {accion: "categorias", id: c.dataset.m, categorias: [...c.querySelectorAll(".chk input:checked")].map(i => i.value)}); aviso("Categoría guardada en Ghost"); verSuscriptores(); }
+    catch (e) { aviso(e.message, true); b.disabled = false; } });
 }
 
 // ---------- Equipo (solo superadministrador) ----------
-const PERF = {superadmin:"Superadministrador", editor:"Editor", comercial:"Comercial", oficina:"Oficina"};
-const PERF_TXT = {superadmin:"Todo, incluido el equipo.", editor:"Cajas de las piezas; ve productos, publicidad y suscriptores.", comercial:"Productos propios y publicidad; ve piezas y suscriptores.", oficina:"Cajas de las piezas; ve el resto."};
+const PERF = {superadmin:"Editor jefe (superadministrador)", editor:"Editor", comercial:"Comercial", oficina:"Oficina"};
+const PERF_TXT = {superadmin:"Todo. Solo él publica: edita, retira y reenfoca piezas, publica cajas y publicidad, cambia productos y equipo.", editor:"Propone cajas en las piezas; CRM (fuentes, medios); ve suscriptores.", comercial:"Propone publicidad y patrocinios; CRM con contratos; ve suscriptores.", oficina:"Propone cajas; CRM; ve suscriptores."};
 const ESTP = {activa:["pub","Activa"], invitada:["pro","Invitada"], suspendida:["ret","Suspendida"]};
 async function verEquipo() {
   app.innerHTML = `<div class="vacio">Cargando equipo…</div>`;
   let d; try { d = await api("equipo"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
   const sel = (id, v) => `<select data-perfil="${id}">${Object.keys(PERF).map(k => `<option value="${k}" ${k===v?"selected":""}>${PERF[k]}</option>`).join("")}</select>`;
-  app.innerHTML = (d.accesible ? "" : `<div class="card" style="border-color:#e7c48d"><b>Falta el acceso al repositorio privado</b><p class="mute">El gestor guarda el equipo en ${E(d.repositorio)}. Añádelo a la llave de GitHub del gestor (GITHUB_TOKEN) y vuelve a desplegar.</p></div>`)
-  + `<div class="card"><h1>Equipo</h1><p class="mute">Cada persona entra con su correo y su contraseña. La das de alta aquí y le mandas el enlace: con él crea su contraseña. Nunca se borra a nadie: se suspende.</p>
+  app.innerHTML = (d.accesible ? "" : `<div class="card" style="border-color:#e7c48d"><b>Falta dónde guardar el equipo</b><p class="mute">El equipo se guarda en la base privada del gestor; mientras no esté conectada, en ${E(d.almacen || d.repositorio)}, al que la llave de GitHub del gestor aún no llega.</p></div>`)
+  + `<div class="card"><h1>Equipo</h1><p class="mute">Cada persona entra con su correo y su contraseña. La das de alta aquí y le mandas el enlace: con él crea su contraseña. Nunca se borra a nadie: se suspende. Solo el editor jefe publica; los demás proponen.</p>
     <form id="nueva"><label>Nombre</label><input id="nn" required maxlength="80"><label>Correo</label><input id="ne" type="email" required inputmode="email">
     <label>Perfil</label><select id="np">${Object.keys(PERF).map(k => `<option value="${k}" ${k==="editor"?"selected":""}>${PERF[k]} — ${PERF_TXT[k]}</option>`).join("")}</select>
     <p><button class="b" style="width:100%">Dar de alta y crear enlace</button></p></form><div id="enlace"></div></div>`
@@ -333,7 +683,7 @@ async function verEquipo() {
       <label>Perfil</label>${sel(p.id, p.perfil)}
       <div class="row" style="margin-top:10px">${p.estado==="suspendida" ? `<button class="b2" data-acc="reactivar">Reactivar</button>` : `<button class="b2 bad" data-acc="suspender">Suspender</button>`}
       <button class="b2" data-acc="nuevo_enlace">${p.estado==="invitada" ? "Nuevo enlace de invitación" : "Enlace para cambiar la contraseña"}</button></div><div class="enl"></div></div>`).join("")
-    : `<div class="vacio">Todavía no hay nadie. Empieza por darte de alta tú mismo como superadministrador.</div>`)
+    : `<div class="vacio">Todavía no hay nadie. Empieza por darte de alta tú mismo como editor jefe.</div>`)
   + `<div class="card mute"><b>Perfiles</b><br>${Object.keys(PERF).map(k => `<b>${PERF[k]}</b>: ${PERF_TXT[k]}`).join("<br>")}</div>`;
   const mostrar = (box, enlace, p) => {
     const txt = `Hola ${p.nombre.split(" ")[0]}: te doy acceso al gestor de MOTICIAS. Crea tu contraseña aquí (el enlace vale 7 días y solo una vez): ${enlace}`;

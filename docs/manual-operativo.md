@@ -40,7 +40,7 @@ Colección `articles/{id}` — una pieza (noticia, análisis o reportaje):
 | `key_data` | Cifras clave: lista de `{label, value, source}` (4–8) que la página muestra en la columna lateral |
 | `timeline` | Cronología: lista de `{date, text}` (4–10) pasados y futuros; los futuros se marcan en color |
 | `scope` | Ámbito del análisis (rotación diaria) |
-| `author`, `author_role`, `author_note` | Firma («G. Jordan» rutinarias, «Rainer» críticas y análisis), cargo y declaración de intereses |
+| `author`, `author_role`, `author_note` | Firma («G. Jordan» por defecto; «Rainer» solo en piezas importantes y dentro del cupo del 10 %, `src/firma.py`), cargo y declaración de intereses (sin nombre si firma la redacción). `firma_director` (true/false) fija la firma a mano; `motivo_importante` y `firma_motivo` explican la decisión |
 | `risk`, `review_note` | `rutinaria` o `critica`, y la frase que lo justifica (ver § 3, aprobación) |
 | `campaign` | id de la campaña temática activa a la que pertenece la pieza (`data/campanas/`), o `null` |
 | `menciones` | Lista (dos publicadas como mucho; una si es exclusiva) de `{producto, nombre, texto, cta, url, exclusividad, estado: publicada · propuesta · retirada, motivo, puntuacion, origen: automatica · manual, propuesta_en, historial}`: las cajas «Contenido patrocinado» que el publicador pinta en medio del texto. Se gestionan en `app.moticias.com/gestor/`. La escribe `src/menciones.py` desde `data/productos/`; retirar es cambiar `estado`, nunca borrar |
@@ -77,7 +77,7 @@ Con la sesión de Claude abierta, el artefacto detecta al propietario y muestra 
 
 Desde cada pieza, el enlace «Editar esta pieza» abre su formulario. Los cambios se guardan en la base al instante y los ven todos los lectores en la siguiente carga.
 
-Aprobación (criterio del director, 7-11-2026): las piezas rutinarias —una fuente oficial, o dos fuentes profesionales de confianza que coincidan— se publican directamente con la firma «G. Jordan, Redactor responsable»; las críticas para la reputación o con implicaciones legales (criterios en `verticals/movilidad.json` → `editorial.critical_criteria`) y los análisis del director se guardan en `pendiente` con firma «Rainer, Director de MOTICIAS» y las publica él. El visor del editor tiene que ofrecer editar y retirar en un toque. Hoy el panel del artefacto lo permite (editar y borrar); en Ghost, el editor de la pieza y «Unpublish»; la sala de redacción lo hará con un botón. Límite actual: no hay gestión de usuarios.
+Aprobación (criterio del director, 7-11-2026): las piezas rutinarias —una fuente oficial, o dos fuentes profesionales de confianza que coincidan— se publican directamente con la firma «G. Jordan, Redactor responsable»; las críticas para la reputación o con implicaciones legales (criterios en `verticals/movilidad.json` → `editorial.critical_criteria`) y los análisis que firma el director se guardan en `pendiente` y los publica él. Firmar no es aprobar (9-11-2026): el nombre del director firma como mucho el 10 % de las piezas de 30 días y solo las importantes (`src/firma.py`); las críticas que no cumplen eso las firma la redacción y siguen esperando su aprobación. El editor jefe edita, reenfoca con IA (con vista previa), aprueba, retira y restaura desde el gestor o desde el icono ✎ de cada noticia en moticias.com; nadie más publica (cambio `editor-jefe-y-crm`).
 
 ## 3 bis. Campañas temáticas
 

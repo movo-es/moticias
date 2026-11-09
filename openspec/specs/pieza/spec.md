@@ -20,7 +20,7 @@ Frases cortas, vocabulario institucional exacto, juicio firme y no partidista, i
 En `body_md` solo URL `https://…`; las piezas anteriores se citan por título y fecha, sin enlace interno.
 
 ## Requisito: análisis
-`kind: analisis`, firmado «Rainer», `author_role: Director de MOTICIAS`, `author_note` con la declaración de intereses, `scope` del ámbito de rotación; añade `{date, scope}` a `settings/site.recent_scopes` (últimos 30).
+`kind: analisis`, firma según `src/firma.py decidir` («Rainer, Director de MOTICIAS» solo si es importante y queda cupo; si no, «G. Jordan, Redactor responsable»), `author_note` con la declaración de intereses (sin nombre si firma la redacción), `scope` del ámbito de rotación; añade `{date, scope}` a `settings/site.recent_scopes` (últimos 30).
 
 ## Requisito: firma y aprobación
 Toda pieza lleva `author`, `author_role`, `risk` (`rutinaria` | `critica`) y `review_note`. Rutinaria (una fuente oficial, o dos profesionales de confianza coincidentes): firma «G. Jordan, Redactor responsable», publicación directa. Crítica (criterios de `verticals/<id>.json` → `editorial.critical_criteria`) o análisis del director: firma «Rainer, Director de MOTICIAS», `status: pendiente`, aviso al director con el motivo; solo él la publica. Ante la duda, crítica.

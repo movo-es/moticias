@@ -1,0 +1,12 @@
+# Tareas · editor-jefe-y-crm
+
+- [x] `src/firma.py` (informe · decidir), `editorial.firma_director`, nota de intereses sin nombre, autor de Ghost por firma; rutina diaria (paso FIRMA y análisis del día).
+- [x] `src/redaccion.py`: editar, corrección, retirar/restaurar, aprobar, otro enfoque con IA con control de cifras nuevas.
+- [x] `api/gestor.py`: permisos por perfil en el servidor; `redaccion`, `firma`, `anuncio` (crear, niveles, propuestas), `publicidad` (pública), `crm_*`, `crm`, `miembros`, `miembro`; equipo en la base; marca `moticias_jefe` y `yo` con CORS para www.moticias.com.
+- [x] Gestor (`app/public/gestor/index.html`): editor con vista previa, IA con original y propuesta, retirar, firma con cupo; publicidad con niveles y vista previa; CRM (hoy, tipos, buscador, ficha, personas, estado, pasos, contratos, historial, archivo); suscriptores por categoría; equipo.
+- [x] Script del sitio `app/public/sitio/m.js`: huecos de publicidad por nivel e icono del editor jefe.
+- [x] Migración `003_gestor_crm.sql`.
+- [x] Pruebas: recorrido completo en Chrome a 390 px contra un banco local (editor, IA, cifras, firma, retirar, publicidad, CRM, suscriptores, equipo, permisos de oficina) y el script del sitio sobre copias de las páginas reales.
+- [ ] Crear el proyecto Supabase «moticias» (Frankfurt), aplicar la 003, guardar la huella de la llave y poner en Vercel `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `MOTICIAS_BD_CLAVE`. Pendiente de que Rainer confirme el coste (unos 10 $/mes).
+- [ ] Ghost → Code injection → Site footer: añadir `<script src="https://app.moticias.com/sitio/m.js" defer></script>` (`ghost/inyeccion-pie.html`).
+- [ ] Rainer: entrar en el gestor con su cuenta (o la contraseña común) y darse de alta como editor jefe en «Equipo»; probar la IA en una pieza.

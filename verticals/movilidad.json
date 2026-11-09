@@ -191,8 +191,32 @@
    "puede tener implicaciones legales fuertes (litigios abiertos, datos personales, secretos comerciales, difamación)",
    "toca a empresas del grupo, socios o clientes (Movenbus, MUFMI, MOVO, Moveme, Avionline, Amarantia, socios de la línea de planes de movilidad)",
    "corrige o contradice una pieza anterior de MOTICIAS",
-   "análisis y reportajes firmados por el director"
-  ]
+   "análisis y reportajes que firma el director (cupo en `firma_director`)"
+  ],
+  "firma_director": {
+   "decidido": "2026-11-09",
+   "regla": "El nombre del director firma como mucho el 10 % de las piezas de los últimos 30 días (objetivo 7 %), y solo las importantes. Todo lo demás, incluidas las piezas críticas que esperan su aprobación, lo firma la redacción. Firmar no es aprobar: la aprobación no cambia.",
+   "max_pct": 10,
+   "objetivo_pct": 7,
+   "ventana_dias": 30,
+   "tipos": [
+    "analisis",
+    "reportaje"
+   ],
+   "motivos_importante": [
+    "ley, real decreto o reglamento que cambia las reglas de un modo o del sistema",
+    "adjudicación, concesión o licitación que reordena un mercado (más de 50 millones o un mapa concesional entero)",
+    "decisión del regulador o sentencia que crea precedente sectorial",
+    "posición propia de MOTICIAS sobre un debate de Estado (financiación del transporte, liberalización, mapa concesional)"
+   ],
+   "herramienta": "src/firma.py (informe · decidir)"
+  },
+  "interests_note_redaccion": "El director de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado.",
+  "ghost_autores": {
+   "Rainer": "rainer",
+   "G. Jordan": "g",
+   "Redacción": "g"
+  }
  },
  "campaigns": {
   "dir": "data/campanas/",
@@ -1408,5 +1432,211 @@
    ]
   ],
   "indice_web": "app/public/buscador/index.json (generado por src/export_search_index.py a partir de data/; servido en https://app.moticias.com/buscador/index.json; lo lee el tema de Ghost)"
+ },
+ "crm": {
+  "decidido": "2026-11-09",
+  "base": "Supabase «moticias» (supabase/migrations/003_gestor_crm.sql); módulo CRM de movo-es/movo (433–437) con producto «moticias»",
+  "regla_de_oro": "Toda cuenta en marcha lleva un siguiente paso con fecha. «No contactar» es para siempre. Nada se borra: se archiva.",
+  "tipos": {
+   "anunciante": {
+    "nombre": "Anunciantes",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "conversacion",
+     "propuesta",
+     "cliente",
+     "nutrir",
+     "descartado",
+     "no_contactar"
+    ]
+   },
+   "patrocinador": {
+    "nombre": "Patrocinadores",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "conversacion",
+     "propuesta",
+     "cliente",
+     "nutrir",
+     "descartado",
+     "no_contactar"
+    ]
+   },
+   "suscriptor": {
+    "nombre": "Suscriptores corporativos",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "prueba",
+     "cliente",
+     "nutrir",
+     "baja",
+     "no_contactar"
+    ]
+   },
+   "fuente": {
+    "nombre": "Fuentes",
+    "estados": [
+     "activa",
+     "en_seguimiento",
+     "sin_respuesta",
+     "inactiva"
+    ]
+   },
+   "medio": {
+    "nombre": "Medios",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "relacion",
+     "colabora",
+     "inactivo",
+     "no_contactar"
+    ]
+   },
+   "institucion": {
+    "nombre": "Instituciones",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "relacion",
+     "inactiva",
+     "no_contactar"
+    ]
+   },
+   "empresa": {
+    "nombre": "Empresas",
+    "estados": [
+     "sin_contacto",
+     "contactado",
+     "conversacion",
+     "relacion",
+     "nutrir",
+     "no_contactar"
+    ]
+   },
+   "otro": {
+    "nombre": "Otros",
+    "estados": [
+     "activa",
+     "inactiva"
+    ]
+   }
+  },
+  "estados": {
+   "sin_contacto": "Sin contacto",
+   "contactado": "Contactado",
+   "conversacion": "Conversación",
+   "propuesta": "Propuesta",
+   "cliente": "Cliente",
+   "prueba": "En prueba",
+   "baja": "Baja",
+   "nutrir": "Nutrir",
+   "descartado": "Descartado",
+   "no_contactar": "No contactar",
+   "activa": "Activa",
+   "en_seguimiento": "En seguimiento",
+   "sin_respuesta": "Sin respuesta",
+   "inactiva": "Inactiva",
+   "inactivo": "Inactivo",
+   "relacion": "Relación",
+   "colabora": "Colabora"
+  },
+  "activos": [
+   "contactado",
+   "conversacion",
+   "propuesta",
+   "prueba",
+   "en_seguimiento"
+  ],
+  "perfiles_persona": {
+   "direccion": "Dirección o gerencia",
+   "comunicacion": "Comunicación o prensa",
+   "marketing": "Marketing",
+   "comercial": "Comercial",
+   "tecnico": "Técnico",
+   "periodista": "Periodista",
+   "redaccion": "Redacción o jefatura de sección",
+   "institucional": "Cargo público",
+   "otro": "Otro"
+  },
+  "actividades": {
+   "llamada": "Llamada",
+   "correo_entrante": "Correo recibido",
+   "correo_saliente": "Correo enviado",
+   "reunion": "Reunión",
+   "linkedin": "LinkedIn",
+   "whatsapp": "WhatsApp",
+   "nota_de_prensa": "Nota de prensa",
+   "propuesta": "Propuesta enviada",
+   "contrato": "Contrato",
+   "factura": "Factura",
+   "nota": "Nota"
+  },
+  "suscriptores": {
+   "fuente": "Ghost (Members): no se copian; la categoría es una etiqueta de Ghost con el prefijo «cat:»",
+   "prefijo_categoria": "cat:",
+   "categorias": [
+    "Administración pública",
+    "Operador de transporte",
+    "Consultoría e ingeniería",
+    "Asociación sectorial",
+    "Empresa con plan de movilidad",
+    "Universidad e investigación",
+    "Medio de comunicación",
+    "Proveedor tecnológico",
+    "Inversión y finanzas",
+    "Otro"
+   ]
+  },
+  "importar_fuentes": "portal/data/sources.json (nombre y web de cada fuente; nunca datos personales)"
+ },
+ "publicidad": {
+  "decidido": "2026-11-09",
+  "regla": "Cajas con enlace, siempre con la etiqueta visible (art. 20 LSSI) y enlace rel=\"sponsored\"; nunca dentro del texto de una pieza (eso son las cajas de contenido patrocinado del grupo) ni sobre la apertura. Solo el superadministrador activa; los demás perfiles proponen.",
+  "niveles": {
+   "premium": {
+    "nombre": "Premium",
+    "huecos": [
+     "cabecera",
+     "articulo-lateral"
+    ]
+   },
+   "estandar": {
+    "nombre": "Estándar",
+    "huecos": [
+     "portada-medio",
+     "articulo-cierre"
+    ]
+   },
+   "basico": {
+    "nombre": "Básico",
+    "huecos": [
+     "pie",
+     "boletin"
+    ]
+   }
+  },
+  "huecos": {
+   "cabecera": "Banda bajo la cabecera, en todas las páginas",
+   "articulo-lateral": "Primera caja del lateral del artículo, junto al texto",
+   "portada-medio": "Huecos entre bloques de la portada",
+   "articulo-cierre": "Tras el artículo, antes de los comentarios",
+   "pie": "Antes del pie de página, en todas las páginas",
+   "boletin": "Boletín por correo (reservado)"
+  },
+  "tipos": {
+   "publicidad": "Publicidad",
+   "patrocinio": "Patrocinio",
+   "autopromocion": "Autopromoción"
+  },
+  "estados": [
+   "propuesta",
+   "activo",
+   "pausado",
+   "terminado"
+  ]
  }
 }
