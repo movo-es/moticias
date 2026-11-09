@@ -9,8 +9,8 @@
 - [x] `verticals → grupo`, productos `avionline` y `buq` (borrador), `src/ghost_grupo.py`.
 - [x] Nueva noticia desde el gestor; `data/fuentes/`; `/noticias-gestor`.
 - [x] Pruebas en Chrome a 390 px (banco local) y del script del sitio sobre copias de páginas reales.
-- [ ] `CRON_SECRET` en Vercel; cron desplegado.
-- [ ] Inyección de cabecera de Ghost con el bloque de organización; página `/empresas-del-grupo/` publicada.
-- [ ] Tarea «retoques» con el paso de noticias del gestor; prompt de la edición diaria con la firma con apellido y cupo.
+- [x] `CRON_SECRET` en Vercel (generado en el navegador, nadie lo ha visto). El cron entra con la fusión del cambio.
+- [x] Inyección de cabecera de Ghost con el bloque de organización y página `/empresas-del-grupo/` publicadas el 9-11-2026 (copia en `ghost/paginas/`); datos estructurados válidos.
+- [ ] (Pendiente de la aprobación de Rainer: el sistema no deja cambiar las tareas programadas sin ella) Tarea «retoques» con el paso de noticias del gestor; prompt de la edición diaria con la firma con apellido y cupo.
 - [ ] Republicar en Ghost las piezas firmadas por el director (nota de intereses con apellido) y todas para el JSON-LD nuevo (rutina de mañana o «Volver a subir»).
 - [ ] Rainer: una frase para Avionline y otra para BUQ, y cuándo debe salir cada una; abrir buq.es.
