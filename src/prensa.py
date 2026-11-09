@@ -617,7 +617,21 @@ def sql(dato):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 3 and sys.argv[1] in ("sql", "validar"):
+    if len(sys.argv) >= 3 and sys.argv[1] == "json":
+        # Trozos compactos para `select prensa_cargar('<trozo>'::jsonb);` (migración 006) con el conector de Supabase.
+        dato = json.load(open(sys.argv[2], encoding="utf-8"))
+        errores = validar(dato)
+        if errores:
+            print("\n".join(errores))
+            sys.exit(1)
+        tam = int(sys.argv[3]) if len(sys.argv) > 3 else 20
+        ms = [dict(m, dominio=dominio(m["web"]), redes=limpiar_redes(m.get("redes")),
+                   web=m["web"] if "://" in m["web"] else "https://" + m["web"]) for m in dato["medios"]]
+        for i in range(0, len(ms), tam):
+            trozo = "work/prensa-trozo-%02d.json" % (i // tam + 1)
+            open(trozo, "w", encoding="utf-8").write(json.dumps({"medios": ms[i:i + tam]}, ensure_ascii=False, separators=(",", ":")))
+            print(trozo)
+    elif len(sys.argv) >= 3 and sys.argv[1] in ("sql", "validar"):
         dato = json.load(open(sys.argv[2], encoding="utf-8"))
         errores = validar(dato)
         if sys.argv[1] == "validar" or errores:
@@ -625,4 +639,4 @@ if __name__ == "__main__":
             sys.exit(1 if errores else 0)
         print(sql(dato))
     else:
-        print("uso: python3 src/prensa.py validar|sql FICHERO.json  (FICHERO en work/, nunca en el repositorio)")
+        print("uso: python3 src/prensa.py validar|json|sql FICHERO.json  (FICHERO en work/, nunca en el repositorio)")
