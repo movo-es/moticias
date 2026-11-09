@@ -96,7 +96,7 @@ def construir(dia, vertical):
     en_ghost = publicadas_en_ghost(vertical)
 
     def publicada(a):
-        if a.get("status") in ("pendiente", "borrador"):
+        if a.get("status") in ("pendiente", "borrador", "retirada"):
             return False
         return a["id"] in en_ghost if en_ghost is not None else a.get("status") == "publicado"
     ed = json.load(open(os.path.join(ROOT, "data", "editions", dia + ".json"), encoding="utf-8"))

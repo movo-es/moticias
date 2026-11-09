@@ -4,20 +4,25 @@ Solo biblioteca estándar. Los datos de las personas (nombre, correo, perfil, hu
 repositorio, que es público: viven en el repositorio privado `movo-es/moticias-equipo` (`equipo.json`), al que el
 gestor accede con su GITHUB_TOKEN. Este módulo solo tiene la lógica; `api/gestor.py` lee y guarda el fichero.
 
-Perfiles (decisión de Rainer, 9-11-2026; los suscriptores y la redacción de Ghost se gestionan en Ghost):
-- superadmin: todo, incluido el equipo.
-- editor: cajas de las piezas (publicar, retirar, texto, posición); ve productos, publicidad y suscriptores.
-- comercial: productos propios y publicidad; ve piezas y suscriptores.
-- oficina: cajas de las piezas; ve lo demás.
+Perfiles (decisiones de Rainer, 9-11-2026; los suscriptores y la redacción de Ghost se gestionan en Ghost):
+- superadmin (= editor jefe): todo. Solo él publica: edita, retira y reenfoca piezas con IA, publica cajas de contenido
+  patrocinado, activa publicidad y patrocinios, cambia productos y gestiona el equipo. «Imposible para quien no sea editor
+  jefe» (9-11-2026, tarde): los demás proponen y él publica.
+- editor: propone cajas en las piezas y trabaja en el CRM (fuentes, medios); ve suscriptores.
+- comercial: propone publicidad y patrocinios y trabaja en el CRM con sus contratos; ve suscriptores.
+- oficina: propone cajas y trabaja en el CRM; ve suscriptores.
 Nadie salvo el superadministrador ve ni cambia el equipo. Nunca se borra a nadie: se suspende.
+Los datos de las personas viven en la base privada del gestor (Supabase «moticias», tabla `equipo`) y, si no está
+configurada, en el repositorio privado `movo-es/moticias-equipo`.
 """
 import datetime, hashlib, hmac, re, secrets
 
 PERFILES = {
-    "superadmin": {"nombre": "Superadministrador", "permisos": ["piezas", "productos", "publicidad", "equipo", "suscriptores"]},
-    "editor": {"nombre": "Editor", "permisos": ["piezas", "suscriptores"]},
-    "comercial": {"nombre": "Comercial", "permisos": ["productos", "publicidad", "suscriptores"]},
-    "oficina": {"nombre": "Oficina", "permisos": ["piezas"]},
+    "superadmin": {"nombre": "Superadministrador (editor jefe)",
+                   "permisos": ["piezas", "redaccion", "productos", "publicidad", "equipo", "suscriptores", "crm", "contratos", "proponer"]},
+    "editor": {"nombre": "Editor", "permisos": ["proponer", "crm", "suscriptores"]},
+    "comercial": {"nombre": "Comercial", "permisos": ["proponer", "crm", "contratos", "suscriptores"]},
+    "oficina": {"nombre": "Oficina", "permisos": ["proponer", "crm", "suscriptores"]},
 }
 ITERACIONES = 210_000
 DIAS_INVITACION = 7

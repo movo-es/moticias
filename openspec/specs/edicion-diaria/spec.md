@@ -12,7 +12,7 @@ La rutina produce una edición cada día laborable español a las 06:38 (Europe/
 - ENTONCES termina con «MOTICIAS: la edición de hoy ya estaba cerrada» sin escribir nada.
 
 ## Requisito: contenido mínimo
-Cada edición tiene de 5 a 8 noticias nuevas con fuente primaria, un análisis firmado por Rainer en el ámbito que toca por rotación, de 5 a 15 referencias del BOE con nota, los plazos derivados en agenda, el documento del día, el ticker y la nota metodológica.
+Cada edición tiene de 5 a 8 noticias nuevas con fuente primaria, un análisis (firmado por el director solo si es importante y queda cupo, `src/firma.py`; si no, por la redacción) en el ámbito que toca por rotación, de 5 a 15 referencias del BOE con nota, los plazos derivados en agenda, el documento del día, el ticker y la nota metodológica.
 
 #### Escenario: tope de tokens
 - CUANDO la sesión supera 450.000 tokens

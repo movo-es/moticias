@@ -1,21 +1,27 @@
-"""MOTICIAS · Gestor de patrocinios y publicidad (función de Vercel, Python, solo biblioteca estándar).
+"""MOTICIAS · Gestor (función de Vercel, Python, solo biblioteca estándar): redacción del editor jefe, contenido
+patrocinado, publicidad, CRM y equipo.
 
-Sirve la API de app.moticias.com/gestor/ (la página está en app/public/gestor/index.html). Lee el contenido que viene
-con el despliegue (data/, verticals/, src/; Vercel redespliega en cada push) y, para escribir, usa GitHub como fuente de
-verdad: lee el fichero fresco, lo cambia y lo guarda con un commit. Después actualiza el post en Ghost si existe.
+Sirve la API de app.moticias.com/gestor/ (la página está en app/public/gestor/index.html) y dos lecturas que pide
+www.moticias.com con el script del sitio (app/public/sitio/m.js): `yo` (¿es el editor jefe?, con CORS y credenciales) y
+`publicidad` (las cajas activas, pública). Lee el contenido que viene con el despliegue (data/, verticals/, src/; Vercel
+redespliega en cada push) y, para escribir, usa GitHub como fuente de verdad: lee el fichero fresco, lo cambia y lo guarda
+con un commit. Después actualiza el post en Ghost. El equipo y el CRM viven en la base privada (src/bd.py).
 
 Variables de entorno (en Vercel, nunca en el repositorio):
-  GESTOR_CLAVE_SUPERADMIN   contraseña del superadministrador (todo: menciones, productos, publicidad)
-  GESTOR_CLAVE_OFICINA      contraseña del perfil oficina (menciones de las piezas; opcional)
+  GESTOR_CLAVE_SUPERADMIN   contraseña común del superadministrador (acceso de emergencia)
+  GESTOR_CLAVE_OFICINA      contraseña común del perfil oficina (opcional)
   GITHUB_TOKEN              token de GitHub con permiso de escritura en contenidos de movo-es/moticias
-  GHOST_URL, GHOST_ADMIN_KEY  para republicar la pieza al momento (si faltan, la verá la rutina siguiente)
-  GITHUB_REPO               opcional, por defecto movo-es/moticias; GITHUB_BRANCH, por defecto main
+  GHOST_URL, GHOST_ADMIN_KEY  para publicar al momento
+  SUPABASE_URL, SUPABASE_ANON_KEY, MOTICIAS_BD_CLAVE  base privada del equipo y del CRM (src/bd.py)
+  AI_GATEWAY_API_KEY        opcional: sin ella la IA usa el token OIDC de Vercel; MODELO_IA (por defecto anthropic/claude-opus-5.5)
 
-Rutas: GET/POST /api/gestor?a=<acción>  (yo, entrar, aceptar, salir, piezas, pieza, mencion, republicar,
-republicar_pendientes, productos, producto, anuncios, anuncio, equipo, suscriptores, retoques, retoque). Equipo: src/equipo.py y el
-repositorio privado EQUIPO_REPO (por defecto movo-es/moticias-equipo), al que debe llegar también GITHUB_TOKEN. Reglas: openspec/changes/patrocinios-en-linea/.
+Retoques del director (data/retoques/, src/retoques.py): encargos con investigación que atiende la rutina /retoques.
+
+Permisos (src/equipo.py): solo el superadministrador (editor jefe) publica —edita, retira y reenfoca piezas, publica cajas,
+activa publicidad, cambia productos y equipo—; los demás proponen y trabajan en el CRM. Todo se comprueba aquí, en el
+servidor. Reglas: openspec/changes/editor-jefe-y-crm/ y openspec/changes/patrocinios-en-linea/.
 """
-import base64, datetime, glob, hashlib, hmac, http.cookies, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+import base64, datetime, glob, hashlib, hmac, http.cookies, json, os, re, secrets, sys, time, unicodedata, urllib.error, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,18 +30,24 @@ import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
 import equipo as EQ  # noqa: E402
 import retoques as RT  # noqa: E402  (retoques del director: data/retoques/README.md)
+import bd as BD  # noqa: E402
+import redaccion as R  # noqa: E402
+import firma as F  # noqa: E402
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
 EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
 EQUIPO_FICHERO = "equipo.json"
 BRANCH = os.environ.get("GITHUB_BRANCH", "main")
 COOKIE = "gestor"
+MARCA = "moticias_jefe"  # galleta visible en todo moticias.com: solo dice «hay un editor jefe»; la sesión de verdad es COOKIE
 DIAS_SESION = 90
 VERTICAL = "movilidad"
+ORIGEN_SITIO = os.environ.get("ORIGEN_SITIO", "https://www.moticias.com")
 
 # Campos que el superadministrador puede cambiar en un producto y en un anuncio (lista cerrada).
 CAMPOS_PRODUCTO = {"modo", "umbral", "exclusividad", "posicion", "max_por_semana", "status", "url", "one_liner", "contexto", "textos", "excluir"}
-CAMPOS_ANUNCIO = {"status", "start", "end", "headline", "text", "cta", "url", "weight"}
+CAMPOS_ANUNCIO = {"status", "start", "end", "headline", "text", "cta", "url", "weight", "name", "advertiser", "type", "nivel", "slots",
+                  "sections", "image", "crm_cuenta_id", "utm_campaign", "notes"}
 
 
 # ---------- sesión ----------
@@ -86,6 +98,15 @@ def cookie_sesion(sujeto):
     return "%s=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax" % (COOKIE, firmar(sujeto), DIAS_SESION * 86400)
 
 
+def cookie_marca(encendida, host):
+    """Galleta para todo moticias.com que hace que el script del sitio pregunte si quien mira es el editor jefe. No da
+    ningún permiso: si alguien la pone a mano, el gestor le contesta que no es nadie. Sin ella, el sitio no pregunta."""
+    dom = "; Domain=moticias.com" if (host or "").endswith("moticias.com") else ""
+    if encendida:
+        return "%s=1; Path=/%s; Max-Age=%d; Secure; SameSite=Lax" % (MARCA, dom, DIAS_SESION * 86400)
+    return "%s=; Path=/%s; Max-Age=0; Secure; SameSite=Lax" % (MARCA, dom)
+
+
 # ---------- datos ----------
 def vertical():
     return json.load(open(os.path.join(ROOT, "verticals", VERTICAL + ".json"), encoding="utf-8"))
@@ -101,7 +122,7 @@ def gh(method, path, body=None, repo=None):
         return 0, {"message": "falta GITHUB_TOKEN"}
     req = urllib.request.Request(("https://api.github.com/repos/%s/%s" % (repo or REPO, path)).rstrip("/"), method=method,
                                  data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Authorization": "Bearer " + tok, "Accept": "application/vnd.github+json",
+                                 headers={"Authorization": "Bearer " + tok, "Accept": "application/vnd.github+json", "Content-Type": "application/json",
                                           "User-Agent": "moticias-gestor", "X-GitHub-Api-Version": "2022-11-28"})
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
@@ -231,10 +252,14 @@ def accion_retoque(ses, d):
     return 400, {"error": "acción desconocida"}
 
 
-def accion_mencion(rol, d):
+def accion_mencion(rol, d, publica=True):
+    """`publica`: solo el editor jefe. Los demás perfiles proponen: añadir una caja la deja «pendiente» y solo pueden
+    retocar el texto de una caja pendiente. Nada de lo que hacen se ve en la web hasta que él publica."""
     pid, prod_id, acc = d.get("id"), d.get("producto"), d.get("accion")
     if acc not in ("publicar", "retirar", "proponer", "editar", "anadir", "posicion"):
         return 400, {"error": "acción desconocida"}
+    if not publica and acc not in ("anadir", "editar"):
+        return 403, {"error": "solo el editor jefe publica, retira o mueve cajas; tú puedes proponerlas"}
     ruta = "data/articles/%s.json" % pid
     a, sha = leer(ruta)
     if not a:
@@ -255,11 +280,12 @@ def accion_mencion(rol, d):
             return 400, {"error": "producto sin url o inexistente"}
         if m and m.get("estado") != "retirada":
             return 400, {"error": "esa pieza ya tiene ese producto"}
+        nuevo = "publicada" if publica else "propuesta"
         if m:  # estaba retirada: se reactiva (nunca se borra; queda en el historial)
-            m["estado"] = "publicada"
+            m["estado"] = nuevo
         else:
             pts, motivos = M.puntuar(a, prod)
-            m = M.nueva_mencion(a, prod, pts or 0, ["añadida a mano por %s" % rol] + (motivos if isinstance(motivos, list) else [motivos]), "publicada", origen="manual")
+            m = M.nueva_mencion(a, prod, pts or 0, ["%s a mano por %s" % ("añadida" if publica else "propuesta", rol)] + (motivos if isinstance(motivos, list) else [motivos]), nuevo, origen="manual")
             ms.append(m)
         if d.get("posicion") in M.POSICIONES:
             m["posicion"] = d["posicion"]
@@ -273,10 +299,12 @@ def accion_mencion(rol, d):
         elif acc == "proponer":
             m["estado"] = "propuesta"
         elif acc == "editar":
+            if not publica and m.get("estado") != "propuesta":
+                return 403, {"error": "solo el editor jefe cambia una caja que ya está en la web o retirada"}
             for k in ("texto", "cta"):
                 if isinstance(d.get(k), str) and d[k].strip():
                     m[k] = d[k].strip()[:600]
-            if d.get("posicion") in M.POSICIONES:
+            if d.get("posicion") in M.POSICIONES and publica:
                 m["posicion"] = d["posicion"]
         elif acc == "posicion":
             if d.get("posicion") not in M.POSICIONES:
@@ -290,6 +318,15 @@ def accion_mencion(rol, d):
     # Cada cambio se sube a la web en el acto (también en productos propios: la pieza se actualiza en Ghost y su fecha de
     # modificación y el sitemap se refrescan); si Ghost responde bien, la mención queda marcada «en la web».
     m.pop("en_web", None)
+    if not publica:  # una propuesta no cambia nada de lo que se ve: no se sube a Ghost
+        ok, det = escribir(ruta, a, sha, "Patrocinio: %s propone %s en %s" % (rol, prod_id, pid))
+        if not ok:
+            return 502, {"error": det}
+        BD.registrar(rol, "proponer_caja", pid, {"producto": prod_id, "accion": acc})
+        r = resumen_pieza(a, productos())
+        r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
+        r["candidatos"] = M.candidatos(a, productos())
+        return 200, {"ok": True, "commit": det, "ghost": {"ok": True, "detalle": "propuesta: la publica el editor jefe"}, "pieza": r}
     rep_ok, rep = republicar(a, v)
     if rep_ok:
         G.marcar_en_web(a)
@@ -352,41 +389,143 @@ def anuncios():
     out = []
     for f in sorted(glob.glob(os.path.join(ROOT, "data", "ads", "*.json"))):
         a = json.load(open(f, encoding="utf-8"))
-        out.append({k: a.get(k) for k in ("id", "name", "advertiser", "type", "label", "status", "start", "end", "slots", "sections", "headline", "text", "cta", "url", "weight", "pricing", "amount_eur")})
+        out.append({k: a.get(k) for k in ("id", "name", "advertiser", "type", "label", "status", "start", "end", "slots", "sections", "headline",
+                                          "text", "cta", "url", "weight", "nivel", "image", "crm_cuenta_id", "utm_campaign", "updated_at", "propuesto_por")})
     return out
 
 
-def accion_anuncio(d):
-    ruta = "data/ads/%s.json" % d.get("id")
-    a, sha = leer(ruta)
-    if not a:
-        return 404, {"error": "anuncio no encontrado"}
-    if sha is None:
-        return 503, {"error": "falta GITHUB_TOKEN en Vercel"}
+def _slug(t, n=48):
+    t = unicodedata.normalize("NFKD", t or "").encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")[:n].strip("-") or "anuncio"
+
+
+def _hoy():
+    return datetime.date.today().isoformat()
+
+
+def publicidad_publica():
+    """Cajas activas hoy, por hueco, para el script del sitio. Solo creatividad pública: ni importes ni contactos."""
+    v = vertical()
+    pub = v.get("publicidad") or {}
+    huecos = set((pub.get("huecos") or {}).keys())
+    tipos = pub.get("tipos") or {}
+    hoy, out = _hoy(), {}
+    for a in anuncios():
+        if a.get("status") != "activo" or not a.get("url") or not str(a.get("url")).startswith("https://"):
+            continue
+        if (a.get("start") and a["start"] > hoy) or (a.get("end") and a["end"] < hoy):
+            continue
+        caja = {"id": a["id"], "tipo": a.get("type") or "publicidad", "etiqueta": a.get("label") or tipos.get(a.get("type"), "Publicidad"),
+                "anunciante": a.get("advertiser") or "", "titular": a.get("headline") or "", "texto": a.get("text") or "", "cta": a.get("cta") or "",
+                "url": a["url"], "nivel": a.get("nivel") or "estandar", "peso": int(a.get("weight") or 1), "imagen": a.get("image") or None,
+                "secciones": a.get("sections") or [], "campana": a.get("utm_campaign") or a["id"]}
+        for h in a.get("slots") or []:
+            if h in huecos:
+                out.setdefault(h, []).append(caja)
+    orden = {"premium": 0, "estandar": 1, "basico": 2}
+    for h in out:  # lo pagado delante de la autopromoción; después por nivel y peso
+        out[h].sort(key=lambda c: (c["tipo"] == "autopromocion", orden.get(c["nivel"], 3), -c["peso"]))
+    return {"huecos": out, "generado": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
+
+
+def accion_anuncio(ses, d):
+    """Crear o cambiar una caja de publicidad o patrocinio. Solo el editor jefe la activa o toca una que está en la web;
+    los demás la crean o la retocan como «propuesta»."""
+    jefe = "publicidad" in ses["permisos"]
+    v = vertical()
+    pub = v.get("publicidad") or {}
     cambios = {k: val for k, val in (d.get("cambios") or {}).items() if k in CAMPOS_ANUNCIO}
+    if "status" in cambios and cambios["status"] not in (pub.get("estados") or ["propuesta", "activo", "pausado", "terminado"]):
+        return 400, {"error": "estado no válido"}
+    if "nivel" in cambios and cambios["nivel"] not in (pub.get("niveles") or {}):
+        return 400, {"error": "nivel no válido"}
+    if "type" in cambios and cambios["type"] not in (pub.get("tipos") or {}):
+        return 400, {"error": "tipo no válido"}
+    if "slots" in cambios:
+        if not isinstance(cambios["slots"], list) or not set(cambios["slots"]) <= set((pub.get("huecos") or {}).keys()):
+            return 400, {"error": "hueco no válido"}
+    if cambios.get("url") and not str(cambios["url"]).startswith("https://"):
+        return 400, {"error": "el enlace tiene que empezar por https://"}
+    for k in ("start", "end"):
+        if cambios.get(k) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(cambios[k])):
+            return 400, {"error": "fecha no válida (%s)" % k}
+    for k, n in (("headline", 140), ("text", 400), ("cta", 60), ("name", 120), ("advertiser", 120), ("notes", 1000), ("utm_campaign", 60)):
+        if k in cambios:
+            cambios[k] = str(cambios[k] or "").strip()[:n]
+    if "weight" in cambios:
+        try:
+            cambios["weight"] = max(1, min(10, int(cambios["weight"])))
+        except (TypeError, ValueError):
+            return 400, {"error": "el peso es un número del 1 al 10"}
+    if not jefe:
+        if cambios.get("status") not in (None, "propuesta"):
+            return 403, {"error": "solo el editor jefe activa, pausa o termina publicidad; tú la dejas propuesta"}
+        cambios["status"] = "propuesta"
+    nuevo = d.get("accion") == "crear"
+    if nuevo:
+        if not cambios.get("name") or not cambios.get("headline"):
+            return 400, {"error": "faltan el nombre interno y el titular"}
+        aid = "%s-%s" % (_slug(cambios.get("advertiser") or cambios["name"], 40), secrets.token_hex(2))
+        a, sha = {"id": aid, "created_at": datetime.datetime.now().astimezone().isoformat(timespec="minutes"), "utm": True,
+                  "label": (pub.get("tipos") or {}).get(cambios.get("type") or "publicidad", "Publicidad"), "status": "propuesta",
+                  "type": "publicidad", "nivel": "estandar", "slots": [], "sections": [], "weight": 1}, None
+        if not jefe:
+            a["propuesto_por"] = ses["nombre"]
+    else:
+        a, sha = leer("data/ads/%s.json" % d.get("id"))
+        if not a:
+            return 404, {"error": "anuncio no encontrado"}
+        if sha is None:
+            return 503, {"error": "falta GITHUB_TOKEN en Vercel"}
+        if not jefe and a.get("status") != "propuesta":
+            return 403, {"error": "esta caja ya la ha aprobado el editor jefe: solo él la cambia"}
+    if "type" in cambios:
+        a["label"] = (pub.get("tipos") or {}).get(cambios["type"], a.get("label"))
     a.update(cambios)
+    if a.get("status") == "activo" and (not a.get("url") or not a.get("slots") or not a.get("headline")):
+        return 400, {"error": "para activarla necesita titular, enlace https:// y al menos un hueco"}
     a["updated_at"] = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
-    ok, det = escribir(ruta, a, sha, "Publicidad %s: %s" % (a["id"], ", ".join(sorted(cambios))))
-    return (200, {"ok": True, "commit": det}) if ok else (502, {"error": det})
+    for k in ("amount_eur", "contact", "invoice_ref"):  # lo comercial va al CRM (privado), no al repositorio público
+        a.pop(k, None)
+    ok, det = escribir("data/ads/%s.json" % a["id"], a, sha, "Publicidad %s: %s" % (a["id"], "alta" if nuevo else ", ".join(sorted(cambios))))
+    if not ok:
+        return 502, {"error": det}
+    BD.registrar(ses["nombre"], "publicidad_" + ("crear" if nuevo else "cambiar"), a["id"], {"cambios": sorted(cambios)})
+    return 200, {"ok": True, "commit": det, "anuncio": a,
+                 "nota": "En la web en un par de minutos (lo que tarda Vercel en desplegar)." if a.get("status") == "activo" else "Guardada como %s." % a.get("status")}
 
 
-# ---------- equipo (repositorio privado) ----------
+# ---------- equipo (base privada; si no está configurada, repositorio privado) ----------
 _CACHE = {"t": 0, "datos": None, "sha": None}
 
 
 def equipo(fresco=False):
-    """(datos, sha) de equipo.json en el repositorio privado, con 60 s de caché por instancia."""
+    """(datos, sha) del equipo con 60 s de caché por instancia. Con la base configurada, sha es «bd»."""
     if fresco or not _CACHE["datos"] or time.time() - _CACHE["t"] > 60:
-        datos, sha = leer(EQUIPO_FICHERO, repo=EQUIPO_REPO)
-        _CACHE.update(t=time.time(), datos=datos or EQ.vacio(), sha=sha)
+        if BD.configurada():
+            try:
+                filas = BD.leer("equipo", select="datos", order="actualizado.asc")
+                _CACHE.update(t=time.time(), datos={"personas": [f["datos"] for f in filas]}, sha="bd")
+            except BD.ErrorBD:
+                _CACHE.update(t=time.time(), datos=EQ.vacio(), sha=None)
+        else:
+            datos, sha = leer(EQUIPO_FICHERO, repo=EQUIPO_REPO)
+            _CACHE.update(t=time.time(), datos=datos or EQ.vacio(), sha=sha)
     return _CACHE["datos"], _CACHE["sha"]
 
 
-def guardar_equipo(datos, sha, mensaje):
+def guardar_equipo(datos, sha, mensaje, pid=None):
     datos["actualizado"] = EQ.ahora()
-    ok, det = escribir(EQUIPO_FICHERO, datos, sha, mensaje, repo=EQUIPO_REPO)
     _CACHE.update(t=0, datos=None)
-    return ok, det
+    if sha == "bd" or (sha is None and BD.configurada()):
+        filas = [{"id": p["id"], "email": EQ.normal(p["email"]), "datos": p, "actualizado": datetime.datetime.now().astimezone().isoformat()}
+                 for p in datos.get("personas", []) if not pid or p["id"] == pid]
+        try:
+            BD.upsert("equipo", filas)
+            return True, "bd"
+        except BD.ErrorBD as e:
+            return False, str(e)
+    return escribir(EQUIPO_FICHERO, datos, sha, mensaje, repo=EQUIPO_REPO)
 
 
 def accion_equipo(ses, d, base):
@@ -401,7 +540,8 @@ def accion_equipo(ses, d, base):
                 return 400, {"error": "no puedes quitarte a ti mismo el perfil de superadministrador ni suspenderte"}
     except ValueError as e:
         return 400, {"error": str(e)}
-    ok, det = guardar_equipo(datos, sha, "Equipo: %s %s" % (acc, p["id"]))
+    ok, det = guardar_equipo(datos, sha, "Equipo: %s %s" % (acc, p["id"]), pid=p["id"])
+    BD.registrar(ses["nombre"], "equipo_" + acc, p["id"], {"perfil": p.get("perfil")})
     if not ok:
         return 502, {"error": det}
     r = {"ok": True, "persona": EQ.publica(p)}
@@ -426,63 +566,538 @@ def suscriptores():
     return out
 
 
+# ---------- redacción del editor jefe ----------
+def _ruta_pieza(pid):
+    if not re.fullmatch(r"[a-z0-9-]{3,120}", pid or ""):
+        return None
+    return "data/articles/%s.json" % pid
+
+
+def _url_pieza(a, v):
+    return "https://%s/%s/" % (v.get("domain", "www.moticias.com"), a["id"])
+
+
+def ficha_redaccion(pid):
+    ruta = _ruta_pieza(pid)
+    a, _ = leer(ruta) if ruta else (None, None)
+    if not a:
+        return None
+    v = vertical()
+    c = F.config(v)
+    arts = F.cargar(ROOT)
+    arts[a["id"]] = a
+    dec = F.decidir(a, arts, c)
+    imp, mot = F.importante(a, c)
+    return {"id": a["id"], "campos": {k: a.get(k) or "" for k in R.CAMPOS}, "nombres": R.NOMBRES, "status": a.get("status") or "publicado",
+            "kind": a.get("kind"), "date": a.get("date"), "author": a.get("author"), "section": a.get("section"), "url": _url_pieza(a, v),
+            "revised_at": a.get("revised_at"), "revisiones": (a.get("revisiones") or [])[-8:], "correcciones": a.get("correcciones") or [],
+            "fuentes": [{"medio": x.get("outlet"), "titulo": x.get("title"), "url": x.get("url")} for x in a.get("sources") or []],
+            "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()},
+            "firma": {"actual": "director" if a.get("author") == c["director"] else "redaccion", "director": c["director"], "redaccion": c["redaccion"],
+                      "importante": imp, "motivo": mot, "propuesta": dec["firma"], "cupo": dec["cupo"]}}
+
+
+def _aplicar_firma(a, quiere, v):
+    """Firma pedida por el editor jefe para esta pieza. El tope del 10 % no se salta ni a mano."""
+    c = F.config(v)
+    if quiere == "director":
+        q = F.cupo(F.cargar(ROOT), a.get("date") or _hoy(), c, excluir=a["id"])
+        if a.get("author") != c["director"] and q["libres_max"] <= 0:
+            raise ValueError("tu firma ya está en el %s %% de las piezas de los últimos %s días (tope %s %%): firma la redacción" % (q["pct"], c["ventana_dias"], c["max_pct"]))
+        a["firma_director"] = True
+        a["author"], a["author_role"] = c["director"], c["director_role"]
+        if a.get("author_note"):
+            a["author_note"] = (v.get("editor") or {}).get("interests_note") or a["author_note"]
+    elif quiere == "redaccion":
+        a["firma_director"] = False
+        a["author"], a["author_role"] = c["redaccion"], c["redaccion_role"]
+        if a.get("author_note"):
+            a["author_note"] = (v.get("editorial") or {}).get("interests_note_redaccion") or F.NOTA_REDACCION
+
+
+def _subir(a, v, estado=None):
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key or ":" not in key:
+        return False, "sin clave de Ghost en el gestor: se verá en la próxima publicación"
+    try:
+        res, err = (G.publicar_con_estado(a, v, url.rstrip("/"), key, estado) if estado else G.republicar(a, v, url.rstrip("/"), key))
+    except Exception as e:  # noqa: BLE001
+        return False, "Ghost: %s" % e
+    if err:
+        return False, err if isinstance(err, str) else "Ghost: %s" % json.dumps(err, ensure_ascii=False)[:200]
+    return True, res.get("url") or "actualizada en Ghost"
+
+
+def accion_redaccion(ses, d, cabeceras):
+    acc, pid = d.get("accion"), d.get("id")
+    ruta = _ruta_pieza(pid)
+    if not ruta:
+        return 400, {"error": "pieza no válida"}
+    a, sha = leer(ruta)
+    if not a:
+        return 404, {"error": "pieza no encontrada"}
+    v, quien = vertical(), ses["nombre"]
+    if acc == "enfoque":
+        try:
+            r = R.otro_enfoque(a, d.get("enfoque") or "", d.get("instruccion") or "", cabeceras)
+        except (RuntimeError, ValueError) as e:
+            return 502, {"error": str(e)}
+        BD.registrar(quien, "ia_enfoque", pid, {"enfoque": d.get("enfoque"), "modelo": r["modelo"], "cifras_nuevas": r["cifras_nuevas"]})
+        return 200, dict(r, original={k: a.get(k) or "" for k in R.CAMPOS})
+    if sha is None:
+        return 503, {"error": "el gestor no puede escribir: falta GITHUB_TOKEN en Vercel"}
+    estado = None
+    try:
+        if acc == "editar":
+            cambios = R.limpiar(d.get("cambios") or {})
+            nuevas = R.cifras_nuevas(a, dict({k: a.get(k) or "" for k in R.CAMPOS}, **cambios))
+            if nuevas and not d.get("confirmo_cifras"):
+                return 409, {"error": "hay cifras o fechas que no están en la pieza ni en sus fuentes", "cifras": nuevas}
+            hechos = R.aplicar_edicion(a, cambios, quien, origen=d.get("origen") or "manual", correccion=d.get("correccion"))
+            if d.get("firma") in ("director", "redaccion"):
+                antes = a.get("author")
+                _aplicar_firma(a, d["firma"], v)
+                if a.get("author") != antes:
+                    hechos.append("firma")
+            if not hechos:
+                return 400, {"error": "no hay cambios"}
+            mensaje = "Redacción: %s edita %s (%s)" % (quien, pid, ", ".join(hechos))
+        elif acc == "retirar":
+            R.retirar(a, quien, d.get("motivo"))
+            estado, mensaje = "draft", "Redacción: %s retira %s" % (quien, pid)
+        elif acc == "restaurar":
+            R.restaurar(a, quien)
+            estado = "draft" if a.get("status") in ("pendiente", "borrador") else "published"
+            mensaje = "Redacción: %s restaura %s" % (quien, pid)
+        elif acc == "publicar":  # el visto bueno del director a una pieza pendiente
+            if a.get("status") not in ("pendiente", "borrador"):
+                return 400, {"error": "la pieza no está pendiente"}
+            a["status"] = "publicado"
+            a.setdefault("revisiones", []).append({"en": R.ahora(), "por": quien, "accion": "aprobar y publicar"})
+            estado, mensaje = "published", "Redacción: %s aprueba y publica %s" % (quien, pid)
+        else:
+            return 400, {"error": "acción desconocida"}
+    except ValueError as e:
+        return 400, {"error": str(e)}
+    ok, det = escribir(ruta, a, sha, mensaje)
+    if not ok:
+        return 502, {"error": det}
+    g_ok, g = _subir(a, v, estado)
+    BD.registrar(quien, "redaccion_" + acc, pid, {"commit": det, "ghost": g_ok})
+    return 200, {"ok": True, "commit": det, "ghost": {"ok": g_ok, "detalle": g}, "pieza": ficha_redaccion(pid)}
+
+
+def informe_firma():
+    v = vertical()
+    c = F.config(v)
+    arts = F.cargar(ROOT)
+    q = F.cupo(arts, _hoy(), c)
+    suyas = sorted([{"id": a["id"], "title": a.get("title"), "date": a.get("date"), "status": a.get("status")} for a in arts.values()
+                    if a.get("author") == c["director"] and q["desde"] <= (a.get("date") or "") <= q["hasta"]], key=lambda x: x["date"], reverse=True)
+    return {"cupo": q, "piezas": suyas, "regla": ((v.get("editorial") or {}).get("firma_director") or {}).get("regla")}
+
+
+# ---------- CRM (base privada; módulo de MOVO) ----------
+CAMPOS_CUENTA = ("tipo", "subtipo", "nombre", "razon_social", "cif", "sector", "comunidad", "provincia", "municipio", "web", "dominio",
+                 "origen", "senal", "responsable", "etiquetas", "notas")
+CAMPOS_PERSONA = ("cuenta_id", "nombre", "cargo", "perfil", "correo", "telefono", "linkedin", "ghost_member_id", "verificado", "notas")
+CAMPOS_CONTRATO = ("anuncio_id", "concepto", "nivel", "importe_cent", "desde", "hasta", "estado", "notas")
+
+
+def crm_cfg():
+    return vertical().get("crm") or {}
+
+
+def _dominio(web):
+    h = urllib.parse.urlparse(web if "://" in (web or "") else "https://" + (web or "")).hostname or ""
+    return h[4:] if h.startswith("www.") else (h or None)
+
+
+def _limpio(d, campos):
+    out = {}
+    for k in campos:
+        if k in d:
+            x = d[k]
+            if isinstance(x, str):
+                x = x.strip() or None
+            out[k] = x
+    return out
+
+
+def crm_cuentas(q):
+    p = {"select": "id,tipo,subtipo,nombre,web,comunidad,provincia,estado,estado_at,paso_que,paso_fecha,personas,ultima_actividad,responsable,etiquetas",
+         "producto": "eq.moticias", "archivada_at": "is.null", "order": "paso_fecha.asc.nullslast,nombre.asc", "limit": "300"}
+    if q.get("tipo"):
+        p["tipo"] = "eq." + q["tipo"]
+    if q.get("estado"):
+        p["estado"] = "eq." + q["estado"]
+    if q.get("q"):
+        t = re.sub(r"[^\w .@-]", "", q["q"])[:60]
+        p["or"] = "(nombre.ilike.*%s*,dominio.ilike.*%s*,razon_social.ilike.*%s*)" % (t, t, t)
+    return BD.leer("crm_cuentas_hoy", **p)
+
+
+def crm_resumen():
+    filas = BD.leer("crm_cuentas_hoy", select="tipo,estado,paso_fecha", producto="eq.moticias", archivada_at="is.null", limit="5000")
+    hoy, por = _hoy(), {}
+    for f in filas:
+        t = por.setdefault(f["tipo"], {"total": 0, "estados": {}})
+        t["total"] += 1
+        t["estados"][f.get("estado") or "—"] = t["estados"].get(f.get("estado") or "—", 0) + 1
+    pasos = BD.leer("crm_pasos", select="id,cuenta_id,que,fecha,responsable,crm_cuentas(nombre,tipo)", hecho_at="is.null",
+                    fecha="lte." + (datetime.date.today() + datetime.timedelta(days=7)).isoformat(), order="fecha.asc", limit="100")
+    return {"tipos": por, "pasos": pasos, "hoy": hoy}
+
+
+def crm_ficha(cid, permisos):
+    if not re.fullmatch(r"[0-9a-f-]{36}", cid or ""):
+        return None
+    c = BD.leer("crm_cuentas_hoy", select="*", id="eq." + cid)
+    if not c:
+        return None
+    r = {"cuenta": c[0],
+         "personas": BD.leer("crm_personas", select="*", cuenta_id="eq." + cid, archivada_at="is.null", order="creada_at.asc"),
+         "estados": BD.leer("crm_estados", select="*", cuenta_id="eq." + cid, order="id.desc", limit="30"),
+         "actividades": BD.leer("crm_actividades", select="*", cuenta_id="eq." + cid, order="at.desc", limit="60"),
+         "pasos": BD.leer("crm_pasos", select="*", cuenta_id="eq." + cid, order="hecho_at.desc.nullsfirst,fecha.asc", limit="40")}
+    if "contratos" in permisos:
+        r["contratos"] = BD.leer("crm_contratos", select="*", cuenta_id="eq." + cid, order="creado_at.desc")
+    return r
+
+
+def _estado_actual(cid):
+    e = BD.leer("crm_estados", select="estado", cuenta_id="eq." + cid, order="id.desc", limit="1")
+    return e[0]["estado"] if e else None
+
+
+def _paso_abierto(cid):
+    return bool(BD.leer("crm_pasos", select="id", cuenta_id="eq." + cid, hecho_at="is.null", limit="1"))
+
+
+def accion_crm(ses, d):
+    cfg, quien, acc = crm_cfg(), ses["nombre"], d.get("accion")
+    tipos = cfg.get("tipos") or {}
+    activos = set(cfg.get("activos") or [])
+    try:
+        if acc == "cuenta_nueva":
+            c = _limpio(d, CAMPOS_CUENTA)
+            if c.get("tipo") not in tipos:
+                return 400, {"error": "tipo de cuenta no válido"}
+            if not c.get("nombre"):
+                return 400, {"error": "falta el nombre"}
+            c["dominio"] = c.get("dominio") or _dominio(c.get("web"))
+            c.update(producto="moticias", creada_por=quien, origen=c.get("origen") or "manual")
+            fila = BD.insertar("crm_cuentas", c)[0]
+            est = d.get("estado") or tipos[c["tipo"]]["estados"][0]
+            paso = d.get("paso") or {}
+            if est in activos and not (paso.get("que") and paso.get("fecha")):
+                return 400, {"error": "una cuenta en marcha lleva un siguiente paso con fecha"}
+            BD.insertar("crm_estados", {"cuenta_id": fila["id"], "estado": est, "quien": quien, "motivo": "alta"})
+            if paso.get("que") and paso.get("fecha"):
+                BD.insertar("crm_pasos", {"cuenta_id": fila["id"], "que": paso["que"][:200], "fecha": paso["fecha"], "responsable": paso.get("responsable") or quien, "creado_por": quien})
+            if d.get("persona"):
+                pe = _limpio(d["persona"], CAMPOS_PERSONA)
+                if pe.get("nombre") or pe.get("correo") or pe.get("telefono"):
+                    BD.insertar("crm_personas", dict(pe, cuenta_id=fila["id"], creada_por=quien))
+            BD.registrar(quien, "crm_cuenta_nueva", fila["id"], {"tipo": c["tipo"]})
+            return 200, {"ok": True, "id": fila["id"]}
+        cid = d.get("cuenta_id") or d.get("id")
+        if acc == "cuenta_editar":
+            cambios = _limpio(d.get("cambios") or {}, CAMPOS_CUENTA)
+            if "tipo" in cambios and cambios["tipo"] not in tipos:
+                return 400, {"error": "tipo de cuenta no válido"}
+            if "web" in cambios and "dominio" not in cambios:
+                cambios["dominio"] = _dominio(cambios["web"])
+            BD.actualizar("crm_cuentas", {"id": "eq." + cid}, cambios)
+        elif acc == "cuenta_archivar":
+            BD.actualizar("crm_cuentas", {"id": "eq." + cid}, {"archivada_at": datetime.datetime.now().astimezone().isoformat()})
+            BD.insertar("crm_actividades", {"cuenta_id": cid, "tipo": "nota", "notas": "Archivada: %s" % (d.get("motivo") or "sin motivo")[:300], "quien": quien})
+        elif acc == "persona":
+            pe = _limpio(d, CAMPOS_PERSONA)
+            if d.get("no_contactar"):
+                pe["no_contactar_at"] = datetime.datetime.now().astimezone().isoformat()
+                pe["no_contactar_motivo"] = (d.get("no_contactar_motivo") or "pedido por la persona")[:300]
+            if d.get("permiso_correo_como"):
+                pe["permiso_correo_at"] = datetime.datetime.now().astimezone().isoformat()
+                pe["permiso_correo_como"] = d["permiso_correo_como"][:200]
+            if d.get("persona_id"):
+                pe.pop("cuenta_id", None)
+                BD.actualizar("crm_personas", {"id": "eq." + d["persona_id"]}, pe)
+            else:
+                if not (pe.get("nombre") or pe.get("correo") or pe.get("telefono")):
+                    return 400, {"error": "falta el nombre, el correo o el teléfono"}
+                BD.insertar("crm_personas", dict(pe, creada_por=quien))
+        elif acc == "estado":
+            cuenta = BD.leer("crm_cuentas", select="tipo", id="eq." + cid)
+            if not cuenta:
+                return 404, {"error": "cuenta no encontrada"}
+            est = d.get("estado")
+            if est not in tipos.get(cuenta[0]["tipo"], {}).get("estados", []):
+                return 400, {"error": "ese estado no existe para este tipo de cuenta"}
+            if _estado_actual(cid) == "no_contactar":
+                return 400, {"error": "«No contactar» es para siempre"}
+            paso = d.get("paso") or {}
+            if est in activos and not _paso_abierto(cid) and not (paso.get("que") and paso.get("fecha")):
+                return 400, {"error": "una cuenta en marcha lleva un siguiente paso con fecha"}
+            if est == "nutrir" and not d.get("nutrir_hasta"):
+                return 400, {"error": "di hasta cuándo se nutre"}
+            BD.insertar("crm_estados", {"cuenta_id": cid, "estado": est, "motivo": (d.get("motivo") or "")[:300] or None,
+                                        "nutrir_hasta": d.get("nutrir_hasta") or None, "quien": quien})
+            if paso.get("que") and paso.get("fecha"):
+                BD.insertar("crm_pasos", {"cuenta_id": cid, "que": paso["que"][:200], "fecha": paso["fecha"], "responsable": paso.get("responsable") or quien, "creado_por": quien})
+        elif acc == "actividad":
+            if d.get("tipo") not in (cfg.get("actividades") or {}):
+                return 400, {"error": "tipo de actividad no válido"}
+            BD.insertar("crm_actividades", {"cuenta_id": cid, "persona_id": d.get("persona_id") or None, "tipo": d["tipo"],
+                                            "notas": (d.get("notas") or "")[:2000] or None, "quien": quien})
+            paso = d.get("paso") or {}
+            if paso.get("que") and paso.get("fecha"):
+                BD.insertar("crm_pasos", {"cuenta_id": cid, "que": paso["que"][:200], "fecha": paso["fecha"], "responsable": paso.get("responsable") or quien, "creado_por": quien})
+        elif acc == "paso":
+            if not d.get("que") or not d.get("fecha"):
+                return 400, {"error": "el paso necesita qué y fecha"}
+            BD.insertar("crm_pasos", {"cuenta_id": cid, "que": d["que"][:200], "fecha": d["fecha"], "responsable": d.get("responsable") or quien, "creado_por": quien})
+        elif acc == "paso_hecho":
+            BD.actualizar("crm_pasos", {"id": "eq.%d" % int(d.get("paso_id"))}, {"hecho_at": datetime.datetime.now().astimezone().isoformat(), "hecho_por": quien})
+        elif acc == "contrato":
+            if "contratos" not in ses["permisos"]:
+                return 403, {"error": "tu perfil no ve los contratos"}
+            co = _limpio(d, CAMPOS_CONTRATO)
+            if co.get("importe_cent") is not None:
+                co["importe_cent"] = int(round(float(str(co["importe_cent"]).replace(",", ".")) * 100)) if d.get("en_euros") else int(co["importe_cent"])
+            if d.get("contrato_id"):
+                BD.actualizar("crm_contratos", {"id": "eq.%d" % int(d["contrato_id"])}, co)
+            else:
+                if not co.get("concepto"):
+                    return 400, {"error": "falta el concepto"}
+                BD.insertar("crm_contratos", dict(co, cuenta_id=cid, creado_por=quien))
+        elif acc == "importar_fuentes":
+            if "redaccion" not in ses["permisos"]:
+                return 403, {"error": "solo el editor jefe importa las fuentes"}
+            fuentes = json.load(open(os.path.join(ROOT, "portal", "data", "sources.json"), encoding="utf-8"))
+            ya = {f.get("dominio") for f in BD.leer("crm_cuentas", select="dominio", producto="eq.moticias", tipo="eq.fuente", limit="5000")}
+            nuevas, vistos = [], set()
+            for f in fuentes:
+                dom = _dominio(f.get("url"))
+                if not dom or dom in ya or dom in vistos:
+                    continue
+                vistos.add(dom)
+                nuevas.append({"producto": "moticias", "tipo": "fuente", "subtipo": (f.get("type") or "")[:60] or None, "nombre": (f.get("name") or dom)[:200],
+                               "web": f.get("url"), "dominio": dom, "origen": "repositorio", "creada_por": quien,
+                               "notas": ("Publica: %s · Cadencia: %s" % (f.get("publishes") or "—", f.get("cadence") or "—"))[:4000]})
+            filas = BD.insertar("crm_cuentas", nuevas) if nuevas else []
+            if filas:
+                BD.insertar("crm_estados", [{"cuenta_id": x["id"], "estado": "activa", "quien": quien, "motivo": "importada del repositorio"} for x in filas])
+            BD.registrar(quien, "crm_importar_fuentes", None, {"nuevas": len(filas)})
+            return 200, {"ok": True, "nuevas": len(filas)}
+        else:
+            return 400, {"error": "acción desconocida"}
+    except BD.ErrorBD as e:
+        return 502, {"error": str(e)}
+    except (TypeError, ValueError) as e:
+        return 400, {"error": "dato no válido: %s" % e}
+    BD.registrar(quien, "crm_" + acc, cid)
+    return 200, {"ok": True}
+
+
+# ---------- suscriptores (miembros de Ghost) ----------
+def _ghost():
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key or ":" not in key:
+        return None, None
+    return G.admin_base(url.rstrip("/")), G.ghost_token(key)
+
+
+def miembros(q, ver_correos):
+    base, tok = _ghost()
+    if not base:
+        return {"error": "sin clave de Ghost"}
+    pref = (crm_cfg().get("suscriptores") or {}).get("prefijo_categoria", "cat:")
+    filtros = []
+    if q.get("estado") in ("free", "paid", "comped"):
+        filtros.append("status:" + q["estado"])
+    if q.get("cat"):
+        filtros.append("label:" + _slug(pref + q["cat"], 190))
+    par = {"limit": "50", "page": str(max(1, int(q.get("pagina") or 1))), "order": "created_at desc", "include": "labels,newsletters"}
+    if filtros:
+        par["filter"] = "+".join(filtros)
+    if q.get("q"):
+        par["search"] = q["q"][:80]
+    st, r = G.api("GET", base + "/ghost/api/admin/members/?" + urllib.parse.urlencode(par), tok)
+    if st != 200:
+        return {"error": "Ghost respondió %s" % st}
+    out = []
+    for m in r.get("members") or []:
+        e = m.get("email") or ""
+        out.append({"id": m["id"], "nombre": m.get("name") or "", "email": e if ver_correos else ((e[:2] + "…@" + e.split("@")[-1]) if "@" in e else ""),
+                    "estado": m.get("status"), "alta": (m.get("created_at") or "")[:10], "boletines": len(m.get("newsletters") or []),
+                    "categorias": [l["name"][len(pref):] for l in m.get("labels") or [] if l.get("name", "").startswith(pref)],
+                    "etiquetas": [l["name"] for l in m.get("labels") or [] if not l.get("name", "").startswith(pref)]})
+    st, lb = G.api("GET", base + "/ghost/api/admin/labels/?limit=all&include=count.members", tok)
+    cats = {l["name"][len(pref):]: (l.get("count") or {}).get("members", 0) for l in (lb.get("labels") or []) if l.get("name", "").startswith(pref)} if st == 200 else {}
+    pag = (r.get("meta") or {}).get("pagination") or {}
+    return {"miembros": out, "total": pag.get("total"), "paginas": pag.get("pages"), "pagina": pag.get("page"),
+            "categorias": [{"nombre": c, "n": cats.get(c, 0)} for c in (crm_cfg().get("suscriptores") or {}).get("categorias", [])],
+            "ghost": base + "/ghost/#/members"}
+
+
+def accion_miembro(ses, d):
+    base, tok = _ghost()
+    if not base:
+        return 503, {"error": "sin clave de Ghost"}
+    mid = d.get("id") or ""
+    if not re.fullmatch(r"[0-9a-f]{24}", mid):
+        return 400, {"error": "miembro no válido"}
+    st, r = G.api("GET", base + "/ghost/api/admin/members/%s/?include=labels" % mid, tok)
+    if st != 200 or not r.get("members"):
+        return 404, {"error": "miembro no encontrado"}
+    m = r["members"][0]
+    cfg = crm_cfg().get("suscriptores") or {}
+    pref = cfg.get("prefijo_categoria", "cat:")
+    if d.get("accion") == "categorias":
+        validas = set(cfg.get("categorias") or [])
+        pedidas = [c for c in d.get("categorias") or [] if c in validas]
+        labels = [{"name": l["name"]} for l in m.get("labels") or [] if not l["name"].startswith(pref)] + [{"name": pref + c} for c in pedidas]
+        st, r = G.api("PUT", base + "/ghost/api/admin/members/%s/" % mid, tok, {"members": [{"labels": labels}]})
+        if st != 200:
+            return 502, {"error": "Ghost respondió %s" % st}
+        BD.registrar(ses["nombre"], "suscriptor_categorias", mid, {"categorias": pedidas})
+        return 200, {"ok": True, "categorias": pedidas}
+    if d.get("accion") == "enlazar":
+        cid = d.get("cuenta_id")
+        try:
+            ya = BD.leer("crm_personas", select="id", ghost_member_id="eq." + mid)
+            datos = {"cuenta_id": cid, "nombre": (m.get("name") or "").strip() or None, "correo": m.get("email"), "ghost_member_id": mid, "perfil": "otro"}
+            if ya:
+                BD.actualizar("crm_personas", {"id": "eq." + ya[0]["id"]}, {"cuenta_id": cid})
+            else:
+                BD.insertar("crm_personas", dict(datos, creada_por=ses["nombre"]))
+        except BD.ErrorBD as e:
+            return 502, {"error": str(e)}
+        BD.registrar(ses["nombre"], "suscriptor_enlazar", mid, {"cuenta": cid})
+        return 200, {"ok": True}
+    return 400, {"error": "acción desconocida"}
+
+
 # ---------- HTTP ----------
 class handler(BaseHTTPRequestHandler):
-    def _enviar(self, st, obj, cookie=None):
+    def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
         b = json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(st)
         self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Cache-Control", "no-store")
+        self.send_header("Cache-Control", cache)
         self.send_header("X-Robots-Tag", "noindex")
-        if cookie is not None:
-            self.send_header("Set-Cookie", cookie)
+        for c in ([cookie] if isinstance(cookie, str) else (cookie or [])):
+            self.send_header("Set-Cookie", c)
+        if cors == "*":
+            self.send_header("Access-Control-Allow-Origin", "*")
+        elif cors:
+            self.send_header("Access-Control-Allow-Origin", cors)
+            self.send_header("Access-Control-Allow-Credentials", "true")
+            self.send_header("Vary", "Origin")
         self.send_header("Content-Length", str(len(b)))
         self.end_headers()
         self.wfile.write(b)
 
+    def _galletas(self):
+        return http.cookies.SimpleCookie(self.headers.get("Cookie") or "")
+
     def _ses(self):
-        c = http.cookies.SimpleCookie(self.headers.get("Cookie") or "")
+        c = self._galletas()
         return sesion_de(c[COOKIE].value) if COOKIE in c else None
 
+    def _host(self):
+        return self.headers.get("X-Forwarded-Host") or self.headers.get("Host") or "app.moticias.com"
+
     def _base(self):
-        return "https://" + (self.headers.get("X-Forwarded-Host") or self.headers.get("Host") or "app.moticias.com")
+        return "https://" + self._host()
 
     def _q(self):
         return {k: v[0] for k, v in urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).items()}
 
+    def _cab(self):
+        return {k.lower(): v for k, v in self.headers.items()}
+
+    def _galletas_entrada(self, perfil, sujeto):
+        """Al entrar: la sesión y, si es el editor jefe, la marca para que moticias.com le enseñe sus herramientas."""
+        return [cookie_sesion(sujeto), cookie_marca(perfil == "superadmin", self._host())]
+
     def do_GET(self):
         q, ses = self._q(), self._ses()
         a = q.get("a", "yo")
+        if a == "publicidad":  # pública: la pide el script de moticias.com
+            return self._enviar(200, publicidad_publica(), cors="*", cache="public, max-age=120, s-maxage=300, stale-while-revalidate=3600")
         if a == "yo":
-            return self._enviar(200, {"rol": ses and ses["perfil"], "nombre": ses and ses["nombre"], "permisos": ses and ses["permisos"],
-                                      "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
-                                      "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"])})
+            origen = self.headers.get("Origin")
+            if origen == ORIGEN_SITIO:  # desde moticias.com: solo «¿es el editor jefe?»; nada más sale de aquí
+                jefe = bool(ses and "redaccion" in ses["permisos"])
+                return self._enviar(200, {"jefe": jefe, "gestor": self._base() + "/gestor/"}, cors=origen,
+                                    cookie=None if jefe else cookie_marca(False, self._host()))
+            cab = self._cab()
+            r = {"rol": ses and ses["perfil"], "nombre": ses and ses["nombre"], "permisos": ses and ses["permisos"],
+                 "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
+                 "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"]), "bd": BD.configurada(),
+                 "ia": bool(os.environ.get("AI_GATEWAY_API_KEY") or cab.get("x-vercel-oidc-token") or os.environ.get("VERCEL_OIDC_TOKEN"))}
+            marca = MARCA in self._galletas()
+            cookie = None
+            if ses and ses["perfil"] == "superadmin" and not marca:
+                cookie = cookie_marca(True, self._host())
+            elif marca and not (ses and ses["perfil"] == "superadmin"):
+                cookie = cookie_marca(False, self._host())
+            return self._enviar(200, r, cookie=cookie)
         if not ses:
             return self._enviar(401, {"error": "sin sesión"})
-        if a == "equipo":
-            if "equipo" not in ses["permisos"]:
-                return self._enviar(403, {"error": "solo el superadministrador ve el equipo"})
-            datos, sha = equipo(fresco=True)
-            return self._enviar(200, {"personas": [EQ.publica(p) for p in datos.get("personas", [])], "perfiles": EQ.PERFILES,
-                                      "repositorio": EQUIPO_REPO, "accesible": sha is not None or gh("GET", "", repo=EQUIPO_REPO)[0] == 200})
-        if a == "suscriptores":
-            r = suscriptores()
-            if "equipo" not in ses["permisos"]:  # solo el superadministrador ve los correos completos
-                for m in r.get("ultimos", []):
-                    e = m.get("email") or ""
-                    m["email"] = (e[:2] + "…@" + e.split("@")[-1]) if "@" in e else ""
-            return self._enviar(200, r)
-        if a == "piezas":
-            return self._enviar(200, {"piezas": piezas(int(q.get("dias") or 14))})
-        if a == "pieza":
-            r = detalle(q.get("id", ""))
-            return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
-        if a == "productos":
-            return self._enviar(200, {"productos": productos(), "modos": list(M.MODOS)})
-        if a == "anuncios":
-            return self._enviar(200, {"anuncios": anuncios()})
-        if a == "retoques":
-            return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
+        per = ses["permisos"]
+        try:
+            if a == "equipo":
+                if "equipo" not in per:
+                    return self._enviar(403, {"error": "solo el superadministrador ve el equipo"})
+                datos, sha = equipo(fresco=True)
+                return self._enviar(200, {"personas": [EQ.publica(p) for p in datos.get("personas", [])], "perfiles": EQ.PERFILES,
+                                          "almacen": "base privada" if sha == "bd" else EQUIPO_REPO,
+                                          "accesible": sha is not None or gh("GET", "", repo=EQUIPO_REPO)[0] == 200})
+            if a == "suscriptores":
+                r = suscriptores()
+                if "equipo" not in per:  # solo el superadministrador ve los correos completos
+                    for m in r.get("ultimos", []):
+                        e = m.get("email") or ""
+                        m["email"] = (e[:2] + "…@" + e.split("@")[-1]) if "@" in e else ""
+                return self._enviar(200, r)
+            if a == "miembros":
+                if "suscriptores" not in per:
+                    return self._enviar(403, {"error": "tu perfil no ve los suscriptores"})
+                return self._enviar(200, miembros(q, "equipo" in per))
+            if a == "piezas":
+                return self._enviar(200, {"piezas": piezas(int(q.get("dias") or 14))})
+            if a == "pieza":
+                r = detalle(q.get("id", ""))
+                return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
+            if a == "redaccion":
+                if "redaccion" not in per:
+                    return self._enviar(403, {"error": "solo el editor jefe edita las piezas"})
+                r = ficha_redaccion(q.get("id", ""))
+                return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
+            if a == "firma":
+                return self._enviar(200, informe_firma())
+            if a == "retoques":
+                return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
+            if a == "productos":
+                return self._enviar(200, {"productos": productos(), "modos": list(M.MODOS)})
+            if a == "anuncios":
+                return self._enviar(200, {"anuncios": anuncios(), "publicidad": vertical().get("publicidad") or {}})
+            if a in ("crm_resumen", "crm_cuentas", "crm_cuenta"):
+                if "crm" not in per:
+                    return self._enviar(403, {"error": "tu perfil no entra en el CRM"})
+                if not BD.configurada():
+                    return self._enviar(503, {"error": "la base privada del CRM aún no está conectada"})
+                if a == "crm_resumen":
+                    return self._enviar(200, dict(crm_resumen(), cfg=crm_cfg()))
+                if a == "crm_cuentas":
+                    return self._enviar(200, {"cuentas": crm_cuentas(q)})
+                r = crm_ficha(q.get("id"), per)
+                return self._enviar(200 if r else 404, r or {"error": "cuenta no encontrada"})
+        except BD.ErrorBD as e:
+            return self._enviar(502, {"error": str(e)})
         return self._enviar(404, {"error": "acción desconocida"})
 
     def do_POST(self):
@@ -490,7 +1105,7 @@ class handler(BaseHTTPRequestHandler):
         a = q.get("a")
         try:
             n = int(self.headers.get("Content-Length") or 0)
-            d = json.loads(self.rfile.read(min(n, 200000)) or b"{}") if n else {}
+            d = json.loads(self.rfile.read(min(n, 400000)) or b"{}") if n else {}
         except (ValueError, json.JSONDecodeError):
             return self._enviar(400, {"error": "JSON no válido"})
         if a == "entrar":
@@ -500,13 +1115,15 @@ class handler(BaseHTTPRequestHandler):
                 p = EQ.buscar(datos, email=email)
                 if p and p.get("estado") == "activa" and EQ.comprobar(p, clave):
                     p["ultimo_acceso"] = EQ.ahora()
-                    guardar_equipo(datos, sha, "Equipo: acceso %s" % p["id"])
-                    p = EQ.buscar(equipo()[0], pid=p["id"]) or p
-                    return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")}, cookie_sesion("p-%s-%s" % (p["id"], p.get("version") or 0)))
+                    guardar_equipo(datos, sha, "Equipo: acceso %s" % p["id"], pid=p["id"])
+                    BD.registrar(p.get("nombre") or p["id"], "entrar", p["id"])
+                    return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")},
+                                        self._galletas_entrada(p["perfil"], "p-%s-%s" % (p["id"], p.get("version") or 0)))
             else:  # contraseña común (acceso de emergencia del superadministrador y perfil oficina antiguo)
                 for r, c in _claves().items():
                     if c and hmac.compare_digest(clave.encode(), c.encode()):
-                        return self._enviar(200, {"rol": r}, cookie_sesion(r))
+                        BD.registrar("acceso común (%s)" % r, "entrar")
+                        return self._enviar(200, {"rol": r}, self._galletas_entrada(r, r))
             time.sleep(1.2)
             return self._enviar(401, {"error": "correo o contraseña incorrectos"})
         if a == "aceptar":
@@ -517,39 +1134,58 @@ class handler(BaseHTTPRequestHandler):
                 time.sleep(0.8)
                 return self._enviar(400, {"error": str(e)})
             p["ultimo_acceso"] = EQ.ahora()
-            ok, det = guardar_equipo(datos, sha, "Equipo: alta %s" % p["id"])
+            ok, det = guardar_equipo(datos, sha, "Equipo: alta %s" % p["id"], pid=p["id"])
             if not ok:
                 return self._enviar(502, {"error": det})
-            return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")}, cookie_sesion("p-%s-%s" % (p["id"], p.get("version") or 0)))
+            return self._enviar(200, {"rol": p["perfil"], "nombre": p.get("nombre")},
+                                self._galletas_entrada(p["perfil"], "p-%s-%s" % (p["id"], p.get("version") or 0)))
         if a == "salir":
-            return self._enviar(200, {"rol": None}, "%s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax" % COOKIE)
+            return self._enviar(200, {"rol": None}, ["%s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax" % COOKIE, cookie_marca(False, self._host())])
         if not ses:
             return self._enviar(401, {"error": "sin sesión"})
         if self.headers.get("X-Gestor") != "1":  # protección CSRF: solo la página del gestor envía esta cabecera
             return self._enviar(403, {"error": "petición no válida"})
-        permisos = ses["permisos"]
-        if a in ("mencion", "republicar", "republicar_pendientes", "retoque") and "piezas" not in permisos:
-            return self._enviar(403, {"error": "tu perfil no cambia las piezas"})
-        if a == "retoque":
+        per = ses["permisos"]
+        if a == "retoque":  # encargo a la redacción con investigación: solo el editor jefe
+            if "redaccion" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe pide retoques"})
             return self._enviar(*accion_retoque(ses, d))
         if a == "mencion":
-            return self._enviar(*accion_mencion(ses["nombre"], d))
+            if "piezas" not in per and "proponer" not in per:
+                return self._enviar(403, {"error": "tu perfil no toca las cajas de las piezas"})
+            return self._enviar(*accion_mencion(ses["nombre"], d, publica="piezas" in per))
+        if a in ("republicar", "republicar_pendientes") and "piezas" not in per:
+            return self._enviar(403, {"error": "solo el editor jefe sube cambios a la web"})
         if a == "republicar":
             return self._enviar(200, republicar_y_marcar(d.get("id")))
         if a == "republicar_pendientes":
             ids = [p["id"] for p in piezas(60) if pendiente_web(p)]
             res = [dict(republicar_y_marcar(i), id=i) for i in ids[:15]]
             return self._enviar(200, {"ok": all(r["ok"] for r in res), "piezas": res, "quedan": max(0, len(ids) - 15)})
+        if a == "redaccion":
+            if "redaccion" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe edita, retira o reenfoca piezas"})
+            return self._enviar(*accion_redaccion(ses, d, self._cab()))
         if a == "producto":
-            if "productos" not in permisos:
-                return self._enviar(403, {"error": "tu perfil no cambia los productos"})
+            if "productos" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe cambia los productos"})
             return self._enviar(*accion_producto(d))
         if a == "anuncio":
-            if "publicidad" not in permisos:
-                return self._enviar(403, {"error": "tu perfil no cambia la publicidad"})
-            return self._enviar(*accion_anuncio(d))
+            if "publicidad" not in per and "proponer" not in per:
+                return self._enviar(403, {"error": "tu perfil no toca la publicidad"})
+            return self._enviar(*accion_anuncio(ses, d))
         if a == "equipo":
-            if "equipo" not in permisos:
+            if "equipo" not in per:
                 return self._enviar(403, {"error": "solo el superadministrador gestiona el equipo"})
             return self._enviar(*accion_equipo(ses, d, self._base()))
+        if a == "crm":
+            if "crm" not in per:
+                return self._enviar(403, {"error": "tu perfil no entra en el CRM"})
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada del CRM aún no está conectada"})
+            return self._enviar(*accion_crm(ses, d))
+        if a == "miembro":
+            if "crm" not in per:
+                return self._enviar(403, {"error": "tu perfil no cambia los suscriptores"})
+            return self._enviar(*accion_miembro(ses, d))
         return self._enviar(404, {"error": "acción desconocida"})

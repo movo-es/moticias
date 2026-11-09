@@ -182,12 +182,18 @@ def build_html(a, vertical):
             '<li>[%s] %s — <a href="%s" rel="noopener">%s</a> (publicado %s; consultado %s)</li>' % (
                 "Fuente oficial" if s.get("kind") == "oficial" else "Medios", inline(s.get("outlet", "")), html.escape(s.get("url", ""), quote=True),
                 inline(s.get("title", "")), fmt_date(s.get("published")), fmt_date(s.get("accessed"))) for s in a["sources"]) + "</ul>")
+    for c in a.get("correcciones") or []:  # regla de siempre: la corrección se dice al final, con su fecha
+        parts.append('<p class="correccion"><small><strong>Corrección (%s).</strong> %s</small></p>' % (fmt_date(c.get("en")), inline(c.get("texto", ""))))
     traz = ["Hechos: %s" % fmt_date(a.get("event_date")), "Redacción: %s" % (a.get("published_at") or "")]
     if a.get("revised_at"):
         traz.append("Revisión: %s" % a["revised_at"])
     parts.append('<p class="trazabilidad"><small>%s</small></p>' % " · ".join(inline(t) for t in traz))
     if a.get("author_note"):
-        parts.append('<p class="intereses"><small>%s</small></p>' % inline(a["author_note"]))
+        nota, edt = a["author_note"], vertical.get("editorial") or {}
+        # El nombre del director solo aparece en lo que él firma (cupo de firma, 9-11-2026).
+        if (a.get("author") or "") != edt.get("director") and edt.get("director") and edt["director"] in nota:
+            nota = edt.get("interests_note_redaccion") or nota
+        parts.append('<p class="intereses"><small>%s</small></p>' % inline(nota))
     ed = vertical.get("editor", {})
     parts.append('<p class="fin"><small>%s · %s · FIN</small></p>' % (inline(vertical.get("name", "")), inline(a.get("date", ""))))
     return "\n".join(parts)
@@ -255,7 +261,7 @@ def etiquetas_pieza(a, tx):
 def estado_ghost(a, pedido):
     """Estado con el que va la pieza a Ghost. Las piezas del director sin aprobar (`pendiente`) y los borradores nunca se
     publican por mucho que se pida --status published: quedan en borrador hasta que Rainer pulse «Publicar»."""
-    return "draft" if a.get("status") in ("pendiente", "borrador") else pedido
+    return "draft" if a.get("status") in ("pendiente", "borrador", "retirada") else pedido
 
 
 URLS_FOTOS = os.path.join(ROOT, "portal", "img", "ghost-urls.json")
@@ -312,6 +318,23 @@ def imagen_ghost(a, base_url, token):
     return url
 
 
+_AUTORES = {}
+
+
+def autor_ghost(a, vertical, base_url, token):
+    """Id del usuario de Ghost que firma la pieza (`editorial.ghost_autores`: firma → slug). Sin esto Ghost deja la firma
+    que tuviera el post o la del dueño de la integración, y el nombre del director acababa en piezas de la redacción."""
+    if not token:
+        return None
+    slug = ((vertical.get("editorial") or {}).get("ghost_autores") or {}).get(a.get("author") or "Redacción")
+    if not slug:
+        return None
+    if slug not in _AUTORES:
+        st, r = api("GET", "%s/ghost/api/admin/users/slug/%s/?fields=id" % (admin_base(base_url), slug), token)
+        _AUTORES[slug] = (r.get("users") or [{}])[0].get("id") if st == 200 else None
+    return _AUTORES[slug]
+
+
 def build_post(a, vertical, base_url, token=None):
     slug = a["id"]
     url = "%s/%s/" % (base_url.rstrip("/"), slug)  # Ghost sirve /<slug>/ (comprobado el 8-11-2026 en www.moticias.com)
@@ -321,6 +344,9 @@ def build_post(a, vertical, base_url, token=None):
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
+    autor = autor_ghost(a, vertical, base_url, token)
+    if autor:
+        post["authors"] = [{"id": autor}]
     im = a.get("image") or {}
     foto = imagen_ghost(a, base_url, token)
     if foto:
@@ -407,6 +433,13 @@ def marcar_en_web(a, cuando=None):
             m.pop("en_web")
             cambio = True
     return cambio
+
+
+def publicar_con_estado(a, vertical, base_url, admin_key, estado):
+    """Sube la pieza a Ghost con un estado concreto («published» o «draft»): retirar y restaurar desde el gestor.
+    Crea el post si no existía. Devuelve (resultado, error)."""
+    token = ghost_token(admin_key)
+    return upsert(build_post(a, vertical, base_url, token), estado, base_url, token)
 
 
 def republicar(a, vertical, base_url, admin_key):
