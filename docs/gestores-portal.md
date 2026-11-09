@@ -84,3 +84,9 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 - **CRM**: «Hoy y esta semana» (pasos), cuentas por tipo con buscador, ficha con personas, registrar (actividad, estado, siguiente paso), pasos, contratos (solo superadministrador y comercial), historial y archivo. «Importar las fuentes del repositorio» crea una cuenta por fuente de `portal/data/sources.json`. Regla de oro: cuenta en marcha = siguiente paso con fecha; «No contactar» es para siempre; nada se borra.
 - **Suscriptores**: totales, filtros por estado y categoría, buscador y categoría de cada miembro (etiqueta `cat:` en Ghost).
 - **Equipo**: en la base privada; perfiles «Editor jefe (superadministrador)», editor, comercial y oficina.
+
+## Seguimiento, comprobador, empresas del grupo y nueva noticia (9 de noviembre de 2026, cambio `seguimiento-y-seo`)
+- **Publicidad → Seguimiento**: por caja (y por producto del grupo, con sus cajas «Contenido patrocinado»), estado, publicada y retirada, posiciones, páginas donde se vio, vistas, clics y CTR en 7, 30 o 90 días; últimas comprobaciones del enlace y «Comprobar ahora». Vistas = la caja se vio al menos a medias; no cuentan robots, el comprobador ni el editor jefe.
+- **Comprobador**: cron de Vercel, laborables cada hora de 8 a 20, con azar; cada enlace activo se comprueba al menos una vez al día laborable.
+- **Nueva noticia** (editor y editor jefe): pegar texto o enlace; 1) investiga y publica hoy; 2) además registra el dominio de la fuente (notas de prensa, información, no de confianza). Lo pedido por el editor o con fuente no de confianza queda para la aprobación del editor jefe. Lo atiende la rutina horaria de retoques (`/noticias-gestor`).
+- **Empresas del grupo**: `/empresas-del-grupo/` (`src/ghost_grupo.py`), con la especialidad de cada marca y las piezas donde aparece su caja.

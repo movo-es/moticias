@@ -1,0 +1,17 @@
+# Tareas · seguimiento-y-seo
+
+- [x] Firma «Rainer Uphoff» (vertical, piezas, docs, gestor, `src/firma.py`).
+- [x] Migración 005 aplicada (pub_diario, pub_contar, pub_comprobaciones, encargos_gestor).
+- [x] `src/seguimiento.py`, acciones `evento`, `seguimiento`, `comprobar` (cron y a mano), historial de estados en `data/ads/`.
+- [x] Script del sitio: visualizaciones y clics; la marca no se traduce.
+- [x] Panel de seguimiento en el gestor.
+- [x] JSON-LD enriquecido; FAQPage y `mentions` en piezas con caja; etiqueta `#contenido-patrocinado`.
+- [x] `verticals → grupo`, productos `avionline` y `buq` (borrador), `src/ghost_grupo.py`.
+- [x] Nueva noticia desde el gestor; `data/fuentes/`; `/noticias-gestor`.
+- [x] Pruebas en Chrome a 390 px (banco local) y del script del sitio sobre copias de páginas reales.
+- [x] `CRON_SECRET` en Vercel (generado en el navegador, nadie lo ha visto). El cron entra con la fusión del cambio.
+- [x] Inyección de cabecera de Ghost con el bloque de organización y página `/empresas-del-grupo/` publicadas el 9-11-2026 (copia en `ghost/paginas/`); datos estructurados válidos.
+- [ ] (Pendiente de la aprobación de Rainer: el sistema no deja cambiar las tareas programadas sin ella) Tarea «retoques» con el paso de noticias del gestor; prompt de la edición diaria con la firma con apellido y cupo.
+- [ ] Republicar en Ghost las piezas firmadas por el director (nota de intereses con apellido) y todas para el JSON-LD nuevo (rutina de mañana o «Volver a subir»).
+- [x] Avionline y BUQ redactados a partir de avionline.es y buq.es (9-11-2026): Avionline activo «con revisión» (autoridades y consorcios de transporte, digitalización, redes, crisis); BUQ en borrador hasta que buq.es abra al público (hoy 401 y robots cerrado; anuncia «desde diciembre»).
+- [ ] Al abrir buq.es: `grupo.marcas[buq].publica: true`, producto `buq` activo, `python3 -I src/ghost_grupo.py --publicar` y bloque de organización de la cabecera.

@@ -243,11 +243,11 @@ def cajas_html(a, vertical, inline=html.escape):
     for m in pub:
         # Tarjeta HTML de Ghost (los comentarios kg-card la conservan intacta al convertir a Lexical) con estilos en línea,
         # para que la caja se vea igual con cualquier tema: separada del texto, fondo suave, etiqueta pequeña y gris.
-        out.append((posicion(m), '<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" '
+        out.append((posicion(m), '<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" data-posicion="%s" '
                    'style="margin:2em 0;padding:1em 1.2em;background:#f4f6f5;border-left:3px solid #c9d2cd;border-radius:4px;font-size:.95em">'
                    '<p class="contenido-patrocinado-etiqueta" style="margin:0 0 .5em;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:#7a837e">%s</p>'
                    '<p style="margin:0">%s <a href="%s" rel="sponsored noopener" style="color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px">%s</a></p>%s</aside><!--kg-card-end: html-->'
-                   % (html.escape(m.get("producto") or "", quote=True), inline(etiqueta), inline(m.get("texto", "")),
+                   % (html.escape(m.get("producto") or "", quote=True), html.escape(posicion(m), quote=True), inline(etiqueta), inline(m.get("texto", "")),
                       html.escape(m.get("url", ""), quote=True), inline(m.get("cta") or m.get("nombre") or ""),
                       ('<p class="contenido-patrocinado-declaracion" style="margin:.6em 0 0;font-size:.75em;color:#7a837e">%s</p>'
                        % inline(decl % {"nombre": m.get("nombre") or ""})) if decl else "")))
