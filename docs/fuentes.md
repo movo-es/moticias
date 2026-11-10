@@ -407,6 +407,8 @@ Mantenimiento: la rutina diaria anota aquí (sección «Cambios detectados») to
 - 2026-11-04 · anetra-informa.es/noticias (indicada en el proyecto) queda incorporada como fuente de prensa sectorial del autobús.
 - 2026-11-06 · El Boletín Oficial de Cantabria y la web del Gobierno de Cantabria no admiten lectura automática; el Decreto 77/2026 se leyó en la reproducción de Noticias Jurídicas.
 - 2026-11-05 · La nota de prensa de Wizz Air y la web de COPE no fueron accesibles; Facua y Diario del Puerto solo legibles en titular y entradilla.
+- 2026-11-10 · La revista de Iberley (iberley.es/revista) devuelve error de cliente a la lectura automática; no se pudo citar.
+- 2026-11-10 · La sala de prensa de la Comisión Europea (ec.europa.eu/commission/presscorner) solo entrega metadatos a la lectura automática, sin el cuerpo del comunicado.
 
 ## Fuentes de segundo nivel (estrategia 2027; alta progresiva desde el 8-11-2026)
 

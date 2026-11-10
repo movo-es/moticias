@@ -22,9 +22,9 @@
   "kind": "plazo",
   "text": "Plazo para que empresas y entidades públicas con centros de más de 200 personas trabajadoras (o 100 por turno) dispongan de plan de movilidad sostenible al trabajo (Ley 9/2025, art. 26; plazo acortado por la modificación de marzo de 2026).",
   "date": "2026-12-05",
-  "source_url": null,
-  "date_verified": false,
-  "verify_note": "Fecha tomada de notas de PwC y Legal Today (marzo 2026) que sitúan el plazo en el 5-12-2026 tras acortarse en doce meses. Antes de publicar nada con esta fecha: confirmar en el BOE (Ley 9/2025, de 3 de diciembre, BOE núm. 291 de 4-12-2025, art. 26 y disposición transitoria; y la norma de marzo de 2026 que acorta el plazo), anotar aquí source_url con el BOE-A exacto y poner date_verified: true."
+  "source_url": "https://www.boe.es/buscar/act.php?id=BOE-A-2025-24545",
+  "date_verified": true,
+  "verify_note": "Verificado el 10-11-2026 en el BOE (API de datos abiertos): Ley 9/2025, art. 26.1, en la redacción del art. 63 del Real Decreto-ley 7/2026, de 20 de marzo (BOE-A-2026-6544, en vigor el 22-03-2026), da doce meses desde la entrada en vigor de la ley, que fue el 5-12-2025 (disposición final vigesimosegunda). Vence el 5-12-2026."
  },
  "start": "2026-11-10",
  "end": "2026-12-19",
@@ -39,7 +39,9 @@
    "kind": "pilar",
    "title": "Todo sobre los planes de movilidad sostenible al trabajo: quién, qué, cuándo y cómo",
    "week": "2026-W46",
-   "status": "prevista"
+   "status": "publicada",
+   "article_id": "planes-de-movilidad-al-trabajo-el-plazo-vence-el-5-de-yepy",
+   "published": "2026-11-10"
   },
   {
    "kind": "reportaje",

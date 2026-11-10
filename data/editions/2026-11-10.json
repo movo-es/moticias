@@ -1,0 +1,147 @@
+{
+ "analysis_id": "el-barco-que-se-concede-como-un-muelle-go67",
+ "boe_range": [
+  "2026-11-10",
+  "2026-11-10"
+ ],
+ "boe_series": {
+  "2026-10-26": {
+   "disp": 9,
+   "lic": 17,
+   "total": 26
+  },
+  "2026-10-27": {
+   "disp": 1,
+   "lic": 24,
+   "total": 25
+  },
+  "2026-10-28": {
+   "disp": 6,
+   "lic": 25,
+   "total": 31
+  },
+  "2026-10-29": {
+   "disp": 13,
+   "lic": 36,
+   "total": 49
+  },
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  }
+ },
+ "closed_at": "07:35",
+ "date": "2026-11-10",
+ "document": {
+  "date": "2026-11-06",
+  "kicker": "Resolución · Servicios mínimos",
+  "ref": "Resolución de 6-11-2026 (Grupo Renfe, 11-N)",
+  "source": "Secretaría de Estado de Transportes y Movilidad Sostenible",
+  "summary": "Qué es: la resolución firmada el 6 de noviembre por el secretario de Estado de Transportes, José Antonio Santano, que Renfe hizo pública el día 9.\nQué fija: 73 % en alta velocidad y larga distancia, 65 % en media distancia, 75 % de Cercanías en hora punta y 50 % el resto del día, 26 % en mercancías.\nCuánto: unos 3.500 trenes y 1,1 millones de viajeros de Cercanías en un laborable; 33.570 viajeros de larga distancia sin tren.\nA quién obliga: 4.123 trabajadores designados, el 30,47 % de la plantilla convocada.\nEn qué se apoya: artículo 10 del Real Decreto-ley 17/1977 y artículos 4.1 y 47.2 de la Ley 38/2015, del Sector Ferroviario.",
+  "title": "Resolución por la que se determinan los servicios mínimos de carácter obligatorio en el Grupo Renfe durante las huelgas generales convocadas para el 11 de noviembre de 2026",
+  "url": "https://www.transportes.gob.es/recursos_mfom/comodin/recursos/ssmm_renfe_dgtcyf_11-11-2026_def-rev_se_vi.pdf"
+ },
+ "lead_id": "huelga-general-del-11-n-transportes-fija-el-73-en-alta-htob",
+ "note_metodologica": "Edición nº 5, cerrada el 10 de noviembre de 2026 a las 07:35 CET. Una noticia, un reportaje de fondo y un análisis, por debajo del mínimo de cinco piezas: el barrido de las últimas 72 horas no encontró más hechos de alcance sectorial con fuente primaria que no estuvieran ya publicados, y el BOE de hoy no trae ninguna norma ni licitación de transporte de viajeros que merezca pieza propia. Fuentes primarias abiertas en esta sesión: la resolución de servicios mínimos ferroviarios del 11-N de la Secretaría de Estado de Transportes y la página de resoluciones del Ministerio de Transportes y Movilidad Sostenible, la nota de Renfe, el BOE por su API de datos abiertos (Ley 9/2025 de Movilidad Sostenible en sus dos redacciones, Real Decreto-ley 7/2026, Ley 38/2015 del Sector Ferroviario, texto refundido de la Ley de Puertos del Estado y de la Marina Mercante, los anuncios de la Autoridad Portuaria de Baleares sobre los Bus Nàutic de Palma y Eivissa, el de la línea de interés público Península–Canarias y el convenio de la estación intermodal de Gijón), la nota de la Junta de Andalucía y la de AUVASA; se contrastan con agencias y prensa, cada enlace con su fecha de publicación y de consulta. Periodo barrido en el BOE: 10 de noviembre (número 280, disponible en la API a las 07:31), con once referencias de valor editorial. El reportaje sobre los planes de movilidad sostenible al trabajo abre la campaña temática «Movilidad al trabajo: la cuenta atrás de los PMST»; su fecha gancho, el 5 de diciembre de 2026, queda verificada en el BOE (Ley 9/2025, artículo 26, en la redacción del Real Decreto-ley 7/2026). El análisis rota al ámbito Marítimo y puertos, el siguiente de la rotación. Queda pendiente de pieza el proyecto del túnel ferroviario de Gijón (BOE-B-2026-36702). Las cifras de piezas anteriores de MOTICIAS se citan por su título y fecha. Las causas de los accidentes de Urda y Adamuz corresponden a investigaciones en curso. Las fotos reutilizan imágenes ya publicadas, con su licencia y crédito. La publicación en moticias.com queda pendiente. La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 5,
+ "ticker": [
+  {
+   "ref": "BOE-B-2026-36702",
+   "text": "Adif licita por 1,73 M€ el proyecto adaptado del túnel del ferrocarril en Gijón (Bibio y Viesques): ofertas hasta el 14 de diciembre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36702"
+  },
+  {
+   "ref": "BOE-B-2026-36697",
+   "text": "Adif formaliza por 20,33 M€ las obras de su edificio de oficinas en Santander",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36697"
+  },
+  {
+   "ref": "BOE-B-2026-36700",
+   "text": "Adif licita por 6,12 M€ la estabilización de terraplenes de la línea 400 (pk 370 a 376)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36700"
+  },
+  {
+   "ref": "BOE-B-2026-36689",
+   "text": "Adif formaliza por 964.000 € el control final de la duplicación de la R-3 Parets–La Garriga",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36689"
+  },
+  {
+   "ref": "BOE-B-2026-36693",
+   "text": "Cuatro contratos por 1,32 M€ para la N-330 en el kilómetro 532,85, ante una situación de grave peligro",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36693"
+  },
+  {
+   "ref": "BOE-B-2026-36726",
+   "text": "A-23 en Sabiñánigo: aprobado el trazado del nuevo paso sobre la línea Huesca–Canfranc",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36726"
+  },
+  {
+   "ref": "BOE-B-2026-36685",
+   "text": "La DGT licita por 2,68 M€ el balizamiento de la A-4 en Santa Cruz de Mudela",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36685"
+  },
+  {
+   "ref": "BOE-B-2026-36687",
+   "text": "La DGT licita por 2,27 M€ el balizamiento de la EX-A1 en Cáceres",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36687"
+  },
+  {
+   "ref": "BOE-A-2026-23528",
+   "text": "ADR: el Acuerdo M 371 admite más de un remolque en el transporte de mercancías peligrosas",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23528"
+  },
+  {
+   "ref": "BOE-B-2026-36691",
+   "text": "Adif formaliza por 115.400 € las sillas de ruedas de su servicio Adif Acerca",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36691"
+  }
+ ],
+ "ticker_label": "Boletines",
+ "updated_at": "2026-11-10T07:35:26+01:00"
+}
