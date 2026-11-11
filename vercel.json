@@ -4,7 +4,7 @@
  "outputDirectory": "app/public",
  "functions": {
   "api/gestor.py": {
-   "includeFiles": "{src,verticals,data/articles,data/productos,data/ads,data/retoques,portal/data}/**",
+   "includeFiles": "{src,verticals,data,portal/data,portal/img}/**",
    "maxDuration": 300
   },
   "api/prensa.py": {
@@ -85,6 +85,10 @@
   {
    "path": "/api/gestor?a=prensa_cron",
    "schedule": "45 14 * * 3"
+  },
+  {
+   "path": "/api/gestor?a=ghost_al_dia",
+   "schedule": "*/15 6-19 * * 1-5"
   }
  ]
 }

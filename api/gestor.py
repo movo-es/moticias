@@ -14,7 +14,7 @@ Variables de entorno (en Vercel, nunca en el repositorio):
   GHOST_URL, GHOST_ADMIN_KEY  para publicar al momento
   SUPABASE_URL, SUPABASE_ANON_KEY, MOTICIAS_BD_CLAVE  base privada del equipo y del CRM (src/bd.py)
   BREVO_API_KEY, PRENSA_REMITENTE, PRENSA_RESPONDER_A  envíos de prensa (src/prensa.py)
-  CRON_SECRET               lo manda Vercel en el cron de los miércoles (prensa_cron: suscriptores, Brevo, recálculo)
+  CRON_SECRET               lo manda Vercel en sus crons (comprobar, prensa_cron y ghost_al_dia: moticias.com al día)
   AI_GATEWAY_API_KEY        opcional: sin ella la IA usa el token OIDC de Vercel; MODELO_IA (por defecto anthropic/claude-opus-5.5)
   RUTINA_BARRIDO_TOKEN      token del disparador de API de la tarea «MOTICIAS · batida de fin de semana (mañana)»
                             (claude.ai/code/routines → la tarea → Edit → Trigger → API); sin él, el botón de barrido avisa
@@ -1193,6 +1193,48 @@ def lanzar_barrido(ses, pista):
 
 
 # ---------- HTTP ----------
+
+# ---------- moticias.com al día desde Vercel (11-11-2026) ----------
+# La tarea programada no tiene las claves de Ghost; Vercel sí. Este cron mira qué edición enseña la portada de
+# moticias.com (página «edicion-hoy») y, si en data/editions/ hay alguna posterior, la publica con los mismos scripts
+# que la rutina (ghost_publish.py y ghost_edicion.py), en orden. Si la web ya está al día, no hace nada.
+def ghost_al_dia(solo=None):
+    import re as _re, shutil, subprocess
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key:
+        return {"ok": False, "error": "faltan GHOST_URL o GHOST_ADMIN_KEY en Vercel"}
+    eds = {}
+    for f in sorted(glob.glob(os.path.join(ROOT, "data", "editions", "*.json"))):
+        try:
+            d = json.load(open(f, encoding="utf-8"))
+            eds[os.path.basename(f)[:-5]] = int(d.get("number") or 0)
+        except Exception:
+            pass
+    base, tok = G.admin_base(url.rstrip("/")), G.ghost_token(key)
+    st, r = G.api("GET", base + "/ghost/api/admin/pages/slug/edicion-hoy/", tok)
+    titulo = ((r or {}).get("pages") or [{}])[0].get("title", "") if st == 200 else ""
+    m = _re.search(r"n\D{0,3}(\d+)", titulo)
+    en_web = int(m.group(1)) if m else 0
+    faltan = [f for f, n in sorted(eds.items()) if n > en_web] if not solo else [solo]
+    if not faltan:
+        return {"ok": True, "en_web": en_web, "publicadas": []}
+    tmp = "/tmp/moticias-ghost"
+    shutil.rmtree(tmp, ignore_errors=True)
+    for sub in ("src", "verticals", "data", os.path.join("portal", "img")):
+        if os.path.isdir(os.path.join(ROOT, sub)):
+            shutil.copytree(os.path.join(ROOT, sub), os.path.join(tmp, sub))
+    os.makedirs(os.path.join(tmp, "work"), exist_ok=True)
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    hechas = []
+    for fecha in faltan:
+        res = {"fecha": fecha}
+        for nombre, args in (("piezas", ["src/ghost_publish.py", "--date", fecha, "--status", "published"]),
+                             ("portada", ["src/ghost_edicion.py", "--date", fecha])):
+            pr = subprocess.run([sys.executable, "-I"] + args, cwd=tmp, env=env, capture_output=True, text=True, timeout=200)
+            res[nombre] = {"ok": pr.returncode == 0, "salida": (pr.stdout or "")[-600:], "error": (pr.stderr or "")[-600:]}
+        hechas.append(res)
+    return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
+
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
         b = b"" if st == 204 else json.dumps(obj, ensure_ascii=False).encode("utf-8")
@@ -1244,6 +1286,11 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(401, {"error": "no autorizado"})
             r = S.comprobar(origen="agente", azar=True)
             return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]]})
+        if a == "ghost_al_dia":  # Vercel Cron (laborables, cada 15 min de 7 a 20): publica en moticias.com la edición que falte
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            return self._enviar(200, ghost_al_dia())
         if a == "publicidad":  # pública: la pide el script de moticias.com
             return self._enviar(200, publicidad_publica(), cors="*", cache="public, max-age=120, s-maxage=300, stale-while-revalidate=3600")
         if a == "prensa_baja":  # pública: enlace de baja de cada envío de prensa (firmado)
