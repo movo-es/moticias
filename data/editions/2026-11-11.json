@@ -1,0 +1,147 @@
+{
+ "analysis_id": "cultura-justa-por-la-via-urgente-pd8b",
+ "boe_range": [
+  "2026-11-11",
+  "2026-11-11"
+ ],
+ "boe_series": {
+  "2026-10-27": {
+   "disp": 1,
+   "lic": 24,
+   "total": 25
+  },
+  "2026-10-28": {
+   "disp": 6,
+   "lic": 25,
+   "total": 31
+  },
+  "2026-10-29": {
+   "disp": 13,
+   "lic": 36,
+   "total": 49
+  },
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  }
+ },
+ "closed_at": "07:42",
+ "date": "2026-11-11",
+ "document": {
+  "date": "2026-11-11",
+  "kicker": "Norma · BOE",
+  "ref": "BOE-A-2026-23603",
+  "source": "Jefatura del Estado / BOE núm. 281",
+  "summary": "Qué es: el real decreto-ley aprobado el 10 de noviembre y publicado en el BOE núm. 281, con dos artículos, una disposición adicional y tres finales.\nQué cambia: el artículo 36 del Real Decreto 929/2020 —maniobras, interrupciones con responsabilidad y pausas de menos de 45 minutos cuentan como conducción— y el capítulo IV del título V de la Ley 38/2015, con un nuevo artículo 71 de cultura justa.\nA quién protege: al personal que comunica riesgos o detiene el tren ante un peligro grave e inminente, salvo dolo o negligencia grave acreditada.\nJubilación: aplica el artículo 3 del Real Decreto 2621/1986 a las empresas ferroviarias que operan en la red general y abre la revisión de categorías por el Real Decreto 402/2025.\nCuándo: en vigor el 11 de noviembre; el nuevo cómputo de la conducción, el 11 de mayo de 2027; convalidación en la Diputación Permanente antes del 10 de diciembre.",
+  "title": "Real Decreto-ley 34/2026, de 10 de noviembre, de medidas urgentes para el refuerzo de la seguridad operacional en el transporte ferroviario y la protección social del personal ferroviario",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23603"
+ },
+ "lead_id": "el-real-decreto-ley-34-2026-lleva-la-cultura-justa-al-tren-y-telx",
+ "note_metodologica": "Edición nº 6, cerrada el 11 de noviembre de 2026 a las 07:42 CET. Cuatro noticias y un análisis. Fuentes primarias abiertas en esta sesión: el BOE por su API de datos abiertos (Real Decreto-ley 34/2026; reales decretos 991 y 992/2026; anuncio de licitación de áreas de servicio BOE-B-2026-36845; reales decretos 730/2026 y 54/2026 sobre la AP-68 y 659/2022; Real Decreto 806/2026 de convocatoria de elecciones; reales decretos 632/2013 y 627/2014 de asistencia a víctimas; Real Decreto-ley 32/2026; reales decretos 2621/1986, 402/2025 y 899/2025; Real Decreto-ley 29/2021, y los textos consolidados de la Constitución, la Ley 38/2015 del Sector Ferroviario, la Ley 37/2015 de carreteras, la Ley 9/2017 de Contratos del Sector Público, la Ley 7/2021 de cambio climático y la Ley 2/2024 de la autoridad de investigación de accidentes) y tres notas del Ministerio de Transportes y Movilidad Sostenible del 10 de noviembre; se contrastan con Railin y Onda Vasca, cada enlace con su fecha de publicación y de consulta. Periodo barrido en el BOE: 11 de noviembre (número 281, disponible en la API a las 07:31), con diez referencias de valor editorial. El análisis rompe la rotación —tocaba Movilidad urbana y tecnología— porque el día lo marca una norma con rango de ley; lo firma el director y queda pendiente de su aprobación. El real decreto del Defensor de Víctimas de Accidentes de Transporte Colectivo no se había publicado en el BOE al cierre: esa pieza se apoya en la nota oficial del Ministerio y en las normas vigentes. Los datos del tramo vizcaíno de la AP-68 proceden de Onda Vasca; no se consultó directamente a la Diputación Foral de Bizkaia. No hay pieza de la campaña de planes de movilidad al trabajo: el barrido no encontró hechos nuevos con fuente primaria. Excepciones del día: la sesión superó el tope de 450.000 tokens fijado para la tarea, sobre todo por los agentes de lectura web del barrido inicial, y la edición se cerró sin ampliar el barrido; varios hechos del sector aéreo y portuario quedaron sin desarrollar por falta de fuente primaria abierta en la sesión. La huelga general de hoy se cubre con los servicios mínimos publicados el 9 y el 10 de noviembre. La licitación de áreas de servicio no tiene foto con licencia libre del sujeto y usa la ilustración propia del portal. La publicación en moticias.com y la subida al repositorio quedan pendientes: la sesión no tenía claves de Ghost ni permiso de escritura en el repositorio. Las causas del accidente de Urda corresponden a una investigación en curso. La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 6,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23603",
+   "text": "Real Decreto-ley 34/2026: cultura justa en la Ley del Sector Ferroviario, nuevo cómputo de la conducción y jubilación anticipada para todo el personal ferroviario",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23603"
+  },
+  {
+   "ref": "BOE-B-2026-36845",
+   "text": "Transportes licita por 611,9 M€ seis concesiones de áreas de servicio con recarga ultrarrápida para vehículos eléctricos",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36845"
+  },
+  {
+   "ref": "BOE-A-2026-23609",
+   "text": "Real Decreto 992/2026: cese de Luis Pedro Marco de la Peña como presidente de Adif",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23609"
+  },
+  {
+   "ref": "BOE-A-2026-23608",
+   "text": "Real Decreto 991/2026: cese de Encarnación Sandonis Rodríguez como directora del Gabinete del ministro de Transportes",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23608"
+  },
+  {
+   "ref": "BOE-B-2026-36885",
+   "text": "El Musel otorga por 30 años a Regenera OPS Tres la conexión eléctrica a buques portacontenedores en el muelle de la Osa",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36885"
+  },
+  {
+   "ref": "BOE-B-2026-36884",
+   "text": "Algeciras abre la competencia de proyectos sobre la concesión que pide la sociedad de estiba en la Zona Institucional",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36884"
+  },
+  {
+   "ref": "BOE-B-2026-36840",
+   "text": "Transportes formaliza por 3,78 M€ la mejora de la seguridad vial de la N-431 en Huelva",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36840"
+  },
+  {
+   "ref": "BOE-B-2026-36839",
+   "text": "Transportes formaliza por 3,06 M€ la prolongación de un carril del enlace de la A-3 con la A-7 (by-pass de Valencia)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36839"
+  },
+  {
+   "ref": "BOE-B-2026-36890",
+   "text": "A-62: aprobado provisionalmente el proyecto para ampliar los trenzados entre Cigales y Simancas",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36890"
+  },
+  {
+   "ref": "BOE-B-2026-36891",
+   "text": "Adif somete a información pública las expropiaciones para estabilizar taludes de la línea 750",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36891"
+  }
+ ],
+ "ticker_label": "Boletines",
+ "updated_at": "2026-11-11T07:42:04+01:00"
+}

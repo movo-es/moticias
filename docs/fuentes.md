@@ -409,6 +409,9 @@ Mantenimiento: la rutina diaria anota aquí (sección «Cambios detectados») to
 - 2026-11-05 · La nota de prensa de Wizz Air y la web de COPE no fueron accesibles; Facua y Diario del Puerto solo legibles en titular y entradilla.
 - 2026-11-10 · La revista de Iberley (iberley.es/revista) devuelve error de cliente a la lectura automática; no se pudo citar.
 - 2026-11-10 · La sala de prensa de la Comisión Europea (ec.europa.eu/commission/presscorner) solo entrega metadatos a la lectura automática, sin el cuerpo del comunicado.
+- 2026-11-11 · nuevecuatrouno.com devuelve error de cliente a la lectura automática; no se pudo citar.
+- 2026-11-11 · El listado de notas de prensa de Adif (adif.es/comunicacion/notas-prensa) se carga por JavaScript y no se ve en la lectura automática; solo son legibles las tres destacadas de la portada.
+- 2026-11-11 · La portada de grupo.renfe.com muestra las últimas noticias sin fecha ni enlace en la lectura automática.
 
 ## Fuentes de segundo nivel (estrategia 2027; alta progresiva desde el 8-11-2026)
 
