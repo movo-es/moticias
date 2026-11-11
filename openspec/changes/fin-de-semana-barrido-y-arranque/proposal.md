@@ -11,7 +11,7 @@ Decisiones de Rainer del 9 de noviembre de 2026 (tarde), tras una mañana en que
 
 ## Qué cambia
 
-- **Arranque**: la rutina comprueba antes de las 06:45 si puede subir a `main`, si tiene `GHOST_URL` y `GHOST_ADMIN_KEY` y las herramientas del portal; si falta algo, avisa en ese momento. Sube siempre a `main`. Si no puede subir, deja el parche (sin datos regenerables) en el proyecto de Claude, `claude/moticias-pendiente/`, y la siguiente sesión con permiso lo aplica. Antes de la edición de hoy, pone al día la anterior (hemeroteca, moticias.com, menciones).
+- **Arranque**: la rutina comprueba antes de las 07:12 si puede subir a `main`, si tiene `GHOST_URL` y `GHOST_ADMIN_KEY` y las herramientas del portal; si falta algo, avisa en ese momento. Sube siempre a `main`. Si no puede subir, deja el parche (sin datos regenerables) en el proyecto de Claude, `claude/moticias-pendiente/`, y la siguiente sesión con permiso lo aplica. Antes de la edición de hoy, pone al día la anterior (hemeroteca, moticias.com, menciones).
 - **Fin de semana**: dos tareas, sábados y domingos a las 10:55 y 17:26, con `docs/tarea-batida.md`: edición extra solo si algo lo merece; lo demás a `data/reserva/` para el lunes, que lo usa en su selección. En festivo nacional entre semana, la rutina diaria hace la misma batida.
 - **Botón**: «Iniciar barrido de noticias ahora» en la vista Piezas del gestor y en el menú ✎ del editor jefe en moticias.com (todas las páginas), para el editor jefe y los editores, con una pista opcional; lanza la batida por el disparador de API de su tarea. El token vive solo en Vercel (`RUTINA_BARRIDO_TOKEN`).
 - **Commits** de la redacción como `G. Jordan <redaccion@moticias.com>` (`editorial.commits`).

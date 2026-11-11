@@ -1,7 +1,7 @@
 # Capacidad: edición diaria
 
 ## Requisito: calendario
-La rutina produce una edición cada día laborable español a las 06:38 (Europe/Madrid) y cierra antes de las 08:30.
+La rutina produce una edición cada día laborable español a las 07:05 (Europe/Madrid) y cierra antes de las 08:30.
 
 #### Escenario: fin de semana o festivo
 - CUANDO la rutina arranca en sábado, domingo o festivo nacional

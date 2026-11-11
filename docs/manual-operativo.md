@@ -104,7 +104,7 @@ Forma: 900–1.300 palabras; entrada que fija el hecho en dos frases; después s
 
 ## 6. Rutina diaria automática (tarea programada «MOTICIAS · edición diaria»)
 
-Corre cada día a las 06:38 (hora de Madrid) en una sesión nueva. El texto completo está en `docs/tarea-edicion-diaria.md`; en Claude Code es el comando `/edicion-diaria`. Pasos:
+Corre cada día a las 07:05 (hora de Madrid) en una sesión nueva. El texto completo está en `docs/tarea-edicion-diaria.md`; en Claude Code es el comando `/edicion-diaria`. Pasos:
 
 1. Lee este manual, `docs/estandar-profundidad.md` y `docs/ediciones.md`; lee en la base `settings/site`, la última `editions/*` y los `articles` de la última semana.
 2. Barrido de noticias (WebSearch y RSS de `portal/data/sources.json`): tierra, mar, aire, regulación, licitaciones (TED y PLACSP), nombramientos. Selección de 5 a 8 piezas nuevas con fuente primaria, cada una desarrollada como reportaje de fondo (1.000–1.500 palabras, cifras clave y cronología).

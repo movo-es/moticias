@@ -276,7 +276,7 @@ Cada entrevista: 8–12 preguntas, una por mensaje, con la recomendación marcad
 
 | Tarea | Cuándo | Comando | Desde |
 |---|---|---|---|
-| Edición diaria | laborables 06:38 | `/edicion-diaria` | ya corre |
+| Edición diaria | laborables 07:05 | `/edicion-diaria` | ya corre |
 | Asesor de visibilidad y credibilidad | lunes 09:17 | `/consejo-visibilidad` | ya corre |
 | Buzón de prensa | laborables 09:30 y 15:30 | `/prensa-buzon` | semana 47 |
 | Piezas bajo demanda | laborables cada 2 h, 8–20 | `/pieza-bajo-demanda` | semana 48 |

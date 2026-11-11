@@ -8,7 +8,7 @@ Respuesta corta: moticias.com se publica en Ghost(Pro) (plan Publisher), decidid
 
 **Fuente de verdad: el repositorio** (`docs/arquitectura.md`). Contenido en `data/` (un JSON por pieza, boletín, plazo y edición), documentación en `docs/`, especificaciones en `openspec/`, código en `src/`.
 
-**Sala de redacción (hoy).** Artefacto de Claude con base de datos, panel de superadministrador y redacción automática a las 06:38. Aquí se escribe, corrige y aprueba mientras Ghost no esté listo.
+**Sala de redacción (hoy).** Artefacto de Claude con base de datos, panel de superadministrador y redacción automática a las 07:05. Aquí se escribe, corrige y aprueba mientras Ghost no esté listo.
 
 **Escaparate público: moticias.com en Ghost(Pro).**
 - Ghost gestiona web, boletines por correo, miembros y suscripciones de pago; evita Hostinger, WordPress y el mantenimiento de servidores.
@@ -19,7 +19,7 @@ Respuesta corta: moticias.com se publica en Ghost(Pro) (plan Publisher), decidid
 
 ## 2. Actualización automática
 
-1. 06:38: la redacción automática escribe la edición (hoy en el artefacto; después en Ghost como borrador o publicado) y en el repositorio.
+1. 07:05: la redacción automática escribe la edición (hoy en el artefacto; después en Ghost como borrador o publicado) y en el repositorio.
 2. Mientras no haya aprobación previa: al cerrar, publica. Cuando Rainer quiera aprobar: la rutina deja los posts en borrador en Ghost; él publica desde el móvil.
 3. La misma tarea crea el boletín del día (Ghost newsletter o campaña de Brevo en borrador; el envío a contactos reales lo confirma Rainer salvo que decida por escrito que se envíe solo).
 

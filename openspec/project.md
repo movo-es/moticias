@@ -7,7 +7,7 @@ Portal profesional de noticias, análisis y referencia regulatoria del transport
 - Contenido: JSON por documento en `data/`; fotos CC en `portal/img/`.
 - Portal: artefacto de Claude (HTML/CSS/JS sin dependencias, base de datos del artefacto). Código en `portal/`.
 - Hemeroteca: artefacto de Claude. Código en `hemeroteca/`; compilador `src/hemeroteca_build.py`.
-- Rutina: Claude Code, comando `/edicion-diaria`, tarea programada a las 06:38 Europe/Madrid.
+- Rutina: Claude Code, comando `/edicion-diaria`, tarea programada a las 07:05 Europe/Madrid.
 - Scripts: Python 3 estándar (`src/`), sin dependencias externas.
 - Publicación futura: Ghost(Pro) por Admin API (`src/ghost_publish.py`, pendiente).
 - Suscriptores: Brevo o miembros de Ghost (por decidir).

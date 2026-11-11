@@ -3,7 +3,7 @@
 ## ADDED Requirements
 
 ### Requirement: Arranque que avisa
-La rutina diaria SHALL comprobar antes de las 06:45 que puede subir a `main`, que tiene `GHOST_URL` y `GHOST_ADMIN_KEY` y las herramientas de la base del portal, y SHALL avisar en ese momento si falta algo.
+La rutina diaria SHALL comprobar antes de las 07:12 que puede subir a `main`, que tiene `GHOST_URL` y `GHOST_ADMIN_KEY` y las herramientas de la base del portal, y SHALL avisar en ese momento si falta algo.
 
 #### Scenario: falta la clave de Ghost
 - **WHEN** la sesión arranca sin `GHOST_ADMIN_KEY`

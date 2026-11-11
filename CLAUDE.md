@@ -63,7 +63,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 ## Tareas programadas (en la nube, cuenta de Rainer)
 
-- «MOTICIAS · edición diaria» — laborables 06:38 Europe/Madrid — usa este repositorio (adjunto a la tarea) y ejecuta `/edicion-diaria`; comprueba al arrancar que puede subir y que tiene las claves de Ghost y, si no, avisa en ese momento; si no puede subir, deja el parche en el proyecto de Claude (`claude/moticias-pendiente/`) y la sesión siguiente lo aplica.
+- «MOTICIAS · edición diaria» — laborables 07:05 Europe/Madrid — usa este repositorio (adjunto a la tarea) y ejecuta `/edicion-diaria`; comprueba al arrancar que puede subir y que tiene las claves de Ghost y, si no, avisa en ese momento; si no puede subir, deja el parche en el proyecto de Claude (`claude/moticias-pendiente/`) y la sesión siguiente lo aplica.
 - «MOTICIAS · batida de fin de semana (mañana)» y «(tarde)» — sábados y domingos 10:55 y 17:26 — ejecutan `/batida` (`docs/tarea-batida.md`); la de la mañana es también la que lanza el botón «Iniciar barrido de noticias ahora».
 - «MOTICIAS · asesor de visibilidad y credibilidad» — lunes 09:17 — ejecuta `/consejo-visibilidad`.
 - «MOTICIAS · retoques del director» — laborables, cada hora de 8 a 21 — ejecuta `/retoques` (encargos de `data/retoques/` pedidos desde el gestor; publica directo y avisa) y después `/noticias-gestor` (noticias encargadas desde el gestor, en la base privada).

@@ -47,7 +47,7 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 
 ## 2. Las tres vías de actualización
 
-1. **La rutina diaria** (06:38, laborables). Escribe la edición en el portal, la hemeroteca y `data/`; añade una línea a `docs/ediciones.md`; anota en `docs/fuentes.md` toda fuente caída o cambiada; hace `git push`. Si algo falla, lo dice en el aviso y deja lo que tenga guardado.
+1. **La rutina diaria** (07:05, laborables). Escribe la edición en el portal, la hemeroteca y `data/`; añade una línea a `docs/ediciones.md`; anota en `docs/fuentes.md` toda fuente caída o cambiada; hace `git push`. Si algo falla, lo dice en el aviso y deja lo que tenga guardado.
 2. **Rainer, por chat o desde el móvil.** Una instrucción («a partir de ahora el análisis sale solo lunes y jueves») se convierte en un cambio OpenSpec: `openspec/changes/<nombre>/` con la propuesta, las specs afectadas y las tareas; se aplica (specs, docs, código, comando) y se archiva. Un cambio, todos los sitios a la vez.
 3. **Decisiones tomadas en conversación.** Si son reglas del sistema, van al repositorio como cambio OpenSpec. La memoria de Claude queda para lo personal (cómo escribe Rainer, qué prefiere), nunca para reglas operativas.
 
