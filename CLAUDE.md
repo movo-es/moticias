@@ -68,6 +68,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 - «MOTICIAS · asesor de visibilidad y credibilidad» — lunes 09:17 — ejecuta `/consejo-visibilidad`.
 - «MOTICIAS · retoques del director» — laborables, cada hora de 8 a 21 — ejecuta `/retoques` (encargos de `data/retoques/` pedidos desde el gestor; publica directo y avisa) y después `/noticias-gestor` (noticias encargadas desde el gestor, en la base privada).
 - Cron de Vercel (`vercel.json`): comprobador de enlaces promocionados, laborables cada hora de 8 a 20, con azar.
+- Cron de Vercel `ghost_al_dia` (11-11-2026): laborables cada 15 minutos de 7 a 20 h, publica en moticias.com (Ghost) la edición de `data/editions/` que la portada no tenga todavía, con las claves de Vercel; así la web no depende de que la tarea programada tenga `GHOST_ADMIN_KEY`.
 - «MOTICIAS · base de prensa» — miércoles 15:30 — ejecuta `/medios-actualizar` (verifica, completa y amplía la base de prensa y busca coberturas); el cron de Vercel `prensa_cron` (miércoles 14:45 UTC) detecta suscriptores en Ghost, trae los estados de Brevo y recalcula.
 - Previstas: radar regulatorio (lunes), licitaciones de la semana (viernes), sensores de mediodía (13:30), promo-social (tras la edición).
 
