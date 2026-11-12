@@ -1,1 +1,46 @@
-{"id":"site","name":"MOTICIAS","tagline":"con M de Movilidad","editor":"Rainer","contact":"rainerup@gmail.com","rotation":["Regulación y gobernanza","Autobús y carretera","Ferrocarril","Aéreo","Marítimo y puertos","Movilidad urbana y tecnología","Infraestructuras, financiación y Europa"],"recent_scopes":[{"date":"2026-11-04","scope":"Ferrocarril / gobernanza"},{"date":"2026-11-05","scope":"Regulación y gobernanza"},{"date":"2026-11-06","scope":"Autobús y carretera"},{"date":"2026-11-09","scope":"Aéreo"},{"date":"2026-11-10","scope":"Marítimo y puertos"},{"date":"2026-11-11","scope":"Ferrocarril"}]}
+{
+ "contact": "rainerup@gmail.com",
+ "editor": "Rainer",
+ "id": "site",
+ "name": "MOTICIAS",
+ "recent_scopes": [
+  {
+   "date": "2026-11-04",
+   "scope": "Ferrocarril / gobernanza"
+  },
+  {
+   "date": "2026-11-05",
+   "scope": "Regulación y gobernanza"
+  },
+  {
+   "date": "2026-11-06",
+   "scope": "Autobús y carretera"
+  },
+  {
+   "date": "2026-11-09",
+   "scope": "Aéreo"
+  },
+  {
+   "date": "2026-11-10",
+   "scope": "Marítimo y puertos"
+  },
+  {
+   "date": "2026-11-11",
+   "scope": "Ferrocarril"
+  },
+  {
+   "date": "2026-11-12",
+   "scope": "Movilidad urbana y tecnología"
+  }
+ ],
+ "rotation": [
+  "Regulación y gobernanza",
+  "Autobús y carretera",
+  "Ferrocarril",
+  "Aéreo",
+  "Marítimo y puertos",
+  "Movilidad urbana y tecnología",
+  "Infraestructuras, financiación y Europa"
+ ],
+ "tagline": "con M de Movilidad"
+}

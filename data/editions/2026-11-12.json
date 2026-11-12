@@ -1,0 +1,147 @@
+{
+ "analysis_id": "una-obligacion-con-multa-de-tramite-clyf",
+ "boe_range": [
+  "2026-11-12",
+  "2026-11-12"
+ ],
+ "boe_series": {
+  "2026-10-28": {
+   "disp": 6,
+   "lic": 25,
+   "total": 31
+  },
+  "2026-10-29": {
+   "disp": 13,
+   "lic": 36,
+   "total": 49
+  },
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  }
+ },
+ "closed_at": "07:42",
+ "date": "2026-11-12",
+ "document": {
+  "date": "2026-11-10",
+  "kicker": "Nombramientos · BOE",
+  "ref": "BOE-A-2026-23531",
+  "source": "Agencia Estatal de Seguridad Aérea / BOE núm. 280",
+  "summary": "Qué es: la resolución que cierra la convocatoria de libre designación de AESA publicada el 5 de octubre, con tres puestos de nivel 30.\nQuién: Elena Carrera Toucedo dirige Seguridad de Operaciones Aéreas; Pablo Hernández-Coronado Quintero, Cooperación Técnica Exterior; Juan Manuel López del Saz, la Subdirección de Servicios Jurídicos.\nDe dónde viene: el Real Decreto 466/2026 reformó en junio el Estatuto de AESA y fijó seis direcciones de seguridad; hasta estos nombramientos, Operaciones Aéreas dependía de la Dirección de Seguridad de Aeronaves.\nQué leer: la motivación de cada elección, que el BOE publica completa junto a los nombramientos.\nQué falta: la resolución no dice quién dirige ahora la Dirección de Seguridad de Aeronaves.",
+  "title": "Resolución de 30 de octubre de 2026, de la Dirección de la Agencia Estatal de Seguridad Aérea, por la que se resuelve la convocatoria de libre designación, efectuada por Resolución de 28 de septiembre de 2026",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23531"
+ },
+ "id": "2026-11-12",
+ "lead_id": "aesa-separa-la-supervision-de-las-operaciones-aereas-de-la-0s03",
+ "note_metodologica": "Edición nº 7, cerrada el 12 de noviembre de 2026 a las 07:42 CET. Tres noticias y un análisis, una pieza menos que el mínimo de cinco: el barrido no halló más hechos de las últimas 72 horas con fuente primaria accesible y el BOE del día (núm. 282, disponible a las 07:31) trae poco transporte de viajeros. Fuentes primarias abiertas en esta sesión: el BOE por su API de datos abiertos (resolución de AESA BOE-A-2026-23531 y su convocatoria BOE-A-2026-20615; Real Decreto 466/2026; anuncios BOE-B-2026-36980 y 36977 del puerto de Barcelona; licitación de Adif BOE-B-2026-36702; convenio de la estación intermodal de Gijón BOE-A-2026-11660; estudio informativo y declaración de impacto ambiental de 2022; textos consolidados de la Ley 9/2025, el Real Decreto-ley 7/2026, el Estatuto de AESA, la Ley de Puertos, la Ley del Sector Ferroviario, la Ley de Contratos del Sector Público y las leyes 39 y 40/2015) y la ficha oficial de la terminal C del Port de Barcelona. Periodo barrido en el BOE: 12-11-2026, con revisión de los números del 10 y el 11 de noviembre para piezas pendientes. El análisis, del ámbito Movilidad urbana y tecnología y de la campaña de movilidad al trabajo, espera la aprobación del director por tratar el mercado de la línea de planes de movilidad del grupo; lleva nota de intereses. Quedan sin pieza, por falta de fuente primaria verificada, el cese de operaciones de AlbaStar y la compra de Evos por Adani Ports, anunciada el 5 de noviembre. El real decreto del Defensor de las víctimas de accidentes de transporte colectivo sigue sin aparecer en el BOE. La huelga de Semaf prevista para hoy está aplazada al 23 de noviembre, como contó la edición del 11. Las piezas de Barcelona y Gijón usan la ilustración propia del portal por no haber foto libre del sujeto. Los agentes de lectura web consumieron 413.388 tokens (cifra leída); con los de la sesión, se superó el tope de 450.000. La publicación en moticias.com y la subida al repositorio quedan pendientes: la sesión no tenía claves de Ghost ni permiso de escritura en el repositorio; el repositorio queda como parche en el proyecto de Claude. La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 7,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23531",
+   "text": "AESA nombra a los titulares de sus nuevas direcciones de Seguridad de Operaciones Aéreas y de Cooperación Técnica Exterior",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23531"
+  },
+  {
+   "ref": "BOE-B-2026-36980",
+   "text": "Barcelona revisa la concesión de Creuers para la nueva Estación Marítima C: hasta 2050 y 2 € por pasajero desde 2028",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36980"
+  },
+  {
+   "ref": "BOE-B-2026-36977",
+   "text": "Barcelona somete a información pública el pliego del servicio de suministro de GNL a buques",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36977"
+  },
+  {
+   "ref": "BOE-B-2026-36961",
+   "text": "Adif adjudica a Saitec por 1,18 M€ el control de las obras de la subestación de tracción de Ronda–Algeciras",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36961"
+  },
+  {
+   "ref": "BOE-B-2026-36962",
+   "text": "Transportes licita por 1,005 M€ el seguro de responsabilidad civil del ministerio, AESA, AESF, CEDEX y CNIG",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36962"
+  },
+  {
+   "ref": "BOE-B-2026-36979",
+   "text": "Adif abre la información pública de las expropiaciones para ampliar a 750 m los apartaderos de Izarra y Pobes",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36979"
+  },
+  {
+   "ref": "BOE-B-2026-36976",
+   "text": "Valencia otorga por 30 años a Valencia Digital Port Connect el paso del cable submarino Barracuda por Sagunto",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36976"
+  },
+  {
+   "ref": "BOE-B-2026-36975",
+   "text": "Motril otorga dos concesiones en su zona logística, entre ellas 10.000 m² a Terminal Portuaria Logística de Motril",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36975"
+  },
+  {
+   "ref": "BOE-B-2026-36978",
+   "text": "A-23 en Sabiñánigo: convocadas las actas previas a la ocupación del nuevo paso sobre la línea Huesca–Canfranc",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36978"
+  },
+  {
+   "ref": "BOE-B-2026-37019",
+   "text": "La Palma abre la información pública de los bienes afectados por la carretera LP-213 de Puerto Naos",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37019"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

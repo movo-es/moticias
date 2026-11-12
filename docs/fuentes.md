@@ -412,6 +412,8 @@ Mantenimiento: la rutina diaria anota aquí (sección «Cambios detectados») to
 - 2026-11-11 · nuevecuatrouno.com devuelve error de cliente a la lectura automática; no se pudo citar.
 - 2026-11-11 · El listado de notas de prensa de Adif (adif.es/comunicacion/notas-prensa) se carga por JavaScript y no se ve en la lectura automática; solo son legibles las tres destacadas de la portada.
 - 2026-11-11 · La portada de grupo.renfe.com muestra las últimas noticias sin fecha ni enlace en la lectura automática.
+- 2026-11-12 · La sala de prensa del Ministerio de Transportes (transportes.gob.es/el-ministerio/sala-de-prensa) redirige a una página canónica que, en la lectura automática, solo muestra notas de julio de 2018; las notas recientes no se pudieron localizar desde ella.
+- 2026-11-12 · seatrade-cruise.com devuelve error de cliente a la lectura automática; no se pudo citar.
 
 ## Fuentes de segundo nivel (estrategia 2027; alta progresiva desde el 8-11-2026)
 
