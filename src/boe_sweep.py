@@ -16,10 +16,12 @@ Reglas de clasificación (ver docs/manual-operativo.md § 6):
 El texto de un ítem: https://www.boe.es/diario_boe/xml.php?id=BOE-X-2026-NNNNN (el cuerpo es el ÚLTIMO elemento <texto>).
 El BOE del día sale entre las 07:00 y las 07:30; si la API devuelve 404, reintentar cada cinco minutos hasta las 07:50. Domingos y festivos no hay BOE.
 """
-import argparse, datetime, json, re, sys, urllib.request, urllib.error
+import argparse, datetime, json, os, re, sys, urllib.request, urllib.error
 
 API = "https://www.boe.es/datosabiertos/api/boe/sumario/%s"
-UA = "Moticias/1.0 (rainerup@gmail.com)"
+# Contacto de la cabecera User-Agent: el buzón de la redacción, nunca un correo personal (las sesiones programadas
+# bloquean las órdenes que llevan el correo de la cuenta; 14-11-2026). MOTICIAS_CONTACTO lo cambia sin tocar el código.
+UA = "Moticias/1.0 (%s)" % (os.environ.get("MOTICIAS_CONTACTO") or "redaccion@moticias.com")
 
 KEYWORDS = ["transporte", "viajero", "ferroviari", "adif", "renfe", "autobús", "autobus", "autocar", "concesión", "concesion",
             "aeropuerto", "aena", "aéreo", "aereo", "aeronáutic", "aeronautic", "navegación", "navegacion", "puerto", "portuari",

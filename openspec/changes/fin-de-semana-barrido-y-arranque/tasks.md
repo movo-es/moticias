@@ -12,6 +12,12 @@
 - [ ] 2.3 En las dos batidas: «Automatically approve», como la edición diaria.
 - [ ] 2.4 En «MOTICIAS · batida de fin de semana (mañana)» → Edit → Trigger → + → API → Generate token → Vercel `RUTINA_BARRIDO_TOKEN`; redesplegar.
 
+## 2 bis. Arreglos del 14-11-2026 (batida del sábado sin permiso de subida)
+- [x] 2b.1 `src/boe_sweep.py`: la cabecera User-Agent lleva `redaccion@moticias.com` (o `MOTICIAS_CONTACTO`), no un correo personal; con el correo de la cuenta, el filtro de privacidad de las sesiones bloqueaba el script. Lo mismo en la cabecera de Openverse de `docs/tarea-edicion-diaria.md`.
+- [x] 2b.2 `vercel.json`: `ghost_al_dia` corre todos los días (`*/15 6-19 * * *`), para que las ediciones extra de sábado, domingo y festivo lleguen a moticias.com sin esperar al lunes. `CLAUDE.md` y el comentario de `api/gestor.py`, al día.
+- [x] 2b.3 `docs/puesta-en-marcha.md`: lista única de lo que necesita cada tarea (repositorio, variables, aprobación automática, token del botón) y cómo comprobarlo.
+- Estado de 2.1–2.4 el 14-11: sin hacer en las tareas que corrieron (la batida de la mañana no tenía el repositorio adjunto ni las claves de Ghost, y su configuración no tiene «Automatically approve»).
+
 ## 3. Verificación
 - [ ] 3.1 Martes 10-11: arranque sin avisos, commit de G. Jordan en `main`, moticias.com al día.
 - [ ] 3.2 Sábado 14-11: las dos batidas corren; sin novedades no avisan; `data/reserva/` en `main` si hay algo.

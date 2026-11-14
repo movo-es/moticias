@@ -1286,7 +1286,7 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(401, {"error": "no autorizado"})
             r = S.comprobar(origen="agente", azar=True)
             return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]]})
-        if a == "ghost_al_dia":  # Vercel Cron (laborables, cada 15 min de 7 a 20): publica en moticias.com la edición que falte
+        if a == "ghost_al_dia":  # Vercel Cron (todos los días, cada 15 min de 7 a 20; desde el 14-11 también fines de semana, por las ediciones extra): publica en moticias.com la edición que falte
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})

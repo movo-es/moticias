@@ -63,12 +63,13 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 ## Tareas programadas (en la nube, cuenta de Rainer)
 
+- Requisito de todas las tareas que escriben en el repositorio: `movo-es/moticias` adjunto con permiso de escritura y las variables de entorno de `docs/puesta-en-marcha.md`. Sin el repositorio adjunto, el proxy de la sesión rechaza el `push` y la tarea deja un parche en el proyecto de Claude (pasó el 12, el 13 y el 14-11-2026).
 - «MOTICIAS · edición diaria» — laborables 07:05 Europe/Madrid — usa este repositorio (adjunto a la tarea) y ejecuta `/edicion-diaria`; comprueba al arrancar que puede subir y que tiene las claves de Ghost y, si no, avisa en ese momento; si no puede subir, deja el parche en el proyecto de Claude (`claude/moticias-pendiente/`) y la sesión siguiente lo aplica.
 - «MOTICIAS · batida de fin de semana (mañana)» y «(tarde)» — sábados y domingos 10:55 y 17:26 — ejecutan `/batida` (`docs/tarea-batida.md`); la de la mañana es también la que lanza el botón «Iniciar barrido de noticias ahora».
 - «MOTICIAS · asesor de visibilidad y credibilidad» — lunes 09:17 — ejecuta `/consejo-visibilidad`.
 - «MOTICIAS · retoques del director» — laborables, cada hora de 8 a 21 — ejecuta `/retoques` (encargos de `data/retoques/` pedidos desde el gestor; publica directo y avisa) y después `/noticias-gestor` (noticias encargadas desde el gestor, en la base privada).
 - Cron de Vercel (`vercel.json`): comprobador de enlaces promocionados, laborables cada hora de 8 a 20, con azar.
-- Cron de Vercel `ghost_al_dia` (11-11-2026): laborables cada 15 minutos de 7 a 20 h, publica en moticias.com (Ghost) la edición de `data/editions/` que la portada no tenga todavía, con las claves de Vercel; así la web no depende de que la tarea programada tenga `GHOST_ADMIN_KEY`.
+- Cron de Vercel `ghost_al_dia` (11-11-2026; todos los días desde el 14-11-2026, por las ediciones extra de fin de semana): cada 15 minutos de 7 a 20 h, publica en moticias.com (Ghost) la edición de `data/editions/` que la portada no tenga todavía, con las claves de Vercel; así la web no depende de que la tarea programada tenga `GHOST_ADMIN_KEY`.
 - «MOTICIAS · base de prensa» — miércoles 15:30 — ejecuta `/medios-actualizar` (verifica, completa y amplía la base de prensa y busca coberturas); el cron de Vercel `prensa_cron` (miércoles 14:45 UTC) detecta suscriptores en Ghost, trae los estados de Brevo y recalcula.
 - Previstas: radar regulatorio (lunes), licitaciones de la semana (viernes), sensores de mediodía (13:30), promo-social (tras la edición).
 
