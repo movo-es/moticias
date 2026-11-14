@@ -1,0 +1,118 @@
+{
+ "analysis_id": null,
+ "boe_range": [
+  "2026-11-14",
+  "2026-11-14"
+ ],
+ "boe_series": {
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  }
+ },
+ "closed_at": "11:14",
+ "date": "2026-11-14",
+ "document": {
+  "date": "2026-11-14",
+  "kicker": "Nombramientos · BOE",
+  "ref": "BOE-A-2026-23835",
+  "source": "Ministerio de Transportes y Movilidad Sostenible / BOE núm. 284",
+  "summary": "Qué es: el real decreto que nombra a Inmaculada Gutiérrez Carrizo presidenta de Renfe-Operadora; el mismo BOE publica el cese de Álvaro Fernández Heredia (Real Decreto 997/2026), el nombramiento de Joaquim Hortalà Vallvé al frente de Adif (999/2026) y el de Jorge Fabra Portela como director del Gabinete del Ministro (998/2026).\nQuién: los propone Carlos Cuerpo, ministro de Transportes por suplencia (Real Decreto 975/2026), y los deliberó el Consejo de Ministros del 13 de noviembre.\nDe dónde viene: la dimisión de Óscar Puente tras el choque de Urda y los ceses del 10 de noviembre del presidente de Adif y de la directora del Gabinete (Reales Decretos 992 y 991/2026).\nQué leer: los cuatro textos ocupan una página cada uno; la base está en el artículo 16.1 del Estatuto de Renfe-Operadora y en el 23.1 del de Adif.\nQué falta: el motivo del cese de Fernández Heredia, que el decreto no da, y su destino.",
+  "title": "Real Decreto 1000/2026, de 13 de noviembre, por el que se nombra Presidenta de la Entidad Pública Empresarial RENFE-Operadora a doña Inmaculada Gutiérrez Carrizo",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23835"
+ },
+ "extra": true,
+ "id": "2026-11-14",
+ "lead_id": "inmaculada-gutierrez-carrizo-presidira-renfe-y-joaquim-q2hn",
+ "note_metodologica": "Edición nº 9, extraordinaria de fin de semana, cerrada el 14 de noviembre de 2026 a las 11:14 CET por la batida de la mañana. Una noticia: los reales decretos 997 a 1000/2026, publicados hoy en el BOE, con el cese del presidente de Renfe y los nombramientos al frente de Renfe, de Adif y del Gabinete del Ministro de Transportes; entran en el criterio de edición extra por ser ceses y nombramientos en Renfe, Adif y el Ministerio. Sin análisis: las ediciones extra no lo llevan. Fuentes primarias abiertas en esta sesión: el BOE núm. 284 por su API de datos abiertos (los cuatro reales decretos), los reales decretos 975, 991 y 992/2026 y 30/2025, los estatutos de Adif y de Renfe-Operadora (textos consolidados) y la referencia del Consejo de Ministros del 13 de noviembre. Periodo barrido: desde el cierre de la edición nº 8 (13 de noviembre, 07:48) hasta el cierre de esta; en el BOE, el número del 14 de noviembre. Sin pieza: la huelga de Adif del 17 de noviembre, sin novedad sobre su convocatoria ni resolución de servicios mínimos localizada al cierre. La subida al repositorio y la publicación en moticias.com quedan pendientes: la sesión no tenía permiso de escritura en el repositorio ni claves de Ghost; el repositorio queda como parche en el proyecto de Claude, detrás del de la edición nº 8. La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 9,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23835",
+   "text": "Real Decreto 1000/2026: Inmaculada Gutiérrez Carrizo, nueva presidenta de Renfe-Operadora",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23835"
+  },
+  {
+   "ref": "BOE-A-2026-23834",
+   "text": "Real Decreto 999/2026: Joaquim Hortalà Vallvé, nuevo presidente de Adif",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23834"
+  },
+  {
+   "ref": "BOE-A-2026-23832",
+   "text": "Real Decreto 997/2026: cese de Álvaro Fernández Heredia como presidente de Renfe-Operadora",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23832"
+  },
+  {
+   "ref": "BOE-A-2026-23833",
+   "text": "Real Decreto 998/2026: Jorge Fabra Portela, director del Gabinete del Ministro de Transportes",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23833"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
