@@ -23,8 +23,9 @@
 - [x] 2t.3 `src/buzon.py preparar`: de `origin/main..HEAD` a los `insert` del buzón, por partes de 350 KB, con el blob de partida de cada fichero; solo contenido.
 - [x] 2t.4 `api/gestor.py` → `aplicar_buzon` (un commit por lote, en orden, sin pisar cambios, idempotente) y cron de Vercel cada 10 minutos. Probado sin red con GitHub y Supabase simulados: el árbol resultante es idéntico al de la edición nº 9 y el conflicto se detecta.
 - [x] 2t.5 `docs/tarea-edicion-diaria.md` y `docs/tarea-batida.md`: el buzón antes que el parche en el proyecto; `CLAUDE.md` y `docs/puesta-en-marcha.md`, al día.
-- [ ] 2t.6 Rainer: aplicar la migración 008 en Supabase y subir a `main` este cambio con los parches pendientes (una vez; el código no puede ir por el buzón).
-- [ ] 2t.7 Verificar con la primera tarea que no pueda subir: lote en `aplicado` y edición en moticias.com.
+- [x] 2t.6 Rainer: aplicar la migración 008 en Supabase y subir a `main` este cambio con los parches pendientes (14-11, 18:13, desde el Mac).
+- [x] 2t.7 Verificado el 14-11: `ghost_al_dia` publicó la edición nº 9 a las 18:15 (primera publicación en fin de semana) y `aplicar_buzon` subió a las 18:20 la reserva de la batida de la tarde (lote 20261114-1735-batida, commit e485f74, contenido idéntico al parche). Parches retirados de `claude/moticias-pendiente/`.
+- [x] 2t.8 Reglas de las tareas: sin `push` o sin claves de Ghost ya no es un fallo ni se avisa (buzón y `ghost_al_dia`); la puesta al día de la hemeroteca compara con la hemeroteca publicada, no con `hemeroteca/data/` del repositorio, que se queda atrás con el buzón.
 
 - Estado de 2.1–2.4 el 14-11: sin hacer en las tareas que corrieron (la batida de la mañana no tenía el repositorio adjunto ni las claves de Ghost, y su configuración no tiene «Automatically approve»).
 

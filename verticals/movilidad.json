@@ -17,7 +17,7 @@
   "interests_note": "Rainer Uphoff es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."
  },
  "schedule": {
-  "daily_edition": "CRON_TZ=Europe/Madrid 38 6 * * 1-5",
+  "daily_edition": "CRON_TZ=Europe/Madrid 5 7 * * 1-5",
   "weekly_advisor": "CRON_TZ=Europe/Madrid 17 9 * * 1",
   "regulatory_radar": "lunes",
   "tenders_week": "viernes",
