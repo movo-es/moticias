@@ -1,0 +1,147 @@
+{
+ "analysis_id": "conectar-europa-a-precios-constantes-8jw4",
+ "boe_range": [
+  "2026-11-13",
+  "2026-11-13"
+ ],
+ "boe_series": {
+  "2026-10-29": {
+   "disp": 13,
+   "lic": 36,
+   "total": 49
+  },
+  "2026-10-30": {
+   "disp": 7,
+   "lic": 22,
+   "total": 29
+  },
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  }
+ },
+ "closed_at": "07:48",
+ "date": "2026-11-13",
+ "document": {
+  "date": "2026-11-13",
+  "kicker": "Regulación · BOE",
+  "ref": "BOE-A-2026-23760",
+  "source": "Ministerio de la Presidencia, Justicia y Relaciones con las Cortes / BOE núm. 283",
+  "summary": "Qué es: el real decreto que crea el Defensor/a de Víctimas de Accidentes de Transporte Colectivo, con rango de subsecretario y dependiente de la persona titular de Transportes; entra en vigor el 14 de noviembre.\nQuién: lo nombra el Consejo de Ministros a propuesta de Transportes; tendrá una oficina con rango de dirección general, una Secretaría General, una Subdirección General de Atención a las Víctimas y un Gabinete Técnico.\nDe dónde viene: lo deliberó el Consejo de Ministros el 10 de noviembre y se suma a los reglamentos de asistencia de 2013 (aviación) y 2014 (ferrocarril) y a la Ley 2/2024 de la AITAT.\nQué leer: el artículo 2 (quién es víctima), el artículo 3 (diez bloques de funciones) y la disposición final tercera (tres meses para proponer la reforma del marco).\nQué falta: el nombramiento, la plantilla y el presupuesto, que el texto no fija.",
+  "title": "Real Decreto 981/2026, de 11 de noviembre, por el que se crea el Defensor/a de Víctimas de Accidentes de Transporte Colectivo, y se modifican el Real Decreto 1009/2023, de 5 de diciembre, y el Real Decreto 253/2024, de 12 de marzo",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23760"
+ },
+ "id": "2026-11-13",
+ "lead_id": "el-defensor-de-las-victimas-de-accidentes-de-transporte-vsbh",
+ "note_metodologica": "Edición nº 8. cerrada el 13 de noviembre de 2026 a las 07:48 CET. Tres noticias y un análisis. una pieza menos que el mínimo de cinco: el barrido no halló más hechos de las últimas 72 horas con fuente primaria accesible. Fuentes primarias abiertas en esta sesión: el BOE por su API de datos abiertos (Real Decreto 981/2026 y las normas que cita; el anuncio BOE-B-2026-37088 y las órdenes TMA/693/2020. TMA/297/2021 y TMA/831/2022 sobre las rutas de Melilla; las cuatro licencias de la Autoridad Portuaria de Baleares. BOE-B-2026-37123 a 37126. y el Texto Refundido de la Ley de Puertos) y. para el análisis. la nota de prensa del Parlamento Europeo de 10 de noviembre y sus fichas del tren legislativo y del Observatorio Legislativo. Periodo barrido en el BOE: 13-11-2026 (núm. 283. disponible a las 07:31). con revisión del número del 12 de noviembre. El análisis es del ámbito Infraestructuras. financiación y Europa. el que más días llevaba sin aparecer en la rotación; lo firma el director dentro de su cupo y espera su aprobación. Quedan sin pieza. por falta de fuente primaria al cierre: la huelga ferroviaria del 17 de noviembre. que los sindicatos mantienen tras las reuniones del 11 y el 12 con Adif y el Ministerio. sin resolución de servicios mínimos publicada; y el tráfico de Aena de octubre. cuya nota oficial no estaba en la sala de prensa de Aena (solo cifras de agencia). La pieza de Melilla usa la ilustración propia del portal por no haber foto libre del sujeto. La publicación en moticias.com y la subida al repositorio quedan pendientes: la sesión no tenía claves de Ghost ni permiso de escritura en el repositorio; el repositorio queda como parche en el proyecto de Claude. Los agentes de lectura web consumieron 256.847 tokens (cifra leída); los de la sesión principal no los informa el entorno. La búsqueda, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial.",
+ "number": 8,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23760",
+   "text": "Real Decreto 981/2026: nace el Defensor de las víctimas de accidentes de transporte colectivo, en vigor el 14 de noviembre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23760"
+  },
+  {
+   "ref": "BOE-B-2026-37088",
+   "text": "Aviación Civil licita por 2,16 M€ y por urgencia los vuelos de servicio público de Melilla con Almería, Granada y Sevilla",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37088"
+  },
+  {
+   "ref": "BOE-B-2026-37124",
+   "text": "Baleares otorga a Grimaldi cuatro licencias provisionales del servicio al pasaje en sus cinco puertos, hasta 2028",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37124"
+  },
+  {
+   "ref": "BOE-B-2026-37117",
+   "text": "Málaga concede a Baleària Eurolíneas Marítimas dos locales de la estación marítima por tres años",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37117"
+  },
+  {
+   "ref": "BOE-B-2026-37119",
+   "text": "Cartagena abre la información pública de la concesión logística de Bergé Marítima en la ampliación de Escombreras",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37119"
+  },
+  {
+   "ref": "BOE-B-2026-37089",
+   "text": "Adif abrirá el 17 de noviembre las ofertas del proyecto de autopista ferroviaria entre Tarragona y Barcelona",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37089"
+  },
+  {
+   "ref": "BOE-B-2026-37118",
+   "text": "N-340a en Tarragona: convocadas las actas previas a la ocupación del carril para peatones y bicicletas",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37118"
+  },
+  {
+   "ref": "BOE-B-2026-37120",
+   "text": "Castellón otorga a Nedgia una concesión de 15 años para conducciones de gas natural en el puerto",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37120"
+  },
+  {
+   "ref": "BOE-B-2026-37122",
+   "text": "Castellón cambia el objeto de la concesión de Masol Iberia Biofuel: planta de biodiésel y atraque de fluidos",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37122"
+  },
+  {
+   "ref": "BOE-B-2026-37126",
+   "text": "Eivissa y la Savina: licencia nº 4 del servicio al pasaje para ferris y cruceros",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37126"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
