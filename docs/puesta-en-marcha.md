@@ -1,54 +1,29 @@
 # MOTICIAS · Puesta en marcha de las tareas automáticas
 
-Lo que necesita cada tarea programada para trabajar sola, sin parches ni pasos a mano. Se hace una vez. Si una tarea avisa al arrancar de que no puede subir o de que le faltan claves, es que falta algo de esta lista. Las claves no se escriben nunca en el repositorio (es público) ni en el chat: solo en los campos de variables de Claude y de Vercel. Cambio OpenSpec `fin-de-semana-barrido-y-arranque` (tareas 2.1–2.4 y 2 bis).
+Lo que necesitan las tareas programadas para trabajar solas, sin parches ni pasos a mano. Las claves no se escriben nunca en el repositorio (es público) ni en el chat: solo en los campos de variables de Vercel. Cambio OpenSpec `fin-de-semana-barrido-y-arranque` (2, 2 bis y 2 ter).
 
-## 1. Acceso de Claude al repositorio en GitHub
+## Cómo llega una edición a moticias.com (desde el 14-11-2026)
 
-La aplicación de GitHub de Claude tiene que tener acceso de escritura a `movo-es/moticias`. `movo-es` es una cuenta personal de GitHub, no una organización: con la sesión de `movo-es` abierta, https://github.com/settings/installations → Claude → Configure → Repository access → «Only select repositories» → añadir `moticias` → Save. Si Claude no aparece en la lista, se instala desde https://github.com/apps/claude eligiendo la cuenta `movo-es` y el repositorio `moticias`.
+1. La tarea escribe en el portal y en `data/`, y hace `commit`.
+2. Si puede hacer `push`, lo sube a `main`. Si no puede (desde el 12-11-2026 las sesiones programadas arrancan sin el repositorio autorizado y la pantalla de tareas no tiene dónde adjuntarlo), deja el trabajo en el **buzón del repositorio**: `python3 -I src/buzon.py preparar --origen <tarea>` y cada `work/buzon/*.sql` con `execute_sql` del conector de Supabase (proyecto «moticias», `cjrntzaqmvhgscdgiehs`).
+3. El cron de Vercel `aplicar_buzon` (cada 10 minutos) sube el lote a `main` con el `GITHUB_TOKEN` del gestor, en un solo commit firmado por la tarea.
+4. Vercel se redespliega con el nuevo `main` y el cron `ghost_al_dia` (cada 15 minutos, de 7 a 20 h, todos los días) publica en moticias.com las ediciones que falten, con las claves de Ghost que tiene Vercel.
 
-## 2. Repositorio adjunto en cada tarea
+Por el buzón solo entra contenido: `data/`, `docs/ediciones.md`, `docs/fuentes.md`, `docs/asesor/` y `portal/img/`. Un cambio de código o de configuración necesita un `push` de verdad (una sesión de Claude Code con el repositorio, o un `git push` desde el Mac).
 
-En claude.ai/code/routines, en cada tarea → Edit → Advanced settings → Repository: `movo-es/moticias`.
+## Una sola vez
 
-| Tarea | Identificador |
-|---|---|
-| MOTICIAS · edición diaria | `trig_0172GECYAmmfyxR7zajD9tp9` |
-| MOTICIAS · batida de fin de semana (mañana) | `trig_012Sc1jheY62WPUukGPstLqk` |
-| MOTICIAS · batida de fin de semana (tarde) | `trig_01A5CAWQfbfusMNxU3krTUVU` |
-| MOTICIAS · retoques del director | `trig_01MJXeXrgHYTVjAQW4nVYD6T` |
-| MOTICIAS · asesor de visibilidad y credibilidad | `trig_01RcFoSJK79QunM8FRk4orgi` |
-| MOTICIAS · base de prensa | `trig_018tEfQ3B8Wr5Ua8R4htYKwm` |
+1. **Migración 008 en Supabase.** En el editor SQL del proyecto «moticias» (https://supabase.com/dashboard/project/cjrntzaqmvhgscdgiehs/sql/new), pegar el contenido de `supabase/migrations/008_buzon_repositorio.sql` y pulsar Run. Se puede ejecutar dos veces sin daño.
+2. **Vercel (proyecto `moticias-app`).** Settings → Environment Variables (Production). Deben existir: `GITHUB_TOKEN` (con permiso de escritura en `movo-es/moticias`), `CRON_SECRET`, `GHOST_URL`, `GHOST_ADMIN_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `MOTICIAS_BD_CLAVE`, `GESTOR_CLAVE_SUPERADMIN`, `GESTOR_CLAVE_OFICINA`, `BREVO_API_KEY` y, para el botón, `RUTINA_BARRIDO_TOKEN`. Tras añadir o cambiar una: Deployments → el último → Redeploy.
+3. **Tareas programadas.** En las dos batidas, Permisos → «Automático» (como la edición diaria). No hace falta adjuntar el repositorio ni poner claves en las tareas.
+4. **Token del botón «Iniciar barrido de noticias ahora»** (opcional). En la batida de la mañana, el disparador por API → generar token → Vercel `RUTINA_BARRIDO_TOKEN` → Redeploy. El identificador de la tarea ya está en `verticals/movilidad.json` → `rutinas.barrido`.
 
-Sin este paso, el proxy de la sesión rechaza el `push` («not in this session's authorized repository set») y la tarea deja el trabajo como parche en el proyecto de Claude (`claude/moticias-pendiente/`).
+## Comprobación
 
-## 3. Variables del entorno en la nube de las tareas
+1. `https://app.moticias.com/api/gestor?a=yo` da `true` en `configurado`, `escritura`, `ghost`, `bd` y, si se hizo el paso 4, `barrido` (solo dice si la variable existe; no enseña su valor).
+2. En Supabase, `select lote, parte, partes, estado, sha, error from repo_buzon order by creado_at desc limit 10;` no tiene lotes en `pendiente` de más de 15 minutos ni en `error`.
+3. La cabecera de `https://www.moticias.com/` dice «Edición nº N» con la última edición de `data/editions/`.
 
-Mismo sitio (Edit → Cloud environment → variables). Si las tareas comparten entorno, basta con ponerlas una vez.
+## Si un lote queda en `error`
 
-| Variable | Valor | De dónde sale | Para qué |
-|---|---|---|---|
-| `GHOST_URL` | `https://www.moticias.com` | — | publicar en moticias.com (paso 7 quater) |
-| `GHOST_ADMIN_KEY` | la Admin API key | Ghost Admin → Settings → Integrations → Add custom integration («MOTICIAS redacción») → Admin API key | ídem |
-| `BREVO_API_KEY` | la clave de la API | Brevo → SMTP & API → API keys → Generate a new API key | correo de menciones y base de prensa |
-| `MOTICIAS_CONTACTO` | `redaccion@moticias.com` | — | opcional: contacto de la cabecera de las APIs del BOE y Openverse |
-
-Si la tarea de retoques avisa de que no ve la base del gestor (`/noticias-gestor`), añade también `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `MOTICIAS_BD_CLAVE`, con los mismos valores que tienen en Vercel.
-
-## 4. Aprobación automática en las dos batidas
-
-En las dos batidas → Edit → «Automatically approve», como la edición diaria. Sin ello, una batida puede quedarse esperando una aprobación que nadie va a dar.
-
-## 5. Token del botón «Iniciar barrido de noticias ahora»
-
-En «MOTICIAS · batida de fin de semana (mañana)» → Edit → Trigger → + → API → Generate token. Se copia una sola vez y va a Vercel como `RUTINA_BARRIDO_TOKEN` (paso 6). El identificador de la tarea ya está en `verticals/movilidad.json` → `rutinas.barrido`; `RUTINA_BARRIDO_ID` solo hace falta si se cambia de tarea.
-
-## 6. Vercel (proyecto `moticias-app`, equipo MOVO)
-
-Settings → Environment Variables (entorno Production). Deben existir: `GESTOR_CLAVE_SUPERADMIN`, `GESTOR_CLAVE_OFICINA`, `GITHUB_TOKEN`, `GHOST_URL`, `GHOST_ADMIN_KEY`, `CRON_SECRET`, `BREVO_API_KEY`, `RUTINA_BARRIDO_TOKEN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `MOTICIAS_BD_CLAVE`; opcionales: `PRENSA_REMITENTE`, `PRENSA_RESPONDER_A`, `ANTHROPIC_API_KEY`, `AI_GATEWAY_API_KEY`. Después de añadir o cambiar una, Deployments → el último → Redeploy.
-
-## 7. Comprobación
-
-1. `https://app.moticias.com/api/gestor?a=yo` debe dar `true` en `configurado`, `escritura`, `ghost`, `bd` y `barrido` (no enseña ningún valor, solo si la variable existe).
-2. Botón «Iniciar barrido de noticias ahora» en el gestor: la sesión dice en sus primeras líneas que puede subir y que tiene las claves de Ghost; aplica los parches de `claude/moticias-pendiente/` en orden de nombre, los sube a `main` y los borra del proyecto.
-3. Vercel redespliega solo al llegar el `push` a `main`; en menos de 15 minutos el cron `ghost_al_dia` publica en moticias.com las ediciones que falten (todos los días, de 7 a 20 h).
-4. La cabecera de `https://www.moticias.com/` dice «Edición nº N» con la última edición de `data/editions/`.
+El mensaje dice qué fichero no encajaba: casi siempre, alguien cambió en `main` ese mismo fichero (por ejemplo, `docs/ediciones.md`) desde que la tarea lo leyó. La siguiente sesión con el repositorio al día vuelve a preparar el lote; nada se pisa ni se borra.

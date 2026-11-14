@@ -1235,6 +1235,116 @@ def ghost_al_dia(solo=None):
         hechas.append(res)
     return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
 
+
+# ---------- buzón del repositorio (14-11-2026; migración 008, src/buzon.py) ----------
+# Las tareas programadas que no pueden hacer push dejan en Supabase (tabla repo_buzon) los ficheros que cambian. Este
+# cron los sube a `main` con GITHUB_TOKEN: un commit por lote, en orden de llegada, y se para en el primer lote que no
+# encaja para no aplicar lo que dependa de él. Solo contenido (BUZON_RUTAS); nunca borra ficheros ni toca código.
+BUZON_RUTAS = ("data/", "docs/ediciones.md", "docs/fuentes.md", "docs/asesor/", "portal/img/")
+BUZON_ESPERA_H = 6  # un lote al que le faltan partes se da por perdido pasadas estas horas
+
+
+def _blob_sha(datos):
+    return hashlib.sha1(b"blob %d\0" % len(datos) + datos).hexdigest()
+
+
+def _commit_lote(ficheros, mensaje, autor, correo):
+    """Un solo commit en BRANCH con los ficheros del lote. Devuelve (True, sha) o (False, motivo)."""
+    for intento in (1, 2):
+        st, ref = gh("GET", "git/ref/heads/%s" % BRANCH)
+        if st != 200:
+            return False, "GitHub no da la rama %s (%s): %s" % (BRANCH, st, ref.get("message"))
+        head = ref["object"]["sha"]
+        st, com = gh("GET", "git/commits/%s" % head)
+        if st != 200:
+            return False, "GitHub no da el commit %s (%s)" % (head[:7], st)
+        st, arbol = gh("GET", "git/trees/%s?recursive=1" % com["tree"]["sha"])
+        if st != 200 or arbol.get("truncated"):
+            return False, "GitHub no da el árbol completo de %s (%s)" % (head[:7], st)
+        en_main = {e["path"]: e["sha"] for e in arbol.get("tree", []) if e.get("type") == "blob"}
+        nuevos = []
+        for f in ficheros:
+            ruta = str(f.get("ruta") or "")
+            if not ruta.startswith(BUZON_RUTAS) or ".." in ruta.split("/"):
+                return False, "ruta no permitida en el buzón: %s" % ruta
+            if "texto" in f:
+                datos = str(f["texto"]).encode("utf-8")
+            elif "base64" in f:
+                try:
+                    datos = base64.b64decode(f["base64"], validate=True)
+                except Exception:
+                    return False, "base64 no válido en %s" % ruta
+            else:
+                return False, "fichero sin contenido: %s" % ruta
+            actual, base = en_main.get(ruta), f.get("base") or None
+            if actual == _blob_sha(datos):
+                continue  # ya está en main tal cual
+            if actual != base:
+                return False, "conflicto en %s: main tiene %s y el lote partía de %s" % (ruta, (actual or "nada")[:7], (base or "nada")[:7])
+            if "texto" in f:
+                nuevos.append({"path": ruta, "mode": "100644", "type": "blob", "content": f["texto"]})
+            else:
+                st, b = gh("POST", "git/blobs", {"content": f["base64"], "encoding": "base64"})
+                if st != 201:
+                    return False, "GitHub no acepta el fichero %s (%s)" % (ruta, st)
+                nuevos.append({"path": ruta, "mode": "100644", "type": "blob", "sha": b["sha"]})
+        if not nuevos:
+            return True, head  # todo estaba ya en main
+        st, t = gh("POST", "git/trees", {"base_tree": com["tree"]["sha"], "tree": nuevos})
+        if st != 201:
+            return False, "GitHub no crea el árbol (%s): %s" % (st, t.get("message"))
+        st, c = gh("POST", "git/commits", {"message": mensaje, "tree": t["sha"], "parents": [head],
+                                           "author": {"name": autor, "email": correo}})
+        if st != 201:
+            return False, "GitHub no crea el commit (%s): %s" % (st, c.get("message"))
+        st, r = gh("PATCH", "git/refs/heads/%s" % BRANCH, {"sha": c["sha"], "force": False})
+        if st == 200:
+            return True, c["sha"]
+        if st != 422 or intento == 2:
+            return False, "GitHub no mueve %s (%s): %s" % (BRANCH, st, r.get("message"))
+    return False, "main cambió dos veces mientras se aplicaba el lote"
+
+
+def aplicar_buzon():
+    if not BD.configurada():
+        return {"ok": False, "error": "falta la base del gestor (SUPABASE_URL, SUPABASE_ANON_KEY, MOTICIAS_BD_CLAVE)"}
+    if not os.environ.get("GITHUB_TOKEN"):
+        return {"ok": False, "error": "falta GITHUB_TOKEN en Vercel"}
+    try:
+        filas = BD.leer("repo_buzon", estado="eq.pendiente", order="creado_at.asc,parte.asc",
+                        select="id,creado_at,lote,parte,partes,origen,mensaje,autor,autor_correo,ficheros")
+    except BD.ErrorBD as e:
+        return {"ok": False, "error": str(e)}
+    lotes = {}
+    for f in filas:  # en orden de llegada del primer trozo de cada lote
+        lotes.setdefault(f["lote"], []).append(f)
+    ahora = datetime.datetime.now(datetime.timezone.utc)
+    hechos = []
+    for lote, partes in lotes.items():
+        n = max(p["partes"] for p in partes)
+        ids = {"id": "in.(%s)" % ",".join(p["id"] for p in partes)}
+        if len({p["parte"] for p in partes}) < n:
+            primero = min(datetime.datetime.fromisoformat(p["creado_at"].replace("Z", "+00:00")) for p in partes)
+            if (ahora - primero).total_seconds() > BUZON_ESPERA_H * 3600:
+                BD.actualizar("repo_buzon", ids, {"estado": "error", "error": "lote incompleto: llegaron %d de %d partes" % (len(partes), n)})
+                hechos.append({"lote": lote, "ok": False, "error": "incompleto"})
+                continue
+            hechos.append({"lote": lote, "ok": None, "espera": "%d de %d partes" % (len(partes), n)})
+            break  # lo que venga después puede depender de este lote
+        partes.sort(key=lambda p: p["parte"])
+        ficheros = [x for p in partes for x in (p["ficheros"] or [])]
+        ok, res = _commit_lote(ficheros, partes[0]["mensaje"], partes[0]["autor"], partes[0]["autor_correo"])
+        if ok:
+            BD.actualizar("repo_buzon", ids, {"estado": "aplicado", "aplicado_at": ahora.isoformat(), "sha": res, "error": None})
+            BD.registrar("buzón", "aplicar", lote, {"sha": res[:7], "ficheros": len(ficheros)})
+            hechos.append({"lote": lote, "ok": True, "sha": res[:7], "ficheros": len(ficheros)})
+        else:
+            BD.actualizar("repo_buzon", ids, {"estado": "error", "error": res[:500]})
+            hechos.append({"lote": lote, "ok": False, "error": res})
+            break
+    return {"ok": all(h.get("ok") is not False for h in hechos), "lotes": hechos}
+
+
 class handler(BaseHTTPRequestHandler):
     def _enviar(self, st, obj, cookie=None, cors=None, cache="no-store"):
         b = b"" if st == 204 else json.dumps(obj, ensure_ascii=False).encode("utf-8")
@@ -1291,6 +1401,11 @@ class handler(BaseHTTPRequestHandler):
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
             return self._enviar(200, ghost_al_dia())
+        if a == "aplicar_buzon":  # Vercel Cron (cada 10 min): sube a main lo que las tareas dejaron en el buzón (migración 008)
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            return self._enviar(200, aplicar_buzon())
         if a == "publicidad":  # pública: la pide el script de moticias.com
             return self._enviar(200, publicidad_publica(), cors="*", cache="public, max-age=120, s-maxage=300, stale-while-revalidate=3600")
         if a == "prensa_baja":  # pública: enlace de baja de cada envío de prensa (firmado)
