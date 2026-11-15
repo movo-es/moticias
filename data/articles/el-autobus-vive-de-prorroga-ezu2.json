@@ -205,5 +205,13 @@
  ],
  "title": "El autobús vive de prórroga",
  "why": "La prórroga de las concesiones vencidas se ha convertido en el régimen ordinario del autobús interurbano. El Reglamento (CE) 1370/2007 limita a dos años las medidas de emergencia y la Ley 9/2025 fija un máximo de dieciocho meses para las concesiones caducadas, pero ese plazo solo empieza a contar cuando se aprueba el mapa o se licita.",
- "tipo_contenido": "editorial"
+ "tipo_contenido": "editorial",
+ "status": "pendiente",
+ "revisiones": [
+  {
+   "en": "2026-11-15T21:30+01:00",
+   "por": "sistema",
+   "accion": "sin estado y en borrador en Ghost desde su edición: pasa a la cola de aprobación del director"
+  }
+ ]
 }

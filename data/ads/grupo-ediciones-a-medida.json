@@ -11,8 +11,9 @@
  "id": "grupo-ediciones-a-medida",
  "image": null,
  "invoice_ref": "",
- "label": "Contenido patrocinado · servicio del grupo",
+ "label": "Contenido patrocinado",
  "name": "Grupo · Ediciones a medida",
+ "nivel": "estandar",
  "notes": "",
  "pricing": "sin coste · servicio del grupo",
  "sections": [],
@@ -23,12 +24,11 @@
  "start": "2026-11-04",
  "status": "activo",
  "text": "La selección diaria de normas, contratos y plazos que afectan a tu actividad, con tu marca, como página propia o como boletín por correo.",
+ "tipo_contenido": "patrocinado",
  "type": "grupo",
  "updated_at": "2026-11-15T21:00+01:00",
  "url": "mailto:redaccion@moticias.com?subject=Ediciones%20a%20medida%20de%20MOTICIAS",
  "utm": true,
  "utm_campaign": "",
- "weight": 2,
- "tipo_contenido": "patrocinado",
- "nivel": "estandar"
+ "weight": 2
 }

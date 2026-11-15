@@ -506,9 +506,9 @@ async function verAnuncios() {
   app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => formAd(cache.anuncios.find(x => x.id === b.closest("[data-a]").dataset.a)));
 }
 // Etiqueta que ve el lector (la misma regla que src/tipos.py → marca_anuncio; tipos-de-contenido, 15-11-2026):
-// grupo → «Contenido patrocinado · servicio del grupo»; patrocinio → «Contenido patrocinado · <cliente>»; publicidad → «Publicidad».
+// grupo → «Contenido patrocinado» (sin decir «del grupo»: decisión de Rainer, 15-11-2026, noche); patrocinio → «Contenido patrocinado · <cliente>»; publicidad → «Publicidad».
 function etiquetaAd(a) {
-  if (a.type === "grupo") return "Contenido patrocinado · servicio del grupo";
+  if (a.type === "grupo") return "Contenido patrocinado";
   if (a.type === "patrocinio") return "Contenido patrocinado · " + (a.advertiser || "cliente");
   return "Publicidad";
 }

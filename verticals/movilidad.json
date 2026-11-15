@@ -248,6 +248,7 @@
    "noticia": "Noticia",
    "nota_de_prensa": "Nota de prensa · Comunicado de %(emisor)s",
    "patrocinado_grupo": "Contenido patrocinado · servicio del grupo",
+   "patrocinado_grupo_caja": "Contenido patrocinado",
    "patrocinado_cliente": "Contenido patrocinado · %(cliente)s",
    "publicidad": "Publicidad"
   },
@@ -270,7 +271,8 @@
    "grupo": "servicio de una empresa del grupo (incluidos los de la propia MOTICIAS)",
    "patrocinio": "lo paga un cliente",
    "publicidad": "caja por niveles de un anunciante"
-  }
+  },
+  "nota_cajas": "Decisión de Rainer (15-11-2026, noche): en las cajas de publicidad por niveles (cabecera, lateral, portada, cierre, pie) lo del grupo se etiqueta solo «Contenido patrocinado», sin decir que la empresa es del grupo; la marca (MOVO, Movenbus…) va dentro de la caja. Las cajas dentro del texto (menciones) conservan «Contenido patrocinado · servicio del grupo» y su línea de declaración."
  },
  "campaigns": {
   "dir": "data/campanas/",
@@ -1683,7 +1685,7 @@
    "boletin": "Boletín por correo (reservado)"
   },
   "tipos": {
-   "grupo": "Contenido patrocinado · servicio del grupo",
+   "grupo": "Servicio del grupo (el lector ve «Contenido patrocinado»)",
    "patrocinio": "Contenido patrocinado",
    "publicidad": "Publicidad"
   },
@@ -2078,5 +2080,30 @@
    ]
   },
   "aviso_a": null
+ },
+ "secciones_web": {
+  "nota": "Qué piezas enseña cada página de sección de moticias.com. Lo usan app/public/sitio/m.js (vía el índice del buscador) y src/secciones.py (comprobación tras cada publicación). modo = eje 1, tema = eje 2, tipo = tipo de contenido.",
+  "tierra": {
+   "modo": "tierra"
+  },
+  "mar": {
+   "modo": "mar"
+  },
+  "aire": {
+   "modo": "aire"
+  },
+  "logistica": {
+   "modo": "logistica"
+  },
+  "regulacion": {
+   "tema": "regulacion"
+  },
+  "licitaciones": {
+   "tema": "concesiones"
+  },
+  "analisis": {
+   "tipo": "editorial"
+  },
+  "aviso_dias_sin_novedad": 14
  }
 }

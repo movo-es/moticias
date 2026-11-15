@@ -204,5 +204,6 @@
   "madrid",
   "ue"
  ],
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "status": "publicado"
 }

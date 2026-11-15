@@ -139,8 +139,9 @@ def marca_anuncio(ad, v=None):
     """Etiqueta de una caja de `data/ads/` según su `type`: grupo · patrocinio (cliente) · publicidad."""
     m = cfg(v).get("marcas") or {}
     t = ad.get("type") or "publicidad"
-    if t == "grupo" or anuncio_es_del_grupo(ad, v):  # lo del grupo es siempre «servicio del grupo», lo hayan tipado como lo hayan tipado
-        return m["patrocinado_grupo"]
+    if t == "grupo" or anuncio_es_del_grupo(ad, v):  # lo del grupo es siempre tipo grupo, lo hayan tipado como lo hayan tipado;
+        # en las cajas por niveles el lector ve solo «Contenido patrocinado» (decisión de Rainer, 15-11-2026, noche)
+        return m.get("patrocinado_grupo_caja") or m["patrocinado_grupo"]
     if t == "patrocinio":
         return m["patrocinado_cliente"] % {"cliente": ad.get("advertiser") or "cliente"}
     return m["publicidad"]

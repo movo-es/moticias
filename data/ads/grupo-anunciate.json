@@ -11,8 +11,9 @@
  "id": "grupo-anunciate",
  "image": null,
  "invoice_ref": "",
- "label": "Contenido patrocinado · servicio del grupo",
+ "label": "Contenido patrocinado",
  "name": "Grupo · Anúnciate",
+ "nivel": "basico",
  "notes": "",
  "pricing": "sin coste · servicio del grupo",
  "sections": [],
@@ -22,12 +23,11 @@
  "start": "2026-11-04",
  "status": "activo",
  "text": "Patrocinios de sección, banners y presencia en ediciones a medida. Siempre señalizados y separados del contenido editorial.",
+ "tipo_contenido": "patrocinado",
  "type": "grupo",
  "updated_at": "2026-11-15T21:00+01:00",
  "url": "mailto:redaccion@moticias.com?subject=Publicidad%20y%20patrocinios%20en%20MOTICIAS",
  "utm": true,
  "utm_campaign": "",
- "weight": 1,
- "tipo_contenido": "patrocinado",
- "nivel": "basico"
+ "weight": 1
 }

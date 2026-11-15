@@ -50,6 +50,37 @@ def entrada(a, base):
     }
 
 
+def construir(data_dir=None, base="https://www.moticias.com", vertical="movilidad"):
+    """El índice completo como diccionario (sin escribirlo). Lo usan main() y el servidor (api/gestor.py → indice_al_dia)."""
+    data_dir = data_dir or os.path.join(ROOT, "data")
+    tx = Taxonomia(vertical)
+    piezas = []
+    for p in sorted(glob.glob(os.path.join(data_dir, "articles", "*.json"))):
+        d = json.load(open(p, encoding="utf-8"))
+        if d.get("status") != "publicado":  # solo lo que el lector puede abrir (sin estado = sin aprobar; 15-11-2026)
+            continue
+        piezas.append(entrada(d, base))
+    piezas.sort(key=lambda e: (e["d"] or "", e["id"]), reverse=True)
+    v = json.load(open(os.path.join(ROOT, "verticals", vertical + ".json"), encoding="utf-8"))
+    return {
+        "generado": __import__("datetime").datetime.now().astimezone().isoformat(timespec="minutes"),
+        "taxonomia": {
+            "modos": [{"id": m["id"], "nombre": m["nombre"], "submodos": [{"id": s["id"], "nombre": s["nombre"], "alias": s["alias"]} for s in m["submodos"]]} for m in tx.tax["modos"]],
+            "temas": [{"id": t["id"], "nombre": t["nombre"], "alias": t["alias"]} for t in tx.tax["temas"]],
+            "territorios": [{"id": t["id"], "nombre": t["nombre"], "tipo": t["tipo"], "vecinos": t.get("vecinos", []), "alias": t["alias"]} for t in tx.tax["territorios"]],
+        },
+        "secciones": {k: r for k, r in (v.get("secciones_web") or {}).items() if isinstance(r, dict)},
+        "sinonimos": tx.busqueda.get("sinonimos", []),
+        "piezas": piezas,
+    }
+
+
+def textos(out):
+    """(index.json, tipos.json) como texto, listos para escribir o subir."""
+    ligero = {"generado": out["generado"], "piezas": {p["id"]: [p["tc"], p["mc"]] for p in out["piezas"]}}
+    return json.dumps(out, ensure_ascii=False, separators=(",", ":")), json.dumps(ligero, ensure_ascii=False, separators=(",", ":"))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", default=os.path.join(ROOT, "data"))
@@ -57,29 +88,12 @@ def main():
     ap.add_argument("--base", default="https://www.moticias.com")
     ap.add_argument("--vertical", default="movilidad")
     a = ap.parse_args()
-    tx = Taxonomia(a.vertical)
-    piezas = []
-    for p in sorted(glob.glob(os.path.join(a.data, "articles", "*.json"))):
-        d = json.load(open(p, encoding="utf-8"))
-        if d.get("status") in ("pendiente", "borrador", "retirada"):
-            continue
-        piezas.append(entrada(d, a.base))
-    piezas.sort(key=lambda e: (e["d"] or "", e["id"]), reverse=True)
-    out = {
-        "generado": __import__("datetime").datetime.now().astimezone().isoformat(timespec="minutes"),
-        "taxonomia": {
-            "modos": [{"id": m["id"], "nombre": m["nombre"], "submodos": [{"id": s["id"], "nombre": s["nombre"], "alias": s["alias"]} for s in m["submodos"]]} for m in tx.tax["modos"]],
-            "temas": [{"id": t["id"], "nombre": t["nombre"], "alias": t["alias"]} for t in tx.tax["temas"]],
-            "territorios": [{"id": t["id"], "nombre": t["nombre"], "tipo": t["tipo"], "vecinos": t.get("vecinos", []), "alias": t["alias"]} for t in tx.tax["territorios"]],
-        },
-        "sinonimos": tx.busqueda.get("sinonimos", []),
-        "piezas": piezas,
-    }
+    out = construir(a.data, a.base, a.vertical)
+    ix, ti = textos(out)
     os.makedirs(os.path.dirname(a.salida), exist_ok=True)
-    json.dump(out, open(a.salida, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-    ligero = {"generado": out["generado"], "piezas": {p["id"]: [p["tc"], p["mc"]] for p in piezas}}
-    json.dump(ligero, open(os.path.join(os.path.dirname(a.salida), "tipos.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-    print("índice: %s · %d piezas · %.0f KB" % (os.path.relpath(a.salida, ROOT), len(piezas), os.path.getsize(a.salida) / 1024))
+    open(a.salida, "w", encoding="utf-8").write(ix)
+    open(os.path.join(os.path.dirname(a.salida), "tipos.json"), "w", encoding="utf-8").write(ti)
+    print("índice: %s · %d piezas · %.0f KB" % (os.path.relpath(a.salida, ROOT), len(out["piezas"]), os.path.getsize(a.salida) / 1024))
 
 
 if __name__ == "__main__":

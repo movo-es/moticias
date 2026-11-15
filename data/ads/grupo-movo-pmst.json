@@ -10,7 +10,7 @@
  "headline": "Obligación legal hasta el 5-12-2026: ¿Tu centro de trabajo necesita un plan de movilidad antes del plazo?",
  "id": "grupo-movo-pmst",
  "image": null,
- "label": "Contenido patrocinado · servicio del grupo",
+ "label": "Contenido patrocinado",
  "name": "Grupo · MOVO plan de movilidad sostenible al trabajo",
  "nivel": "premium",
  "notes": "Embudo de la campaña temática movilidad-al-trabajo-pmst. Medir por utm_campaign y por solicitudes recibidas.",
@@ -27,11 +27,11 @@
  "start": "2026-11-10",
  "status": "activo",
  "text": "Diagnóstico de obligación, encuesta a la plantilla, medidas y documento negociable con la representación de los trabajadores, en semanas. Un servicio de MOVO para empresas y entidades públicas con centros de más de 200 personas.",
+ "tipo_contenido": "patrocinado",
  "type": "grupo",
  "updated_at": "2026-11-09T16:31+00:00",
  "url": "https://movo.es/",
  "utm": true,
  "utm_campaign": "moticias-pmst-2026",
- "weight": 9,
- "tipo_contenido": "patrocinado"
+ "weight": 9
 }

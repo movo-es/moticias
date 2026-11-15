@@ -154,7 +154,9 @@
       if (!ix || !ix.piezas) return;
       var subs = {};
       (ix.taxonomia.modos || []).forEach(function (m) { (m.submodos || []).forEach(function (s) { subs[s.id] = s.nombre; }); });
-      var lista = ix.piezas.filter(SECCIONES[secActual]).sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
+      var regla = (ix.secciones || {})[secActual];  // reglas del vertical (secciones_web); si no vienen, las de aquí
+      var filtro = regla ? function (p) { return (!regla.modo || p.m === regla.modo) && (!regla.tema || (p.te || []).indexOf(regla.tema) >= 0) && (!regla.tipo || p.tc === regla.tipo); } : SECCIONES[secActual];
+      var lista = ix.piezas.filter(filtro).sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
       var main = d.querySelector("main#main"), vacio = main.querySelector("p.empty");
       var caja = vacio ? vacio.parentNode : null;
       if (!caja) { var sec0 = d.createElement("section"); sec0.className = "block"; caja = d.createElement("div"); caja.className = "wrap"; sec0.appendChild(caja); main.insertBefore(sec0, main.firstChild); }
@@ -217,9 +219,9 @@
     });
   }
   // Las cajas que pinta el tema por su cuenta (huecos sin caja del gestor) también llevan rel="sponsored". Las del grupo
-  // (clase «house» del tema, que no está versionado) llevan además la etiqueta única «Contenido patrocinado · servicio del
-  // grupo», y su enlace, utm_medium=grupo. Cuando el tema se versione (publicar-en-ghost-v1), esto pasa al tema.
-  var GRUPO = "Contenido patrocinado · servicio del grupo";
+  // (clase «house» del tema, que no está versionado) llevan además la etiqueta «Contenido patrocinado», y su enlace,
+  // utm_medium=grupo. Cuando el tema se versione (publicar-en-ghost-v1), esto pasa al tema.
+  var GRUPO = "Contenido patrocinado";  // sin decir «del grupo» en las cajas por niveles (decisión de Rainer, 15-11-2026, noche)
   function cajasDelTema() {
     [].forEach.call(d.querySelectorAll("aside.ad.house:not([data-mtx])"), function (c) {
       c.setAttribute("aria-label", GRUPO);

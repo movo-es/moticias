@@ -196,5 +196,6 @@
   "comunidad-valenciana",
   "baleares"
  ],
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "status": "publicado"
 }

@@ -712,7 +712,7 @@
   // guarda cajas con el tipo anterior (escrito antes del cambio tipos-de-contenido); se aceptan las dos formas hasta el 8-12-2026.
   const TIPO_ANTERIOR_GRUPO = "autopromocion";
   function esGrupo(t) { return t === "grupo" || t === TIPO_ANTERIOR_GRUPO; }
-  function adLabel(ad) { return esGrupo(ad.type) ? "Contenido patrocinado · servicio del grupo" : ({ patrocinio: "Contenido patrocinado" + (ad.advertiser ? " · " + ad.advertiser : ""), contenido: "Contenido patrocinado" }[ad.type] || ad.label || "Publicidad"); }
+  function adLabel(ad) { return esGrupo(ad.type) ? "Contenido patrocinado" : ({ patrocinio: "Contenido patrocinado" + (ad.advertiser ? " · " + ad.advertiser : ""), contenido: "Contenido patrocinado" }[ad.type] || ad.label || "Publicidad"); }
   function adHtml(ad, slot, variant) {
     if (!ad) return "";
     const href = adUrl(ad, slot), ext = /^https?:/i.test(href), img = adImg(ad);

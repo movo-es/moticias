@@ -50,10 +50,12 @@ Spec viva desde el 15-11-2026 (cambio `tipos-de-contenido`, aprobado por Rainer 
 - Nunca dentro de un análisis ni en piezas que traten del grupo.
 - Lo que anuncia servicios del grupo no se describe con ningún otro término, ni en textos, ni en etiquetas, ni en datos, ni en código.
 
+- **Modificado el 15-11-2026 (noche, decisión de Rainer):** en las cajas de publicidad por niveles, lo del grupo se etiqueta solo «Contenido patrocinado», sin mencionar que la empresa es del grupo; la marca va dentro de la caja. Las cajas dentro del texto conservan «Contenido patrocinado · servicio del grupo». Toda caja que enlaza a una empresa del grupo es `type: grupo`, la cree quien la cree.
+
 #### Escenario: caja del grupo en un hueco de nivel premium
 - DADO un anuncio con `type: grupo` activo en el hueco `cabecera`
 - CUANDO `m.js` lo pinta en moticias.com
-- ENTONCES la etiqueta dice «Contenido patrocinado · servicio del grupo» y el enlace lleva `rel="sponsored noopener"`
+- ENTONCES la etiqueta dice «Contenido patrocinado» (sin «del grupo») y el enlace lleva `rel="sponsored noopener"`
 
 #### Escenario: seguimiento tras el cambio de identificador
 - DADA una caja cuyo identificador pasó de `casa-…` a `grupo-…`

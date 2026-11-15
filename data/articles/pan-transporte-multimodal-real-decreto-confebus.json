@@ -193,5 +193,6 @@
   "aragon",
   "estado"
  ],
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "status": "publicado"
 }

@@ -422,7 +422,7 @@ def publicidad_publica():
             continue
         if (a.get("start") and a["start"] > hoy) or (a.get("end") and a["end"] < hoy):
             continue
-        # La etiqueta sale siempre de src/tipos.py: el lector ve «Contenido patrocinado · servicio del grupo»,
+        # La etiqueta sale siempre de src/tipos.py: el lector ve «Contenido patrocinado» (lo del grupo y lo de un cliente, este con su nombre),
         # «Contenido patrocinado · <cliente>» o «Publicidad», nunca otro texto. Todos los enlaces llevan rel="sponsored".
         caja = {"id": a["id"], "tipo": "grupo" if T.anuncio_es_del_grupo(a, v) else (a.get("type") or "publicidad"), "etiqueta": T.marca_anuncio(a, v), "rel": T.rel("patrocinado"),
                 "anunciante": a.get("advertiser") or "", "titular": a.get("headline") or "", "texto": a.get("text") or "", "cta": a.get("cta") or "",
@@ -1249,6 +1249,64 @@ def html_esc(t):
     return str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# ---------- secciones de moticias.com al día (decisión de Rainer, 15-11-2026) ----------
+# Las páginas de sección se pintan con el índice del buscador (app/public/buscador/index.json). Las tareas programadas no
+# pueden subirlo por el buzón (solo contenido), así que el servidor lo rehace desde data/ en cada pasada del cron
+# ghost_al_dia y lo sube a main si cambió. En las pasadas en que el índice ya está al día, comprueba que cada sección
+# enseña lo que cabe esperar (src/secciones.py) y, si no, avisa al director por correo (una vez al día como mucho).
+def indice_al_dia():
+    import export_search_index as X
+    if not os.environ.get("GITHUB_TOKEN"):
+        return {"ok": False, "error": "falta GITHUB_TOKEN"}
+    out = X.construir(os.path.join(ROOT, "data"))
+    st, r = gh("GET", "contents/app/public/buscador/index.json?ref=%s" % BRANCH)
+    actual = {}
+    if st == 200 and r.get("content"):
+        try:
+            actual = json.loads(base64.b64decode(r["content"]).decode("utf-8"))
+        except ValueError:
+            actual = {}
+    sin_fecha = lambda d: {k: v for k, v in d.items() if k != "generado"}
+    if actual and sin_fecha(actual) == sin_fecha(out):
+        return {"ok": True, "cambiado": False, "piezas": len(out["piezas"])}
+    ix, ti = X.textos(out)
+    ok, det = _commit_lote([{"ruta": "app/public/buscador/index.json", "texto": ix}, {"ruta": "app/public/buscador/tipos.json", "texto": ti}],
+                           "Índice del buscador y de las secciones al día (%d piezas)" % len(out["piezas"]), "G. Jordan", "redaccion@moticias.com",
+                           rutas=("app/public/buscador/",), comprobar_base=False)
+    return {"ok": ok, "cambiado": ok, "piezas": len(out["piezas"]), "detalle": det}
+
+
+def secciones_vigilar():
+    import export_search_index as X
+    import secciones as SEC
+    v = vertical()
+    try:
+        servido = SEC._get_json(SEC.INDICE_WEB)
+    except Exception as e:
+        return {"ok": False, "error": "no se pudo leer el índice servido: %s" % e}
+    try:
+        en_ghost = SEC.publicadas_en_ghost(v)
+    except Exception:
+        en_ghost = None
+    res = SEC.comprobar(X.construir(os.path.join(ROOT, "data")), servido, en_ghost, v)
+    res["aviso"] = None
+    if res["problemas"] and BD.configurada():
+        hoy = datetime.date.today().isoformat()
+        try:
+            ya = BD.leer("gestor_registro", select="id", accion="eq.secciones_aviso", at="gte.%sT00:00:00Z" % hoy, limit="1")
+        except BD.ErrorBD:
+            ya = []
+        if not ya:
+            para = (v.get("productos") or {}).get("email") or []
+            cuerpo = ("<p>Comprobación de las secciones de moticias.com tras la última actualización:</p><ul>%s</ul><p>Detalle por sección: %s</p>"
+                      % ("".join("<li>%s</li>" % html_esc(p) for p in res["problemas"]),
+                         html_esc(", ".join("%s %d/%d" % (s, x["servidas"], x["esperadas"]) for s, x in res["secciones"].items()))))
+            ok, det = M.enviar_correo("MOTICIAS · las secciones no enseñan lo que deberían", cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))
+            BD.registrar("cron", "secciones_aviso", None, {"problemas": res["problemas"][:5], "enviado": ok})
+            res["aviso"] = {"enviado": ok}
+    return res
+
+
 def ghost_al_dia(solo=None):
     import re as _re, shutil, subprocess
     url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
@@ -1299,7 +1357,7 @@ def _blob_sha(datos):
     return hashlib.sha1(b"blob %d\0" % len(datos) + datos).hexdigest()
 
 
-def _commit_lote(ficheros, mensaje, autor, correo):
+def _commit_lote(ficheros, mensaje, autor, correo, rutas=None, comprobar_base=True):
     """Un solo commit en BRANCH con los ficheros del lote. Devuelve (True, sha) o (False, motivo)."""
     for intento in (1, 2):
         st, ref = gh("GET", "git/ref/heads/%s" % BRANCH)
@@ -1316,7 +1374,7 @@ def _commit_lote(ficheros, mensaje, autor, correo):
         nuevos = []
         for f in ficheros:
             ruta = str(f.get("ruta") or "")
-            if not ruta.startswith(BUZON_RUTAS) or ".." in ruta.split("/"):
+            if not ruta.startswith(rutas or BUZON_RUTAS) or ".." in ruta.split("/"):
                 return False, "ruta no permitida en el buzón: %s" % ruta
             if "texto" in f:
                 datos = str(f["texto"]).encode("utf-8")
@@ -1330,7 +1388,7 @@ def _commit_lote(ficheros, mensaje, autor, correo):
             actual, base = en_main.get(ruta), f.get("base") or None
             if actual == _blob_sha(datos):
                 continue  # ya está en main tal cual
-            if actual != base:
+            if comprobar_base and actual != base:
                 return False, "conflicto en %s: main tiene %s y el lote partía de %s" % (ruta, (actual or "nada")[:7], (base or "nada")[:7])
             if "texto" in f:
                 nuevos.append({"path": ruta, "mode": "100644", "type": "blob", "content": f["texto"]})
@@ -1451,7 +1509,14 @@ class handler(BaseHTTPRequestHandler):
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
-            return self._enviar(200, ghost_al_dia())
+            r = ghost_al_dia()
+            try:
+                r["indice"] = indice_al_dia()
+                if not r["indice"].get("cambiado") and not r.get("publicadas"):  # índice servido ya al día: comprobar secciones
+                    r["secciones"] = secciones_vigilar()
+            except Exception as e:  # la comprobación nunca hace fallar la publicación
+                r["secciones_error"] = str(e)[:300]
+            return self._enviar(200, r)
         if a == "copias_vigilar":  # Vercel Cron (diario): ¿hay copia reciente del Mac? Si no, correo a Rainer
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
