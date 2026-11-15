@@ -58,7 +58,10 @@ ORIGEN_SITIO = os.environ.get("ORIGEN_SITIO", "https://www.moticias.com")
 # Campos que el superadministrador puede cambiar en un producto y en un anuncio (lista cerrada).
 CAMPOS_PRODUCTO = {"modo", "umbral", "exclusividad", "posicion", "max_por_semana", "status", "url", "one_liner", "contexto", "textos", "excluir"}
 CAMPOS_ANUNCIO = {"status", "start", "end", "headline", "text", "cta", "url", "weight", "name", "advertiser", "type", "nivel", "slots",
-                  "sections", "image", "crm_cuenta_id", "utm_campaign", "notes"}
+                  "sections", "image", "crm_cuenta_id", "utm_campaign", "notes",
+                  # banner premium (16-11-2026): formato de la rejilla, imagen o caja de texto, imagen para móvil, texto alternativo,
+                  # fondo de la paleta y botón (Ir a la web · Pide más información)
+                  "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo"}
 
 
 # ---------- sesión ----------
@@ -401,7 +404,8 @@ def anuncios():
     for f in sorted(glob.glob(os.path.join(ROOT, "data", "ads", "*.json"))):
         a = json.load(open(f, encoding="utf-8"))
         out.append({k: a.get(k) for k in ("id", "name", "advertiser", "type", "label", "status", "start", "end", "slots", "sections", "headline",
-                                          "text", "cta", "url", "weight", "nivel", "image", "crm_cuenta_id", "utm_campaign", "updated_at", "propuesto_por")})
+                                          "text", "cta", "url", "weight", "nivel", "image", "crm_cuenta_id", "utm_campaign", "updated_at", "propuesto_por",
+                                          "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo")})
     return out
 
 
@@ -431,13 +435,178 @@ def publicidad_publica():
                 "anunciante": a.get("advertiser") or "", "titular": a.get("headline") or "", "texto": a.get("text") or "", "cta": a.get("cta") or "",
                 "url": a["url"], "nivel": a.get("nivel") or "estandar", "peso": int(a.get("weight") or 1), "imagen": a.get("image") or None,
                 "secciones": a.get("sections") or [], "campana": a.get("utm_campaign") or a["id"]}
+        caja.update(banner_publico(a, pub))
         for h in a.get("slots") or []:
+            h = "portada-premium" if h == "cabecera" else h  # el hueco «cabecera» quedaba encima de la apertura (16-11-2026)
             if h in huecos:
                 out.setdefault(h, []).append(caja)
     orden = {"premium": 0, "estandar": 1, "basico": 2}
     for h in out:  # lo pagado delante de las cajas del grupo; después por nivel y peso
         out[h].sort(key=lambda c: (c["tipo"] == "grupo", orden.get(c["nivel"], 3), -c["peso"]))
-    return {"huecos": out, "generado": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
+    return {"huecos": out, "tope_pago": int(pub.get("tope_pago_por_pagina") or 3), "rejilla": pub.get("rejilla") or {},
+            "formulario": bool((pub.get("formulario") or {}).get("activo")),
+            "formulario_textos": {k: (pub.get("formulario") or {}).get(k) for k in ("version", "aviso", "consentimiento")} if (pub.get("formulario") or {}).get("activo") else None,
+            "generado": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
+
+
+# ---------- banner premium (cambio banner-premium, 16-11-2026) ----------
+def _lum(hexa):
+    v = [int(hexa[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    v = [x / 12.92 if x <= .03928 else ((x + .055) / 1.055) ** 2.4 for x in v]
+    return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]
+
+
+def contraste(a, b):
+    x, y = _lum(a), _lum(b)
+    return (max(x, y) + .05) / (min(x, y) + .05)
+
+
+def _fondo(pub, fid):
+    for f in ((pub.get("caja_texto") or {}).get("fondos") or []):
+        if f["id"] == fid:
+            return f
+    return None
+
+
+def banner_publico(a, pub):
+    """Lo que el sitio necesita para pintar el banner: formato, modo, imágenes, colores ya resueltos y botón. Si el
+    formulario está apagado, «Pide más información» se pinta como «Ir a la web»."""
+    out = {"formato": a.get("formato") if a.get("formato") in (pub.get("formatos") or {}) else None,
+           "modo": a.get("modo") if a.get("modo") in ("imagen", "texto") else ("imagen" if a.get("image") else "texto"),
+           "imagen_movil": a.get("imagen_movil") or None, "alt": a.get("alt") or ""}
+    f = _fondo(pub, a.get("fondo") or "azul")
+    if f:
+        out["colores"] = {k: f[k] for k in ("fondo", "texto", "boton", "boton_texto")}
+    ct = a.get("cta_tipo")
+    if ct == "info" and not (pub.get("formulario") or {}).get("activo"):
+        ct = "web"
+    out["cta_tipo"] = ct if ct in ("web", "info") else None
+    out["cta_texto"] = (pub.get("cta") or {}).get(ct) if ct else None
+    return out
+
+
+def validar_banner(a, pub):
+    """Errores que impiden activar un banner (lista vacía si vale)."""
+    err = []
+    if a.get("formato") and a["formato"] not in (pub.get("formatos") or {}):
+        err.append("formato no válido")
+    if a.get("modo") == "imagen":
+        if not a.get("image"):
+            err.append("falta la imagen")
+        if not (a.get("alt") or "").strip():
+            err.append("falta el texto alternativo de la imagen (obligatorio)")
+    if a.get("modo") == "texto":
+        lim = (pub.get("caja_texto") or {}).get("limites") or {}
+        for campo, k in (("headline", "titular"), ("text", "texto"), ("advertiser", "anunciante")):
+            if lim.get(k) and len(a.get(campo) or "") > lim[k]:
+                err.append("el %s pasa de %d caracteres" % (k, lim[k]))
+        f = _fondo(pub, a.get("fondo") or "azul")
+        if not f:
+            err.append("fondo no válido")
+        else:
+            m = float((pub.get("caja_texto") or {}).get("contraste_minimo") or 4.5)
+            if contraste(f["fondo"], f["texto"]) < m or contraste(f["boton"], f["boton_texto"]) < m:
+                err.append("ese fondo no tiene contraste suficiente")
+    if a.get("cta_tipo") not in (None, "", "web", "info"):
+        err.append("botón no válido")
+    return err
+
+
+def subir_imagen_anuncio(ses, d):
+    """Sube a Ghost la imagen de un banner (ya recortada en el navegador a la proporción del formato). Devuelve su URL."""
+    if not ("publicidad" in ses["permisos"] or "contratos" in ses["permisos"] or "proponer" in ses["permisos"]):
+        return 403, {"error": "tu perfil no sube imágenes de publicidad"}
+    m = re.match(r"^data:image/(jpeg|png|webp);base64,(.+)$", str(d.get("datos") or ""), re.S)
+    if not m:
+        return 400, {"error": "la imagen tiene que ser JPG, PNG o WebP"}
+    datos = base64.b64decode(m.group(2))
+    if len(datos) > 4 * 1024 * 1024:
+        return 400, {"error": "la imagen pesa más de 4 MB: guárdala más ligera"}
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key:
+        return 503, {"error": "faltan las claves de Ghost en Vercel"}
+    nombre = "banner-%s-%s.%s" % (_slug(d.get("nombre") or "anuncio", 30), secrets.token_hex(3), "jpg" if m.group(1) == "jpeg" else m.group(1))
+    limite = "----MoticiasBanner%d" % int(time.time() * 1000)
+    cuerpo = b"".join([("--%s\r\nContent-Disposition: form-data; name=\"purpose\"\r\n\r\nimage\r\n" % limite).encode(),
+                       ("--%s\r\nContent-Disposition: form-data; name=\"file\"; filename=\"%s\"\r\nContent-Type: image/%s\r\n\r\n" % (limite, nombre, m.group(1))).encode(),
+                       datos, ("\r\n--%s--\r\n" % limite).encode()])
+    req = urllib.request.Request(G.admin_base(url.rstrip("/")) + "/ghost/api/admin/images/upload/", data=cuerpo, method="POST",
+                                 headers={"Authorization": "Ghost " + G.ghost_token(key), "Content-Type": "multipart/form-data; boundary=" + limite,
+                                          "Accept-Version": "v5.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            res = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        return 502, {"error": "Ghost no aceptó la imagen (%s)" % e.code}
+    BD.registrar(ses["nombre"], "publicidad_imagen", nombre)
+    return 200, {"ok": True, "url": res["images"][0]["url"]}
+
+
+FORM_CAMPOS = ("nombre", "empresa", "email", "telefono", "direccion", "cp", "ciudad", "pais")
+_FORM_IP = {}
+
+
+def formulario_publico(d, ua, ip):
+    """«Pide más información» de un banner: guarda el envío en la base privada (pub_formularios), ligado a la campaña, y lo
+    manda al anunciante (la persona de su cuenta del CRM con correo y sin «No contactar»). Solo con el formulario encendido."""
+    v = vertical()
+    pub = v.get("publicidad") or {}
+    cfg = pub.get("formulario") or {}
+    if not cfg.get("activo"):
+        return 403, {"error": "el formulario todavía no está activo"}
+    if S.ROBOT.search(ua or ""):
+        return 204, {}
+    ahora = time.time()
+    _FORM_IP[ip] = [t for t in _FORM_IP.get(ip, []) if ahora - t < 600] + [ahora]
+    if len(_FORM_IP[ip]) > 5:
+        return 429, {"error": "demasiados envíos seguidos; prueba dentro de unos minutos"}
+    a = next((x for x in anuncios() if x["id"] == d.get("anuncio") and x.get("status") == "activo"), None)
+    if not a or a.get("cta_tipo") != "info":
+        return 404, {"error": "anuncio no encontrado"}
+    f = {k: " ".join(str(d.get(k) or "").split())[:200] or None for k in FORM_CAMPOS}
+    obligatorios = [c for c, ob in cfg.get("campos") or [] if ob]
+    faltan = [c for c in obligatorios if not f.get(c)]
+    if faltan:
+        return 400, {"error": "faltan campos obligatorios: " + ", ".join(faltan)}
+    if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", f["email"] or ""):
+        return 400, {"error": "el correo no es válido"}
+    if d.get("consentimiento") is not True:
+        return 400, {"error": "hace falta tu consentimiento para entregar los datos al anunciante"}
+    fila = dict(f, anuncio=a["id"], campana=a.get("utm_campaign") or a["id"], anunciante=a.get("advertiser"), consentimiento=True,
+                texto_legal=str(d.get("texto_legal") or cfg.get("version") or "sin versión")[:40], pagina=str(d.get("pagina") or "")[:200],
+                dispositivo=str(d.get("dispositivo") or "")[:20], procedencia=str(d.get("procedencia") or "")[:80])
+    try:
+        r = BD.insertar("pub_formularios", fila)[0]
+    except BD.ErrorBD as e:
+        return 502, {"error": "no se pudo guardar: %s" % e}
+    para = []
+    if a.get("crm_cuenta_id"):
+        try:
+            para = [p["correo"] for p in BD.leer("crm_personas", select="correo", cuenta_id="eq." + str(a["crm_cuenta_id"]), correo="not.is.null",
+                                                   no_contactar_at="is.null", archivada_at="is.null", limit="2")]
+        except BD.ErrorBD:
+            para = []
+    filas = "".join("<tr><td style='padding:4px 10px;color:#5d6b82'>%s</td><td style='padding:4px 10px'>%s</td></tr>" % (k.capitalize(), html_escape(f[k] or "—")) for k in FORM_CAMPOS)
+    cuerpo = ("<p>Una persona ha pedido más información desde tu anuncio «%s» en MOTICIAS y ha dado su consentimiento para que te entreguemos estos datos:</p>"
+              "<table>%s</table><p style='color:#5d6b82;font-size:12px'>MOTICIAS (Avionline S.L.) solo entrega estos datos y guarda una copia %s meses para "
+              "acreditar el envío y el consentimiento. Desde este momento, el tratamiento es responsabilidad del anunciante.</p>") % (
+                  html_escape(a.get("headline") or a["id"]), filas, cfg.get("conservacion_meses", 12))
+    ok, det = (False, "el anunciante no tiene correo en el CRM") if not para else M.enviar_correo("MOTICIAS · Petición de información: " + (a.get("headline") or "")[:80],
+                                                                                              cuerpo, para, M.remitentes_avisos(v))
+    if not ok:  # si no llega al anunciante, llega al editor jefe para que lo reenvíe
+        M.enviar_correo("MOTICIAS · Formulario sin entregar (%s)" % a["id"], cuerpo + "<p><b>No se pudo entregar al anunciante:</b> %s</p>" % html_escape(det),
+                        [v["prensa"]["aviso_director"]], M.remitentes_avisos(v))
+    try:
+        BD.actualizar("pub_formularios", {"id": "eq.%s" % r["id"]}, {"entregado": ok, "entregado_at": datetime.datetime.now(datetime.timezone.utc).isoformat() if ok else None,
+                                                                   "error_entrega": None if ok else det[:300]})
+    except BD.ErrorBD:
+        pass
+    S.evento_ampliado({"a": a["id"], "h": d.get("hueco") or "portada-premium", "s": d.get("seccion"), "dv": d.get("dispositivo"), "pr": d.get("procedencia"), "t": "form_enviado"}, ua)
+    return 200, {"ok": True, "mensaje": "Enviado. %s te contestará." % (a.get("advertiser") or "El anunciante")}
+
+
+def html_escape(x):
+    return str(x).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def accion_anuncio(ses, d):
@@ -456,12 +625,15 @@ def accion_anuncio(ses, d):
     if "slots" in cambios:
         if not isinstance(cambios["slots"], list) or not set(cambios["slots"]) <= set((pub.get("huecos") or {}).keys()):
             return 400, {"error": "hueco no válido"}
+    for k in ("image", "imagen_movil"):
+        if cambios.get(k) and not str(cambios[k]).startswith("https://"):
+            return 400, {"error": "la imagen tiene que estar subida (https://)"}
     if cambios.get("url") and not str(cambios["url"]).startswith(("https://", "mailto:")):
         return 400, {"error": "el enlace tiene que empezar por https:// (o mailto: para escribir a un correo)"}
     for k in ("start", "end"):
         if cambios.get(k) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(cambios[k])):
             return 400, {"error": "fecha no válida (%s)" % k}
-    for k, n in (("headline", 140), ("text", 400), ("cta", 60), ("name", 120), ("advertiser", 120), ("notes", 1000), ("utm_campaign", 60)):
+    for k, n in (("headline", 140), ("text", 400), ("cta", 60), ("name", 120), ("advertiser", 120), ("notes", 1000), ("utm_campaign", 60), ("alt", 200)):
         if k in cambios:
             cambios[k] = str(cambios[k] or "").strip()[:n]
     if "weight" in cambios:
@@ -501,6 +673,10 @@ def accion_anuncio(ses, d):
     a["label"] = T.marca_anuncio(a, v)  # la etiqueta visible no se escribe a mano: sale del tipo (y del cliente, si paga uno)
     if a.get("status") == "activo" and (not a.get("url") or not a.get("slots") or not a.get("headline")):
         return 400, {"error": "para activarla necesita titular, enlace (https:// o mailto:) y al menos un hueco"}
+    a["slots"] = ["portada-premium" if h == "cabecera" else h for h in (a.get("slots") or [])]  # «cabecera» quedaba encima de la apertura
+    malos = validar_banner(a, pub)
+    if malos and (a.get("status") == "activo" or "formato" in cambios or "modo" in cambios):
+        return 400, {"error": "; ".join(malos)}
     a["updated_at"] = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
     for k in ("amount_eur", "contact", "invoice_ref"):  # lo comercial va al CRM (privado), no al repositorio público
         a.pop(k, None)
@@ -2080,7 +2256,7 @@ class handler(BaseHTTPRequestHandler):
         a = q.get("a")
         try:
             n = int(self.headers.get("Content-Length") or 0)
-            d = json.loads(self.rfile.read(min(n, 400000)) or b"{}") if n else {}
+            d = json.loads(self.rfile.read(min(n, 6000000 if a == "anuncio_imagen" else 400000)) or b"{}") if n else {}
         except (ValueError, json.JSONDecodeError):
             return self._enviar(400, {"error": "JSON no válido"})
         if a == "copia":  # el Mac anota una copia o una prueba (token propio; solo fecha, tamaños, huellas y recuentos)
@@ -2095,7 +2271,11 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(200, {"ok": True, "id": fila})
         if a == "evento":  # pública: visualizaciones y clics que manda el script de moticias.com (sendBeacon, texto plano)
             S.evento(d, self.headers.get("User-Agent"))
+            S.evento_ampliado(d, self.headers.get("User-Agent"))
             return self._enviar(204, {}, cors="*")
+        if a == "formulario":  # pública: «Pide más información» de un banner (cambio banner-premium)
+            st, r = formulario_publico(d, self.headers.get("User-Agent"), self.headers.get("x-forwarded-for", "").split(",")[0].strip())
+            return self._enviar(st, r, cors="*")
         if a == "entrar":
             clave, email = str(d.get("clave") or ""), str(d.get("email") or "").strip()
             if email:  # cuenta personal del equipo
@@ -2189,6 +2369,8 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "cola":
             return self._enviar(*cola_accion(ses, d))
+        if a == "anuncio_imagen":
+            return self._enviar(*subir_imagen_anuncio(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
         if a == "probar_aviso":  # diagnóstico: manda un correo de prueba al editor jefe y enseña lo que contesta Brevo

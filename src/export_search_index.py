@@ -104,7 +104,15 @@ def menu(tx, piezas, base="https://www.moticias.com"):
     regiones = [{"id": t, "nombre": x.get("nombre_corto") or x["nombre"], "tipo": x["tipo"], "url": "%s/tag/t-%s/" % (b, t),
                  "n": cuenta(lambda p: t in (p.get("tr") or []))} for t, x in tx.territorios.items()]
     voz = [{"id": p["id"], "t": p.get("t"), "url": p.get("url"), "d": p.get("d"), "img": p.get("gi")} for p in piezas if p.get("kind") == "opinion"]
-    return {"medios": medios, "logistica": {"nombre": "Logística", "url": "%s/logistica/" % b, "modos": [x for x in logi if x["n"]]},
+    # Portada (16-11-2026): últimos titulares (columna izquierda del banner premium) y «Lo esencial» por columna (el tema la dejaba vacía).
+    import secciones as SE  # noqa: E402
+    SE.MERCANCIAS.update(k for k, x in tx.modos_t.items() if x["mercancias"])
+    v = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
+    reglas = SE.reglas(v)
+    corto = lambda p: {"t": p.get("t"), "url": p.get("url"), "mc": p.get("mc")}  # noqa: E731
+    ultimas = [corto(p) for p in piezas if p.get("kind") != "opinion"][:12]
+    esencial = {s: [corto(p) for p in piezas if SE.pertenece(p, reglas[s])][:8] for s in ("tierra", "mar", "aire", "regulacion", "licitaciones") if s in reglas}
+    return {"ultimas": ultimas, "esencial": esencial, "medios": medios, "logistica": {"nombre": "Logística", "url": "%s/logistica/" % b, "modos": [x for x in logi if x["n"]]},
             "temas": [x for x in temas if x["n"]], "secciones": [{"nombre": "Regulación", "url": "%s/regulacion/" % b}, {"nombre": "Licitaciones", "url": "%s/licitaciones/" % b}],
             "regiones": [x for x in regiones if x["n"]], "analisis": {"nombre": "Análisis", "url": "%s/analisis/" % b},
             "voz": {"nombre": "La voz del editor", "url": "%s/la-voz-del-editor/" % b, "piezas": voz[:12]}}

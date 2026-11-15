@@ -75,6 +75,48 @@ def evento(d, ua):
         return False
 
 
+TIPOS_AMPLIADOS = {"i": "vista", "c": "clic", "cta": "cta", "fa": "form_abierto", "fe": "form_enviado",
+                   "vista": "vista", "clic": "clic", "form_abierto": "form_abierto", "form_enviado": "form_enviado"}
+DISPOSITIVOS = ("movil", "tableta", "escritorio")
+
+
+def evento_ampliado(d, ua):
+    """Banner premium (16-11-2026, migración 013): suma el evento con sección, dispositivo y procedencia (dominio de origen o
+    utm_source, sin datos personales). Tipos: vista, clic, cta (botón), form_abierto, form_enviado."""
+    if ROBOT.search(ua or "") or not BD.configurada():
+        return False
+    aid, hueco, tipo = str(d.get("a") or ""), str(d.get("h") or "")[:40], TIPOS_AMPLIADOS.get(str(d.get("t") or ""))
+    if not tipo or not ID_OK.match(aid) or aid not in ids_validos() or len(hueco) < 2:
+        return False
+    sec = re.sub(r"[^a-z0-9-]", "", str(d.get("s") or "portada").lower())[:60] or "portada"
+    dv = d.get("dv") if d.get("dv") in DISPOSITIVOS else "escritorio"
+    pr = re.sub(r"[^a-z0-9.-]", "", str(d.get("pr") or "directo").lower())[:80] or "directo"
+    try:
+        BD.peticion("POST", "rpc/pub_evento", cuerpo={"p_anuncio": aid, "p_hueco": hueco, "p_seccion": sec, "p_dispositivo": dv, "p_procedencia": pr, "p_tipo": tipo})
+        return True
+    except BD.ErrorBD:
+        return False
+
+
+def panel_ampliado(dias=30):
+    """Por caja: vistas, clics, clics en el botón, formularios abiertos y enviados, y su reparto por procedencia, dispositivo y sección."""
+    if not BD.configurada():
+        return {}
+    desde = (datetime.date.today() - datetime.timedelta(days=dias - 1)).isoformat()
+    try:
+        filas = BD.leer("pub_eventos", select="anuncio,seccion,dispositivo,procedencia,tipo,n", dia="gte." + desde, limit="50000")
+    except BD.ErrorBD:
+        return {}
+    out = {}
+    for f in filas:
+        x = out.setdefault(f["anuncio"], {"totales": {}, "procedencia": {}, "dispositivo": {}, "seccion": {}})
+        x["totales"][f["tipo"]] = x["totales"].get(f["tipo"], 0) + f["n"]
+        for dim in ("procedencia", "dispositivo", "seccion"):
+            y = x[dim].setdefault(f[dim], {})
+            y[f["tipo"]] = y.get(f["tipo"], 0) + f["n"]
+    return out
+
+
 # ---------- comprobador ----------
 def con_utm(url, anuncio):
     p = urllib.parse.urlsplit(url)
@@ -196,4 +238,7 @@ def panel(dias=30):
                       "nivel": p.get("posicion"), "estado": p.get("status") if p.get("modo") != "apagado" else "apagado",
                       "huecos": sorted({m["posicion"] for m in lista}), "publicada": lista[-1]["publicada"] if lista else None,
                       "retirada": None, "url": p.get("url"), "cifras": por.get(k), "comprobaciones": ult.get(k, []), "piezas": lista})
+    amp = panel_ampliado(dias)
+    for c in cajas:
+        c["ampliado"] = amp.get(c["id"])
     return {"desde": desde, "dias": dias, "cajas": cajas}

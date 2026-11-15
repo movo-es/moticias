@@ -69,3 +69,6 @@ begin
 end $$;
 grant update on pub_eventos, pub_formularios to anon;
 grant usage on all sequences in schema public to anon;
+
+-- Purga a los 12 meses (aplicada el 16-11-2026 con pg_cron): vacía los datos personales del formulario y deja la fila (cifras).
+select cron.schedule('formularios-purga-12-meses', '20 3 * * *', $$update public.pub_formularios set nombre = null, empresa = null, email = null, telefono = null, direccion = null, cp = null, ciudad = null, purgado_at = now() where purgado_at is null and creado_at < now() - interval '12 months'$$);

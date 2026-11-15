@@ -742,7 +742,7 @@ async function verAnuncios() {
   const grupos = ["propuesta", "activo", "pausado", "borrador", "terminado"];
   const lista = [...cache.anuncios].sort((a, b) => grupos.indexOf(a.status) - grupos.indexOf(b.status));
   app.innerHTML = avisoConfig() + `<div class="card"><h1>Publicidad y patrocinios</h1>
-    <p class="mute">Cajas con enlace fuera del texto de las piezas, en tres niveles: <b>Premium</b> (bajo la cabecera y junto al texto del artículo), <b>Estándar</b> (entre bloques de la portada y tras el artículo) y <b>Básico</b> (antes del pie y en el boletín). Llevan siempre su etiqueta visible. ${sa ? "Solo tú las activas." : "Tú las propones; las activa el editor jefe."}</p>
+    <p class="mute">Cajas con enlace fuera del texto de las piezas, en tres niveles: <b>Premium</b> (en la portada, un escalón bajo la apertura y a la derecha; y junto al texto del artículo), <b>Estándar</b> (entre bloques de la portada y tras el artículo) y <b>Básico</b> (antes del pie y en el boletín). Llevan siempre su etiqueta visible. ${sa ? "Solo tú las activas." : "Tú las propones; las activa el editor jefe."}</p>
     <div class="row"><button class="b" id="nueva">Nueva caja de publicidad o patrocinio</button>${sa || puede("contratos") ? `<button class="b2" id="seg">Seguimiento: vistas, clics y comprobaciones</button>` : ""}</div></div>
     <div id="form"></div>`
    + lista.map(a => `<div class="card" data-a="${E(a.id)}"><div class="row" style="justify-content:space-between"><h2>${E(a.name)}</h2><span class="chip ${(EST_AD[a.status]||[""])[0]}">${E((EST_AD[a.status]||["",a.status])[1])}</span></div>
@@ -786,15 +786,77 @@ async function formAd(a) {
     <label>Texto del enlace</label><input id="f-cta" maxlength="60" value="${E(a.cta)}" placeholder="Más información">
     <label>Enlace (https://…)</label><input id="f-url" value="${E(a.url)}" inputmode="url">
     <div class="row" style="gap:12px"><div style="flex:1"><label>Desde</label><input type="date" id="f-ini" value="${E(a.start)}"></div><div style="flex:1"><label>Hasta</label><input type="date" id="f-fin" value="${E(a.end)}"></div><div style="flex:1"><label>Peso (1–10)</label><input type="number" id="f-peso" min="1" max="10" value="${E(a.weight || 1)}"></div></div>
+    <div id="f-ban"></div>
     <label>Vista previa</label><div id="f-prev"></div>
     <p class="mute">El importe, la factura y el contacto van en la ficha del cliente en el CRM (privado), nunca aquí: esta caja se guarda en el repositorio público.</p>
     <div class="row"><button class="b" id="f-ok">${sa ? "Guardar" : "Proponer al editor jefe"}</button>${sa && (nuevo || a.status !== "activo") ? `<button class="b2" id="f-act">Guardar y activar</button>` : ""}<button class="b2" id="f-no">Cancelar</button></div></div>`;
   const seg = id => { const s = $(id); s.onclick = ev => { const b = ev.target.closest("button"); if (b) { s.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); upd(); } }; };
-  const leer = () => ({type: $("#f-tipo .on")?.dataset.v, nivel: $("#f-nivel .on")?.dataset.v, advertiser: $("#f-adv").value, name: $("#f-name").value, headline: $("#f-h").value, text: $("#f-t").value, cta: $("#f-cta").value, url: $("#f-url").value.trim(), start: $("#f-ini").value || null, end: $("#f-fin").value || null, weight: $("#f-peso").value, slots: [...$("#form").querySelectorAll(".chk input:checked")].map(i => i.value), crm_cuenta_id: $("#f-cuenta") ? $("#f-cuenta").value || null : a.crm_cuenta_id || null});
+  // Banner premium (16-11-2026): formato de la rejilla, imagen (con recorte) o caja de texto, y botón.
+  const B = {formato: a.formato || "", modo: a.modo || (a.image ? "imagen" : "texto"), image: a.image || "", imagen_movil: a.imagen_movil || "", alt: a.alt || "", fondo: a.fondo || "azul", cta_tipo: a.cta_tipo || ""};
+  const pintaBanner = () => {
+    const premium = [...$("#form").querySelectorAll(".chk input:checked")].some(i => i.value === "portada-premium"), box = $("#f-ban");
+    if (!premium) { box.innerHTML = ""; return; }
+    const R = P.rejilla || {}, F = P.formatos || {}, T = P.caja_texto || {}, lim = T.limites || {};
+    const col = ((R.ancho || 1203) - ((R.columnas || 4) - 1) * (R.separacion || 28)) / (R.columnas || 4);
+    const med = f => { const [c, r] = f.split("x").map(Number); return {w: Math.round(c * col + (c - 1) * (R.separacion || 28)), h: Math.round(r * (R.fila || 140) + (r - 1) * (R.separacion || 28))}; };
+    const esc = R.escala || 2, mv = R.movil || {ancho: 358, alto: 120};
+    const fondos = T.fondos || [];
+    box.innerHTML = `<div class="card" style="background:var(--soft)"><h2>Banner premium de portada</h2>
+      <p class="mute">Un escalón por debajo de la apertura, a la derecha; en el móvil, franja bajo los titulares visuales. Etiqueta siempre visible y enlace que cuenta los clics.</p>
+      <label>Formato (columnas × filas)</label><div class="seg" id="b-formato" style="flex-wrap:wrap">${Object.entries(F).map(([k, n]) => `<button type="button" data-v="${k}" class="${B.formato === k ? "on" : ""}" title="${E(n)}">${k}</button>`).join("")}</div>
+      ${B.formato ? `<p class="mute">${E(F[B.formato])}: ${med(B.formato).w} × ${med(B.formato).h} px en pantalla. <b>Imagen ideal: ${med(B.formato).w * esc} × ${med(B.formato).h * esc} px</b> (al doble para pantallas de alta densidad). En el móvil: ${mv.ancho * esc} × ${mv.alto * esc} px.</p>` : `<p class="mute">Elige un formato para ver las medidas.</p>`}
+      <label>Contenido</label><div class="seg" id="b-modo"><button type="button" data-v="imagen" class="${B.modo === "imagen" ? "on" : ""}">Imagen</button><button type="button" data-v="texto" class="${B.modo === "texto" ? "on" : ""}">Caja de texto</button></div>
+      ${B.modo === "imagen" ? `
+        <label>Imagen (JPG, PNG o WebP)</label>${B.image ? `<img src="${E(B.image)}" alt="" style="max-width:100%;border-radius:8px;display:block;margin:0 0 6px">` : ""}<input type="file" id="b-img" accept="image/jpeg,image/png,image/webp">
+        <label>Imagen para el móvil (opcional, ${mv.ancho * esc} × ${mv.alto * esc} px)</label>${B.imagen_movil ? `<img src="${E(B.imagen_movil)}" alt="" style="max-width:100%;border-radius:8px;display:block;margin:0 0 6px">` : ""}<input type="file" id="b-imgm" accept="image/jpeg,image/png,image/webp">
+        <div id="b-recorte"></div>
+        <label for="b-alt">Texto alternativo (obligatorio: qué se ve en la imagen)</label><input id="b-alt" maxlength="200" value="${E(B.alt)}">` : `
+        <label>Fondo (solo colores de MOTICIAS)</label><div class="row">${fondos.map(f => `<button type="button" data-fo="${f.id}" title="${E(f.nombre)}" style="width:40px;height:40px;border-radius:9px;background:${f.fondo};border:3px solid ${B.fondo === f.id ? "#f26b1d" : "#ddd"}"></button>`).join("")}</div>
+        <p class="mute">Límites: anunciante ${lim.anunciante || 40}, titular ${lim.titular || 70} y texto ${lim.texto || 140} caracteres. Tipografías y colores de MOTICIAS; el contraste se comprueba al guardar.</p>`}
+      <label>Botón</label><div class="seg" id="b-cta"><button type="button" data-v="" class="${!B.cta_tipo ? "on" : ""}">Sin botón</button><button type="button" data-v="web" class="${B.cta_tipo === "web" ? "on" : ""}">Ir a la web</button><button type="button" data-v="info" class="${B.cta_tipo === "info" ? "on" : ""}">Pide más información</button></div>
+      ${B.cta_tipo === "info" ? `<p class="mute">${(P.formulario || {}).activo ? "El formulario guarda cada envío y lo manda al contacto del anunciante en el CRM." : "El formulario está apagado hasta que el editor jefe apruebe los textos legales: mientras tanto el botón dice «Ir a la web»."}</p>` : ""}
+    </div>`;
+    const segB = (id, k) => { const el = $(id); if (el) el.onclick = ev => { const b = ev.target.closest("button"); if (!b) return; B[k] = b.dataset.v; pintaBanner(); }; };
+    segB("#b-formato", "formato"); segB("#b-modo", "modo"); segB("#b-cta", "cta_tipo");
+    box.querySelectorAll("[data-fo]").forEach(b => b.onclick = () => { B.fondo = b.dataset.fo; pintaBanner(); });
+    const alt = $("#b-alt"); if (alt) alt.oninput = () => B.alt = alt.value;
+    const subir = (input, objetivo, campo) => { if (!input) return; input.onchange = () => { const f = input.files[0]; if (!f) return; recortar(f, objetivo, campo); }; };
+    if (B.formato) { const m = med(B.formato); subir($("#b-img"), {w: m.w * esc, h: m.h * esc}, "image"); }
+    else if ($("#b-img")) $("#b-img").onchange = () => aviso("Elige primero el formato", true);
+    subir($("#b-imgm"), {w: mv.ancho * esc, h: mv.alto * esc}, "imagen_movil");
+  };
+  // Recorte: si la imagen no tiene la proporción exacta, avisa y propone un recorte centrado que se puede mover.
+  const recortar = (archivo, obj, campo) => {
+    const img = new Image(), url = URL.createObjectURL(archivo);
+    img.onload = () => {
+      const rObj = obj.w / obj.h, rImg = img.width / img.height, cuadra = Math.abs(rImg - rObj) / rObj < 0.01;
+      const pequeña = img.width < obj.w || img.height < obj.h;
+      const caja = $("#b-recorte");
+      caja.innerHTML = `<div class="${cuadra && !pequeña ? "okbox" : "warn"}">${cuadra ? "La proporción cuadra." : `Tu imagen mide ${img.width} × ${img.height} px y el formato pide ${obj.w} × ${obj.h} (${rObj.toFixed(2)} : 1). No cuadra: aquí tienes un recorte; muévelo con los deslizadores.`}${pequeña ? " Es más pequeña de lo ideal: se verá menos nítida en pantallas de alta densidad." : ""}</div>
+        <canvas id="b-lienzo" style="width:100%;border-radius:8px;border:1px solid var(--line)"></canvas>
+        ${cuadra ? "" : `<label>Mover en horizontal</label><input type="range" id="b-x" min="0" max="100" value="50"><label>Mover en vertical</label><input type="range" id="b-y" min="0" max="100" value="50">`}
+        <p><button type="button" class="b" id="b-subir">${cuadra ? "Subir imagen" : "Recortar y subir"}</button></p>`;
+      const cv = $("#b-lienzo"); cv.width = obj.w; cv.height = obj.h; const cx = cv.getContext("2d");
+      const dibuja = () => { let sw = img.width, sh = img.height;
+        if (rImg > rObj) sw = img.height * rObj; else sh = img.width / rObj;
+        const px = $("#b-x") ? +$("#b-x").value / 100 : .5, py = $("#b-y") ? +$("#b-y").value / 100 : .5;
+        cx.drawImage(img, (img.width - sw) * px, (img.height - sh) * py, sw, sh, 0, 0, obj.w, obj.h); };
+      dibuja(); ["#b-x", "#b-y"].forEach(s => { const r = $(s); if (r) r.oninput = dibuja; });
+      $("#b-subir").onclick = async ev => { ev.target.disabled = true;
+        try { const r = await api("anuncio_imagen", {datos: cv.toDataURL("image/jpeg", 0.88), nombre: $("#f-adv").value || $("#f-name").value});
+          B[campo] = r.url; aviso("Imagen subida"); pintaBanner(); } catch (e) { aviso(e.message, true); ev.target.disabled = false; } };
+    };
+    img.src = url;
+  };
+  const leer = () => ({...(([...$("#form").querySelectorAll(".chk input:checked")].some(i => i.value === "portada-premium")) ? {formato: B.formato || null, modo: B.modo, image: B.image || null,
+      imagen_movil: B.imagen_movil || null, alt: B.alt, fondo: B.fondo, cta_tipo: B.cta_tipo || null} : {}),
+    type: $("#f-tipo .on")?.dataset.v, nivel: $("#f-nivel .on")?.dataset.v, advertiser: $("#f-adv").value, name: $("#f-name").value, headline: $("#f-h").value, text: $("#f-t").value, cta: $("#f-cta").value, url: $("#f-url").value.trim(), start: $("#f-ini").value || null, end: $("#f-fin").value || null, weight: $("#f-peso").value, slots: [...$("#form").querySelectorAll(".chk input:checked")].map(i => i.value), crm_cuenta_id: $("#f-cuenta") ? $("#f-cuenta").value || null : a.crm_cuenta_id || null});
   const upd = () => { const x = leer(); x.label = etiquetaAd(x); $("#f-prev").innerHTML = prevAd(x); };
   seg("#f-tipo"); seg("#f-nivel");
   $("#f-nivel").addEventListener("click", () => { const n = $("#f-nivel .on")?.dataset.v; if (!n) return; const hs = (P.niveles[n] || {}).huecos || []; $("#form").querySelectorAll(".chk input").forEach(i => i.checked = hs.includes(i.value)); upd(); });
   $("#form").querySelectorAll("input,textarea,select").forEach(i => i.oninput = upd); upd();
+  $("#form").querySelectorAll(".chk input").forEach(i => i.addEventListener("change", pintaBanner)); pintaBanner();
+  $("#f-nivel").addEventListener("click", pintaBanner);
   const guardar = async (activar, b) => { b.disabled = true; const c = leer(); if (activar) c.status = "activo";
     try { const r = await api("anuncio", nuevo ? {accion: "crear", cambios: c} : {accion: "editar", id: a.id, cambios: c}); aviso(r.nota || "Guardada"); verAnuncios(); } catch (e) { aviso(e.message, true); b.disabled = false; } };
   $("#f-ok").onclick = ev => guardar(false, ev.target);
@@ -1270,6 +1332,10 @@ async function verSeguimiento(dias) {
     <p class="mute">${E(c.anunciante || "")} · ${E(c.tipo || "")}${c.nivel ? " · " + E(c.nivel) : ""}<br>Publicada: ${fh(c.publicada)} · Retirada: ${fh(c.retirada)}${c.inicio || c.fin ? `<br>Programada: ${E(c.inicio || "")} → ${E(c.fin || "")}` : ""}</p>
     <div class="kpi"><div><b>${num(x.impresiones || 0)}</b><span class="mute">vistas</span></div><div><b>${num(x.clics || 0)}</b><span class="mute">clics</span></div><div><b>${pct(x.clics || 0, x.impresiones || 0)}</b><span class="mute">CTR</span></div></div>
     <p class="mute" style="margin-top:8px">${u ? `Comprobador: ${u.ok ? "✓ funciona" : "✗ " + E(u.error || "falla")} · ${fh(u.at)} · ${u.estado || "—"} · ${u.ms} ms${u.origen === "manual" ? " · a mano" : ""}` : "Comprobador: todavía sin pasar."}</p>
+    ${c.ampliado ? (() => { const A = c.ampliado, t = A.totales || {}, NOM = {vista: "vistas", clic: "clics", cta: "clics en el botón", form_abierto: "formularios abiertos", form_enviado: "formularios enviados"};
+      const dim = (o, n) => Object.entries(o || {}).sort((a, b) => (b[1].vista || 0) - (a[1].vista || 0)).slice(0, n).map(([k, v]) => `<div class="paso"><span>${E(k)}</span><span class="mute">${num(v.vista || 0)} vistas · ${num(v.clic || 0)} clics${v.cta ? " · " + num(v.cta) + " botón" : ""}${v.form_enviado ? " · " + num(v.form_enviado) + " formularios" : ""}</span></div>`).join("");
+      return `<div class="kpi" style="margin-top:8px">${["cta", "form_abierto", "form_enviado"].filter(k => t[k] != null || k === "cta").map(k => `<div><b>${num(t[k] || 0)}</b><span class="mute">${NOM[k]}</span></div>`).join("")}</div>
+        <details><summary>Procedencia</summary>${dim(A.procedencia, 12)}</details><details><summary>Dispositivo</summary>${dim(A.dispositivo, 3)}</details><details><summary>Sección</summary>${dim(A.seccion, 12)}</details>`; })() : ""}
     <details><summary>Posiciones (${(c.huecos || []).length})</summary><p class="mute">Configuradas: ${E((c.huecos || []).join(", ") || "—")}</p>${tabla(x.huecos, 10)}</details>
     <details><summary>Dónde se vio (contextos)</summary>${tabla(x.paginas, 15)}</details>
     ${(c.piezas || []).length ? `<details><summary>Piezas con esta caja (${c.piezas.length})</summary>${c.piezas.map(p => `<div class="paso"><div>${E(p.titulo)}<br><span class="mute">${E(p.posicion)} · ${E(p.estado)} · publicada ${fh(p.publicada)}${p.retirada ? " · retirada " + fh(p.retirada) : ""}</span></div></div>`).join("")}</details>` : ""}

@@ -1,0 +1,8 @@
+- [x] Prototipo (seis formatos, ordenador y móvil, imagen y texto, botón y formulario)
+- [x] Vertical: rejilla, formatos, fondos, límites, botón, formulario apagado con borrador legal
+- [x] Migración 013 (`pub_eventos`, `pub_formularios`) y purga a los 12 meses
+- [x] API: campos del banner, validación (formato, imagen, alt, límites, contraste), subida de imagen a Ghost, formulario público, medición ampliada
+- [x] `m.js`: banner bajo la apertura, franja móvil, tope de pago, formulario, «Lo esencial»
+- [x] Gestor: editor del banner con medidas, recorte y subida; seguimiento ampliado
+- [x] Cajas de «cabecera» pasadas a «portada-premium»
+- [ ] Rainer: aprobar los textos legales del formulario y encenderlo

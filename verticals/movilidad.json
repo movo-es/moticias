@@ -2208,7 +2208,10 @@
     ]
    ],
    "conservacion_meses": 12,
-   "textos": "docs/legal/formulario-publicidad.md"
+   "textos": "docs/legal/formulario-publicidad.md",
+   "version": "borrador-2026-11-16",
+   "aviso": "<b>Quién recibe tus datos.</b> Los recibe {anunciante}, el anunciante, para contestarte; es el responsable de lo que haga con ellos y te informa en su política de privacidad. MOTICIAS (Avionline S.L.) solo los recoge y se los entrega por su cuenta, y guarda una copia durante 12 meses para demostrar el envío y tu consentimiento; no los usa para nada más ni los cede a nadie. Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad ante el anunciante o escribiendo a MOTICIAS, y reclamar ante la Agencia Española de Protección de Datos. Más información en la <a href=\"https://www.moticias.com/privacidad/\">política de privacidad</a>.",
+   "consentimiento": "Acepto que MOTICIAS entregue estos datos a {anunciante} para que me contacte sobre este anuncio."
   }
  },
  "grupo": {

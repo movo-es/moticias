@@ -89,9 +89,16 @@
   }
   function publicidad(datos) {
     var H = (datos && datos.huecos) || {}, usadas = {}, x;
-    // Premium · cabecera (todas las páginas)
-    var mh = d.querySelector("header.masthead");
-    if (mh && (x = elegir(H.cabecera, usadas))) { var w = d.createElement("div"); w.className = "mtx-hueco mtx-cab"; w.innerHTML = caja(x, "cabecera", true); (d.querySelector(".ticker") || mh).insertAdjacentElement("afterend", w); }
+    // Como mucho tres huecos de pago por página (16-11-2026); las cajas del grupo no cuentan.
+    var tope = (datos && datos.tope_pago) || 3, pagadas = 0, elegir0 = elegir;
+    elegir = function (lista, us) {
+      var l = pagadas >= tope ? (lista || []).filter(function (c) { return c.tipo === "grupo"; }) : lista;
+      var c = elegir0(l, us); if (c && c.tipo !== "grupo") pagadas++; return c;
+    };
+    // El hueco «cabecera» (banda bajo la cabecera) ya no se pinta: quedaba encima de la apertura (decisión de Rainer, 15-11-2026).
+    // Premium · portada: un escalón por debajo de la apertura, a la derecha; en el móvil, franja bajo los titulares visuales.
+    var cover = d.querySelector("section.cover");
+    if (cover && (x = elegir(H["portada-premium"], usadas))) premium(x, cover, datos);
     // Premium · lateral del artículo
     var lat = d.querySelector("aside.m-aside");
     if (lat && (x = elegir(H["articulo-lateral"], usadas))) { var l = d.createElement("div"); l.className = "m-box mtx-hueco"; l.innerHTML = caja(x, "articulo-lateral", false); lat.insertBefore(l, lat.firstChild); }
@@ -104,11 +111,124 @@
     var pie = d.querySelector("footer.site");
     if (pie && (x = elegir(H.pie, usadas))) { var p = d.createElement("div"); p.className = "mtx-hueco mtx-cab"; p.innerHTML = caja(x, "pie", true); pie.parentNode.insertBefore(p, pie); }
   }
+  // ---------- 1 bis. Banner premium (cambio banner-premium, 16-11-2026) ----------
+  css.textContent +=
+    ".mtx-premium{margin:28px 0 0}.mtx-esc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;align-items:start}" +
+    ".mtx-mas h3{font:700 12px/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5d6b82;margin:0 0 6px;border-top:3px solid #0b2545;padding-top:10px}" +
+    ".mtx-mas a{display:block;padding:10px 0;border-bottom:1px solid #dfe4ec;color:#0b2545;text-decoration:none;font:500 16px/1.3 Newsreader,Georgia,serif}.mtx-mas a:hover{text-decoration:underline}" +
+    ".mtx-mas small{display:block;font:600 10.5px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a1f2b;margin-bottom:2px}" +
+    ".mtx-ban{position:relative;border-radius:12px;overflow:hidden;border:1px solid #d8dde6;background:#fff;margin:0}" +
+    ".mtx-ban-lab{position:absolute;top:0;left:0;z-index:3;background:#fff;color:#4a5568;font:700 10px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-bottom-right-radius:8px;border-right:1px solid #d8dde6;border-bottom:1px solid #d8dde6}" +
+    ".mtx-ban img{display:block;width:100%;height:100%;object-fit:cover}.mtx-ban a.mtx-ban-a{position:absolute;inset:0;z-index:1}" +
+    ".mtx-ban-t{position:relative;height:100%;padding:30px 22px 18px;display:flex;flex-direction:column;justify-content:center;gap:8px}" +
+    ".mtx-ban-t .m{font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.85}.mtx-ban-t b{font:600 22px/1.15 Newsreader,Georgia,serif}" +
+    ".mtx-ban-t .p{font:500 14px/1.4 system-ui,sans-serif;opacity:.92}" +
+    ".mtx-ban-t .cta{position:relative;z-index:2;align-self:flex-start;margin-top:4px;font:700 13px/1 system-ui,sans-serif;padding:10px 14px;border-radius:999px;border:0;cursor:pointer;text-decoration:none}" +
+    ".mtx-ban.bajo .mtx-ban-t{flex-direction:row;align-items:center;gap:18px;padding:24px 22px 14px}.mtx-ban.bajo .mtx-ban-t .cta{align-self:center;margin:0}.mtx-ban.bajo .mtx-ban-t .p{display:none}.mtx-ban.bajo .mtx-ban-t b{font-size:19px;flex:1}" +
+    "@media(max-width:760px){.mtx-esc{grid-template-columns:1fr;gap:0}.mtx-mas{display:none}.mtx-ban{height:auto!important;aspect-ratio:358/120;grid-column:auto!important}" +
+    ".mtx-ban-t{padding:28px 14px 10px;gap:10px;flex-direction:row;align-items:center}.mtx-ban-t .m,.mtx-ban-t .p{display:none}" +
+    ".mtx-ban-t b,.mtx-ban.bajo .mtx-ban-t b{font-size:16px;line-height:1.2;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.mtx-ban-t .cta{font-size:12px;padding:8px 10px;align-self:center;margin:0}}" +
+    ".mtx-fv{position:fixed;inset:0;background:rgba(11,37,69,.45);z-index:9998}.mtx-fm{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;width:min(520px,calc(100% - 32px));max-height:88vh;overflow:auto;background:#fff;color:#14213d;border-radius:14px;padding:18px;font:15px/1.45 system-ui,sans-serif}" +
+    ".mtx-fm h3{font:600 22px/1.2 Newsreader,Georgia,serif;margin:0 0 4px}.mtx-fm .g{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.mtx-fm .w{grid-column:1/-1}" +
+    ".mtx-fm label{display:block;font-size:13px;color:#5d6b82;margin:10px 0 4px}.mtx-fm input{width:100%;font:inherit;padding:9px 10px;border:1px solid #d8dde6;border-radius:9px;box-sizing:border-box}" +
+    ".mtx-fm .lg{font-size:12px;color:#5d6b82;background:#f4f6fa;border-radius:8px;padding:10px;margin:12px 0}.mtx-fm .ck{display:flex;gap:8px;font-size:13px}.mtx-fm .ck input{width:auto}" +
+    ".mtx-fm .pie{display:flex;gap:8px;margin-top:12px}.mtx-fm .pie button{flex:1;font:700 14px system-ui,sans-serif;padding:11px;border-radius:10px;border:1px solid #d8dde6;background:#fff;cursor:pointer}.mtx-fm .pie .p{background:#0b2545;color:#fff;border-color:#0b2545}";
+  function premium(x, cover, datos) {
+    var R = (datos && datos.rejilla) || {}, gap = R.separacion || 28;
+    var f = x.formato || (x.modo === "imagen" ? "2x2" : "4x1"), cr = f.split("x"), c = +cr[0] || 4, r = +cr[1] || 1;
+    var sec = d.createElement("section"); sec.className = "block mtx-premium";
+    var wrap = d.createElement("div"); wrap.className = "wrap"; sec.appendChild(wrap);
+    var url = utm(x.url, x, "portada-premium"), col = x.colores || {};
+    var cuerpo = x.modo === "imagen" && x.imagen
+      ? '<a class="mtx-ban-a" href="' + E(url) + '" rel="sponsored noopener" target="_blank" aria-label="' + E(x.titular || x.anunciante || "Publicidad") + '"></a>' +
+        "<picture>" + (x.imagen_movil ? '<source media="(max-width:760px)" srcset="' + E(x.imagen_movil) + '">' : "") + '<img src="' + E(x.imagen) + '" alt="' + E(x.alt) + '" loading="lazy"></picture>'
+      : '<div class="mtx-ban-t" style="background:' + E(col.fondo || "#0b2545") + ";color:" + E(col.texto || "#fff") + '">' +
+        '<a class="mtx-ban-a" href="' + E(url) + '" rel="sponsored noopener" target="_blank" aria-label="' + E(x.titular) + '"></a>' +
+        (x.anunciante ? '<span class="m">' + E(x.anunciante) + "</span>" : "") + "<b>" + E(x.titular) + "</b>" + (x.texto ? '<span class="p">' + E(x.texto) + "</span>" : "") +
+        (x.cta_tipo === "web" ? '<a class="cta" data-cta href="' + E(url) + '" rel="sponsored noopener" target="_blank" style="background:' + E(col.boton) + ";color:" + E(col.boton_texto) + '">' + E(x.cta_texto || "Ir a la web") + "</a>" : "") +
+        (x.cta_tipo === "info" ? '<button type="button" class="cta" data-form style="background:' + E(col.boton) + ";color:" + E(col.boton_texto) + '">' + E(x.cta_texto || "Pide más información") + "</button>" : "") + "</div>";
+    var ban = '<aside class="mtx-ban' + (r === 1 ? " bajo" : "") + (x.tipo === "grupo" ? " house" : "") + '" data-mtx="' + E(x.id) + '" data-mtx-h="portada-premium" aria-label="' + E(x.etiqueta) +
+      '" style="grid-column:' + (5 - c) + " / span " + c + '"><span class="mtx-ban-lab">' + E(x.etiqueta) + "</span>" + cuerpo + "</aside>";
+    wrap.innerHTML = '<div class="mtx-esc">' + (c < 4 ? '<div class="mtx-mas" style="grid-column:1 / span ' + (4 - c) + '"><h3>Más noticias</h3></div>' : "") + ban + "</div>";
+    cover.insertAdjacentElement("afterend", sec);
+    var el = wrap.querySelector(".mtx-ban");
+    function alto() {  // alto real según la rejilla: fila = media columna
+      if (window.matchMedia("(max-width:760px)").matches) { el.style.height = ""; return; }
+      var w = wrap.querySelector(".mtx-esc").getBoundingClientRect().width, cw = (w - 3 * gap) / 4;
+      el.style.height = Math.round(r * (cw / 2) + (r - 1) * gap) + "px";
+    }
+    alto(); window.addEventListener("resize", alto);
+    tiposJSON().then(function (j) {  // a la izquierda, los últimos titulares que no estén ya en la apertura
+      var mas = wrap.querySelector(".mtx-mas"); if (!mas || !j || !j.menu) return;
+      var ya = {}; [].forEach.call(cover.querySelectorAll("a[href]"), function (a) { ya[a.href.replace(/[?#].*$/, "")] = 1; });
+      var n = Math.max(2, r * 2 + (c === 2 ? 1 : 0));
+      (j.menu.ultimas || []).filter(function (p) { return !ya[p.url]; }).slice(0, n).forEach(function (p) {
+        var a = d.createElement("a"); a.href = p.url; a.innerHTML = (p.mc ? "<small>" + E(p.mc) + "</small>" : "") + E(p.t); mas.appendChild(a);
+      });
+    });
+    var b = el.querySelector("[data-form]");
+    if (b) b.addEventListener("click", function (e) { e.preventDefault(); contar(x.id, "portada-premium", "fa"); formulario(x, datos); });
+    var w2 = el.querySelector("a[data-cta]");
+    if (w2) w2.addEventListener("click", function () { contar(x.id, "portada-premium", "cta"); });
+  }
+  function formulario(x, datos) {
+    var F = (datos && datos.formulario_textos) || {};
+    var v = d.createElement("div"); v.className = "mtx-fv";
+    var m = d.createElement("div"); m.className = "mtx-fm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-label", "Pide más información");
+    var anun = E(x.anunciante || "el anunciante");
+    var campo = function (id, txt, ob, tipo, ac, w) { return '<div' + (w ? ' class="w"' : "") + '><label for="mf-' + id + '">' + txt + (ob ? " *" : "") + '</label><input id="mf-' + id + '" type="' + (tipo || "text") + '" autocomplete="' + ac + '"' + (ob ? " required" : "") + "></div>"; };
+    m.innerHTML = "<h3>Pide más información</h3><p style=\"margin:0;color:#5d6b82\">A " + anun + ", anunciante en MOTICIAS.</p><form><div class=\"g\">" +
+      campo("nombre", "Nombre", 1, "text", "name") + campo("empresa", "Empresa", 0, "text", "organization") + campo("email", "Correo electrónico", 1, "email", "email") +
+      campo("telefono", "Teléfono", 0, "tel", "tel") + campo("direccion", "Dirección", 0, "text", "street-address", 1) + campo("cp", "Código postal", 1, "text", "postal-code") +
+      campo("ciudad", "Ciudad", 0, "text", "address-level2") + campo("pais", "País", 1, "text", "country-name", 1) + "</div>" +
+      '<div class="lg">' + String(F.aviso || "").replace(/\{anunciante\}/g, anun) + "</div>" +
+      '<label class="ck"><input type="checkbox" id="mf-ok"> ' + E(String(F.consentimiento || "").replace(/\{anunciante\}/g, x.anunciante || "el anunciante")) + "</label>" +
+      '<div class="pie"><button type="button" class="n">Cancelar</button><button class="p">Enviar</button></div><p class="msg" style="font-size:13px;color:#a12b2b"></p></form>';
+    d.body.appendChild(v); d.body.appendChild(m);
+    var pais = m.querySelector("#mf-pais"); pais.value = "España";
+    function cerrar() { v.remove(); m.remove(); }
+    v.onclick = cerrar; m.querySelector(".n").onclick = cerrar;
+    m.querySelector("form").onsubmit = function (e) {
+      e.preventDefault();
+      var cuerpo = {anuncio: x.id, hueco: "portada-premium", seccion: SEC, dispositivo: DISP, procedencia: PROC, pagina: location.pathname, texto_legal: F.version || "",
+                    consentimiento: m.querySelector("#mf-ok").checked};
+      ["nombre", "empresa", "email", "telefono", "direccion", "cp", "ciudad", "pais"].forEach(function (k) { cuerpo[k] = m.querySelector("#mf-" + k).value.trim(); });
+      if (!cuerpo.consentimiento) { m.querySelector(".msg").textContent = "Marca la casilla para que podamos entregar tus datos al anunciante."; return; }
+      fetch(API + "/api/gestor?a=formulario", {method: "POST", body: JSON.stringify(cuerpo), headers: {"Content-Type": "text/plain"}})
+        .then(function (r) { return r.json().then(function (j) { return [r.ok, j]; }); })
+        .then(function (t) { if (t[0]) { m.innerHTML = "<h3>Enviado</h3><p>" + E(t[1].mensaje || "Gracias.") + '</p><div class="pie"><button type="button" class="p">Cerrar</button></div>'; m.querySelector("button").onclick = cerrar; }
+          else m.querySelector(".msg").textContent = t[1].error || "No se pudo enviar."; })
+        .catch(function () { m.querySelector(".msg").textContent = "No se pudo enviar. Prueba más tarde."; });
+    };
+  }
+  // «Lo esencial» de la portada: el tema deja las columnas vacías; se rellenan con las piezas de cada sección (16-11-2026).
+  (function () {
+    var cols = d.querySelectorAll(".essentials .ess-col");
+    if (!cols.length) return;
+    tiposJSON().then(function (j) {
+      var es = j && j.menu && j.menu.esencial; if (!es) return;
+      var usadas = {};  // una pieza sale en una sola columna
+      [].forEach.call(cols, function (c) {
+        var k = (c.className.match(/ess-col\s+([a-z-]+)/) || [])[1], ul = c.querySelector("ul.list");
+        if (!k || !ul || ul.children.length || !es[k]) return;
+        ul.innerHTML = es[k].filter(function (p) { return !usadas[p.url]; }).slice(0, 3).map(function (p) { usadas[p.url] = 1; return '<li><a href="' + E(p.url) + '">' + E(p.t) + "</a></li>"; }).join("");
+      });
+    });
+  })();
+
   // ---------- 3. Seguimiento ----------
   var JEFE = /(?:^|;\s*)moticias_jefe=1/.test(d.cookie);
+  // Medición ampliada (banner premium, 16-11-2026): sección, dispositivo y procedencia (dominio de origen o utm_source).
+  var SEC = (location.pathname.match(/^\/([a-z0-9-]+)\//) || [])[1] || "portada";
+  if (d.querySelector("article.article")) SEC = "articulo";
+  var DISP = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? "movil" : /iPad|Tablet/i.test(navigator.userAgent) ? "tableta" : "escritorio";
+  var PROC = (function () {
+    try { var u = new URL(location.href).searchParams.get("utm_source"); if (u) return u.toLowerCase().slice(0, 60); } catch (e) {}
+    try { var r = d.referrer ? new URL(d.referrer).hostname.replace(/^www\./, "") : ""; return !r ? "directo" : (r === location.hostname.replace(/^www\./, "") ? "interno" : r); } catch (e) { return "directo"; }
+  })();
   function contar(id, h, t) {
     if (JEFE || navigator.webdriver || !id) return;
-    var cuerpo = JSON.stringify({a: id, h: h || "?", p: location.pathname, t: t});
+    var cuerpo = JSON.stringify({a: id, h: h || "?", p: location.pathname, t: t, s: SEC, dv: DISP, pr: PROC});
     try { if (navigator.sendBeacon && navigator.sendBeacon(API + "/api/gestor?a=evento", new Blob([cuerpo], {type: "text/plain"}))) return; } catch (e) {}
     try { fetch(API + "/api/gestor?a=evento", {method: "POST", body: cuerpo, keepalive: true, mode: "no-cors"}); } catch (e) {}
   }
