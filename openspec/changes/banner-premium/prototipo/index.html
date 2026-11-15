@@ -1,0 +1,193 @@
+<title>Banner premium</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: prototipo de la portada de MOTICIAS con el hueco premium bajo la apertura; panel de control arriba, hoja de gestor abajo. */
+:root{
+  --navy:#0b2545;--ink:#14213d;--mute:#5d6b82;--line:#dfe4ec;--bg:#f4f6fa;--card:#ffffff;--orange:#f26b1d;--blue:#1d4ed8;--soft:#eef2f8;
+  --ok:#1c6b4a;--ok-soft:#e3f1ea;--warn:#9a5600;--warn-soft:#fff1dd;--bad:#a12b2b;
+  --serif:"Newsreader",Georgia,serif;--sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ink:#e6ebf3;--mute:#9aa7bb;--line:#2a3447;--bg:#0e1420;--card:#151d2c;--soft:#1b2537;color-scheme:dark}}
+:root[data-theme="dark"]{--ink:#e6ebf3;--mute:#9aa7bb;--line:#2a3447;--bg:#0e1420;--card:#151d2c;--soft:#1b2537;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font:700 22px/1.2 var(--sans);margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 14px;max-width:70ch}
+.ctl{display:grid;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 16px}
+.fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fila>b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);min-width:92px}
+.op{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:600 13px var(--sans);cursor:pointer}
+.op.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.op:focus-visible,button:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.nota{font-size:13px;color:var(--mute)}
+/* La maqueta de la portada siempre es clara: es la web tal como la ve el lector. */
+.marco{background:#f4f6fa;color:#0b2545;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 auto}
+.marco.desk{width:100%;max-width:1260px}
+.marco.movil{width:390px;max-width:100%}
+.esc{overflow-x:auto}
+.desk .lienzo{width:1260px;transform-origin:0 0}
+.lienzo{background:#f4f6fa}
+.top{background:#0b2545;color:#fff;font:600 12px var(--sans);padding:9px 28px;display:flex;gap:14px}
+.top i{width:6px;height:6px;border-radius:50%;background:var(--orange);display:inline-block;margin-right:6px;vertical-align:1px}
+.mast{background:#fff;padding:14px 28px 0}
+.logo{font:800 34px/1 var(--sans);letter-spacing:.01em;color:#0b2545}.logo small{display:block;font:500 13px var(--sans);color:#14213d;margin-top:3px}
+.nav{display:flex;gap:6px;padding:12px 0;border-top:1px solid #e6e9ef;margin-top:12px;overflow:hidden;white-space:nowrap}
+.nav span{font:600 12px var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:7px 12px;border-radius:999px;color:#14213d}
+.nav span.on{background:#0b2545;color:#fff}.nav span.voz{border:1.5px solid var(--orange);color:#b8470b}
+.cuerpo{padding:22px 28px 28px}
+.fecha{font:700 13px var(--sans);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid #d8dde6;padding-bottom:10px;margin-bottom:18px}
+.cover{display:grid;grid-template-columns:686px 1fr;gap:28px}
+.lead{height:380px;border-radius:14px;background:linear-gradient(180deg,rgba(11,37,69,.15),rgba(11,37,69,.92)),repeating-linear-gradient(115deg,#5a6b84 0 18px,#4b5b73 18px 40px);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:26px}
+.lead em{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#ffb68a;font-style:normal}
+.lead h2{font:600 36px/1.08 var(--serif);margin:6px 0 0}
+.rail{background:#fff;border:1px solid #d8dde6;border-radius:14px;padding:16px 18px}
+.rail b{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#5d6b82}
+.rail p{font:500 15.5px/1.3 var(--serif);margin:10px 0;padding-bottom:10px;border-bottom:1px solid #e6e9ef}
+.escalon{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:28px;align-items:start}
+.mas{background:transparent}.mas h3{font:700 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#5d6b82;margin:0 0 6px;border-top:3px solid #0b2545;padding-top:10px}
+.mas p{font:500 16px/1.3 var(--serif);margin:0 0 12px;padding-bottom:12px;border-bottom:1px solid #dfe4ec}
+.esencial{margin-top:30px;border-top:3px solid #0b2545;padding-top:12px}.esencial h3{font:600 26px var(--serif);margin:0}
+/* El banner */
+.ban{text-decoration:none;color:inherit;display:block;position:relative;border-radius:12px;overflow:hidden;border:1px solid #d8dde6;background:#fff}
+.ban .lab{position:absolute;top:0;left:0;z-index:2;background:#fff;color:#4a5568;font:700 10px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-bottom-right-radius:8px;border-right:1px solid #d8dde6;border-bottom:1px solid #d8dde6}
+.ban .img{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:flex-start;padding:16px;color:#fff;font:700 13px var(--sans);
+  background:linear-gradient(135deg,#1d4ed8 0%,#0b2545 60%),#0b2545}
+.ban .img span{background:rgba(0,0,0,.35);padding:4px 8px;border-radius:6px}
+.ban .txt{width:100%;height:100%;padding:30px 22px 18px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.ban .txt .marca{font:700 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.ban .txt .tit{font:600 22px/1.15 var(--serif)}
+.ban .txt .p{font:500 14px/1.4 var(--sans);opacity:.92}
+.ban .txt .cta{align-self:flex-start;margin-top:4px;font:700 13px var(--sans);padding:8px 14px;border-radius:999px;border:0;cursor:pointer}
+.ban.bajo .txt{flex-direction:row;align-items:center;gap:18px;padding:22px 22px 14px}.ban.bajo .txt .p{display:none}.ban.bajo .txt .tit{font-size:19px;flex:1}
+/* Móvil */
+.movil .top{padding:8px 16px}.movil .mast{padding:12px 16px 0}.movil .logo{font-size:28px}.movil .cuerpo{padding:16px}
+.movil .cover{grid-template-columns:1fr;gap:16px}.movil .lead{height:300px}.movil .lead h2{font-size:28px}
+.movil .escalon{display:block;margin-top:18px}.movil .mas{display:none}
+.movil .ban{height:120px!important;width:100%!important}
+.movil .ban .txt{padding:24px 16px 12px;gap:4px}.movil .ban .txt .tit{font-size:17px}.movil .ban .txt .p{display:none}.movil .ban .txt .cta{font-size:12px;padding:6px 10px}
+/* Gestor */
+.gestor{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0 0}
+.gestor h2{font:700 17px var(--sans);margin:0 0 8px}
+.tabla{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.tabla th,.tabla td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}.tabla th{font-size:12px;color:var(--mute);font-weight:600}
+.tabla tr.on td{background:var(--soft);font-weight:700}
+.av{border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}.av.w{background:var(--warn-soft);color:var(--warn)}.av.k{background:var(--ok-soft);color:var(--ok)}
+.pal{display:flex;gap:8px;flex-wrap:wrap}.sw{width:36px;height:36px;border-radius:9px;border:2px solid transparent;cursor:pointer}.sw.on{border-color:var(--orange)}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+input,textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 10px}
+.cont{font-size:12px;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.dos{grid-template-columns:1fr}}
+/* Formulario */
+.velo{position:fixed;inset:0;background:rgba(11,37,69,.45);z-index:20}
+.form{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:21;width:min(520px,calc(100% - 32px));max-height:88vh;overflow:auto;background:#fff;color:#14213d;border-radius:14px;padding:18px}
+.form h3{font:600 22px var(--serif);margin:0 0 4px}
+.form .g{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.form .g .w{grid-column:1/-1}
+.form label{color:#5d6b82}.form input{background:#fff;color:#14213d;border-color:#d8dde6}
+.legal{font-size:12px;color:#5d6b82;background:#f4f6fa;border-radius:8px;padding:10px;margin:12px 0}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#14213d}.chk input{width:auto;margin-top:3px}
+.pie{display:flex;gap:8px;margin-top:12px}.pie button{flex:1;font:700 14px var(--sans);padding:11px;border-radius:10px;border:1px solid #d8dde6;background:#fff;color:#14213d;cursor:pointer}.pie button.p{background:#0b2545;color:#fff;border-color:#0b2545}
+</style>
+
+<h1>Banner premium</h1>
+<p class="sub">Prototipo: cómo se ve el banner premium en la portada de moticias.com, un escalón por debajo de la apertura y a la derecha, en cada formato de la rejilla. Las medidas son las reales de la web (cuatro columnas de 280 px con 28 px de separación). El contenido es de ejemplo.</p>
+
+<div class="ctl">
+  <div class="fila"><b>Formato</b><span id="f-formato"></span></div>
+  <div class="fila"><b>Pantalla</b><button class="op on" data-p="desk">Ordenador</button><button class="op" data-p="movil">Móvil</button></div>
+  <div class="fila"><b>Contenido</b><button class="op on" data-m="imagen">Imagen</button><button class="op" data-m="texto">Caja de texto</button></div>
+  <div class="fila"><b>Botón</b><button class="op on" data-c="">Sin botón</button><button class="op" data-c="web">Ir a la web</button><button class="op" data-c="info">Pide más información</button></div>
+  <p class="nota" id="nota"></p>
+</div>
+
+<div class="esc"><div class="marco desk" id="marco"><div class="lienzo" id="lienzo"></div></div></div>
+
+<div class="dos">
+  <div class="gestor">
+    <h2>En el gestor: medidas de la imagen</h2>
+    <p class="nota">Píxeles ideales de cada formato, al doble para pantallas de alta densidad. Se calculan con la rejilla real del tema.</p>
+    <div style="overflow-x:auto"><table class="tabla" id="tabla"></table></div>
+    <div class="av w" id="aviso-img"></div>
+    <label for="alt">Texto alternativo (obligatorio)</label><input id="alt" value="Autocar en una carretera de montaña al atardecer">
+  </div>
+  <div class="gestor">
+    <h2>En el gestor: caja de texto</h2>
+    <p class="nota">Solo colores y tipografías de la estética de MOTICIAS. El contraste se comprueba solo.</p>
+    <label>Fondo</label><div class="pal" id="pal"></div>
+    <label for="t-tit">Titular <span class="cont" id="c-tit"></span></label><input id="t-tit" maxlength="70" value="Rutas de autobús a demanda para tu comarca">
+    <label for="t-p">Texto <span class="cont" id="c-p"></span></label><textarea id="t-p" maxlength="140" rows="2">Del diseño a la operación, con datos del primer día. Para ayuntamientos y consorcios.</textarea>
+    <div class="av k" id="contraste"></div>
+  </div>
+</div>
+<div id="capa"></div>
+
+<script>
+const G = {ancho:1203, cols:4, hueco:28, fila:140, escala:2, movil:{ancho:358, alto:120}};
+const FORMATOS = {"2x2":"Cuadrado mediano","3x2":"Apaisado grande","2x3":"Vertical mediano","3x3":"Grande","4x1":"Banda baja a todo el ancho","2x4":"Vertical, mitad derecha"};
+const FONDOS = [["Azul MOTICIAS","#0b2545","#ffffff","#f26b1d","#0b2545"],["Azul vivo","#1d4ed8","#ffffff","#ffffff","#0b2545"],["Blanco","#ffffff","#0b2545","#0b2545","#ffffff"],["Gris claro","#eef2f8","#0b2545","#1d4ed8","#ffffff"],["Naranja","#f26b1d","#0b2545","#0b2545","#ffffff"]];
+let S = {formato:"2x2", pantalla:"desk", modo:"imagen", cta:"", fondo:0};
+const $ = s => document.querySelector(s);
+const E = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const col = () => (G.ancho - (G.cols - 1) * G.hueco) / G.cols;
+function medida(f){ const [c, r] = f.split("x").map(Number); return {w: Math.round(c * col() + (c - 1) * G.hueco), h: r * G.fila + (r - 1) * G.hueco, c, r}; }
+function lum(hex){ const v = [1,3,5].map(i => parseInt(hex.substr(i, 2), 16) / 255).map(x => x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4)); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; }
+function contraste(a, b){ const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+function banner(movil){
+  const m = medida(S.formato), f = FONDOS[S.fondo], bajo = m.r === 1;
+  const cta = S.cta ? `<button class="cta" style="background:${f[3]};color:${f[4]}" data-cta>${S.cta === "web" ? "Ir a la web" : "Pide más información"}</button>` : "";
+  const dentro = S.modo === "imagen"
+    ? `<div class="img"><span>Imagen ${movil ? "para móvil · 716 × 240 px" : m.w * G.escala + " × " + m.h * G.escala + " px"}</span></div>`
+    : `<div class="txt" style="background:${f[1]};color:${f[2]}"><div class="marca">Transportes Ejemplo S.A.</div><div class="tit">${E($("#t-tit").value)}</div><div class="p">${E($("#t-p").value)}</div>${cta}</div>`;
+  return `<a class="ban ${bajo ? "bajo" : ""}" href="#" rel="sponsored" style="grid-column:${movil ? "auto" : (5 - m.c) + " / span " + m.c};${movil ? "" : "width:" + m.w + "px;height:" + m.h + "px"}" onclick="return false"><span class="lab">Publicidad</span>${dentro}</a>`;
+}
+function pinta(){
+  const movil = S.pantalla === "movil", m = medida(S.formato);
+  $("#marco").className = "marco " + (movil ? "movil" : "desk");
+  const mas = ["Grimaldi se queda con cuatro licencias del servicio al pasaje en Baleares","Transportes licita por urgencia los vuelos de servicio público de Melilla","El Defensor de las víctimas de accidentes de transporte colectivo entra en vigor","Conectar Europa a precios constantes"];
+  const huecoIzq = 4 - m.c;
+  $("#lienzo").innerHTML = `<div class="top"><span><i></i>lunes, 16 de noviembre de 2026</span><span>Actualizado 07:48 CET</span></div>
+    <div class="mast"><div class="logo">MOTICIAS<small>Noticias con M de Movilidad y Transportes</small></div>
+    <div class="nav"><span class="on">Portada</span><span class="voz">La voz del editor</span><span>Tierra</span><span>Mar</span><span>Aire</span><span>Logística</span><span>Temas</span><span>Regiones</span><span>Análisis</span></div></div>
+    <div class="cuerpo"><div class="fecha">lunes, 16 de noviembre de 2026</div>
+    <div class="cover"><div class="lead"><em>Apertura</em><h2>Inmaculada Gutiérrez Carrizo presidirá Renfe y Joaquim Hortalà, Adif</h2></div>
+      <div class="rail"><b>En cinco titulares</b>${mas.map(t => `<p>${t}</p>`).join("")}</div></div>
+    <div class="escalon">${!movil && huecoIzq ? `<div class="mas" style="grid-column:1 / span ${huecoIzq}"><h3>Más noticias</h3>${mas.slice(0, Math.max(2, m.r + 1)).map(t => `<p>${t}</p>`).join("")}</div>` : ""}${banner(movil)}</div>
+    <div class="esencial"><h3>Lo esencial</h3></div></div>`;
+  if (!movil) { const w = document.querySelector(".esc").clientWidth, k = Math.min(1, w / 1260); $("#lienzo").style.transform = `scale(${k})`; $("#marco").style.height = ($("#lienzo").scrollHeight * k) + "px"; }
+  else { $("#lienzo").style.transform = ""; $("#marco").style.height = ""; }
+  $("#nota").textContent = movil ? "En el móvil todos los formatos pasan a una franja horizontal debajo de los titulares visuales, nunca encima. Imagen opcional para móvil: 716 × 240 px." :
+    `${FORMATOS[S.formato]}: ${m.w} × ${m.h} px en pantalla. ${m.c === 4 ? "Ocupa todo el ancho, baja, para no distraer." : "A la derecha; a la izquierda siguen los titulares."} Tope: tres huecos de pago por página.`;
+  $("#tabla").innerHTML = `<tr><th>Formato</th><th>En pantalla</th><th>Imagen ideal</th><th>Proporción</th></tr>` + Object.keys(FORMATOS).map(f => { const x = medida(f);
+    return `<tr class="${f === S.formato ? "on" : ""}"><td>${f} · ${FORMATOS[f]}</td><td>${x.w} × ${x.h}</td><td>${x.w * G.escala} × ${x.h * G.escala}</td><td>${(x.w / x.h).toFixed(2)} : 1</td></tr>`; }).join("") +
+    `<tr><td>Móvil (todos)</td><td>${G.movil.ancho} × ${G.movil.alto}</td><td>${G.movil.ancho * G.escala} × ${G.movil.alto * G.escala}</td><td>${(G.movil.ancho / G.movil.alto).toFixed(2)} : 1</td></tr>`;
+  $("#aviso-img").textContent = `Ejemplo: has subido una imagen de 1200 × 600 px. Para ${S.formato} hace falta ${m.w * G.escala} × ${m.h * G.escala} (${(m.w / m.h).toFixed(2)} : 1). No cuadra: te propongo un recorte centrado que puedes mover antes de guardar.`;
+  const f = FONDOS[S.fondo], k1 = contraste(f[1], f[2]), k2 = contraste(f[3], f[4]);
+  $("#contraste").className = "av " + (k1 >= 4.5 && k2 >= 4.5 ? "k" : "w");
+  $("#contraste").textContent = `Contraste del texto ${k1.toFixed(1)} : 1 y del botón ${k2.toFixed(1)} : 1 (mínimo 4,5 : 1). ${k1 >= 4.5 && k2 >= 4.5 ? "Se lee bien." : "No se lee bien: el gestor no deja guardarlo."}`;
+  $("#c-tit").textContent = $("#t-tit").value.length + " / 70"; $("#c-p").textContent = $("#t-p").value.length + " / 140";
+  const c = document.querySelector("[data-cta]"); if (c && S.cta === "info") c.onclick = formulario;
+}
+function formulario(){
+  $("#capa").innerHTML = `<div class="velo" id="velo"></div><div class="form" role="dialog" aria-modal="true" aria-label="Pide más información">
+    <h3>Pide más información</h3><p class="nota" style="color:#5d6b82;margin:0 0 6px">A Transportes Ejemplo S.A., anunciante en MOTICIAS.</p>
+    <div class="g"><div><label for="n">Nombre *</label><input id="n" autocomplete="name" required></div><div><label for="em">Empresa</label><input id="em" autocomplete="organization"></div>
+    <div><label for="ma">Correo electrónico *</label><input id="ma" type="email" autocomplete="email" required></div><div><label for="te">Teléfono</label><input id="te" type="tel" autocomplete="tel"></div>
+    <div class="w"><label for="di">Dirección</label><input id="di" autocomplete="street-address"></div>
+    <div><label for="cp">Código postal *</label><input id="cp" autocomplete="postal-code" required></div><div><label for="ci">Ciudad</label><input id="ci" autocomplete="address-level2"></div>
+    <div class="w"><label for="pa">País *</label><input id="pa" autocomplete="country-name" value="España" required></div></div>
+    <div class="legal"><b>Quién recibe tus datos.</b> Los recibe Transportes Ejemplo S.A., el anunciante, para contestarte; es el responsable de lo que haga con ellos y te informa en su política de privacidad. MOTICIAS (Avionline S.L.) solo los entrega y guarda una copia durante 12 meses para demostrar el envío y el consentimiento; no los usa para nada más ni los cede a nadie. Puedes pedir acceso, rectificación o supresión escribiendo a la dirección de privacidad de MOTICIAS.</div>
+    <label class="chk"><input type="checkbox" id="ok"> Acepto que MOTICIAS entregue estos datos a Transportes Ejemplo S.A. para que me contacte sobre este anuncio.</label>
+    <div class="pie"><button id="no">Cancelar</button><button class="p" id="si">Enviar</button></div><p class="nota" style="color:#5d6b82" id="msg"></p></div>`;
+  $("#velo").onclick = cerrar; $("#no").onclick = cerrar;
+  $("#si").onclick = () => { const falta = ["n","ma","cp","pa"].filter(i => !$("#" + i).value.trim()); if (falta.length || !$("#ok").checked) { $("#msg").textContent = "Faltan los campos con * o el consentimiento."; return; } $("#msg").textContent = "Prototipo: en la web se guarda y llega al anunciante."; };
+}
+function cerrar(){ $("#capa").innerHTML = ""; }
+$("#f-formato").innerHTML = Object.keys(FORMATOS).map(f => `<button class="op ${f === S.formato ? "on" : ""}" data-f="${f}">${f}</button>`).join(" ");
+$("#pal").innerHTML = FONDOS.map((f, i) => `<button class="sw ${i === S.fondo ? "on" : ""}" style="background:${f[1]}" title="${f[0]}" aria-label="${f[0]}" data-fo="${i}"></button>`).join("");
+document.addEventListener("click", ev => { const b = ev.target.closest("[data-f],[data-p],[data-m],[data-c],[data-fo]"); if (!b) return;
+  const k = Object.keys(b.dataset)[0], val = b.dataset[k], key = {f:"formato", p:"pantalla", m:"modo", c:"cta", fo:"fondo"}[k];
+  S[key] = key === "fondo" ? +val : val; b.parentElement.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); pinta(); });
+["#t-tit","#t-p"].forEach(s => $(s).addEventListener("input", pinta));
+addEventListener("resize", pinta);
+pinta();
+</script>

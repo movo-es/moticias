@@ -2047,12 +2047,12 @@
  },
  "publicidad": {
   "decidido": "2026-11-09",
-  "regla": "Cajas con enlace, siempre con la etiqueta visible (art. 20 LSSI) y enlace rel=\"sponsored\"; nunca dentro del texto de una pieza (eso son las cajas de contenido patrocinado del grupo) ni sobre la apertura. Solo el superadministrador activa; los demás perfiles proponen.",
+  "regla": "Cajas con enlace, siempre con la etiqueta visible (art. 20 LSSI) y enlace rel=\"sponsored\"; nunca dentro del texto de una pieza (eso son las cajas de contenido patrocinado del grupo) ni encima ni al lado del titular de apertura (16-11-2026: el hueco «cabecera» deja de usarse; el premium de portada va un escalón por debajo de la apertura, a la derecha). Como mucho tres huecos de pago por página. Solo el superadministrador activa; los demás perfiles proponen.",
   "niveles": {
    "premium": {
     "nombre": "Premium",
     "huecos": [
-     "cabecera",
+     "portada-premium",
      "articulo-lateral"
     ]
    },
@@ -2072,12 +2072,13 @@
    }
   },
   "huecos": {
-   "cabecera": "Banda bajo la cabecera, en todas las páginas",
+   "cabecera": "Retirado el 16-11-2026 (quedaba encima de la apertura): las cajas que lo tenían pasan a portada-premium",
    "articulo-lateral": "Primera caja del lateral del artículo, junto al texto",
    "portada-medio": "Huecos entre bloques de la portada",
    "articulo-cierre": "Tras el artículo, antes de los comentarios",
    "pie": "Antes del pie de página, en todas las páginas",
-   "boletin": "Boletín por correo (reservado)"
+   "boletin": "Boletín por correo (reservado)",
+   "portada-premium": "Portada: un escalón por debajo de la apertura, a la derecha, en un formato de la rejilla; en el móvil, franja horizontal debajo de los titulares visuales"
   },
   "tipos": {
    "grupo": "Servicio del grupo (el lector ve «Contenido patrocinado»)",
@@ -2089,7 +2090,126 @@
    "activo",
    "pausado",
    "terminado"
-  ]
+  ],
+  "tope_pago_por_pagina": 3,
+  "rejilla": {
+   "medida": "2026-11-16, www.moticias.com en 1280 px: contenedor 1.203 px, 4 columnas, 28 px de separación",
+   "ancho": 1203,
+   "columnas": 4,
+   "separacion": 28,
+   "fila": 140,
+   "escala": 2,
+   "movil": {
+    "ancho": 358,
+    "alto": 120
+   }
+  },
+  "formatos": {
+   "2x2": "Cuadrado mediano",
+   "3x2": "Apaisado grande",
+   "2x3": "Vertical mediano",
+   "3x3": "Grande",
+   "4x1": "Banda baja a todo el ancho",
+   "2x4": "Vertical, mitad derecha"
+  },
+  "caja_texto": {
+   "fondos": [
+    {
+     "id": "azul",
+     "nombre": "Azul MOTICIAS",
+     "fondo": "#0b2545",
+     "texto": "#ffffff",
+     "boton": "#f26b1d",
+     "boton_texto": "#0b2545"
+    },
+    {
+     "id": "azul-vivo",
+     "nombre": "Azul vivo",
+     "fondo": "#1d4ed8",
+     "texto": "#ffffff",
+     "boton": "#ffffff",
+     "boton_texto": "#0b2545"
+    },
+    {
+     "id": "blanco",
+     "nombre": "Blanco",
+     "fondo": "#ffffff",
+     "texto": "#0b2545",
+     "boton": "#0b2545",
+     "boton_texto": "#ffffff"
+    },
+    {
+     "id": "gris",
+     "nombre": "Gris claro",
+     "fondo": "#eef2f8",
+     "texto": "#0b2545",
+     "boton": "#1d4ed8",
+     "boton_texto": "#ffffff"
+    },
+    {
+     "id": "naranja",
+     "nombre": "Naranja",
+     "fondo": "#f26b1d",
+     "texto": "#0b2545",
+     "boton": "#0b2545",
+     "boton_texto": "#ffffff"
+    }
+   ],
+   "tipografias": {
+    "titular": "Newsreader (la de los titulares de MOTICIAS)",
+    "texto": "Plus Jakarta Sans (la del texto de MOTICIAS)"
+   },
+   "limites": {
+    "anunciante": 40,
+    "titular": 70,
+    "texto": 140
+   },
+   "contraste_minimo": 4.5
+  },
+  "cta": {
+   "web": "Ir a la web",
+   "info": "Pide más información"
+  },
+  "formulario": {
+   "activo": false,
+   "nota": "Apagado hasta que el editor jefe apruebe los textos legales (docs/legal/formulario-publicidad.md). Mientras esté apagado, «Pide más información» se convierte en «Ir a la web».",
+   "campos": [
+    [
+     "nombre",
+     true
+    ],
+    [
+     "empresa",
+     false
+    ],
+    [
+     "email",
+     true
+    ],
+    [
+     "telefono",
+     false
+    ],
+    [
+     "direccion",
+     false
+    ],
+    [
+     "cp",
+     true
+    ],
+    [
+     "ciudad",
+     false
+    ],
+    [
+     "pais",
+     true
+    ]
+   ],
+   "conservacion_meses": 12,
+   "textos": "docs/legal/formulario-publicidad.md"
+  }
  },
  "grupo": {
   "decidido": "2026-11-09",
