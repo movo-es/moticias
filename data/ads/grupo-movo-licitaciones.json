@@ -6,6 +6,13 @@
  "cta": "Solicitar valoración",
  "end": "",
  "headline": "¿Te presentas a una licitación de transporte de viajeros?",
+ "historial": [
+  {
+   "en": "2026-11-15T19:43+00:00",
+   "estado": "terminado",
+   "por": "superadmin"
+  }
+ ],
  "id": "grupo-movo-licitaciones",
  "image": null,
  "label": "Contenido patrocinado · servicio del grupo",
@@ -23,13 +30,13 @@
   "seccion"
  ],
  "start": "2026-11-04",
- "status": "pausado",
+ "status": "terminado",
  "text": "Valoración del pliego, propuesta de enfoque y borrador de oferta adaptado a tu empresa, listo para que lo revise tu equipo. Un servicio de MOVO para operadores, consultoras e ingenierías.",
+ "tipo_contenido": "patrocinado",
  "type": "grupo",
- "updated_at": "2026-11-09T16:29+00:00",
+ "updated_at": "2026-11-15T19:43+00:00",
  "url": "mailto:rainerup@gmail.com?subject=Valoraci%C3%B3n%20de%20licitaci%C3%B3n%20(MOVO)",
  "utm": true,
  "utm_campaign": "movo-licitaciones",
- "weight": 3,
- "tipo_contenido": "patrocinado"
+ "weight": 3
 }
