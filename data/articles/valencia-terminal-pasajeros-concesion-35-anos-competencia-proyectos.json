@@ -195,5 +195,6 @@
  "territorios": [
   "comunidad-valenciana",
   "baleares"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

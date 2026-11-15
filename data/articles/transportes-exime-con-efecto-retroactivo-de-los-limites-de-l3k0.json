@@ -78,7 +78,7 @@
    "propuesta_en": "2026-11-09T13:02+01:00",
    "puntuacion": 15,
    "texto": "Coordinar decenas de autocares de pymes distintas para un mismo contratante —un plan alternativo de transporte, una sustitución por obras, un gran evento— es el problema que resuelve Movenbus: una sola interlocución que agrupa operadores pequeños y medianos de toda España.",
-   "url": "https://movenbus.com?utm_source=moticias&utm_medium=contenido-patrocinado&utm_campaign=moticias-nota-de-la-casa-movenbus&utm_content=transportes-exime-con-efecto-retroactivo-de-los-limites-de-l3k0"
+   "url": "https://movenbus.com?utm_source=moticias&utm_medium=contenido-patrocinado&utm_campaign=moticias-grupo-movenbus&utm_content=transportes-exime-con-efecto-retroactivo-de-los-limites-de-l3k0"
   }
  ],
  "modo": "tierra",
@@ -214,5 +214,6 @@
   }
  ],
  "title": "Transportes exime con efecto retroactivo de los límites de conducción a los autobuses del corte de Urda",
- "why": "Da cobertura legal, con efecto retroactivo, a los excesos de conducción de los cinco primeros días del corte, pero solo a quien comunique sus matrículas. Desde el 2 de noviembre rigen los límites ordinarios aunque los planes alternativos continúan, lo que obliga a dimensionar las tripulaciones con las reglas de siempre."
+ "why": "Da cobertura legal, con efecto retroactivo, a los excesos de conducción de los cinco primeros días del corte, pero solo a quien comunique sus matrículas. Desde el 2 de noviembre rigen los límites ordinarios aunque los planes alternativos continúan, lo que obliga a dimensionar las tripulaciones con las reglas de siempre.",
+ "tipo_contenido": "noticia"
 }

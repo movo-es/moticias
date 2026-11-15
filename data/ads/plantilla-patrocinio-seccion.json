@@ -11,7 +11,7 @@
  "id": "plantilla-patrocinio-seccion",
  "image": null,
  "invoice_ref": "",
- "label": "Patrocinio",
+ "label": "Contenido patrocinado",
  "name": "Plantilla · Patrocinio de sección (sin anunciante)",
  "notes": "Plantilla en borrador para el primer patrocinio de sección: no se publica. Rellenar anunciante, web, fechas e importe y cambiar a «Activa».",
  "pricing": "tarifa plana",
@@ -29,5 +29,6 @@
  "url": "",
  "utm": true,
  "utm_campaign": "",
- "weight": 1
+ "weight": 1,
+ "tipo_contenido": "patrocinado"
 }

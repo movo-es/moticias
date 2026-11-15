@@ -1,5 +1,7 @@
 # Tareas: publicar-en-ghost-v1 (semana 46, 10–16 nov 2026)
 
+> **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
+
 ## Rainer (desde el móvil o el panel de Ghost)
 - [ ] Poner `GHOST_URL=https://www.moticias.com` y `GHOST_ADMIN_KEY=<la clave de la integración>` como variables de entorno de la tarea programada «MOTICIAS · edición diaria» (y, cuando exista, del proyecto de Vercel). Nunca en el repositorio ni en el chat.
 - [ ] Crear en Hostinger los buzones `redaccion@moticias.com` y `prensa@moticias.com` (o alias hacia `ruphoff@avionline.es`).

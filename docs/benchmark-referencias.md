@@ -18,7 +18,7 @@ Fecha: 4-11-2026. Método: consulta directa de los sitios (35 cargas). dvz.de, p
 
 | Medio | Lo hace bien | Dónde falla |
 |---|---|---|
-| Diario del Puerto | Mejor arquitectura (Aéreo/Ferroviario/Marítimo/Logística/Carretera/Opinión), muro de pago con prueba de un mes, Newsletter Matinal, OJD, créditos de foto, cubre FuelEU Maritime y licitaciones | Horas sin fecha, cabecera con autopromoción, cinco megabanners, patrocinado en subdominio sin etiqueta |
+| Diario del Puerto | Mejor arquitectura (Aéreo/Ferroviario/Marítimo/Logística/Carretera/Opinión), muro de pago con prueba de un mes, Newsletter Matinal, OJD, créditos de foto, cubre FuelEU Maritime y licitaciones | Horas sin fecha, cabecera ocupada por anuncios de sus propios productos, cinco megabanners, patrocinado en subdominio sin etiqueta |
 | Railin (ex Trenvista) | Análisis crítico (Urda), explicadores, mapa RFIG interactivo, pódcast, apoyo de lectores | Sin firma en tarjetas, revista parada desde 07-2024, sin política de correcciones |
 | Hosteltur Transportes | Volumen (30 piezas/día), subsección Nombramientos | Categoría Normativas vacía, un redactor firma 13 de 30, muro "pagar o aceptar cookies", titulares sensacionalistas |
 | Autobuses & Autocares | Agilidad (17 piezas del 3-11), Buscapruebas | Sin firmas, comunicados reescritos, el editor vende contenido corporativo (EDISERV) |

@@ -228,5 +228,6 @@
  "territorios": [
   "baleares",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

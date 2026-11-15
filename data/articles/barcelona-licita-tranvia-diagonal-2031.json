@@ -196,5 +196,6 @@
  "territorios": [
   "cataluna",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

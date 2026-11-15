@@ -8,7 +8,7 @@ constatación en el panel».
 - Visualizaciones y clics los manda el script del sitio (app/public/sitio/m.js) a `POST /api/gestor?a=evento`: una
   visualización cuando la caja se ve al menos a medias en pantalla; un clic cuando el lector pulsa su enlace. Los robots
   (por su identificador) y el comprobador no cuentan: las cifras que verá un anunciante son de lectores.
-- Cada caja tiene un identificador: el de su fichero en data/ads/ («casa-movo-pmst») o, para las cajas de contenido
+- Cada caja tiene un identificador: el de su fichero en data/ads/ («grupo-movo-pmst»; hasta el 15-11-2026 llevaban otro prefijo y la migración 009 trasladó su historia) o, para las cajas de contenido
   patrocinado del texto, «caja:<producto>».
 - El comprobador visita cada enlace activo con su UTM (`utm_medium=comprobacion`, para que se pueda filtrar en la
   analítica del destino) y apunta el resultado. Lo lanza el cron de Vercel cada hora de 8 a 20 (laborables) y decide al

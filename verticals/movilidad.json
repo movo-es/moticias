@@ -231,6 +231,47 @@
    "nota": "decisión de Rainer, 9-11-2026: los commits de la redacción automática"
   }
  },
+ "tipos_de_contenido": {
+  "decidido": "2026-11-15",
+  "cambio": "tipos-de-contenido",
+  "regla": "Cuatro tipos, siempre distinguibles para el lector, en los datos y en Ghost. Lo decide src/tipos.py (deducir, validar, marca, etiqueta de Ghost, rel); aquí solo los textos. Lo que anuncia servicios del grupo es siempre «Contenido patrocinado · servicio del grupo», sin otro término.",
+  "valores": {
+   "editorial": "Análisis y reportajes con firma (kind analisis o reportaje)",
+   "noticia": "Noticias (kind noticia, sin sponsored_by)",
+   "nota_de_prensa": "Comunicado de un emisor externo (data/notas-de-prensa/); nunca noticia sin verificación independiente, fuera de la portada editorial y del boletín diario",
+   "patrocinado": "Lo que anuncia un servicio: cajas dentro del texto, cajas por niveles (data/ads/) y piezas con sponsored_by; etiqueta siempre visible y rel=\"sponsored\"; nunca en un análisis ni en piezas que traten del grupo"
+  },
+  "marcas": {
+   "analisis_director": "Análisis del director",
+   "analisis": "Análisis",
+   "reportaje": "Reportaje",
+   "noticia": "Noticia",
+   "nota_de_prensa": "Nota de prensa · Comunicado de %(emisor)s",
+   "patrocinado_grupo": "Contenido patrocinado · servicio del grupo",
+   "patrocinado_cliente": "Contenido patrocinado · %(cliente)s",
+   "publicidad": "Publicidad"
+  },
+  "etiquetas_ghost": {
+   "editorial": "#tipo-editorial",
+   "noticia": "#tipo-noticia",
+   "nota_de_prensa": "#tipo-nota-de-prensa",
+   "patrocinado": "#tipo-patrocinado"
+  },
+  "etiqueta_analisis_director": "#analisis-director",
+  "portada": [
+   "editorial",
+   "noticia"
+  ],
+  "boletin": [
+   "editorial",
+   "noticia"
+  ],
+  "tipos_anuncio": {
+   "grupo": "servicio de una empresa del grupo (incluidos los de la propia MOTICIAS)",
+   "patrocinio": "lo paga un cliente",
+   "publicidad": "caja por niveles de un anunciante"
+  }
+ },
  "campaigns": {
   "dir": "data/campanas/",
   "reports_dir": "docs/campanas/",
@@ -270,7 +311,7 @@
  },
  "productos": {
   "dir": "data/productos/",
-  "label": "Contenido patrocinado",
+  "label": "Contenido patrocinado · servicio del grupo",
   "declaracion": "%(nombre)s es un servicio de una empresa del grupo de MOTICIAS.",
   "email": [
    "ruphoff@avionline.es"
@@ -634,11 +675,12 @@
    },
    {
     "id": "analisis",
-    "nombre": "Análisis del director",
+    "nombre": "Análisis",
     "alias": [
      "análisis",
      "opinión",
-     "director"
+     "director",
+     "análisis del director"
     ]
    }
   ],
@@ -1641,9 +1683,9 @@
    "boletin": "Boletín por correo (reservado)"
   },
   "tipos": {
-   "publicidad": "Publicidad",
-   "patrocinio": "Patrocinio",
-   "autopromocion": "Autopromoción"
+   "grupo": "Contenido patrocinado · servicio del grupo",
+   "patrocinio": "Contenido patrocinado",
+   "publicidad": "Publicidad"
   },
   "estados": [
    "propuesta",
@@ -1733,7 +1775,7 @@
   },
   "marca": {
    "etiqueta": "Nota de prensa",
-   "aviso": "Comunicado de empresa · no es contenido editorial de MOTICIAS",
+   "aviso": "No es contenido editorial de MOTICIAS",
    "aviso_grupo": "Empresa del grupo editor"
   },
   "planes": [

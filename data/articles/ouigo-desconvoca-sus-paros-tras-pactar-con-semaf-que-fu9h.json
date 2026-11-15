@@ -226,5 +226,6 @@
  "territorios": [
   "andalucia",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

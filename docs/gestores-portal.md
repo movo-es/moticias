@@ -24,7 +24,7 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
   - boletín (reservado).
 - Los huecos de publicidad nunca aparecen sobre la apertura ni dentro del texto. La etiqueta es siempre visible (art. 20 LSSI).
 - Excepción, desde el 8-11-2026: las cajas «Contenido patrocinado» de los productos del grupo, en medio del texto (ver abajo).
-- Los huecos sin campaña de pago se rellenan con autopromoción (en `data/ads/`):
+- Los huecos sin campaña de pago se rellenan con cajas del grupo, etiquetadas «Contenido patrocinado · servicio del grupo» (`data/ads/grupo-*.json`, `type: grupo`):
   - MOVO valoración de licitaciones;
   - Ediciones a medida;
   - Anúnciate.
@@ -72,7 +72,7 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 - Tres ejes por pieza, independientes: Modo (qué se mueve), Tema (qué tipo de hecho) y Territorio (comunidad o ámbito). `section` y `subsector` siguen para el portal y la hemeroteca.
 - Una sola barra: menús Modo · Tema · Territorio (con mapa de comunidades), botón «Análisis del director» y lupa. Cada menú cuenta las piezas con los demás filtros puestos.
 - Buscador con sinónimos del sector, topónimo como filtro, comunidades vecinas cuando no hay nada y corrección de erratas; sin resultado, «Pídela» (pieza bajo demanda).
-- Módulo fijo «Análisis del director» en la portada (columna derecha en escritorio; segunda tarjeta en móvil). En móvil, sin textos de presentación ni resúmenes: foto, modo · territorio y titular.
+- Módulo fijo «Análisis del director» en la portada (columna derecha en escritorio; segunda tarjeta en móvil). Solo análisis firmados por el director (etiqueta interna `#analisis-director`, campo `dir` del índice), nunca por tema: los análisis de la redacción salen como «Análisis» (cambio `tipos-de-contenido`, 15-11-2026). Cada tarjeta lleva su marca de tipo. En móvil, sin textos de presentación ni resúmenes: foto, modo · territorio y titular.
 - Etiquetas de Ghost con slug fijo: `m-<submodo>`, `tema-<id>`, `t-<territorio>` (`ghost_publish.py --etiquetas` las crea; cada una con descripción, que sale en `llms.txt`).
 - Maqueta navegable: `openspec/changes/navegacion-y-buscador/maqueta/`.
 
@@ -80,7 +80,7 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 - **Solo el editor jefe (superadministrador) publica.** Editor, comercial y oficina proponen (cajas y publicidad quedan «propuesta») y trabajan en el CRM; el servidor lo comprueba.
 - **En moticias.com**, con la sesión del gestor abierta, cada noticia lleva un icono discreto ✎ (abajo a la derecha en la pieza; junto al titular en los listados): Editar, Otro enfoque con IA, Patrocinio y retoques, Retirar. `www.moticias.com/#editor` lleva a entrar y vuelve. Lo carga `<script src="https://app.moticias.com/sitio/m.js" defer></script>` en Ghost → Code injection → Site footer.
 - **Editor**: campos de la pieza con vista previa al momento, firma (con el cupo del 10 %), corrección con nota al final. **Otro enfoque con IA**: seis enfoques o una indicación; la propuesta se ve junto al original; «Pasar al editor» y después «Publicar cambios». Las cifras o fechas nuevas se marcan y no se publican sin confirmarlas. **Retirar**: deja de verse, se conserva y se restaura.
-- **Publicidad**: nueva caja con tipo (publicidad, patrocinio, autopromoción), anunciante, nivel (premium, estándar, básico, que marca sus huecos), titular, texto, enlace, fechas y peso; vista previa. Premium: bajo la cabecera y primera caja del lateral del artículo. Estándar: huecos de la portada y cierre del artículo. Básico: antes del pie (y boletín, reservado). Etiqueta siempre visible y `rel="sponsored"`.
+- **Publicidad**: nueva caja con tipo (publicidad, patrocinio de un cliente, servicio del grupo; la etiqueta visible sale del tipo: «Publicidad», «Contenido patrocinado · <cliente>», «Contenido patrocinado · servicio del grupo», sin texto libre), anunciante, nivel (premium, estándar, básico, que marca sus huecos), titular, texto, enlace, fechas y peso; vista previa. Premium: bajo la cabecera y primera caja del lateral del artículo. Estándar: huecos de la portada y cierre del artículo. Básico: antes del pie (y boletín, reservado). Etiqueta siempre visible y `rel="sponsored"`.
 - **CRM**: «Hoy y esta semana» (pasos), cuentas por tipo con buscador, ficha con personas, registrar (actividad, estado, siguiente paso), pasos, contratos (solo superadministrador y comercial), historial y archivo. «Importar las fuentes del repositorio» crea una cuenta por fuente de `portal/data/sources.json`. Regla de oro: cuenta en marcha = siguiente paso con fecha; «No contactar» es para siempre; nada se borra.
 - **Suscriptores**: totales, filtros por estado y categoría, buscador y categoría de cada miembro (etiqueta `cat:` en Ghost).
 - **Equipo**: en la base privada; perfiles «Editor jefe (superadministrador)», editor, comercial y oficina.

@@ -21,6 +21,7 @@ import prensa_asesor as A  # noqa: E402
 import prensa_comun as P  # noqa: E402
 import prensa_valor as PV  # noqa: E402
 from taxonomia import Taxonomia  # noqa: E402
+import tipos as T  # noqa: E402  (marca de la nota: «Nota de prensa · Comunicado de <emisor>»)
 
 V = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
 CFG = V["prensa"]
@@ -41,7 +42,7 @@ def url_nota(n, medio="email"):
 def cuerpo_envio(n, lineas, tx):
     """Texto plano para src/prensa.py (_html lo convierte: párrafos y enlaces)."""
     m = CFG["marca"]
-    partes = ["%s · %s%s" % (m["etiqueta"].upper(), m["aviso"], (" · " + m["aviso_grupo"]) if n.get("grupo") else ""),
+    partes = ["%s · %s%s" % (T.marca(n, "notas-de-prensa").upper(), m["aviso"], (" · " + m["aviso_grupo"]) if n.get("grupo") else ""),
               "POR QUÉ LE LLEGA\n" + "\n".join(lineas),
               n["titulo"].upper() + ("\n" + n["subtitulo"] if n.get("subtitulo") else ""),
               n["organizacion"]["nombre"] + ((" · Embargo hasta " + n["embargo_hasta"]) if n.get("embargo_hasta") else ""),

@@ -104,12 +104,12 @@
   "huecos": [
    {
     "slot": "articulo-lateral",
-    "ad_id": "casa-movo-pmst",
+    "ad_id": "grupo-movo-pmst",
     "label": "Servicio de MOVO"
    },
    {
     "slot": "boletin",
-    "ad_id": "casa-movo-pmst",
+    "ad_id": "grupo-movo-pmst",
     "label": "Servicio de MOVO"
    }
   ]

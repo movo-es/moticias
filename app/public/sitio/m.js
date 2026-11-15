@@ -3,14 +3,19 @@
    Dos cosas, nada más (cambio OpenSpec editor-jefe-y-crm, decisiones de Rainer del 9-11-2026):
    1. Publicidad y patrocinios: rellena los huecos con las cajas activas del gestor (app.moticias.com/api/gestor?a=publicidad),
       por niveles (premium: cabecera y lateral del artículo; estándar: portada y cierre del artículo; básico: antes del pie).
-      Etiqueta siempre visible (art. 20 LSSI) y enlace rel="sponsored". Nunca dentro del texto de una pieza. Si no hay caja
-      pagada para un hueco, se queda la autopromoción que pinta el tema.
+      Etiqueta siempre visible (art. 20 LSSI) y enlace rel="sponsored" en TODAS las cajas, también en las del grupo. Nunca
+      dentro del texto de una pieza. Si no hay caja pagada para un hueco, va la del grupo («Contenido patrocinado · servicio
+      del grupo») o se queda la que pinta el tema.
    2. Editor jefe: si este navegador tiene la marca «moticias_jefe» (la pone el gestor al entrar el superadministrador), pregunta
       al gestor si de verdad lo es (con su sesión) y, solo entonces, enseña un icono discreto en cada noticia con Editar, Otro
       enfoque con IA, Patrocinio y retoques, y Retirar. La marca no da ningún permiso: todo se comprueba en el servidor.
    3. Seguimiento: cuenta una visualización cuando una caja (publicidad, patrocinio o «Contenido patrocinado» del texto) se ve
       al menos a medias, y un clic cuando se pulsa su enlace (POST /api/gestor?a=evento). No cuenta las visitas del editor jefe
       ni de navegadores automatizados.
+   4. Tipo de contenido (cambio tipos-de-contenido, 15-11-2026): en los listados, una marca pequeña junto a cada titular
+      («Análisis del director», «Análisis», «Reportaje», «Noticia», «Nota de prensa · Comunicado de …»), leída de
+      app.moticias.com/buscador/tipos.json (lo genera src/export_search_index.py). Dentro de cada pieza la marca ya va
+      en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
   "use strict";
@@ -44,7 +49,7 @@
   })();
   function elegir(lista, usadas) {
     var c = (lista || []).filter(function (x) { return !usadas[x.id] && (!x.secciones.length || x.secciones.indexOf(seccion) >= 0); });
-    var pagadas = c.filter(function (x) { return x.tipo !== "autopromocion"; });
+    var pagadas = c.filter(function (x) { return x.tipo !== "grupo"; });
     if (pagadas.length) c = pagadas;
     if (!c.length) return null;
     var nivel = c[0].nivel; c = c.filter(function (x) { return x.nivel === nivel; });
@@ -56,9 +61,9 @@
     try { var url = new URL(u); if (!url.searchParams.get("utm_source")) { url.searchParams.set("utm_source", "moticias"); url.searchParams.set("utm_medium", x.tipo); url.searchParams.set("utm_campaign", x.campana); url.searchParams.set("utm_content", hueco); } return url.toString(); } catch (e) { return u; }
   }
   function caja(x, hueco, ancha) {
-    var rel = x.tipo === "autopromocion" ? "noopener" : "sponsored noopener";
-    return '<aside class="ad ' + (ancha ? "ad-wide" : "ad-side") + (x.tipo === "autopromocion" ? " house" : "") + '" aria-label="' + E(x.etiqueta) + '" data-mtx="' + E(x.id) + '" data-mtx-h="' + E(hueco) + '">' +
-      '<span class="ad-label">' + E(x.etiqueta) + (x.anunciante ? " · " + E(x.anunciante) : "") + "</span>" +
+    var rel = "sponsored noopener";  // sin excepción: también las cajas del grupo
+    return '<aside class="ad ' + (ancha ? "ad-wide" : "ad-side") + (x.tipo === "grupo" ? " house" : "") + '" aria-label="' + E(x.etiqueta) + '" data-mtx="' + E(x.id) + '" data-mtx-h="' + E(hueco) + '">' +
+      '<span class="ad-label">' + E(x.etiqueta) + "</span>" +
       '<a class="ad-body" href="' + E(utm(x.url, x, hueco)) + '" rel="' + rel + '" target="_blank">' +
       (x.imagen ? '<img class="ad-img" src="' + E(x.imagen) + '" alt="" loading="lazy">' : "") +
       '<span class="ad-text">' + (x.anunciante ? '<span class="ad-brand">' + E(x.anunciante) + "</span>" : "") + "<b>" + E(x.titular) + "</b>" +
@@ -72,7 +77,7 @@
     // Premium · lateral del artículo
     var lat = d.querySelector("aside.m-aside");
     if (lat && (x = elegir(H["articulo-lateral"], usadas))) { var l = d.createElement("div"); l.className = "m-box mtx-hueco"; l.innerHTML = caja(x, "articulo-lateral", false); lat.insertBefore(l, lat.firstChild); }
-    // Estándar · cierre del artículo (sustituye a la autopromoción del tema solo si hay caja)
+    // Estándar · cierre del artículo (sustituye a la caja que pinta el tema solo si hay caja)
     var fin = d.querySelector(".ad-end");
     if (fin && (x = elegir(H["articulo-cierre"], usadas))) fin.innerHTML = caja(x, "articulo-cierre", false);
     // Estándar · huecos de la portada
@@ -112,8 +117,42 @@
   function cuandoEste(sel, fn, n) { if (d.querySelector(sel) || (n || 0) > 20) return fn(); setTimeout(function () { cuandoEste(sel, fn, (n || 0) + 1); }, 150); }
   fetch(API + "/api/gestor?a=publicidad").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
     if (!j) return;
-    if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); vigilarCajas(); }); else { publicidad(j); vigilarCajas(); }
+    if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); cajasDelTema(); vigilarCajas(); }); else { publicidad(j); cajasDelTema(); vigilarCajas(); }
   }).catch(function () { vigilarCajas(); });
+
+  // ---------- 4. Tipo de contenido ----------
+  // Marca por tipo en los listados (portada, secciones, etiquetas, búsqueda). En la propia pieza ya va en el cuerpo.
+  var SLUG_TC = /^\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/;
+  css.textContent += ".mtx-tc{display:inline-block;margin:0 0 4px;font:600 10.5px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6b7280}" +
+    ".mtx-tc.t-editorial{color:#7a1f2b}.mtx-tc.t-nota_de_prensa{color:#6b7280;border:1px solid #e5e7eb;border-radius:4px;padding:0 5px}";
+  function marcas(tc) {
+    [].forEach.call(d.querySelectorAll("main h1 a[href], main h2 a[href], main h3 a[href], .lead h2 a, .second h3 a, .m-map-list a[href]"), function (a) {
+      try { var u = new URL(a.href, location.href); } catch (e) { return; }
+      var mm = u.host === location.host && u.pathname.match(SLUG_TC), x = mm && tc[mm[1]];
+      if (!x || (u.pathname === location.pathname) || a.parentNode.querySelector(".mtx-tc")) return;
+      var s = d.createElement("span");
+      s.className = "mtx-tc t-" + x[0]; s.textContent = x[1];
+      s.style.display = "block"; a.insertAdjacentElement("beforebegin", s);
+    });
+  }
+  // Las cajas que pinta el tema por su cuenta (huecos sin caja del gestor) también llevan rel="sponsored". Las del grupo
+  // (clase «house» del tema, que no está versionado) llevan además la etiqueta única «Contenido patrocinado · servicio del
+  // grupo», y su enlace, utm_medium=grupo. Cuando el tema se versione (publicar-en-ghost-v1), esto pasa al tema.
+  var GRUPO = "Contenido patrocinado · servicio del grupo";
+  function cajasDelTema() {
+    [].forEach.call(d.querySelectorAll("aside.ad.house:not([data-mtx])"), function (c) {
+      c.setAttribute("aria-label", GRUPO);
+      var l = c.querySelector(".ad-label"); if (l) l.textContent = GRUPO;
+      [].forEach.call(c.querySelectorAll("a[href]"), function (a) {
+        try { var u = new URL(a.href); if (u.searchParams.get("utm_medium")) { u.searchParams.set("utm_medium", "grupo"); a.href = u.toString(); } } catch (e) {}
+      });
+    });
+    [].forEach.call(d.querySelectorAll(".ad a[href], .ad-end a[href], aside.contenido-patrocinado a[href]"), function (a) { a.setAttribute("rel", "sponsored noopener"); });
+  }
+  cajasDelTema();
+  if (!d.body.classList.contains("post-template")) {
+    fetch(API + "/buscador/tipos.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.piezas) marcas(j.piezas); }).catch(function () {});
+  }
 
   // ---------- 2. Editor jefe ----------
   var SLUG = /^\/([a-z0-9]+(?:-[a-z0-9]+)*-[a-z0-9]{4})\/?$/;

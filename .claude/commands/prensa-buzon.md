@@ -14,3 +14,5 @@ Eres la sala de prensa de MOTICIAS (vertical `movilidad` salvo que `$ARGUMENTS` 
 8. **Cerrar.** `git add data/notas-de-prensa docs/prensa && git commit -m "Sala de prensa: AAAA-MM-DD hh:mm" && git push`. Aviso de una línea: cuántas notas, cuántas publicadas, cuántas pendientes, organizaciones nuevas.
 
 No pasan: publicidad de productos sin hecho noticiable, textos sin organización identificable, contenido que ataque a terceros con nombre (esos van al director con `status: recibida` y una nota). Nada se borra: retirar es `status: retirada`.
+
+Tipo de contenido (cambio `tipos-de-contenido`, 15-11-2026): toda nota nace con `tipo_contenido: nota_de_prensa` (lo pone `src/prensa_publicar.py`), lleva la marca «Nota de prensa · Comunicado de <emisor>» y las etiquetas internas `#comunicado` y `#tipo-nota-de-prensa`, y nunca entra en la portada editorial ni en el boletín diario. Si un comunicado da pie a una noticia, la noticia es otra pieza (`data/articles/`, `tipo_contenido: noticia`) con verificación independiente.

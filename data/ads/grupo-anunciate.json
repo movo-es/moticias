@@ -8,13 +8,13 @@
  "cta": "Ver formatos",
  "end": "",
  "headline": "Tu marca, delante de quien decide en transporte",
- "id": "casa-anunciate",
+ "id": "grupo-anunciate",
  "image": null,
  "invoice_ref": "",
- "label": "MOTICIAS",
- "name": "Casa · Anúnciate",
+ "label": "Contenido patrocinado · servicio del grupo",
+ "name": "Grupo · Anúnciate",
  "notes": "",
- "pricing": "gratuito / casa",
+ "pricing": "sin coste · servicio del grupo",
  "sections": [],
  "slots": [
   "portada-pie",
@@ -24,10 +24,11 @@
  "start": "2026-11-04",
  "status": "activo",
  "text": "Patrocinios de sección, banners y presencia en ediciones a medida. Siempre señalizados y separados del contenido editorial.",
- "type": "autopromocion",
+ "type": "grupo",
  "updated_at": "2026-11-04T18:00:00+01:00",
  "url": "#anunciate",
  "utm": true,
  "utm_campaign": "",
- "weight": 1
+ "weight": 1,
+ "tipo_contenido": "patrocinado"
 }

@@ -21,7 +21,7 @@ Un JSON por producto o servicio del grupo que MOTICIAS puede mencionar al pie de
 | `max_por_semana` | Tope de menciones publicadas del producto en siete días; alcanzado, se propone pero no se publica. |
 | `textos.corto` | El texto del bloque (dos o tres frases, en tono informativo, sin adjetivos comerciales). |
 | `textos.cta` | Texto del enlace. |
-| `utm_campaign` | Para medir: el enlace lleva `utm_source=moticias&utm_medium=nota-de-la-casa&utm_campaign=<este>&utm_content=<id de la pieza>`. |
+| `utm_campaign` | Para medir: el enlace lleva `utm_source=moticias&utm_medium=contenido-patrocinado&utm_campaign=<este>&utm_content=<id de la pieza>`. |
 
 ## Cómo se decide una mención
 

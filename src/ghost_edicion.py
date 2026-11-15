@@ -11,6 +11,9 @@ semana, tabla de boletines, próximos plazos y nota metodológica. Este script c
 (editions, boletines, agenda, articles) y lo guarda en la página. Si la página no la actualiza nadie, la web sigue
 enseñando la edición anterior aunque las piezas nuevas ya estén publicadas: eso fue lo que pasó el 9-11-2026.
 
+Tipos de contenido (15-11-2026): la portada editorial solo admite `editorial` y `noticia` (src/tipos.py → en_portada); las
+notas de prensa (#comunicado, #tipo-nota-de-prensa) y lo patrocinado no entran en el mapa, ni en el recuento, ni en la apertura.
+
 Decisión de Rainer (9-11-2026): el resumen de la edición («Edición nº N de MOTICIAS, …: P piezas, B referencias del BOE y
 A plazos. Apertura: …») NO va arriba, distrae; va al final de la edición, en pequeño. Por eso `meta_description` de la
 página queda vacía (el tema la pintaba bajo el título) y el resumen se escribe como última línea del cuerpo.
@@ -21,6 +24,7 @@ import argparse, datetime, glob, html, json, os, sys, urllib.error, urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ghost_publish import admin_base, api, ghost_token  # noqa: E402
+import tipos as T  # noqa: E402  (la portada solo admite contenido editorial y noticias; openspec tipos-de-contenido)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SLUG = "edicion-hoy"
@@ -96,7 +100,7 @@ def construir(dia, vertical):
     en_ghost = publicadas_en_ghost(vertical)
 
     def publicada(a):
-        if a.get("status") in ("pendiente", "borrador", "retirada"):
+        if a.get("status") in ("pendiente", "borrador", "retirada") or not T.en_portada(a, "articles", vertical):
             return False
         return a["id"] in en_ghost if en_ghost is not None else a.get("status") == "publicado"
     ed = json.load(open(os.path.join(ROOT, "data", "editions", dia + ".json"), encoding="utf-8"))
@@ -104,9 +108,11 @@ def construir(dia, vertical):
     bols = sorted([b for b in carga("boletines") if b.get("edicion") == dia], key=lambda b: (b.get("fecha", ""), b.get("referencia", "")))
     hace7 = (fecha(dia) - datetime.timedelta(days=7)).isoformat()
     plazos = sorted([p for p in carga("agenda") if p.get("date", "") >= dia or p.get("edicion") == dia], key=lambda p: (p.get("date", ""), p.get("title", "")))[:14]
-    con_lugar = [a for a in arts.values() if a.get("geo") and (publicada(a) or a.get("date") == dia and a.get("status") == "publicado") and hace7 < a.get("date", "") <= dia]
+    # Portada editorial: solo `editorial` y `noticia` (src/tipos.py); las notas de prensa y lo patrocinado nunca entran.
+    con_lugar = [a for a in arts.values() if a.get("geo") and T.en_portada(a, "articles", vertical)
+                 and (publicada(a) or a.get("date") == dia and a.get("status") == "publicado") and hace7 < a.get("date", "") <= dia]
     con_lugar.sort(key=lambda a: (a.get("date", ""), a.get("published_time", "")), reverse=True)
-    publicadas = [a for a in arts.values() if a.get("date") == dia and a.get("status") == "publicado"]  # las del día que van a la web
+    publicadas = [a for a in arts.values() if a.get("date") == dia and a.get("status") == "publicado" and T.en_portada(a, "articles", vertical)]  # las del día que van a la web
     lead = arts.get(ed.get("lead_id")) or {}
 
     # Todo el cuerpo va como una sola tarjeta HTML de Ghost (marcas kg-card-begin/end): sin ellas, Ghost convierte el HTML

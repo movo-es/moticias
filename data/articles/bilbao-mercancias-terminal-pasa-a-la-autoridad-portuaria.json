@@ -135,5 +135,6 @@
  "territorios": [
   "pais-vasco",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

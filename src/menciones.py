@@ -19,6 +19,9 @@ cada mención; retirar = `estado: retirada` (nunca se borra).
 """
 import argparse, datetime, glob, html, json, os, re, sys, unicodedata, urllib.error, urllib.parse, urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from tipos import marca_mencion, rel  # noqa: E402  (tipos de contenido: marca y rel en un solo sitio)
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO_EDIT = "https://github.com/movo-es/moticias/edit/main/data/articles/%s.json"
 REPO_VIEW = "https://github.com/movo-es/moticias/blob/main/data/articles/%s.json"
@@ -84,7 +87,7 @@ def con_utm(url, producto, pieza_id):
         return url
     sep = "&" if "?" in url else "?"
     q = urllib.parse.urlencode({"utm_source": "moticias", "utm_medium": "contenido-patrocinado",
-                                "utm_campaign": producto.get("utm_campaign") or "moticias-nota-de-la-casa", "utm_content": pieza_id})
+                                "utm_campaign": producto.get("utm_campaign") or "moticias-grupo", "utm_content": pieza_id})
     return url + sep + q
 
 
@@ -237,7 +240,7 @@ def cajas_html(a, vertical, inline=html.escape):
     if pub[0].get("exclusividad") == "exclusiva":
         pub = pub[:1]
     pub = pub[: int(cfg.get("max_por_pieza") or 2)]
-    etiqueta = cfg.get("label", "Contenido patrocinado")
+    etiqueta = cfg.get("label") or marca_mencion(vertical)  # «Contenido patrocinado · servicio del grupo» (src/tipos.py)
     decl = cfg.get("declaracion", "")
     out = []
     for m in pub:
@@ -246,9 +249,9 @@ def cajas_html(a, vertical, inline=html.escape):
         out.append((posicion(m), '<!--kg-card-begin: html--><aside class="contenido-patrocinado" data-producto="%s" data-posicion="%s" '
                    'style="margin:2em 0;padding:1em 1.2em;background:#f4f6f5;border-left:3px solid #c9d2cd;border-radius:4px;font-size:.95em">'
                    '<p class="contenido-patrocinado-etiqueta" style="margin:0 0 .5em;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;color:#7a837e">%s</p>'
-                   '<p style="margin:0">%s <a href="%s" rel="sponsored noopener" style="color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px">%s</a></p>%s</aside><!--kg-card-end: html-->'
+                   '<p style="margin:0">%s <a href="%s" rel="%s" style="color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px">%s</a></p>%s</aside><!--kg-card-end: html-->'
                    % (html.escape(m.get("producto") or "", quote=True), html.escape(posicion(m), quote=True), inline(etiqueta), inline(m.get("texto", "")),
-                      html.escape(m.get("url", ""), quote=True), inline(m.get("cta") or m.get("nombre") or ""),
+                      html.escape(m.get("url", ""), quote=True), rel("patrocinado"), inline(m.get("cta") or m.get("nombre") or ""),
                       ('<p class="contenido-patrocinado-declaracion" style="margin:.6em 0 0;font-size:.75em;color:#7a837e">%s</p>'
                        % inline(decl % {"nombre": m.get("nombre") or ""})) if decl else "")))
     return out

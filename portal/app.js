@@ -564,7 +564,7 @@
     const backHref = blog ? "blog-" + blogSlug(blog) : a.kind === "analisis" ? "analisis" : (a.section || "portada");
     const backLabel = blog ? blog.name : a.kind === "analisis" ? "Análisis" : (SECTION_NAMES[a.section] || "Portada");
     const spNote = a.sponsored_by ? `<div class="sponsored-note">Contenido patrocinado por ${/^https?:/i.test(a.sponsor_url || "") ? `<a href="${esc(a.sponsor_url)}" target="_blank" rel="sponsored noopener">${esc(a.sponsored_by)}</a>` : `<b>${esc(a.sponsored_by)}</b>`}. Comunicación comercial identificada como tal; no forma parte de la selección editorial de MOTICIAS.</div>` : "";
-    const endAd = a.sponsored_by ? "" : adsFor("articulo-cierre", { section: a.section, blog: a.blog_id }).length ? `<div class="ad-end">${adHtml(pickAd((function () { const l = adsFor("articulo-cierre", { section: a.section, blog: a.blog_id }); const p = l.filter((x) => x.type !== "autopromocion"); return p.length ? p : l; })(), "ac" + a.id), "articulo-cierre", "wide")}</div>` : "";
+    const endAd = a.sponsored_by ? "" : adsFor("articulo-cierre", { section: a.section, blog: a.blog_id }).length ? `<div class="ad-end">${adHtml(pickAd((function () { const l = adsFor("articulo-cierre", { section: a.section, blog: a.blog_id }); const p = l.filter((x) => !esGrupo(x.type)); return p.length ? p : l; })(), "ac" + a.id), "articulo-cierre", "wide")}</div>` : "";
     const words = readingTime((a.body_md || "") + " " + (a.summary || "") + " " + (a.why || ""));
     return `<article class="article ${long ? "long" : ""}${blog ? " blogpost" : ""}"${blog && safeColor(blog.accent) ? ` style="--blog:${esc(safeColor(blog.accent))}"` : ""}><div class="wrap"><a class="back" href="#${esc(backHref)}">← ${esc(backLabel)}</a><div class="article-head">${kicker(a)}<h1>${esc(a.title)}</h1><p class="dek">${esc(a.subtitle || "")}</p><div class="meta">${a.relevance ? `<span class="badge ${a.relevance === "ALTA" ? "alta" : "media"}">${esc(a.relevance)}</span>` : ""}${a.status === "borrador" ? `<span class="badge borrador">Borrador</span>` : ""}<span><b style="color:var(--ink)">${esc(a.author || "Redacción")}</b>${a.author_role ? `, ${esc(a.author_role)}` : ""}</span><span class="sep">·</span><span>Publicado el ${esc(fmtMid(a.date || a.published_at))}${a.published_time ? `, ${esc(a.published_time)} CET` : ""}</span>${a.updated_at ? `<span class="sep">·</span><span>Actualizado ${esc(fmtNum(a.updated_at))}</span>` : ""}<span class="sep">·</span><span>${words} min de lectura</span>${srcBadges(a)}</div>${S.canEdit ? `<div class="share"><button type="button" data-edit="${esc(a.id)}">Editar esta pieza</button><button type="button" data-copy="${esc(a.id)}">Copiar enlace</button></div>` : `<div class="share"><button type="button" data-copy="${esc(a.id)}">Copiar enlace</button></div>`}</div>${src ? `<figure class="article-hero"><img src="${esc(src)}" alt="${esc((a.image && a.image.alt) || "")}"><figcaption><span>${esc((a.image && a.image.caption) || (a.image && a.image.alt) || "")}</span><span>${esc(creditText(a.image))}${a.image && a.image.source ? ` · <a href="${esc(safeUrl(a.image.source))}" target="_blank" rel="noopener">origen</a>` : ""}</span></figcaption></figure>` : ""}<div class="article-grid"><div>${spNote}${body}${srcList}${endAd}</div>${aside}</div></div></article>`;
   }
@@ -665,7 +665,7 @@
   }
 
   // ---------- Publicidad y patrocinios ----------
-  const AD_TYPES = { banner: "Banner", patrocinio: "Patrocinio de sección o blog", contenido: "Contenido patrocinado", boletin: "Boletín por correo", autopromocion: "Autopromoción (casa)" };
+  const AD_TYPES = { banner: "Banner", patrocinio: "Patrocinio de sección o blog", contenido: "Contenido patrocinado", boletin: "Boletín por correo", grupo: "Contenido patrocinado · servicio del grupo" };
   const AD_SLOTS = {
     "portada-medio": "Portada · tras «Lo esencial hoy»",
     "portada-reportajes": "Portada · tras «Reportajes»",
@@ -708,17 +708,21 @@
     try { const x = new URL(u); const p = { utm_source: "moticias", utm_medium: ad.type || "banner", utm_campaign: ad.utm_campaign || ad.id, utm_content: slot }; Object.keys(p).forEach((k) => { if (!x.searchParams.has(k)) x.searchParams.set(k, p[k]); }); return x.toString(); } catch (e) { return u; }
   }
   function adImg(ad) { const im = ad.image; if (!im) return ""; return im.src || (im.assetId ? "/_blob/" + im.assetId : ""); }
-  function adLabel(ad) { return ad.label || ({ patrocinio: "Patrocinio", contenido: "Contenido patrocinado", autopromocion: "MOTICIAS" }[ad.type] || "Publicidad"); }
+  // Tipos de contenido (15-11-2026): lo que anuncia servicios del grupo lleva siempre esta etiqueta. La base del artefacto aún
+  // guarda cajas con el tipo anterior (escrito antes del cambio tipos-de-contenido); se aceptan las dos formas hasta el 8-12-2026.
+  const TIPO_ANTERIOR_GRUPO = "autopromocion";
+  function esGrupo(t) { return t === "grupo" || t === TIPO_ANTERIOR_GRUPO; }
+  function adLabel(ad) { return esGrupo(ad.type) ? "Contenido patrocinado · servicio del grupo" : ({ patrocinio: "Contenido patrocinado" + (ad.advertiser ? " · " + ad.advertiser : ""), contenido: "Contenido patrocinado" }[ad.type] || ad.label || "Publicidad"); }
   function adHtml(ad, slot, variant) {
     if (!ad) return "";
     const href = adUrl(ad, slot), ext = /^https?:/i.test(href), img = adImg(ad);
     const open = href ? `<a class="ad-body" href="${esc(href)}"${ext ? ' target="_blank" rel="sponsored noopener"' : ""}>` : `<div class="ad-body">`;
     const close = href ? "</a>" : "</div>";
-    return `<aside class="ad ad-${esc(variant || "wide")} ${img ? "has-img" : "text-only"}${ad.type === "autopromocion" ? " house" : ""}" style="--ad-accent:${esc(safeColor(ad.accent) || "#0b2545")}" aria-label="${esc(adLabel(ad))}"><div class="ad-label">${esc(adLabel(ad))}${ad.advertiser && ad.type !== "autopromocion" ? " · " + esc(ad.advertiser) : ""}</div>${open}${img ? `<img src="${esc(img)}" alt="${esc((ad.image && ad.image.alt) || ad.headline || ad.advertiser || "")}" loading="lazy">` : ""}<div class="ad-text">${ad.type === "autopromocion" && ad.advertiser && lc(ad.advertiser) !== lc(adLabel(ad)) ? `<span class="ad-brand">${esc(ad.advertiser)}</span>` : ""}${ad.headline ? `<b>${esc(ad.headline)}</b>` : ""}${ad.text ? `<p>${esc(ad.text)}</p>` : ""}${ad.cta ? `<span class="ad-cta">${esc(ad.cta)} →</span>` : ""}</div>${close}</aside>`;
+    return `<aside class="ad ad-${esc(variant || "wide")} ${img ? "has-img" : "text-only"}${esGrupo(ad.type) ? " house" : ""}" style="--ad-accent:${esc(safeColor(ad.accent) || "#0b2545")}" aria-label="${esc(adLabel(ad))}"><div class="ad-label">${esc(adLabel(ad))}</div>${open}${img ? `<img src="${esc(img)}" alt="${esc((ad.image && ad.image.alt) || ad.headline || ad.advertiser || "")}" loading="lazy">` : ""}<div class="ad-text">${esGrupo(ad.type) && ad.advertiser && lc(ad.advertiser) !== lc(adLabel(ad)) ? `<span class="ad-brand">${esc(ad.advertiser)}</span>` : ""}${ad.headline ? `<b>${esc(ad.headline)}</b>` : ""}${ad.text ? `<p>${esc(ad.text)}</p>` : ""}${ad.cta ? `<span class="ad-cta">${esc(ad.cta)} →</span>` : ""}</div>${close}</aside>`;
   }
   function adSlot(slot, ctx, variant) {
     const list = adsFor(slot, ctx).filter((a) => a.type !== "patrocinio" || slot !== "seccion");
-    const paid = list.filter((a) => a.type !== "autopromocion");
+    const paid = list.filter((a) => !esGrupo(a.type));
     const ad = pickAd(paid.length ? paid : list, slot + ((ctx && ctx.key) || ""));
     if (!ad) return "";
     const inner = adHtml(ad, slot, variant || "wide");
@@ -1282,14 +1286,14 @@
   function listAdsAdmin() {
     const t = todayISO(), y = t.slice(0, 4);
     const arr = S.ads.slice().sort((a, b) => String(b.start || "").localeCompare(String(a.start || "")));
-    const paid = arr.filter((a) => a.type !== "autopromocion" && a.status !== "borrador");
+    const paid = arr.filter((a) => !esGrupo(a.type) && a.status !== "borrador");
     const cnt = (st) => arr.filter((a) => adState(a, t) === st).length;
     const yearSum = paid.filter((a) => String(a.start || a.end || "").startsWith(y)).reduce((s, a) => s + (+a.amount_eur || 0), 0);
     const live = paid.filter((a) => adState(a, t) === "activo").reduce((s, a) => s + (+a.amount_eur || 0), 0);
-    const inv = Object.keys(AD_SLOTS).map((k) => { const occ = arr.filter((a) => adState(a, t) === "activo" && (a.slots || []).includes(k)); const p = occ.filter((a) => a.type !== "autopromocion"); return `<tr><td>${esc(AD_SLOTS[k])}</td><td>${p.length ? p.map((a) => esc(a.advertiser || a.name)).join(", ") : `<span style="color:var(--muted)">Libre${occ.length ? " · autopromoción" : ""}</span>`}</td></tr>`; }).join("");
+    const inv = Object.keys(AD_SLOTS).map((k) => { const occ = arr.filter((a) => adState(a, t) === "activo" && (a.slots || []).includes(k)); const p = occ.filter((a) => !esGrupo(a.type)); return `<tr><td>${esc(AD_SLOTS[k])}</td><td>${p.length ? p.map((a) => esc(a.advertiser || a.name)).join(", ") : `<span style="color:var(--muted)">Libre${occ.length ? " · caja del grupo" : ""}</span>`}</td></tr>`; }).join("");
     return `<div class="toolbar"><button type="button" class="btn" id="new-ad">+ Nueva campaña o patrocinio</button><a class="btn secondary" href="#anunciate" data-close-admin>Ver página «Anúnciate»</a></div>
     <div class="ad-kpis"><div><b>${cnt("activo")}</b><span>en curso</span></div><div><b>${cnt("programado")}</b><span>programadas</span></div><div><b>${eur(live) || "0 €"}</b><span>contratado en curso</span></div><div><b>${eur(yearSum) || "0 €"}</b><span>contratado en ${y}</span></div></div>
-    <div class="admin-note">La publicidad se muestra solo en los huecos previstos, nunca sobre la apertura ni dentro del texto, y siempre con la etiqueta visible. Si un hueco no tiene campaña de pago, se rellena con <b>autopromoción</b>. Los enlaces externos llevan UTM automáticos para medir en la web del anunciante.</div>
+    <div class="admin-note">La publicidad se muestra solo en los huecos previstos, nunca sobre la apertura ni dentro del texto, y siempre con la etiqueta visible. Si un hueco no tiene campaña de pago, se rellena con una caja del grupo (<b>Contenido patrocinado · servicio del grupo</b>). Los enlaces externos llevan UTM automáticos para medir en la web del anunciante.</div>
     <table class="inv"><thead><tr><th>Hueco</th><th>Ocupado hoy por</th></tr></thead><tbody>${inv}</tbody></table>
     <div class="admin-list" style="margin-top:16px">${arr.map((a) => { const st = adState(a, t); return `<div class="admin-row"><span class="swatch" style="background:${esc(safeColor(a.accent) || "#0b2545")}">${adImg(a) ? `<img src="${esc(adImg(a))}" alt="">` : ""}</span><div><div class="t">${esc(a.name || a.headline || a.advertiser)}</div><div class="m"><span class="badge ${st === "activo" ? "alta" : st === "borrador" ? "borrador" : "media"}">${esc(AD_STATES[st])}</span><span>${esc(AD_TYPES[a.type] || a.type || "")}</span><span>·</span><span>${esc(a.advertiser || "")}</span><span>·</span><span>${esc(a.start ? fmtShort(a.start) : "sin inicio")} → ${esc(a.end ? fmtShort(a.end) : "sin fin")}</span>${a.amount_eur ? `<span>· ${esc(eur(a.amount_eur))}</span>` : ""}<span>· ${(a.slots || []).length} huecos</span></div></div><div class="actions"><button type="button" class="btn small secondary" data-ad-edit="${esc(a.id)}">Editar</button><button type="button" class="btn small secondary" data-ad-toggle="${esc(a.id)}">${a.status === "pausado" ? "Reanudar" : "Pausar"}</button><button type="button" class="btn small danger" data-ad-del="${esc(a.id)}">Borrar</button></div></div>`; }).join("") || `<div class="admin-note">Sin campañas todavía.</div>`}</div>`;
   }
@@ -1320,7 +1324,7 @@
       <div class="full"><label>Creatividad (imagen opcional; sin imagen se muestra como anuncio de texto)</label>${imgField("adimg", a.image, "Horizontal 1200 × 300 para portada; 600 × 500 para lateral.")}</div>
       <div class="full"><label>Vista previa</label><div id="ad-preview" class="ad-preview"></div></div>
       <label>Importe contratado (€)<input type="number" name="amount_eur" value="${v("amount_eur")}" min="0" step="1"></label>
-      <label>Modalidad<select name="pricing">${["tarifa plana", "por envío", "CPM", "intercambio", "gratuito / casa"].map((k) => `<option ${a.pricing === k ? "selected" : ""}>${k}</option>`).join("")}</select></label>
+      <label>Modalidad<select name="pricing">${["tarifa plana", "por envío", "CPM", "intercambio", "sin coste · servicio del grupo"].map((k) => `<option ${a.pricing === k ? "selected" : ""}>${k}</option>`).join("")}</select></label>
       <label>Persona de contacto<input type="text" name="contact" value="${v("contact")}"></label>
       <label>Referencia de factura o pedido<input type="text" name="invoice_ref" value="${v("invoice_ref")}"></label>
       <label class="full">Notas internas<textarea name="notes">${v("notes")}</textarea></label>

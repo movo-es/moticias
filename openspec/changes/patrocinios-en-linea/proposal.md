@@ -1,5 +1,7 @@
 # Cambio: patrocinios-en-linea
 
+> **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
+
 Fecha: 8 de noviembre de 2026 (noche). Origen: decisión de Rainer al recibir el primer correo de menciones del grupo.
 
 ## Por qué

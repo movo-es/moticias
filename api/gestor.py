@@ -40,6 +40,7 @@ import redaccion as R  # noqa: E402
 import firma as F  # noqa: E402
 import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
+import tipos as T  # noqa: E402  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
 EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
@@ -415,14 +416,15 @@ def publicidad_publica():
     v = vertical()
     pub = v.get("publicidad") or {}
     huecos = set((pub.get("huecos") or {}).keys())
-    tipos = pub.get("tipos") or {}
     hoy, out = _hoy(), {}
     for a in anuncios():
         if a.get("status") != "activo" or not a.get("url") or not str(a.get("url")).startswith("https://"):
             continue
         if (a.get("start") and a["start"] > hoy) or (a.get("end") and a["end"] < hoy):
             continue
-        caja = {"id": a["id"], "tipo": a.get("type") or "publicidad", "etiqueta": a.get("label") or tipos.get(a.get("type"), "Publicidad"),
+        # La etiqueta sale siempre de src/tipos.py: el lector ve «Contenido patrocinado · servicio del grupo»,
+        # «Contenido patrocinado · <cliente>» o «Publicidad», nunca otro texto. Todos los enlaces llevan rel="sponsored".
+        caja = {"id": a["id"], "tipo": a.get("type") or "publicidad", "etiqueta": T.marca_anuncio(a, v), "rel": T.rel("patrocinado"),
                 "anunciante": a.get("advertiser") or "", "titular": a.get("headline") or "", "texto": a.get("text") or "", "cta": a.get("cta") or "",
                 "url": a["url"], "nivel": a.get("nivel") or "estandar", "peso": int(a.get("weight") or 1), "imagen": a.get("image") or None,
                 "secciones": a.get("sections") or [], "campana": a.get("utm_campaign") or a["id"]}
@@ -430,8 +432,8 @@ def publicidad_publica():
             if h in huecos:
                 out.setdefault(h, []).append(caja)
     orden = {"premium": 0, "estandar": 1, "basico": 2}
-    for h in out:  # lo pagado delante de la autopromoción; después por nivel y peso
-        out[h].sort(key=lambda c: (c["tipo"] == "autopromocion", orden.get(c["nivel"], 3), -c["peso"]))
+    for h in out:  # lo pagado delante de las cajas del grupo; después por nivel y peso
+        out[h].sort(key=lambda c: (c["tipo"] == "grupo", orden.get(c["nivel"], 3), -c["peso"]))
     return {"huecos": out, "generado": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}
 
 
@@ -474,8 +476,8 @@ def accion_anuncio(ses, d):
             return 400, {"error": "faltan el nombre interno y el titular"}
         aid = "%s-%s" % (_slug(cambios.get("advertiser") or cambios["name"], 40), secrets.token_hex(2))
         a, sha = {"id": aid, "created_at": datetime.datetime.now().astimezone().isoformat(timespec="minutes"), "utm": True,
-                  "label": (pub.get("tipos") or {}).get(cambios.get("type") or "publicidad", "Publicidad"), "status": "propuesta",
-                  "type": "publicidad", "nivel": "estandar", "slots": [], "sections": [], "weight": 1}, None
+                  "label": T.marca_anuncio({"type": cambios.get("type") or "publicidad", "advertiser": cambios.get("advertiser")}, v), "status": "propuesta",
+                  "type": "publicidad", "tipo_contenido": "patrocinado", "nivel": "estandar", "slots": [], "sections": [], "weight": 1}, None
         if not jefe:
             a["propuesto_por"] = ses["nombre"]
     else:
@@ -486,12 +488,12 @@ def accion_anuncio(ses, d):
             return 503, {"error": "falta GITHUB_TOKEN en Vercel"}
         if not jefe and a.get("status") != "propuesta":
             return 403, {"error": "esta caja ya la ha aprobado el editor jefe: solo él la cambia"}
-    if "type" in cambios:
-        a["label"] = (pub.get("tipos") or {}).get(cambios["type"], a.get("label"))
     if cambios.get("status") and cambios["status"] != a.get("status"):  # fechas de publicación y retirada para el seguimiento
         a.setdefault("historial", []).append({"en": datetime.datetime.now().astimezone().isoformat(timespec="minutes"), "estado": cambios["status"],
                                               "por": ses["perfil"]})
     a.update(cambios)
+    a["tipo_contenido"] = "patrocinado"
+    a["label"] = T.marca_anuncio(a, v)  # la etiqueta visible no se escribe a mano: sale del tipo (y del cliente, si paga uno)
     if a.get("status") == "activo" and (not a.get("url") or not a.get("slots") or not a.get("headline")):
         return 400, {"error": "para activarla necesita titular, enlace https:// y al menos un hueco"}
     a["updated_at"] = datetime.datetime.now().astimezone().isoformat(timespec="minutes")

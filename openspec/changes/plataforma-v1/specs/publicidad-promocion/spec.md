@@ -1,5 +1,7 @@
 # Capacidad: publicidad y promoción discreta (delta)
 
+> **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
+
 ## ADDED Requisito: la promoción vive fuera del texto
 El cuerpo editorial nunca menciona soluciones del grupo ni de anunciantes. La relación pieza ↔ solución es un dato (`relaciones_solucion`) que la interfaz muestra en huecos señalizados: ficha de solución, caso, servicio («Valorar esta licitación con MOVO»), edición a medida, patrocinio.
 

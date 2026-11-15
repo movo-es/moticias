@@ -135,7 +135,7 @@ create table if not exists campaigns (
   vertical_id text not null references verticals(id),
   advertiser_id uuid references advertisers(id),
   campana_id text,
-  type text not null check (type in ('patrocinio','banner','contenido','edicion-a-medida','autopromocion')),
+  type text not null check (type in ('patrocinio','banner','contenido','edicion-a-medida','grupo','publicidad')),  -- lista al día desde la 009 (tipos-de-contenido)
   name text not null,
   slots text[] not null default '{}',
   start_date date,

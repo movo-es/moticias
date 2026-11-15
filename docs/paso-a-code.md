@@ -90,8 +90,8 @@ Entregable: `/crm` con leads por solución y por campaña; primer informe de lea
 
 ### Entrevista 6 · `publicidad-promocion-v1` (fase 4)
 Spec base: `openspec/changes/plataforma-v1/specs/publicidad-promocion/spec.md` y `docs/gestores-portal.md`.
-Decidir: huecos reales en el tema de Ghost (cuáles de los definidos se implementan en v1); tarifas (patrocinio de sección, banner, contenido patrocinado, campaña patrocinada, edición a medida); etiquetas y declaración de intereses (texto y página); flujo comercial (quién vende, contrato, factura desde Avionline S.L.); panel `/anunciantes` mínimo (campañas, inventario, impresiones y clics); autopromoción del grupo por defecto (`data/ads/`), rotación y peso; relación con las campañas temáticas (`campana_id`).
-Entregable: huecos operativos con autopromoción; primer patrocinio ofrecido a una asociación.
+Decidir: huecos reales en el tema de Ghost (cuáles de los definidos se implementan en v1); tarifas (patrocinio de sección, banner, contenido patrocinado, campaña patrocinada, edición a medida); etiquetas y declaración de intereses (texto y página); flujo comercial (quién vende, contrato, factura desde Avionline S.L.); panel `/anunciantes` mínimo (campañas, inventario, impresiones y clics); cajas del grupo («Contenido patrocinado · servicio del grupo») por defecto (`data/ads/`), rotación y peso; relación con las campañas temáticas (`campana_id`).
+Entregable: huecos operativos con cajas del grupo; primer patrocinio ofrecido a una asociación.
 
 ### Entrevista 7 · `sensores-amarantia-v1` (fase 5)
 Spec base: `openspec/changes/plataforma-v1/specs/sensores/spec.md`.

@@ -23,3 +23,5 @@ Los encargos viven en la base privada (Supabase, proyecto `cjrntzaqmvhgscdgiehs`
 7. CIERRA el encargo: `update encargos_gestor set estado = '<publicada|pendiente_aprobacion|sin_fuentes|descartado>', pieza = '<id o null>', resultado = '<una o dos frases: qué se publicó, con qué fuente primaria, o por qué no>', cerrado_at = now() where id = <id>;`.
 
 8. REPOSITORIO y AVISO. `git add data docs app/public/buscador && git commit -m "Desde el gestor: <titular corto> (<id>)" && git push`. Aviso de una línea por encargo: qué era, qué se hizo, enlace. Nunca se borra un encargo.
+
+Tipo de contenido (cambio `tipos-de-contenido`, 15-11-2026): la pieza nace con `tipo_contenido: noticia` (o `editorial` si es un análisis o un reportaje) y pasa `python3 -I src/tipos.py validar` antes de publicarse. Si lo que te pegan es un comunicado sin verificación independiente, no es una noticia: ciérralo como `descartado` y remítelo a la sala de prensa (`/prensa-buzon`, `tipo_contenido: nota_de_prensa`).

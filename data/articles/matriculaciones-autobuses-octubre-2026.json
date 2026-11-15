@@ -195,5 +195,6 @@
  "territorios": [
   "aragon",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

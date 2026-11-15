@@ -8,13 +8,13 @@
  "cta": "Ver ediciones a medida",
  "end": "",
  "headline": "Una MOTICIAS para tu asociación o tu empresa",
- "id": "casa-ediciones-a-medida",
+ "id": "grupo-ediciones-a-medida",
  "image": null,
  "invoice_ref": "",
- "label": "MOTICIAS",
- "name": "Casa · Ediciones a medida",
+ "label": "Contenido patrocinado · servicio del grupo",
+ "name": "Grupo · Ediciones a medida",
  "notes": "",
- "pricing": "gratuito / casa",
+ "pricing": "sin coste · servicio del grupo",
  "sections": [],
  "slots": [
   "portada-reportajes",
@@ -24,10 +24,11 @@
  "start": "2026-11-04",
  "status": "activo",
  "text": "La selección diaria de normas, contratos y plazos que afectan a tu actividad, con tu marca, como página propia o como boletín por correo.",
- "type": "autopromocion",
+ "type": "grupo",
  "updated_at": "2026-11-04T18:00:00+01:00",
  "url": "#blogs",
  "utm": true,
  "utm_campaign": "",
- "weight": 2
+ "weight": 2,
+ "tipo_contenido": "patrocinado"
 }

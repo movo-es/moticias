@@ -8,13 +8,13 @@
  "cta": "Comprobar si mi centro está obligado",
  "end": "2026-12-19",
  "headline": "Obligación legal hasta el 5-12-2026: ¿Tu centro de trabajo necesita un plan de movilidad antes del plazo?",
- "id": "casa-movo-pmst",
+ "id": "grupo-movo-pmst",
  "image": null,
- "label": "Autopromoción",
- "name": "Casa · MOVO plan de movilidad sostenible al trabajo",
+ "label": "Contenido patrocinado · servicio del grupo",
+ "name": "Grupo · MOVO plan de movilidad sostenible al trabajo",
  "nivel": "premium",
  "notes": "Embudo de la campaña temática movilidad-al-trabajo-pmst. Medir por utm_campaign y por solicitudes recibidas.",
- "pricing": "gratuito / casa",
+ "pricing": "sin coste · servicio del grupo",
  "sections": [
   "regulacion",
   "urbano",
@@ -27,10 +27,11 @@
  "start": "2026-11-10",
  "status": "activo",
  "text": "Diagnóstico de obligación, encuesta a la plantilla, medidas y documento negociable con la representación de los trabajadores, en semanas. Un servicio de MOVO para empresas y entidades públicas con centros de más de 200 personas.",
- "type": "autopromocion",
+ "type": "grupo",
  "updated_at": "2026-11-09T16:31+00:00",
  "url": "https://movo.es/",
  "utm": true,
  "utm_campaign": "moticias-pmst-2026",
- "weight": 9
+ "weight": 9,
+ "tipo_contenido": "patrocinado"
 }

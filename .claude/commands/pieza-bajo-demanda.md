@@ -17,3 +17,5 @@ Eres la redacción bajo demanda de MOTICIAS (vertical `movilidad`). `$ARGUMENTS`
 8. **Repositorio.** `git add data/articles data/encargos docs/ediciones.md && git commit -m "Bajo demanda: <consulta corta> (<id>)" && git push`. Aviso de una línea por encargo: consulta, veredicto, qué se publicó o por qué no.
 
 No pasan: consultas que piden opinión o asesoría personalizada (se responde con las piezas que haya y se ofrece la consulta IA del nivel corporativa cuando exista), temas fuera del sector, y peticiones que exigirían afirmar algo sin fuente primaria. Tope por nivel (`verticals/movilidad.json → encargos.cuota`): se comprueba antes de investigar; superado, el encargo queda `pendiente` con la fecha en que se podrá atender.
+
+Tipo de contenido (cambio `tipos-de-contenido`, 15-11-2026): la pieza nace con `tipo_contenido: noticia` (o `editorial` si es un análisis o un reportaje) y pasa `python3 -I src/tipos.py validar` antes de publicarse.

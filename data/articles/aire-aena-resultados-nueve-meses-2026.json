@@ -172,5 +172,6 @@
  "territorios": [
   "madrid",
   "estado"
- ]
+ ],
+ "tipo_contenido": "noticia"
 }

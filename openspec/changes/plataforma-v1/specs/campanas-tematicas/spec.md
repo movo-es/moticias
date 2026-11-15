@@ -1,5 +1,7 @@
 # Capacidad: campañas temáticas (delta)
 
+> **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
+
 Una campaña temática es un periodo acotado en el que MOTICIAS trabaja a fondo un tema con una fecha o un hecho detrás (un plazo legal, una licitación grande, un congreso, una transposición), para ganar autoridad sobre ese tema y, en el mismo movimiento, poner una solución —del grupo o de un anunciante— delante de quien tiene ese problema. Ejemplo fundador: «Movilidad al trabajo: la cuenta atrás de los PMST», que acompaña el plazo de la Ley 9/2025 para presentar planes de movilidad sostenible al trabajo y ofrece MOVO a los rezagados.
 
 La campaña es un objeto distinto de la campaña publicitaria (`campaigns`, producto de un anunciante): la temática es editorial y comercial a la vez; la publicitaria es solo comercial y, cuando existe, cuelga de una temática o va suelta.

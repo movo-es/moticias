@@ -6,6 +6,9 @@
 Genera un único JSON que el tema de Ghost (y la maqueta) cargan una vez: taxonomía (nombres y alias de modos, temas y territorios,
 vecinos), grupos de sinónimos y una entrada compacta por pieza publicada (sin cuerpo: cabecera, resumen corto, ejes, fecha, foto, URL).
 Con 74 piezas pesa ~210 KB sin comprimir (≈ 50 KB con gzip); con 500, ~1,4 MB (≈ 350 KB). Cuando pase de 2 MB se partirá por años.
+Cada entrada lleva su tipo de contenido (`tc`) y su marca (`mc`), y `dir: true` si la firma el director (el módulo y el
+botón «Análisis del director» filtran por eso, no por el tema). Junto al índice se escribe `tipos.json` (id → [tipo, marca],
+unos pocos KB), que `app/public/sitio/m.js` usa para poner la marca junto a cada titular en los listados de moticias.com.
 Se regenera en cada edición diaria (paso 7 ter) y se sirve desde Vercel en https://app.moticias.com/buscador/index.json con CORS
 para www.moticias.com (vercel.json); el tema de Ghost lo carga una vez por visita y busca en el navegador.
 """
@@ -14,6 +17,7 @@ import argparse, glob, json, os, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from taxonomia import Taxonomia, plano  # noqa: E402
+import tipos as T  # noqa: E402  (tipo de contenido y su marca; openspec tipos-de-contenido)
 
 
 def recortar(s, n=220):
@@ -29,6 +33,8 @@ def entrada(a, base):
         "m": a.get("modo"), "sm": a.get("submodo"), "te": a.get("temas") or [], "tr": a.get("territorios") or [], "tg": a.get("tags") or [],
         "img": img.get("src"), "alt": img.get("alt"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),
         "pat": bool(a.get("menciones")) or bool(a.get("sponsored_by")),
+        # tipo de contenido (editorial · noticia · nota_de_prensa · patrocinado) y la marca que ve el lector
+        "tc": T.tipo(a, "articles"), "mc": T.marca(a, "articles"), "dir": T.es_del_director(a),
         # texto plano de búsqueda: cabecera + etiquetas + actores + resumen (sin tildes, minúsculas) — lo que el JS compara
         "x": plano(" ".join([str(a.get(k) or "") for k in ("kicker", "title", "subtitle", "summary", "relevance_for")] + list(a.get("tags") or [])
                             + ([a["actors"]] if isinstance(a.get("actors"), str) else list(a.get("actors") or [])))),
@@ -62,6 +68,8 @@ def main():
     }
     os.makedirs(os.path.dirname(a.salida), exist_ok=True)
     json.dump(out, open(a.salida, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+    ligero = {"generado": out["generado"], "piezas": {p["id"]: [p["tc"], p["mc"]] for p in piezas}}
+    json.dump(ligero, open(os.path.join(os.path.dirname(a.salida), "tipos.json"), "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     print("índice: %s · %d piezas · %.0f KB" % (os.path.relpath(a.salida, ROOT), len(piezas), os.path.getsize(a.salida) / 1024))
 
 

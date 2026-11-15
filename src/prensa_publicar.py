@@ -3,7 +3,8 @@
 
 Una nota es un post de Ghost con: etiqueta pública `notas-de-prensa` (la lista), interna `#comunicado`, autor «Comunicado»,
 etiquetas de ejes `m-`, `tema-`, `t-` (filtrado por modo, tema y comunidad igual que las piezas) y la marca visible
-«Nota de prensa · Comunicado de empresa · no es contenido editorial de MOTICIAS». Nunca va a la portada editorial ni al
+«Nota de prensa · Comunicado de <emisor> · no es contenido editorial de MOTICIAS» (src/tipos.py), y las etiquetas
+internas `#comunicado` y `#tipo-nota-de-prensa`; `tipo_contenido: nota_de_prensa`. Nunca va a la portada editorial ni al
 boletín diario: el tema y `src/ghost_edicion.py` excluyen la etiqueta `#comunicado`.
 
 Uso:
@@ -21,6 +22,7 @@ import ghost_publish as G  # noqa: E402
 import prensa_comun as P  # noqa: E402
 import prensa_asesor as A  # noqa: E402
 import prensa_impacto as I  # noqa: E402
+import tipos as T  # noqa: E402  (tipo de contenido: nota_de_prensa; openspec tipos-de-contenido)
 from taxonomia import Taxonomia  # noqa: E402
 
 V = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
@@ -39,7 +41,7 @@ def nueva(ruta_md, organizacion, web="", grupo=False, embargo=None, nid=None, te
             "organizacion": {"nombre": organizacion, "web": web}, "grupo": bool(grupo), "embargo_hasta": embargo,
             "recibida_en": P.ahora(), "publicada_en": None, "status": "recibida", "verificado_emisor": False,
             "modo": ejes["modo"], "submodo": ejes["submodo"], "temas": ejes["temas"], "territorios": ejes["territorios"],
-            "taxonomia_manual": False, "ghost": None}
+            "taxonomia_manual": False, "ghost": None, "tipo_contenido": "nota_de_prensa"}
     nota["huellas"] = I.huellas(nota)
     P.guardar_nota(nota)
     return nota
@@ -66,7 +68,7 @@ def cuerpo_html(n):
     org = html.escape(n["organizacion"]["nombre"])
     marca = ('<div class="mt-nota-marca" style="font:600 12px/1.5 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;'
              'color:#6b7280;border:1px solid #e5e7eb;border-radius:6px;padding:8px 12px;margin:0 0 1.5em">%s · %s%s</div>'
-             % (html.escape(m["etiqueta"]), html.escape(m["aviso"]), (" · " + html.escape(m["aviso_grupo"])) if n.get("grupo") else ""))
+             % (html.escape(T.marca(n, "notas-de-prensa", V)), html.escape(m["aviso"]), (" · " + html.escape(m["aviso_grupo"])) if n.get("grupo") else ""))
     partes = [marca, '<p class="mt-nota-org"><strong>%s</strong>%s</p>' % (org, (' · <a href="%s" rel="noopener">%s</a>' % (html.escape(n["organizacion"]["web"]), html.escape(n["organizacion"]["web"]))) if n["organizacion"].get("web") else ""),
               G.md_to_html(n["cuerpo_md"])]
     if n.get("sobre_md"):
@@ -81,7 +83,8 @@ def cuerpo_html(n):
 
 def post_de(n, tx):
     pseudo = {"submodo": n["submodo"], "temas": n["temas"], "territorios": n["territorios"], "tags": []}
-    tags = [{"name": "Notas de prensa", "slug": CFG["ghost"]["tag_publica"]}, {"name": CFG["ghost"]["tag_interna"]}] + G.etiquetas_pieza(pseudo, tx)
+    tags = ([{"name": "Notas de prensa", "slug": CFG["ghost"]["tag_publica"]}, {"name": CFG["ghost"]["tag_interna"]}]
+            + [{"name": x} for x in T.etiquetas_ghost(n, "notas-de-prensa", V)] + G.etiquetas_pieza(pseudo, tx))
     jl = {"@context": "https://schema.org", "@type": "NewsArticle", "headline": n["titulo"], "description": n.get("subtitulo"),
           "datePublished": n.get("publicada_en"), "inLanguage": "es-ES", "genre": "Press release",
           "author": {"@type": "Organization", "name": n["organizacion"]["nombre"], "url": n["organizacion"].get("web") or None},
@@ -94,6 +97,9 @@ def post_de(n, tx):
 
 def publicar(nid, dry_run=False):
     n = P.leer_nota(nid)
+    n.setdefault("tipo_contenido", "nota_de_prensa")
+    if T.errores(n, "notas-de-prensa", V):
+        raise SystemExit("La nota %s no se publica: %s" % (nid, "; ".join(T.errores(n, "notas-de-prensa", V))))
     if not n.get("verificado_emisor"):
         raise SystemExit("La nota %s no tiene el emisor verificado (dominio corporativo o enlace de confirmación): no se publica." % nid)
     if not (n.get("submodo") and n.get("temas") and n.get("territorios")):

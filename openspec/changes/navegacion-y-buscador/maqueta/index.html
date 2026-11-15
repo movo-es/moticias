@@ -142,7 +142,7 @@ const terminos=q=>[...new Set(plano(q).split(" ").filter(w=>w&&!VACIAS.has(w)&&(
 function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;let p=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let c=[i];for(let j=1;j<=b.length;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[b.length]}
 
 /* ============ estado ============ */
-const S={sel:{modo:null,sub:null,tema:null,terr:null},q:"",menu:null,sheet:null};
+const S={sel:{modo:null,sub:null,tema:null,terr:null},q:"",menu:null,sheet:null,dir:false};/* dir: solo análisis firmados por el director (tipos-de-contenido, 15-11-2026) */
 let IX=null,SIN=new Map(),GRUPOS=[],TERR={},TEMAS={},SUBS={},MODOS={},VOC=[];
 const MAPA_CCAA={"Albacete":"castilla-la-mancha","Alacant/Alicante":"comunidad-valenciana","Almería":"andalucia","Ávila":"castilla-y-leon","Badajoz":"extremadura","Illes Balears":"baleares","Barcelona":"cataluna","Burgos":"castilla-y-leon","Cáceres":"extremadura","Cádiz":"andalucia","Castelló/Castellón":"comunidad-valenciana","Ciudad Real":"castilla-la-mancha","Córdoba":"andalucia","A Coruña":"galicia","Cuenca":"castilla-la-mancha","Girona":"cataluna","Granada":"andalucia","Guadalajara":"castilla-la-mancha","Gipuzkoa":"pais-vasco","Huelva":"andalucia","Huesca":"aragon","Jaén":"andalucia","León":"castilla-y-leon","Lleida":"cataluna","La Rioja":"la-rioja","Lugo":"galicia","Madrid":"madrid","Málaga":"andalucia","Murcia":"murcia","Navarra":"navarra","Ourense":"galicia","Asturias":"asturias","Palencia":"castilla-y-leon","Pontevedra":"galicia","Salamanca":"castilla-y-leon","Cantabria":"cantabria","Segovia":"castilla-y-leon","Sevilla":"andalucia","Soria":"castilla-y-leon","Tarragona":"cataluna","Teruel":"aragon","Toledo":"castilla-la-mancha","València/Valencia":"comunidad-valenciana","Valladolid":"castilla-y-leon","Bizkaia":"pais-vasco","Zamora":"castilla-y-leon","Zaragoza":"aragon","Ceuta":"ceuta","Melilla":"melilla","Araba/Álava":"pais-vasco","Las Palmas":"canarias","Santa Cruz de Tenerife":"canarias"};
 
@@ -178,9 +178,9 @@ function buscar(q,base){
 }
 
 /* ============ filtros ============ */
-function filtrar(piezas,omit){const s=S.sel;return piezas.filter(p=>(omit==="modo"||(!s.sub||p.sm===s.sub)&&(!s.modo||p.m===s.modo))&&(omit==="tema"||!s.tema||p.te.includes(s.tema))&&(omit==="terr"||!s.terr||p.tr.includes(s.terr)))}
+function filtrar(piezas,omit){const s=S.sel;return piezas.filter(p=>(omit==="modo"||(!s.sub||p.sm===s.sub)&&(!s.modo||p.m===s.modo))&&(omit==="tema"||!s.tema||p.te.includes(s.tema))&&(!S.dir||p.kind==="analisis"&&p.dir)&&(omit==="terr"||!s.terr||p.tr.includes(s.terr)))}
 const cuenta=(piezas,f)=>piezas.reduce((n,p)=>n+(f(p)?1:0),0);
-function set(k,v){if(k==="modo"){S.sel.modo=v;S.sel.sub=null}else if(k==="sub"){S.sel.sub=v;S.sel.modo=v?SUBS[v].modo:null}else S.sel[k]=v;cerrar();render()}
+function set(k,v){if(k==="tema")S.dir=false;if(k==="modo"){S.sel.modo=v;S.sel.sub=null}else if(k==="sub"){S.sel.sub=v;S.sel.modo=v?SUBS[v].modo:null}else S.sel[k]=v;cerrar();render()}
 function cerrar(){S.menu=null;document.getElementById("menu").classList.remove("open");document.querySelectorAll(".fbtn[data-m]").forEach(b=>b.setAttribute("aria-expanded","false"));document.getElementById("sheet").classList.remove("open");document.getElementById("scrim").classList.remove("show")}
 
 /* ============ menús ============ */
@@ -206,7 +206,7 @@ function abrir(tipo){const base=filtrar(IX.piezas,tipo);const movil=matchMedia("
   if(S.menu===tipo){cerrar();return}cerrar();S.menu=tipo;document.getElementById("menu-body").innerHTML=menuHTML(tipo,base);document.getElementById("menu").classList.add("open");document.querySelector(`.fbtn[data-m=${tipo}]`).setAttribute("aria-expanded","true")}
 document.querySelectorAll(".fbtn[data-m]").forEach(b=>b.onclick=()=>abrir(b.dataset.m));
 document.getElementById("scrim").onclick=cerrar;document.addEventListener("keydown",e=>{if(e.key==="Escape")cerrar()});
-document.getElementById("btn-dir").onclick=()=>{S.sel.tema=S.sel.tema==="analisis"?null:"analisis";render()};
+document.getElementById("btn-dir").onclick=()=>{S.dir=!S.dir;S.sel.tema=null;render()};
 document.getElementById("home").onclick=e=>{e.preventDefault();S.sel={modo:null,sub:null,tema:null,terr:null};S.q="";q.value="";render()};
 const q=document.getElementById("q"),sbox=document.getElementById("sbox"),navbar=document.getElementById("navbar");let tmr;
 q.oninput=()=>{clearTimeout(tmr);tmr=setTimeout(()=>{S.q=q.value;render()},160)};
@@ -224,16 +224,16 @@ function escribirURL(){}
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fecha=d=>new Date(d).toLocaleDateString("es-ES",{day:"numeric",month:"short"});
 const nomb=p=>[SUBS[p.sm]?.nombre,p.tr.filter(t=>TERR[t]?.tipo==="ccaa").slice(0,2).map(t=>TERR[t].nombre).join(" · ")].filter(Boolean).join(" · ");
-const card=p=>`<a class="card" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}" loading="lazy"><div class="kick"><i style="background:var(--${p.m})"></i>${esc(nomb(p))}</div><h3>${esc(p.t)}</h3><p>${esc(p.r)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.kind==="analisis"?"<span>Rainer, director</span>":""}${p.pat?'<span class="pat">patrocinio</span>':""}</div></a>`;
-const lead=p=>`<a class="lead" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}"><div><div class="kick"><i style="background:var(--${p.m})"></i>${esc(nomb(p))}</div><h2>${esc(p.t)}</h2><p>${esc(p.s)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.pat?'<span class="pat">patrocinio</span>':""}</div></div></a>`;
-function dirHTML(cls){const an=IX.piezas.filter(p=>p.kind==="analisis").sort((a,b)=>a.d<b.d?1:-1);if(!an.length)return"";const [a,...o]=an;
+const card=p=>`<a class="card" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}" loading="lazy"><div class="kick"><i style="background:var(--${p.m})"></i>${p.mc?`<b>${esc(p.mc)}</b> · `:""}${esc(nomb(p))}</div><h3>${esc(p.t)}</h3><p>${esc(p.r)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.kind==="analisis"?"<span>Rainer, director</span>":""}${p.pat?'<span class="pat">patrocinio</span>':""}</div></a>`;
+const lead=p=>`<a class="lead" href="${p.url}" target="_blank" rel="noopener"><img src="${p.img||""}" alt="${esc(p.alt)}"><div><div class="kick"><i style="background:var(--${p.m})"></i>${p.mc?`<b>${esc(p.mc)}</b> · `:""}${esc(nomb(p))}</div><h2>${esc(p.t)}</h2><p>${esc(p.s)}</p><div class="meta"><span>${fecha(p.d)}</span>${p.pat?'<span class="pat">patrocinio</span>':""}</div></div></a>`;
+function dirHTML(cls){const an=IX.piezas.filter(p=>p.kind==="analisis"&&p.dir).sort((a,b)=>a.d<b.d?1:-1);if(!an.length)return"";const [a,...o]=an;
   return`<aside class="dir ${cls}"><div class="et"><i></i>Análisis del director</div><a href="${a.url}" target="_blank" rel="noopener"><h2>${esc(a.t)}</h2></a><div class="firma"><span>Rainer, director de MOTICIAS</span><span>${fecha(a.d)}</span></div>
-  ${o.length?`<ul class="otros">${o.slice(0,3).map(p=>`<li><a href="${p.url}" target="_blank" rel="noopener">${esc(p.t)}<small>${fecha(p.d)}</small></a></li>`).join("")}</ul>`:""}<button class="todos" onclick="set('tema','analisis')">Todos los análisis →</button></aside>`}
+  ${o.length?`<ul class="otros">${o.slice(0,3).map(p=>`<li><a href="${p.url}" target="_blank" rel="noopener">${esc(p.t)}<small>${fecha(p.d)}</small></a></li>`).join("")}</ul>`:""}<button class="todos" onclick="S.dir=true;S.sel.tema=null;render()">Todos los análisis →</button></aside>`}
 function render(){
   if(!IX)return;escribirURL();
   const base=filtrar(IX.piezas);const {res,ctx}=S.q.trim()?buscar(S.q,base):{res:base,ctx:null};
   document.querySelectorAll(".fbtn[data-m]").forEach(b=>{const k=b.dataset.m,v=k==="modo"?(S.sel.sub?SUBS[S.sel.sub].nombre:S.sel.modo?MODOS[S.sel.modo].nombre:null):k==="tema"?(S.sel.tema&&S.sel.tema!=="analisis"?TEMAS[S.sel.tema].nombre:null):(S.sel.terr?TERR[S.sel.terr].nombre:null);b.classList.toggle("on",!!v);b.innerHTML=(v||{modo:"Modo",tema:"Tema",terr:"Territorio"}[k])+' <span class="car">▼</span>'});
-  document.getElementById("btn-dir").classList.toggle("on",S.sel.tema==="analisis");sbox.classList.toggle("has",!!S.q);
+  document.getElementById("btn-dir").classList.toggle("on",S.dir);sbox.classList.toggle("has",!!S.q);
   const chips=[];if(S.sel.sub||S.sel.modo)chips.push(["modo",S.sel.sub?SUBS[S.sel.sub].nombre:MODOS[S.sel.modo].nombre,"set('modo',null)"]);if(S.sel.tema)chips.push(["tema",TEMAS[S.sel.tema].nombre,"set('tema',null)"]);if(S.sel.terr)chips.push(["territorio",TERR[S.sel.terr].nombre,"set('terr',null)"]);
   document.getElementById("active").innerHTML=chips.length?chips.map(c=>`<span class="chip"><b>${c[0]}</b>${c[1]}<button onclick="${c[2]}" aria-label="Quitar">×</button></span>`).join("")+`<button class="clear" onclick="S.sel={modo:null,sub:null,tema:null,terr:null};render()">Quitar filtros</button>`:"";
   const L=document.getElementById("lect");
@@ -244,7 +244,7 @@ function render(){
     L.innerHTML=h;L.classList.add("show")}else{L.classList.remove("show");L.innerHTML=""}
   const V=document.getElementById("view");const filtrado=ctx||chips.length;
   if(!filtrado){const [a,...r]=res;V.innerHTML=`<div class="home"><div>${lead(a)}${dirHTML("m")}<div class="grid">${r.slice(0,24).map(card).join("")}</div></div><div>${dirHTML("d")}</div></div>`;return}
-  const titulo=S.sel.tema==="analisis"?"Análisis del director":chips.map(c=>c[1]).join(" · ")||"Resultados";
+  const titulo=S.dir?"Análisis del director":chips.map(c=>c[1]).join(" · ")||"Resultados";
   V.innerHTML=res.length?`<div class="sechead"><h2>${esc(titulo)}</h2><span>${res.length} pieza${res.length===1?"":"s"}${ctx?"":" · más recientes primero"}</span></div><div class="grid">${res.map(card).join("")}</div>`:`<div class="empty">No hay piezas con esa combinación. Prueba a quitar un filtro.</div>`;
 }
 </script>

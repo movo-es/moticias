@@ -1,5 +1,7 @@
 # Cambio: plataforma-2027 — sala de prensa, fuentes de segundo nivel, conocimiento, ediciones a medida, motor de envíos, auscultador y PLUS de Amarantia, contactos «Quién decide»
 
+> **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
+
 Estado: propuesto (8-11-2026). Origen: anotaciones manuscritas del director «Estrategia_2027» y `docs/estrategia-2027.md` (manda sobre este resumen). Relación con `plataforma-v1`: lo amplía; no lo sustituye. Las fases de `plataforma-v1` se reordenan según `docs/estrategia-2027.md § 5` y quedan registradas en `tasks.md` de este cambio.
 
 ## Por qué

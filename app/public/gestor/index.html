@@ -505,9 +505,16 @@ async function verAnuncios() {
   });
   app.querySelectorAll("[data-edit]").forEach(b => b.onclick = () => formAd(cache.anuncios.find(x => x.id === b.closest("[data-a]").dataset.a)));
 }
+// Etiqueta que ve el lector (la misma regla que src/tipos.py → marca_anuncio; tipos-de-contenido, 15-11-2026):
+// grupo → «Contenido patrocinado · servicio del grupo»; patrocinio → «Contenido patrocinado · <cliente>»; publicidad → «Publicidad».
+function etiquetaAd(a) {
+  if (a.type === "grupo") return "Contenido patrocinado · servicio del grupo";
+  if (a.type === "patrocinio") return "Contenido patrocinado · " + (a.advertiser || "cliente");
+  return "Publicidad";
+}
 function prevAd(a) {
   const P = cache.pub || {};
-  return `<div class="ad-prev"><span class="l">${E(a.label || (P.tipos||{})[a.type] || "Publicidad")}${a.advertiser ? " · " + E(a.advertiser) : ""}</span><b>${E(a.headline)}</b><span>${E(a.text)}</span> <u>${E(a.cta || "Más información")} →</u></div>`;
+  return `<div class="ad-prev"><span class="l">${E(etiquetaAd(a))}</span><b>${E(a.headline)}</b><span>${E(a.text)}</span> <u>${E(a.cta || "Más información")} →</u></div>`;
 }
 async function formAd(a) {
   const P = cache.pub, sa = puede("publicidad"), nuevo = !a; a = a || {type: "publicidad", nivel: "estandar", slots: [], weight: 1, start: new Date().toISOString().slice(0, 10)};
@@ -531,7 +538,7 @@ async function formAd(a) {
     <div class="row"><button class="b" id="f-ok">${sa ? "Guardar" : "Proponer al editor jefe"}</button>${sa && (nuevo || a.status !== "activo") ? `<button class="b2" id="f-act">Guardar y activar</button>` : ""}<button class="b2" id="f-no">Cancelar</button></div></div>`;
   const seg = id => { const s = $(id); s.onclick = ev => { const b = ev.target.closest("button"); if (b) { s.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); upd(); } }; };
   const leer = () => ({type: $("#f-tipo .on")?.dataset.v, nivel: $("#f-nivel .on")?.dataset.v, advertiser: $("#f-adv").value, name: $("#f-name").value, headline: $("#f-h").value, text: $("#f-t").value, cta: $("#f-cta").value, url: $("#f-url").value.trim(), start: $("#f-ini").value || null, end: $("#f-fin").value || null, weight: $("#f-peso").value, slots: [...$("#form").querySelectorAll(".chk input:checked")].map(i => i.value), crm_cuenta_id: $("#f-cuenta") ? $("#f-cuenta").value || null : a.crm_cuenta_id || null});
-  const upd = () => { const x = leer(); x.label = (P.tipos || {})[x.type]; $("#f-prev").innerHTML = prevAd(x); };
+  const upd = () => { const x = leer(); x.label = etiquetaAd(x); $("#f-prev").innerHTML = prevAd(x); };
   seg("#f-tipo"); seg("#f-nivel");
   $("#f-nivel").addEventListener("click", () => { const n = $("#f-nivel .on")?.dataset.v; if (!n) return; const hs = (P.niveles[n] || {}).huecos || []; $("#form").querySelectorAll(".chk input").forEach(i => i.checked = hs.includes(i.value)); upd(); });
   $("#form").querySelectorAll("input,textarea,select").forEach(i => i.oninput = upd); upd();

@@ -15,6 +15,9 @@ Qué hace con cada pieza de data/articles/<id>.json:
   guía rápida (los cinco bloques), fuentes con fechas, recuadro de trazabilidad y declaración de intereses si procede.
   Si la pieza lleva menciones publicadas, cada una va en una caja «Contenido patrocinado» en medio del cuerpo
   (src/menciones.py: cajas_html + insertar_en_medio; data/productos/; gestor en app.moticias.com/gestor/).
+- Tipo de contenido (src/tipos.py): la pieza sin `tipo_contenido`, o con uno que no cuadra, NO se sube. Lleva la etiqueta
+  interna #tipo-editorial o #tipo-noticia (y #analisis-director si es un análisis firmado por el director) y su marca visible
+  («Análisis del director», «Análisis», «Reportaje», «Noticia») al principio del cuerpo, para que no dependa del tema.
 - Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
   territorios `t-<id>` con slug fijo; etiquetas libres que no repitan un eje), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
@@ -37,6 +40,7 @@ from taxonomia import Taxonomia, plano  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from menciones import cajas_html, insertar_en_medio  # noqa: E402  (cajas «Contenido patrocinado»; data/productos/README.md)
+import tipos as T  # noqa: E402  (tipos de contenido: marca, etiqueta interna y rel; openspec tipos-de-contenido)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "Moticias/1.0 (+https://moticias.com)"
@@ -161,8 +165,17 @@ def fmt_date(d):
         return d
 
 
+def marca_html(a, vertical, coleccion="articles"):
+    """La marca del tipo de contenido, arriba del cuerpo, con estilos en línea (se ve igual con cualquier tema)."""
+    t = T.tipo(a, coleccion)
+    return ('<!--kg-card-begin: html--><p class="m-tipo m-tipo-%s" data-tipo="%s" style="margin:0 0 1em;font:600 12px/1.4 system-ui,sans-serif;'
+            'letter-spacing:.06em;text-transform:uppercase;color:%s">%s</p><!--kg-card-end: html-->'
+            % (html.escape(t or "", quote=True), html.escape(t or "", quote=True), "#7a1f2b" if t == "editorial" else "#6b7280",
+               inline(T.marca(a, coleccion, vertical))))
+
+
 def build_html(a, vertical):
-    parts = []
+    parts = [marca_html(a, vertical)]
     if a.get("summary"):
         parts.append('<p class="respuesta-directa"><strong>%s</strong></p>' % inline(a["summary"]))
     parts.append(insertar_en_medio(md_to_html(a.get("body_md", "")), cajas_html(a, vertical, inline)))
@@ -243,7 +256,8 @@ def jsonld(a, vertical, url):
                     "worksFor": {"@id": org["@id"]}},
          "publisher": org, "mainEntityOfPage": url, "url": url, "articleSection": a.get("section"), "isAccessibleForFree": True,
          "keywords": ", ".join(a.get("tags") or []), "wordCount": len((a.get("body_md") or "").split()),
-         "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".respuesta-directa"]}}
+         "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".respuesta-directa"]},
+         "genre": T.marca(a, "articles", vertical)}  # tipo de contenido visible también para buscadores (tipos-de-contenido)
     if a.get("sources"):
         d["citation"] = [{"@type": "CreativeWork", "name": s.get("title"), "url": s.get("url"), "publisher": s.get("outlet"),
                           "datePublished": s.get("published") or None} for s in a["sources"] if s.get("url")]
@@ -394,6 +408,7 @@ def autor_ghost(a, vertical, base_url, token):
 
 
 def build_post(a, vertical, base_url, token=None):
+    T.comprobar(a, "articles", vertical)  # sin tipo de contenido, o con uno que no cuadra, no se publica (ValueError)
     slug = a["id"]
     url = "%s/%s/" % (base_url.rstrip("/"), slug)  # Ghost sirve /<slug>/ (comprobado el 8-11-2026 en www.moticias.com)
     tags = etiquetas_pieza(a, taxonomia(vertical))
@@ -401,6 +416,7 @@ def build_post(a, vertical, base_url, token=None):
         tags.insert(0, {"name": "#segunda"})  # la segunda de la portada, para el tema
     if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
+    tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el director, #analisis-director
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
@@ -499,7 +515,11 @@ def publicar_con_estado(a, vertical, base_url, admin_key, estado):
     """Sube la pieza a Ghost con un estado concreto («published» o «draft»): retirar y restaurar desde el gestor.
     Crea el post si no existía. Devuelve (resultado, error)."""
     token = ghost_token(admin_key)
-    return upsert(build_post(a, vertical, base_url, token), estado, base_url, token)
+    try:
+        post = build_post(a, vertical, base_url, token)
+    except ValueError as e:
+        return None, "no se publica: %s" % e
+    return upsert(post, estado, base_url, token)
 
 
 def republicar(a, vertical, base_url, admin_key):
@@ -511,7 +531,11 @@ def republicar(a, vertical, base_url, admin_key):
         return None, "la pieza aún no está en Ghost (la subirá la rutina)"
     if st != 200 or not found.get("posts"):
         return None, "Ghost respondió %s: %s" % (st, ((found.get("errors") or [{}])[0].get("message") or "")[:200])
-    return upsert(build_post(a, vertical, base_url, token), found["posts"][0].get("status") or "draft", base_url, token)
+    try:
+        post = build_post(a, vertical, base_url, token)
+    except ValueError as e:
+        return None, "no se publica: %s" % e
+    return upsert(post, found["posts"][0].get("status") or "draft", base_url, token)
 
 
 def main():
@@ -558,7 +582,11 @@ def main():
         token = ghost_token(key)
     ok, bad, lead = 0, [], None
     for art in arts:
-        post = build_post(art, vertical, base_url, token)
+        try:
+            post = build_post(art, vertical, base_url, token)
+        except ValueError as e:  # tipo de contenido ausente o contradictorio: no se sube y se dice
+            bad.append((art["id"], "no se publica: %s" % e))
+            continue
         if a.dry_run:
             with open(os.path.join(outdir, art["id"] + ".html"), "w", encoding="utf-8") as fh:
                 fh.write(post["html"])
