@@ -34,6 +34,8 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
 import equipo as EQ  # noqa: E402
+import cola as CO  # noqa: E402  (cola del editor: cambio cola-del-editor)
+import taxonomia as TX  # noqa: E402
 import retoques as RT  # noqa: E402  (retoques del editor jefe: data/retoques/README.md)
 import bd as BD  # noqa: E402
 import redaccion as R  # noqa: E402
@@ -1487,6 +1489,201 @@ def ghost_al_dia(solo=None):
     return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
 
 
+# ---------- cola del editor (cambio cola-del-editor, 15 y 16-11-2026; migración 012, src/cola.py) ----------
+# Temas nuevos para el editor jefe. Solo él confirma (= encargo a la redacción horaria) y publica; los demás proponen.
+COLA_CAMPOS = ("id,titulo,resumen,avisos,clave_hecho,medio,modos,temas,territorios,importancia,importancia_agente,fiabilidad,"
+               "event_date,fecha_limite,no_caduca,solucion,seccion,estado,estado_antes,origen,rutina,propuesto_por,perfil,pieza,motivo,creado_at,actualizado_at")
+
+
+def _ahora_iso():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="minutes")
+
+
+def _hist(t, quien, que):
+    return (t.get("historial") or []) + [{"cuando": _ahora_iso(), "quien": quien, "que": que}]
+
+
+def _cola_sincronizar(temas):
+    """Lleva a la cola lo que ha hecho la redacción con los encargos de los temas confirmados."""
+    vivos = [t for t in temas if t["estado"] in ("confirmado", "en_redaccion", "para_aprobar")]
+    if not vivos:
+        return
+    enc = BD.leer("encargos_gestor", select="id,cola_tema,estado,pieza,resultado", cola_tema="in.(%s)" % ",".join(str(t["id"]) for t in vivos),
+                  order="creado_at.desc")
+    ultimo = {}
+    for e in enc:
+        ultimo.setdefault(e["cola_tema"], e)
+    paso = {"pendiente": "confirmado", "en_curso": "en_redaccion", "pendiente_aprobacion": "para_aprobar", "publicada": "publicado",
+            "sin_fuentes": "sin_fuente", "descartado": "archivado"}
+    for t in vivos:
+        e = ultimo.get(t["id"])
+        if not e:
+            continue
+        nuevo = paso.get(e["estado"], t["estado"])
+        if nuevo != t["estado"] or (e.get("pieza") and e["pieza"] != t.get("pieza")):
+            cambios = {"estado": nuevo, "pieza": e.get("pieza") or t.get("pieza"), "actualizado_at": _ahora_iso()}
+            if nuevo in ("sin_fuente", "archivado"):
+                cambios["motivo"] = (e.get("resultado") or "")[:1000] or ("sin fuente primaria" if nuevo == "sin_fuente" else "descartado por la redacción")
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, cambios)
+            t.update(cambios)
+
+
+def cola_listar(ses, pestana):
+    if not CO.puede(ses["perfil"], "ver"):
+        return 403, {"error": "tu perfil no ve la cola"}
+    if not BD.configurada():
+        return 503, {"error": "la base privada no está conectada"}
+    if pestana == "cola":
+        try:
+            CO.caducar()
+        except BD.ErrorBD:
+            pass
+    estados = CO.PESTANAS.get(pestana, CO.ESTADOS_COLA)
+    temas = BD.leer("cola_temas", select=COLA_CAMPOS, estado="in.(%s)" % ",".join(estados), order="creado_at.desc", limit="300")
+    if pestana in ("confirmados", "cola"):
+        _cola_sincronizar(temas)
+        temas = [t for t in temas if t["estado"] in estados]
+    cuenta = {}
+    for k, est in CO.PESTANAS.items():
+        try:
+            cuenta[k] = len(BD.leer("cola_temas", select="id", estado="in.(%s)" % ",".join(est), limit="1000"))
+        except BD.ErrorBD:
+            cuenta[k] = None
+    hoy = CO.hoy_madrid()
+    for t in temas:
+        c = CO.caduca(t)
+        t["caduca"] = str(c) if c else None
+        t["dias"] = (c - hoy).days if c else None
+    tx = TX.Taxonomia()
+    ejes = {}
+    if tx:
+        ejes = {"medio": {k: v["nombre"] for k, v in tx.medios.items()}, "medio_apagado": [k for k, v in tx.medios.items() if not v.get("activo")],
+                "modo": {k: v["nombre"] for k, v in tx.modos_t.items()}, "tema": {k: v["nombre"] for k, v in tx.temas.items()},
+                "region": {k: v.get("nombre_corto") or v["nombre"] for k, v in tx.territorios.items()}}
+    yo = {"perfil": ses["perfil"], "nombre": ses["nombre"], "jefe": ses["perfil"] == "superadmin"}
+    return 200, {"temas": [CO.para_perfil(t, ses["perfil"]) for t in temas], "cuenta": cuenta, "ejes": ejes, "yo": yo,
+                 "secciones": list(CO.SECCIONES), "soluciones": list(CO.SOLUCIONES) if ses["perfil"] != "comercial" else []}
+
+
+def _cola_encargo(ses, t):
+    """«Confirmar»: encargo para la redacción horaria (/noticias-gestor), enlazado al tema."""
+    lineas = [t["titulo"], ""] + ([t["resumen"], ""] if t.get("resumen") else [])
+    for a in t.get("avisos") or []:
+        lineas.append("· %s%s%s%s" % (a.get("texto") or "", (" — " + a["fuente"]) if a.get("fuente") else "", (" (" + a["fecha"] + ")") if a.get("fecha") else "",
+                                      (" " + a["url"]) if a.get("url") else ""))
+    lineas.append("")
+    lineas.append("Tema confirmado desde la cola del editor (tema %s). Etiquetas: medio %s · modos %s · temas %s · regiones %s · importancia %s · "
+                  "fiabilidad %s · fecha del hecho %s · fecha límite %s · sección %s." % (
+                      t["id"], t.get("medio"), ",".join(t.get("modos") or []), ",".join(t.get("temas") or []), ",".join(t.get("territorios") or []),
+                      t.get("importancia"), t.get("fiabilidad"), t.get("event_date") or "-", t.get("fecha_limite") or "-", t.get("seccion") or "-"))
+    enlace = next((a["url"] for a in t.get("avisos") or [] if a.get("url")), None)
+    fila = {"texto": "\n".join(lineas)[:20000], "enlace": enlace, "dominio": _dominio(enlace) if enlace else None, "pedido_por": ses["nombre"],
+            "perfil": ses["perfil"], "publicacion": "inmediata", "cola_tema": t["id"]}
+    return BD.insertar("encargos_gestor", fila)[0]
+
+
+def cola_accion(ses, d):
+    if not BD.configurada():
+        return 503, {"error": "la base privada no está conectada"}
+    op, perfil, quien = d.get("op"), ses["perfil"], ses["nombre"]
+    if op == "proponer":
+        if not CO.puede(perfil, "proponer"):
+            return 403, {"error": "tu perfil no propone temas"}
+        try:
+            fila = CO.normalizar(d.get("tema") or {}, perfil=perfil, nombre=quien)
+        except ValueError as e:
+            return 400, {"error": str(e)}
+        if perfil != "superadmin":
+            fila["importancia"] = fila["importancia_agente"]  # su sugerencia; la decide el editor jefe
+        fila["historial"] = [{"cuando": _ahora_iso(), "quien": quien, "que": "propuesto"}]
+        r = BD.insertar("cola_temas", fila)[0]
+        BD.registrar(quien, "cola_proponer", str(r["id"]), {"titulo": fila["titulo"][:120]})
+        return 200, {"ok": True, "id": r["id"]}
+    ids = [int(x) for x in (d.get("ids") or []) if str(x).isdigit()][:100]
+    if not ids:
+        return 400, {"error": "no hay temas seleccionados"}
+    temas = BD.leer("cola_temas", select=COLA_CAMPOS + ",historial", id="in.(%s)" % ",".join(map(str, ids)))
+    if not temas:
+        return 404, {"error": "no encuentro esos temas"}
+    permiso = {"confirmar": "confirmar", "importancia": "importancia", "editar": "editar", "seccion": "seccion",
+               "archivar": "archivar", "papelera": "papelera", "recuperar": "recuperar"}.get(op)
+    if not permiso:
+        return 400, {"error": "acción desconocida"}
+    negados = [t["id"] for t in temas if not CO.puede(perfil, permiso, t, quien)]
+    if negados:
+        return 403, {"error": "tu perfil no puede hacer eso con %s" % ("ese tema" if len(negados) == 1 else "%d de esos temas" % len(negados))}
+    hechos, avisos = [], []
+    if op == "confirmar":
+        malos = [t for t in temas if t["fiabilidad"] == "sin_confirmar"]
+        if malos:
+            return 409, {"error": "hay %d tema(s) sin confirmar: busca antes una fuente mejor" % len(malos)}
+        hoy = CO.hoy_madrid()
+        for t in temas:
+            if t["estado"] not in CO.ESTADOS_COLA:
+                continue
+            e = _cola_encargo(ses, t)
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, {"estado": "confirmado", "actualizado_at": _ahora_iso(),
+                                                                  "historial": _hist(t, quien, "confirmado: encargo %s a la redacción" % e["id"])})
+            hechos.append(t["id"])
+            if not CO.laborable(hoy) and (t.get("importancia") or 0) >= 5:
+                st, r = lanzar_barrido(ses, "Tema confirmado en la cola (importancia 5): %s" % t["titulo"][:200])
+                avisos.append("batida de grandes noticias lanzada" if st == 200 else "no pude lanzar la batida: %s" % r.get("error"))
+        if not CO.laborable(hoy) and not avisos:
+            avisos.append("hoy no es laborable: la redacción lo escribe el próximo laborable")
+    elif op == "importancia":
+        delta = int(d.get("delta") or 0)
+        motivo = str(d.get("motivo") or "").strip()[:500] or None
+        for t in temas:
+            de = t.get("importancia") or t.get("importancia_agente") or 3
+            a = max(1, min(5, de + delta)) if delta else max(1, min(5, int(d.get("valor") or de)))
+            if a == de:
+                continue
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, {"importancia": a, "actualizado_at": _ahora_iso(),
+                                                                  "historial": _hist(t, quien, "importancia %s → %s%s" % (de, a, (": " + motivo) if motivo else ""))})
+            BD.insertar("cola_correcciones", {"tema": t["id"], "titulo": t["titulo"], "de": de, "a": a, "agente": t.get("importancia_agente"), "motivo": motivo,
+                                              "quien": quien, "etiquetas": {k: t.get(k) for k in ("medio", "modos", "temas", "territorios", "fiabilidad")}})
+            hechos.append(t["id"])
+    elif op == "editar":
+        t = temas[0]
+        c = d.get("campos") or {}
+        try:
+            n = CO.normalizar(dict(t, **{k: c[k] for k in c if k in ("titulo", "resumen") + CO.CAMPOS_ETIQUETA}), rutina=t.get("rutina"))
+        except ValueError as e:
+            return 400, {"error": str(e)}
+        cambios = {k: n[k] for k in ("titulo", "resumen") + CO.CAMPOS_ETIQUETA if k in c}
+        if perfil == "comercial":
+            cambios.pop("solucion", None)
+        cambios.update(actualizado_at=_ahora_iso(), historial=_hist(t, quien, "editado: " + ", ".join(sorted(k for k in cambios if k not in ("actualizado_at",)))))
+        BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, cambios)
+        hechos.append(t["id"])
+    elif op == "seccion":
+        sec = d.get("seccion")
+        if sec not in CO.SECCIONES:
+            return 400, {"error": "sección desconocida"}
+        for t in temas:
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, {"seccion": sec, "actualizado_at": _ahora_iso(), "historial": _hist(t, quien, "sección: " + sec)})
+            hechos.append(t["id"])
+    elif op in ("archivar", "papelera"):
+        destino = "archivado" if op == "archivar" else "papelera"
+        for t in temas:
+            if t["estado"] in ("publicado", destino):
+                continue
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, {"estado": destino, "estado_antes": t["estado"], "actualizado_at": _ahora_iso(),
+                                                                  "historial": _hist(t, quien, "al archivo" if op == "archivar" else "a la papelera")})
+            hechos.append(t["id"])
+    elif op == "recuperar":
+        for t in temas:
+            if t["estado"] not in ("archivado", "papelera"):
+                continue
+            vuelve = t.get("estado_antes") if t.get("estado_antes") in CO.ESTADOS_COLA else "nuevo"
+            BD.actualizar("cola_temas", {"id": "eq.%s" % t["id"]}, {"estado": vuelve, "estado_antes": t["estado"], "actualizado_at": _ahora_iso(),
+                                                                  "fecha_limite": None if t["estado"] == "archivado" and (t.get("motivo") or "").startswith("caducado") else t.get("fecha_limite"),
+                                                                  "historial": _hist(t, quien, "recuperado")})
+            hechos.append(t["id"])
+    BD.registrar(quien, "cola_" + op, ",".join(map(str, hechos))[:200], {"n": len(hechos)})
+    return 200, {"ok": True, "hechos": hechos, "avisos": avisos}
+
+
 # ---------- buzón del repositorio (14-11-2026; migración 008, src/buzon.py) ----------
 # Las tareas programadas que no pueden hacer push dejan en Supabase (tabla repo_buzon) los ficheros que cambian. Este
 # cron los sube a `main` con GITHUB_TOKEN: un commit por lote, en orden de llegada, y se para en el primer lote que no
@@ -1775,6 +1972,8 @@ class handler(BaseHTTPRequestHandler):
                 for f in filas:
                     f["texto"] = (f.get("texto") or "")[:280]
                 return self._enviar(200, {"encargos": filas, "dominios": _dominios()[0]["dominios"], "clases": CLASES_FUENTE})
+            if a == "cola":
+                return self._enviar(*cola_listar(ses, q.get("pestana") or "cola"))
             if a == "retoques":
                 return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
             if a == "productos":
@@ -1925,6 +2124,8 @@ class handler(BaseHTTPRequestHandler):
             if not BD.configurada():
                 return self._enviar(503, {"error": "la base privada no está conectada"})
             return self._enviar(*accion_encargo(ses, d))
+        if a == "cola":
+            return self._enviar(*cola_accion(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
         if a == "probar_aviso":  # diagnóstico: manda un correo de prueba al editor jefe y enseña lo que contesta Brevo

@@ -1,0 +1,6 @@
+- [x] Prototipo para el móvil y entrevista
+- [x] Migración 012 aplicada en la base privada
+- [x] `src/cola.py` y API del gestor con permisos en el servidor
+- [x] Pestaña «Cola» del gestor (probada en un navegador de móvil con datos simulados)
+- [x] Rutinas: edición diaria, batida, /noticias-gestor, asesor
+- [ ] Primera carga real: la edición del lunes 16-11 sube los primeros temas (comprobar en el informe de la mañana)

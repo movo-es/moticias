@@ -64,11 +64,34 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 .paso{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}.paso:first-child{border-top:0}
 .venc{color:var(--bad);font-weight:600}.hoy{color:var(--warn);font-weight:600}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid #ccc;border-top-color:#111;border-radius:50%;animation:g 1s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes g{to{transform:rotate(360deg)}}
+/* Cola del editor (cambio cola-del-editor, 16-11-2026) */
+.q-herr{display:flex;gap:8px;align-items:center;margin:0 0 10px}.q-herr select{flex:1;min-width:0}
+.q-act{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.q-act button{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:14px;padding:3px 10px;font-size:13px}.q-act button::after{content:" ×";opacity:.7}
+.q-it{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;overflow:hidden}.q-it.sel{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.q-cab{display:flex;gap:10px;padding:12px 14px 10px}.q-cab input[type=checkbox]{width:24px;height:24px;flex:none;margin-top:2px;accent-color:var(--acc)}.q-cu{min-width:0;flex:1}
+.q-l1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+.q-imp{display:inline-flex;gap:2px;align-items:center}.q-imp i{width:7px;height:14px;border-radius:2px;background:#d7dad6;display:block}.q-imp i.on{background:var(--ink)}.q-imp b{font-size:12px;color:var(--ink);margin-left:3px}
+.q-t{font-weight:600;line-height:1.3;margin:6px 0}
+.q-et{display:flex;gap:5px;flex-wrap:wrap}.q-e{font-size:12px;border-radius:10px;padding:2px 8px;background:var(--soft);color:var(--ink)}
+.q-e.fp{background:#e3f1ea;color:var(--acc)}.q-e.fs{background:#fff1dd;color:var(--warn)}.q-e.fn{background:#f6e4e4;color:var(--bad)}.q-e.sol{border:1px dashed var(--mute);background:transparent}.q-e.est{font-weight:600}
+.q-pronto{color:var(--bad);font-weight:600}
+.q-grupo{font-size:13px;color:var(--acc);background:none;border:0;padding:6px 0 0;text-align:left}
+.q-av{margin:6px 0 0;padding:8px 10px;background:var(--soft);border-radius:8px;font-size:13px;display:grid;gap:4px}.q-av a{color:var(--acc);word-break:break-all}
+.q-acc{display:flex;gap:6px;overflow-x:auto;padding:0 14px 12px}.q-acc button{flex:none;white-space:nowrap;min-height:40px;padding:8px 12px;font-size:14px}
+.q-motivo{font-size:12px;color:var(--bad);padding:0 14px 10px;margin-top:-4px}
+.q-bloque{position:fixed;left:0;right:0;bottom:0;z-index:8;background:#fff;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:6px;align-items:center;overflow-x:auto}
+.q-bloque b{white-space:nowrap;font-size:14px}.q-bloque button{flex:none;white-space:nowrap;min-height:40px;padding:8px 12px;font-size:14px}
+.q-velo{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.q-hoja{position:fixed;left:0;right:0;bottom:0;z-index:21;background:#fff;border-radius:16px 16px 0 0;max-height:86vh;overflow:auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-width:760px;margin:0 auto}
+.q-ops{display:flex;flex-wrap:wrap;gap:6px}.q-op{border:1px solid var(--line);background:#fff;border-radius:14px;padding:5px 11px;font-size:14px}.q-op.on{background:var(--ink);color:#fff;border-color:var(--ink)}.q-op:disabled{opacity:.45}
+.q-pie{display:flex;gap:8px;margin-top:16px}.q-pie button{flex:1}
+body.q-con-bloque{padding-bottom:80px}
 </style>
 </head>
 <body>
 <header><b>MOTICIAS · Gestor</b><small id="quien"></small><button id="salir" hidden style="margin-left:8px;background:none;border:1px solid #555;color:#ddd;border-radius:14px;padding:4px 10px;font-size:12px">Salir</button></header>
 <nav id="nav" hidden>
+  <button data-v="cola" hidden>Cola</button>
   <button data-v="piezas" class="on">Piezas</button>
   <button data-v="noticia" hidden>Nueva noticia</button>
   <button data-v="anuncios">Publicidad</button>
@@ -150,6 +173,8 @@ async function arrancar() {
   $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
   $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
   $("#nav").querySelector('[data-v="prensa"]').hidden = !puede("crm");
+  $("#nav").querySelector('[data-v="cola"]').hidden = !["superadmin", "editor", "comercial"].includes(yo);
+  if (["superadmin", "editor"].includes(yo) && !params().get("vista")) vista = "cola";  // la cola es la portada del gestor para quien redacta
   const p = params().get("pieza"), acc = params().get("accion");
   if (p && jefe() && ["editar", "ia", "retirar"].includes(acc)) return abrirEditor(p, acc);
   if (p) return abrirPieza(p, true);
@@ -161,7 +186,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; const qb = $("#q-bloque"); if (qb) qb.remove(); document.body.classList.remove("q-con-bloque"); document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({cola:verCola, piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -169,6 +194,188 @@ function avisoConfig() {
   if (!e.ghost) f.push("GHOST_ADMIN_KEY y GHOST_URL (sin ellas, los cambios se ven en la web en la próxima publicación)");
   if (puede("barrido") && !e.barrido) f.push("RUTINA_BARRIDO_TOKEN (sin él, el botón «Iniciar barrido de noticias ahora» no puede lanzar la tarea)");
   return f.length ? `<div class="card" style="border-color:#e7c48d"><b>Configuración pendiente en Vercel</b><p class="mute">Falta: ${f.map(E).join("; ")}.</p></div>` : "";
+}
+
+
+// ---------- Cola del editor (cambio cola-del-editor, decisiones de Rainer del 15 y 16-11-2026) ----------
+// Temas nuevos: filtrar y ordenar por todas las etiquetas comunes; selección individual o en bloque; solo el editor jefe confirma.
+const Q = {pestana:"cola", orden:"imp", sel:new Set(), selModo:false, filtros:{}, abiertos:new Set(), datos:null};
+const Q_EST = {nuevo:"Nuevo", propuesto:"Propuesto por un editor", sin_fuente:"Sin fuente primaria", confirmado:"Confirmado", en_redaccion:"En redacción",
+  para_aprobar:"Para aprobar", publicado:"Publicado", archivado:"Archivado", papelera:"En la papelera"};
+const Q_FIA = {primaria:"Primaria", secundaria:"Secundaria reputada", sin_confirmar:"Sin confirmar"};
+const Q_CAD = {hoy:"Caduca hoy o mañana", semana:"Esta semana", mas:"Más adelante", no:"No caduca"};
+function qCad(t){ if (t.dias == null) return {t:"No caduca", k:"no"}; const d = t.dias;
+  return {t: d < 0 ? "Caducado" : d === 0 ? "Caduca hoy" : d === 1 ? "Caduca mañana" : "Caduca en " + d + " días", k: d <= 1 ? "hoy" : d <= 7 ? "semana" : "mas", pronto: d <= 1}; }
+function qEjes(){ const e = Q.datos.ejes || {}; return {
+  medio:{n:"Medio", v:e.medio || {}, off:e.medio_apagado || []}, modos:{n:"Modo", v:e.modo || {}}, temas:{n:"Tema", v:e.tema || {}}, territorios:{n:"Región", v:e.region || {}},
+  importancia:{n:"Importancia", v:{5:"5",4:"4",3:"3",2:"2",1:"1"}}, fiabilidad:{n:"Fiabilidad", v:Q_FIA}, estado:{n:"Estado", v:Q_EST}, cad:{n:"Caducidad", v:Q_CAD},
+  solucion:{n:"Solución del grupo", v:Object.fromEntries((Q.datos.soluciones || []).map(x => [x, x]).concat([["ninguna","Ninguna"]]))},
+  origen:{n:"Propuesto por", v:{agente:"Agente", persona:"Persona"}} }; }
+function qValor(t, eje){ return eje === "cad" ? [qCad(t).k] : eje === "solucion" ? [t.solucion || "ninguna"] : [].concat(t[eje] == null ? [] : t[eje]).map(String); }
+function qPasa(t){ return Object.entries(Q.filtros).every(([eje, vals]) => !vals.size || qValor(t, eje).some(v => vals.has(v))); }
+function qOrden(a, b){
+  const ca = a.caduca || "9999", cb = b.caduca || "9999", ia = a.importancia || 0, ib = b.importancia || 0;
+  if (Q.orden === "imp") return ib - ia || ca.localeCompare(cb);
+  if (Q.orden === "cad") return ca.localeCompare(cb) || ib - ia;
+  if (Q.orden === "nuevo") return (b.creado_at || "").localeCompare(a.creado_at || "");
+  return (b.event_date || "").localeCompare(a.event_date || "");
+}
+async function verCola(){
+  app.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando la cola…</div>`;
+  try { Q.datos = await api("cola", null, {pestana: Q.pestana}); } catch (e) { app.innerHTML = `<div class="card"><h1>Cola</h1><p class="mute">${E(e.message)}</p></div>`; return; }
+  qPinta();
+}
+function qPinta(){
+  const D = Q.datos, J = D.yo.jefe, ejes = qEjes();
+  const xs = D.temas.filter(qPasa).sort(qOrden);
+  const pest = {cola:"Cola", confirmados:"Confirmados", publicados:"Publicados", archivo:"Archivo", papelera:"Papelera"};
+  app.innerHTML = `<div class="tabs" id="q-tabs">${Object.entries(pest).map(([k, n]) => `<button data-p="${k}" class="${Q.pestana === k ? "on" : ""}">${n}${D.cuenta[k] != null ? " · " + D.cuenta[k] : ""}</button>`).join("")}</div>
+  <div class="q-herr"><select id="q-orden" aria-label="Ordenar"><option value="imp">Más importantes primero</option><option value="cad">Lo que caduca antes</option><option value="nuevo">Más recientes</option><option value="hecho">Por fecha del hecho</option></select>
+    <button class="b2" id="q-fil">Filtros</button><button class="b2" id="q-sel">${Q.selModo ? "Listo" : "Seleccionar"}</button></div>
+  <div class="q-act" id="q-act">${Object.entries(Q.filtros).flatMap(([eje, vals]) => [...vals].map(v => `<button data-q="${eje}|${E(v)}">${E(ejes[eje].n)}: ${E(ejes[eje].v[v] || v)}</button>`)).join("")}</div>
+  ${Q.pestana === "cola" ? `<p><button class="b2" id="q-nuevo" style="width:100%">+ Proponer un tema</button></p>` : ""}
+  <div id="q-lista">${xs.length ? xs.map(qTarjeta).join("") : `<div class="vacio">${Q.pestana === "papelera" ? "La papelera está vacía." : Object.keys(Q.filtros).length ? "No hay temas con estos filtros." : "No hay temas aquí todavía. Los propone el barrido de la mañana, las batidas y los editores."}</div>`}</div>`;
+  $("#q-orden").value = Q.orden;
+  $("#q-orden").onchange = ev => { Q.orden = ev.target.value; qPinta(); };
+  $("#q-tabs").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; Q.pestana = b.dataset.p; Q.sel.clear(); verCola(); };
+  $("#q-fil").onclick = qFiltros;
+  $("#q-sel").onclick = () => { Q.selModo = !Q.selModo; Q.sel.clear(); qPinta(); };
+  const nv = $("#q-nuevo"); if (nv) nv.onclick = () => qEditar(null);
+  document.querySelectorAll("#q-act button").forEach(b => b.onclick = () => { const [e, v] = b.dataset.q.split("|"); Q.filtros[e].delete(v); qPinta(); });
+  xs.forEach(t => qEnganchar(t));
+  qBloque(xs);
+}
+function qImp(n){ n = n || 0; return `<span class="q-imp" title="Importancia ${n} de 5">${[1,2,3,4,5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}<b>${n || "?"}</b></span>`; }
+function qTarjeta(t){
+  const D = Q.datos, J = D.yo.jefe, ej = D.ejes || {}, c = qCad(t), s = Q.sel.has(t.id), p = Q.pestana;
+  const suyo = t.propuesto_por && t.propuesto_por === D.yo.nombre;
+  const bloq = t.fiabilidad === "sin_confirmar";
+  let acc = "";
+  if (p === "papelera" || p === "archivo") { if (J || suyo) acc = `<button class="b2" data-a="recuperar">${p === "papelera" ? "Recuperar" : "Volver a la cola"}</button>` + (p === "archivo" ? `<button class="b2 bad" data-a="papelera">Borrar</button>` : ""); }
+  else if (p === "confirmados") { acc = t.pieza ? `<a class="b2" href="?pieza=${encodeURIComponent(t.pieza)}">${t.estado === "para_aprobar" && J ? "Leer y publicar" : "Ver la pieza"}</a>` : `<span class="mute" style="padding:8px 0">La redacción la escribe en su próxima pasada (laborables de 8 a 21).</span>`; }
+  else if (p === "publicados") { acc = t.pieza ? `<a class="b2" href="https://www.moticias.com/${encodeURIComponent(t.pieza)}/" target="_blank" rel="noopener">Ver en moticias.com</a>` : ""; }
+  else {
+    acc = (J ? `<button class="b" data-a="confirmar" ${bloq ? "disabled" : ""}>Confirmar</button>` : "")
+      + (J || D.yo.perfil === "editor" ? `<button class="b2" data-a="editar">Editar</button>` : "")
+      + (J ? `<button class="b2" data-a="subir" aria-label="Subir importancia">▲ Importancia</button><button class="b2" data-a="bajar" aria-label="Bajar importancia">▼</button>` : "")
+      + (J || D.yo.perfil === "editor" ? `<button class="b2" data-a="seccion">Sección</button>` : "")
+      + (J || suyo ? `<button class="b2" data-a="archivar">Archivar</button><button class="b2 bad" data-a="papelera">Borrar</button>` : "");
+  }
+  const av = t.avisos || [];
+  const avHTML = a => `<div>· ${E(a.texto || "")}${a.fuente ? " — " + E(a.fuente) : ""}${a.fecha ? " (" + E(a.fecha) + ")" : ""}${a.url ? ` <a href="${E(a.url)}" target="_blank" rel="noopener">fuente</a>` : ""}</div>`;
+  return `<article class="q-it ${s ? "sel" : ""}" id="q-${t.id}">
+    <div class="q-cab">${Q.selModo ? `<input type="checkbox" aria-label="Seleccionar" ${s ? "checked" : ""}>` : ""}
+      <div class="q-cu">
+        <div class="q-l1">${qImp(t.importancia)}${J && t.importancia_agente && t.importancia_agente !== t.importancia ? `<span>agente: ${t.importancia_agente}</span>` : ""}
+          <span class="q-e est">${E(Q_EST[t.estado] || t.estado)}</span><span class="${c.pronto ? "q-pronto" : ""}">${E(c.t)}</span>
+          <span>${t.origen === "agente" ? "Propuesto por el agente" + (t.rutina ? " (" + E(t.rutina) + ")" : "") : "Propuesto por " + E(t.propuesto_por || "un editor")}</span></div>
+        <div class="q-t">${E(t.titulo)}</div>
+        ${t.resumen ? `<div class="mute" style="margin:0 0 6px">${E(t.resumen)}</div>` : ""}
+        <div class="q-et">${t.medio ? `<span class="q-e">${E((ej.medio || {})[t.medio] || t.medio)}</span>` : ""}${(t.modos || []).map(m => `<span class="q-e">${E((ej.modo || {})[m] || m)}</span>`).join("")}
+          ${(t.temas || []).map(m => `<span class="q-e">${E((ej.tema || {})[m] || m)}</span>`).join("")}${(t.territorios || []).map(m => `<span class="q-e">${E((ej.region || {})[m] || m)}</span>`).join("")}
+          <span class="q-e ${t.fiabilidad === "primaria" ? "fp" : t.fiabilidad === "secundaria" ? "fs" : "fn"}">${E(Q_FIA[t.fiabilidad])}</span>
+          ${t.event_date ? `<span class="q-e">Hecho: ${E(t.event_date.slice(8, 10) + "-" + t.event_date.slice(5, 7))}</span>` : ""}${t.fecha_limite ? `<span class="q-e">Límite: ${E(t.fecha_limite.slice(8, 10) + "-" + t.fecha_limite.slice(5, 7))}</span>` : ""}
+          ${t.solucion ? `<span class="q-e sol">Solución: ${E(t.solucion)}</span>` : ""}${t.seccion ? `<span class="q-e">Sección: ${E(t.seccion)}</span>` : ""}</div>
+        ${av.length > 1 ? `<button class="q-grupo" data-g>${Q.abiertos.has(t.id) ? "Ocultar" : "Ver"} ${av.length} avisos sobre el mismo hecho</button>` : av.length ? `<div class="q-av">${avHTML(av[0])}</div>` : ""}
+        ${Q.abiertos.has(t.id) ? `<div class="q-av">${av.map(avHTML).join("")}</div>` : ""}
+        ${t.motivo && ["sin_fuente", "archivado"].includes(t.estado) ? `<div class="q-motivo" style="padding:6px 0 0">${E(t.motivo)}</div>` : ""}
+      </div></div>
+    ${Q.selModo || !acc ? "" : `<div class="q-acc">${acc}</div>`}
+    ${bloq && !Q.selModo && p === "cola" && J ? `<div class="q-motivo">Sin confirmar: «Confirmar» se desbloquea cuando haya una fuente mejor (edita la fiabilidad al añadirla).</div>` : ""}
+  </article>`;
+}
+function qEnganchar(t){
+  const el = $("#q-" + t.id);
+  const m = el.querySelector("input[type=checkbox]"); if (m) m.onchange = () => { m.checked ? Q.sel.add(t.id) : Q.sel.delete(t.id); qPinta(); };
+  const g = el.querySelector("[data-g]"); if (g) g.onclick = () => { Q.abiertos.has(t.id) ? Q.abiertos.delete(t.id) : Q.abiertos.add(t.id); qPinta(); };
+  el.querySelectorAll("[data-a]").forEach(b => b.onclick = () => qAccion(b.dataset.a, [t]));
+}
+async function qHacer(cuerpo, ok){
+  try { const r = await api("cola", cuerpo); aviso(ok + ((r.avisos || []).length ? " · " + r.avisos.join(" · ") : "")); Q.sel.clear(); qCerrar(); await verCola(); }
+  catch (e) { aviso(e.message, true); }
+}
+function qAccion(a, xs){
+  const ids = xs.map(t => t.id), n = ids.length, uno = n === 1 ? "1 tema" : n + " temas";
+  if (a === "editar") return qEditar(xs[0]);
+  if (a === "seccion") return qSeccion(ids);
+  if (a === "subir" || a === "bajar") return qImportancia(xs, a === "subir" ? 1 : -1);
+  const ok = {confirmar: uno + " confirmado: la redacción lo escribe en su próxima pasada", archivar: uno + " archivado", papelera: uno + " en la papelera (se puede recuperar)", recuperar: uno + " de vuelta en la cola"}[a];
+  qHacer({op: a, ids}, ok);
+}
+function qHoja(html){ const d = document.createElement("div"); d.id = "q-capa"; d.innerHTML = `<div class="q-velo"></div><div class="q-hoja" role="dialog" aria-modal="true">${html}</div>`; document.body.appendChild(d); d.querySelector(".q-velo").onclick = qCerrar; return d; }
+function qCerrar(){ const c = $("#q-capa"); if (c) c.remove(); }
+function qImportancia(xs, d){
+  const c = qHoja(`<h2>${d > 0 ? "Subir" : "Bajar"} importancia${xs.length > 1 ? " de " + xs.length + " temas" : ""}</h2>
+    <p class="mute">${xs.length === 1 ? `De ${xs[0].importancia || "?"} a ${Math.max(1, Math.min(5, (xs[0].importancia || 3) + d))}. ` : ""}La corrección se guarda para que el agente aprenda.</p>
+    <label for="q-porque">Por qué (opcional, una frase)</label><input id="q-porque" placeholder="Ej.: afecta a todas las comunidades, no solo a una">
+    <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">${d > 0 ? "Subir" : "Bajar"}</button></div>`);
+  c.querySelector("#q-no").onclick = qCerrar;
+  c.querySelector("#q-si").onclick = () => qHacer({op:"importancia", ids:xs.map(t => t.id), delta:d, motivo:c.querySelector("#q-porque").value}, "Importancia corregida");
+}
+function qSeccion(ids){
+  const c = qHoja(`<h2>Cambiar de sección</h2><div class="q-ops">${(Q.datos.secciones || []).map(s => `<button class="q-op" data-s="${E(s)}">${E(s)}</button>`).join("")}</div><div class="q-pie"><button class="b2" id="q-no">Cancelar</button></div>`);
+  c.querySelector("#q-no").onclick = qCerrar;
+  c.querySelectorAll("[data-s]").forEach(b => b.onclick = () => qHacer({op:"seccion", ids, seccion:b.dataset.s}, "Sección: " + b.dataset.s));
+}
+function qOps(eje, actual, multi){
+  const e = qEjes()[eje], act = [].concat(actual == null ? [] : actual).map(String);
+  return `<div class="q-ops" data-eje="${eje}" data-multi="${multi ? 1 : 0}">${Object.entries(e.v).map(([k, v]) => `<button type="button" class="q-op ${act.includes(k) ? "on" : ""}" data-k="${E(k)}" ${(e.off || []).includes(k) ? "disabled title=\"Apagado\"" : ""}>${E(v)}</button>`).join("")}</div>`;
+}
+function qOpsVivos(c){ c.querySelectorAll(".q-ops").forEach(o => o.addEventListener("click", ev => { const b = ev.target.closest(".q-op"); if (!b || b.disabled) return;
+  if (o.dataset.multi !== "1") o.querySelectorAll(".q-op").forEach(z => { if (z !== b) z.classList.remove("on"); });
+  b.classList.toggle("on"); })); }
+function qEditar(t){
+  const nuevo = !t, x = t || {}, J = Q.datos.yo.jefe;
+  const c = qHoja(`<h2>${nuevo ? "Proponer un tema" : "Editar tema"}</h2>
+    <label for="q-tt">Titular de trabajo</label><textarea id="q-tt" rows="3" style="min-height:70px">${E(x.titulo || "")}</textarea>
+    <label for="q-rs">Resumen y fuentes (opcional)</label><textarea id="q-rs" rows="4" style="min-height:90px" placeholder="Qué ha pasado, quién lo dice y dónde. Pega aquí el enlace de la fuente.">${E(x.resumen || "")}</textarea>
+    <label>Medio</label>${qOps("medio", x.medio)}
+    <label>Modo</label>${qOps("modos", x.modos, true)}
+    <label>Tema</label>${qOps("temas", x.temas, true)}
+    <label>Región</label>${qOps("territorios", x.territorios, true)}
+    <label>Fiabilidad de la fuente</label>${qOps("fiabilidad", x.fiabilidad || "sin_confirmar")}
+    ${nuevo ? `<label>Importancia ${J ? "" : "(tu sugerencia; la decide el editor jefe)"}</label>${qOps("importancia", x.importancia)}` : ""}
+    ${(Q.datos.soluciones || []).length ? `<label>Solución del grupo</label>${qOps("solucion", x.solucion || "ninguna")}` : ""}
+    <label>Sección</label><div class="q-ops" data-eje="seccion" data-multi="0">${(Q.datos.secciones || []).map(s => `<button type="button" class="q-op ${x.seccion === s ? "on" : ""}" data-k="${E(s)}">${E(s)}</button>`).join("")}</div>
+    <label for="q-fh">Fecha del hecho</label><input id="q-fh" type="date" value="${E(x.event_date || "")}">
+    <label for="q-fl">Fecha límite (opcional)</label><input id="q-fl" type="date" value="${E(x.fecha_limite || "")}">
+    <label class="chk"><input type="checkbox" id="q-nc" ${x.no_caduca ? "checked" : ""}> No caduca (análisis, «La voz del editor», textos de referencia)</label>
+    <p class="mute">Deja vacías las etiquetas que no sepas: el agente las propone a partir del titular.</p>
+    <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">${nuevo ? "Proponer" : "Guardar"}</button></div>`);
+  qOpsVivos(c);
+  c.querySelector("#q-no").onclick = qCerrar;
+  c.querySelector("#q-si").onclick = () => {
+    const v = eje => [...c.querySelectorAll(`[data-eje="${eje}"] .q-op.on`)].map(b => b.dataset.k);
+    const urls = (c.querySelector("#q-rs").value.match(/https?:\/\/[^\s<>"']+/g) || []);
+    const campos = {titulo:c.querySelector("#q-tt").value.trim(), resumen:c.querySelector("#q-rs").value.trim(), medio:v("medio")[0] || null, modos:v("modos"), temas:v("temas"),
+      territorios:v("territorios"), fiabilidad:v("fiabilidad")[0] || "sin_confirmar", seccion:v("seccion")[0] || null, solucion:(v("solucion")[0] || "ninguna") === "ninguna" ? null : v("solucion")[0],
+      event_date:c.querySelector("#q-fh").value || null, fecha_limite:c.querySelector("#q-fl").value || null, no_caduca:c.querySelector("#q-nc").checked};
+    if (nuevo) { campos.importancia = +(v("importancia")[0] || 0) || null; campos.avisos = urls.map(u => ({texto:"Fuente aportada al proponer", url:u})); return qHacer({op:"proponer", tema:campos}, "Tema propuesto"); }
+    qHacer({op:"editar", ids:[x.id], campos}, "Cambios guardados");
+  };
+}
+function qFiltros(){
+  const copia = Object.fromEntries(Object.entries(Q.filtros).map(([k, v]) => [k, new Set(v)]));
+  const ejes = qEjes();
+  const c = qHoja(`<h2>Filtrar</h2>${Object.keys(ejes).filter(k => Object.keys(ejes[k].v).length).map(k => `<label>${E(ejes[k].n)}</label>${qOps(k, [...(copia[k] || [])], true)}`).join("")}
+    <div class="q-pie"><button class="b2" id="q-limpiar">Quitar filtros</button><button class="b" id="q-ver">Ver temas</button></div>`);
+  qOpsVivos(c);
+  c.querySelector("#q-limpiar").onclick = () => { Q.filtros = {}; qCerrar(); qPinta(); };
+  c.querySelector("#q-ver").onclick = () => { Q.filtros = {}; c.querySelectorAll(".q-ops").forEach(o => { const on = [...o.querySelectorAll(".q-op.on")].map(b => b.dataset.k); if (on.length) Q.filtros[o.dataset.eje] = new Set(on); }); qCerrar(); qPinta(); };
+}
+function qBloque(xs){
+  let b = $("#q-bloque");
+  if (!Q.selModo || vista !== "cola") { if (b) b.remove(); document.body.classList.remove("q-con-bloque"); return; }
+  if (!b) { b = document.createElement("div"); b.id = "q-bloque"; b.className = "q-bloque"; document.body.appendChild(b); }
+  document.body.classList.add("q-con-bloque");
+  const D = Q.datos, J = D.yo.jefe, sel = D.temas.filter(t => Q.sel.has(t.id)), n = sel.length, p = Q.pestana, dis = n ? "" : "disabled";
+  b.innerHTML = `<b>${n} ${n === 1 ? "seleccionado" : "seleccionados"}</b><button class="b2" id="q-todo">${n && n === xs.length ? "Ninguno" : "Todos"}</button>`
+    + (p === "papelera" || p === "archivo" ? `<button class="b2" data-b="recuperar" ${dis}>${p === "papelera" ? "Recuperar" : "Volver a la cola"}</button>`
+      : p === "cola" ? (J ? `<button class="b" data-b="confirmar" ${dis}>Confirmar</button><button class="b2" data-b="subir" ${dis}>▲</button><button class="b2" data-b="bajar" ${dis}>▼</button>` : "")
+        + `<button class="b2" data-b="seccion" ${dis}>Sección</button><button class="b2" data-b="archivar" ${dis}>Archivar</button>` : "")
+    + (p !== "papelera" && p !== "publicados" ? `<button class="b2 bad" data-b="papelera" ${dis}>Borrar</button>` : "");
+  b.querySelector("#q-todo").onclick = () => { if (n && n === xs.length) Q.sel.clear(); else xs.forEach(t => Q.sel.add(t.id)); qPinta(); };
+  b.querySelectorAll("[data-b]").forEach(k => k.onclick = () => qAccion(k.dataset.b, sel));
 }
 
 // ---------- Piezas ----------

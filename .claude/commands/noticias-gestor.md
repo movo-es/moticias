@@ -6,7 +6,7 @@ Eres la redacción de MOTICIAS. Atiendes los encargos de «Nueva noticia» del g
 
 Los encargos viven en la base privada (Supabase, proyecto `cjrntzaqmvhgscdgiehs`, tabla `encargos_gestor`), no en el repositorio, porque el texto pegado puede no ser público. Léelos y ciérralos con la herramienta de Supabase `execute_sql` sobre ese proyecto. Si esa herramienta no está en la sesión, dilo en el aviso («Noticias del gestor: sin acceso a la base») y no hagas nada más con ellos.
 
-0. `select id, texto, enlace, dominio, clase_fuente, pedido_por, perfil, publicacion, creado_at from encargos_gestor where estado = 'pendiente' order by creado_at limit 3;`. Si no hay ninguno, termina esta parte con «Noticias del gestor: nada pendiente». Antes de empezar con cada uno: `update encargos_gestor set estado = 'en_curso' where id = <id>;`.
+0. `select id, texto, enlace, dominio, clase_fuente, pedido_por, perfil, publicacion, cola_tema, creado_at from encargos_gestor where estado = 'pendiente' order by creado_at limit 3;`. Si no hay ninguno, termina esta parte con «Noticias del gestor: nada pendiente». Antes de empezar con cada uno: `update encargos_gestor set estado = 'en_curso' where id = <id>;`.
 
 1. ENTIENDE QUÉ TE PASAN. Si hay enlace, ábrelo con WebFetch (está en la sesión porque viene del encargo). Si es un texto, identifica el hecho, quién lo dice y desde dónde. Mira la clase del dominio de la fuente en `data/fuentes/dominios.json` (un dominio `confirmado: false` cuenta como `no_confianza`) y, si no está, la que traiga el encargo (`clase_fuente`).
 
@@ -25,3 +25,5 @@ Los encargos viven en la base privada (Supabase, proyecto `cjrntzaqmvhgscdgiehs`
 8. REPOSITORIO y AVISO. `git add data docs app/public/buscador && git commit -m "Desde el gestor: <titular corto> (<id>)" && git push`. Aviso de una línea por encargo: qué era, qué se hizo, enlace. Nunca se borra un encargo.
 
 Tipo de contenido (cambio `tipos-de-contenido`, 15-11-2026): la pieza nace con `tipo_contenido: noticia` (o `editorial` si es un análisis o un reportaje) y pasa `python3 -I src/tipos.py validar` antes de publicarse. Si lo que te pegan es un comunicado sin verificación independiente, no es una noticia: ciérralo como `descartado` y remítelo a la sala de prensa (`/prensa-buzon`, `tipo_contenido: nota_de_prensa`).
+
+Cola del editor (16-11-2026). Si el encargo tiene `cola_tema` (lo creó el botón «Confirmar» de la cola), el texto trae las etiquetas que decidió el editor jefe: respétalas (medio, modos, temas, regiones, importancia, sección, fecha del hecho y fecha límite) y no las cambies sin motivo; la importancia que dejó es la de la pieza. Al cerrar el encargo, la cola se pone al día sola leyendo su estado (publicada → publicado, pendiente_aprobacion → para aprobar, sin_fuentes → vuelve a la cola «Sin fuente primaria» con tu `resultado` como motivo). Selecciona también `cola_tema` en el paso 0.
