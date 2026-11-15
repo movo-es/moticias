@@ -45,6 +45,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 ## Cómo trabaja Rainer
 
 - Es experto senior en transporte y movilidad e «ignorante» en lo técnico fuera de su campo: explica sin dar por supuestos conocimientos de programación.
+- Siempre enlace directo (decisión de Rainer, 15-11-2026): cada vez que se le pide hacer algo en un servicio (gestor, Ghost, Vercel, Supabase, Brevo, GitHub…), se le da el enlace exacto a la página donde se hace, no solo la ruta de menús. Vercel: equipo `movo2`, proyecto `moticias-app` (`https://vercel.com/movo2/moticias-app/…`); el gestor abre una pestaña con `?vista=` (`https://app.moticias.com/gestor/?vista=equipo`).
 - Todo comando para copiar y pegar lleva delante el `cd` a este proyecto, en un bloque copiable: trabaja con varios repositorios a la vez (`movo-es/movo`, `movo-es/avionline-contabilidad`, este).
 - Supabase (decisión de Rainer, 15-11-2026, ampliada el mismo día): autorización general y permanente para todas las operaciones con Supabase (consultas, migraciones, SQL, funciones, trabajos programados, ajustes) sin preguntarle. Después se le cuenta qué se hizo, en claro. Sigue valiendo todo lo demás: migraciones que se pueden aplicar dos veces, nada se borra y nunca datos personales en el repositorio.
 - Todo debe funcionar en la nube, sin su ordenador abierto, y poder revisarse y aprobarse desde el móvil.
