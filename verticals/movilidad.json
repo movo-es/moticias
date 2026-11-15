@@ -234,7 +234,7 @@
  "tipos_de_contenido": {
   "decidido": "2026-11-15",
   "cambio": "tipos-de-contenido",
-  "regla": "Cuatro tipos, siempre distinguibles para el lector, en los datos y en Ghost. Lo decide src/tipos.py (deducir, validar, marca, etiqueta de Ghost, rel); aquí solo los textos. Lo que anuncia servicios del grupo es siempre «Contenido patrocinado · servicio del grupo», sin otro término.",
+  "regla": "Cuatro tipos, siempre distinguibles para el lector, en los datos y en Ghost. Lo decide src/tipos.py (deducir, validar, marca, etiqueta de Ghost, rel); aquí solo los textos. Lo que anuncia servicios del grupo es siempre «Contenido patrocinado», sin otro término (15-11-2026, noche).",
   "valores": {
    "editorial": "Análisis y reportajes con firma (kind analisis o reportaje)",
    "noticia": "Noticias (kind noticia, sin sponsored_by)",
@@ -247,7 +247,7 @@
    "reportaje": "Reportaje",
    "noticia": "Noticia",
    "nota_de_prensa": "Nota de prensa · Comunicado de %(emisor)s",
-   "patrocinado_grupo": "Contenido patrocinado · servicio del grupo",
+   "patrocinado_grupo": "Contenido patrocinado",
    "patrocinado_grupo_caja": "Contenido patrocinado",
    "patrocinado_cliente": "Contenido patrocinado · %(cliente)s",
    "publicidad": "Publicidad"
@@ -272,7 +272,7 @@
    "patrocinio": "lo paga un cliente",
    "publicidad": "caja por niveles de un anunciante"
   },
-  "nota_cajas": "Decisión de Rainer (15-11-2026, noche): en las cajas de publicidad por niveles (cabecera, lateral, portada, cierre, pie) lo del grupo se etiqueta solo «Contenido patrocinado», sin decir que la empresa es del grupo; la marca (MOVO, Movenbus…) va dentro de la caja. Las cajas dentro del texto (menciones) conservan «Contenido patrocinado · servicio del grupo» y su línea de declaración."
+  "nota_cajas": "Decisiones de Rainer (15-11-2026, noche): lo que anuncia un servicio del grupo se etiqueta solo «Contenido patrocinado», sin decir que la empresa es del grupo, tanto en las cajas de publicidad por niveles como en las cajas dentro del texto (menciones), que tampoco llevan ya la línea de declaración. La marca (MOVO, Movenbus…) va dentro de la caja. Internamente siguen siendo tipo «grupo» y los datos estructurados (mentions, página /empresas-del-grupo/) mantienen la relación declarada."
  },
  "campaigns": {
   "dir": "data/campanas/",
@@ -313,8 +313,8 @@
  },
  "productos": {
   "dir": "data/productos/",
-  "label": "Contenido patrocinado · servicio del grupo",
-  "declaracion": "%(nombre)s es un servicio de una empresa del grupo de MOTICIAS.",
+  "label": "Contenido patrocinado",
+  "declaracion": "",
   "email": [
    "ruphoff@avionline.es"
   ],
@@ -324,7 +324,7 @@
    "analisis"
   ],
   "rules": [
-   "La mención va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos, con la etiqueta discreta pero siempre visible (art. 20 LSSI) y una línea que declara que el servicio es del grupo.",
+   "La mención va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos, con la etiqueta discreta pero siempre visible (art. 20 LSSI).",
    "Cada producto decide en el gestor si entra solo (modo automatico, con umbral de puntuación), si espera aprobación (revision), si solo se pone a mano (manual) o si no se menciona (apagado); y si es exclusiva (ninguna otra caja en esa pieza) o compartida (hasta max_por_pieza cajas).",
    "Los análisis del director y las piezas que tratan del grupo no llevan cajas.",
    "Cada mención publicada se comunica al director por correo con enlace al gestor de patrocinios; retirar = estado retirada, nunca borrar.",

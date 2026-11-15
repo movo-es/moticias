@@ -6,7 +6,7 @@ Cuatro tipos, siempre distinguibles para el lector, en los datos y en Ghost:
   editorial       análisis y reportajes con firma   «Análisis del director» (solo si firma el director) · «Análisis» · «Reportaje»
   noticia         noticias                            «Noticia»
   nota_de_prensa  comunicado de un emisor externo     «Nota de prensa · Comunicado de <emisor>»
-  patrocinado     lo que anuncia un servicio          «Contenido patrocinado · servicio del grupo» · «Contenido patrocinado · <cliente>» · «Publicidad»
+  patrocinado     lo que anuncia un servicio          «Contenido patrocinado» (grupo) · «Contenido patrocinado · <cliente>» · «Publicidad»
 
 Este módulo es el ÚNICO sitio que deduce el tipo, lo valida y lo traduce a marca visible, etiqueta interna de Ghost y
 atributo `rel` de los enlaces. Los textos viven en `verticals/<id>.json → tipos_de_contenido`; aquí no hay ninguno.
@@ -199,7 +199,7 @@ def errores(doc, coleccion="articles", v=None):
     if coleccion == "notas-de-prensa" and doc.get("featured"):
         out.append("una nota de prensa no va en la portada")
     if coleccion == "ads" and doc.get("type") != "grupo" and anuncio_es_del_grupo(doc, v):
-        out.append("anuncia un servicio del grupo: su tipo es «grupo» («Contenido patrocinado · servicio del grupo»)")
+        out.append("anuncia un servicio del grupo: su tipo es «grupo»")
     if coleccion == "ads" and (doc.get("type") or "") not in TIPOS_ANUNCIO:
         out.append("tipo de anuncio desconocido: %s (admitidos: %s)" % (doc.get("type"), ", ".join(TIPOS_ANUNCIO)))
     if d and t != d and not out:

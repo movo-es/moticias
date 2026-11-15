@@ -44,13 +44,13 @@ Spec viva desde el 15-11-2026 (cambio `tipos-de-contenido`, aprobado por Rainer 
 
 ### Contenido patrocinado
 - Es `patrocinado` todo lo que anuncia un servicio: las cajas dentro del texto, las cajas por niveles y las piezas con `sponsored_by`.
-- Marcas: «Contenido patrocinado · servicio del grupo» cuando el servicio es de una empresa del grupo; «Contenido patrocinado · <cliente>» cuando lo paga un cliente; «Publicidad» en las cajas por niveles de anunciantes.
+- Marcas: «Contenido patrocinado» cuando el servicio es de una empresa del grupo (sin decirlo; ver modificación del 15-11-2026, noche); «Contenido patrocinado · <cliente>» cuando lo paga un cliente; «Publicidad» en las cajas por niveles de anunciantes.
 - Los tipos de anuncio de `data/ads/` son `grupo`, `patrocinio` y `publicidad`.
 - La etiqueta es siempre visible y todos los enlaces de la caja llevan `rel="sponsored"`.
 - Nunca dentro de un análisis ni en piezas que traten del grupo.
 - Lo que anuncia servicios del grupo no se describe con ningún otro término, ni en textos, ni en etiquetas, ni en datos, ni en código.
 
-- **Modificado el 15-11-2026 (noche, decisión de Rainer):** en las cajas de publicidad por niveles, lo del grupo se etiqueta solo «Contenido patrocinado», sin mencionar que la empresa es del grupo; la marca va dentro de la caja. Las cajas dentro del texto conservan «Contenido patrocinado · servicio del grupo». Toda caja que enlaza a una empresa del grupo es `type: grupo`, la cree quien la cree.
+- **Modificado el 15-11-2026 (noche, decisión de Rainer):** en las cajas de publicidad por niveles, lo del grupo se etiqueta solo «Contenido patrocinado», sin mencionar que la empresa es del grupo; la marca va dentro de la caja. **Ampliado el mismo día:** las cajas dentro del texto también dicen solo «Contenido patrocinado» y ya no llevan la línea «… es un servicio de una empresa del grupo»; la relación sigue declarada en los datos estructurados y en `/empresas-del-grupo/`. Toda caja que enlaza a una empresa del grupo es `type: grupo`, la cree quien la cree.
 
 #### Escenario: caja del grupo en un hueco de nivel premium
 - DADO un anuncio con `type: grupo` activo en el hueco `cabecera`

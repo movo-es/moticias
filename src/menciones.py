@@ -240,7 +240,7 @@ def cajas_html(a, vertical, inline=html.escape):
     if pub[0].get("exclusividad") == "exclusiva":
         pub = pub[:1]
     pub = pub[: int(cfg.get("max_por_pieza") or 2)]
-    etiqueta = cfg.get("label") or marca_mencion(vertical)  # «Contenido patrocinado · servicio del grupo» (src/tipos.py)
+    etiqueta = cfg.get("label") or marca_mencion(vertical)  # «Contenido patrocinado» (src/tipos.py; sin «del grupo» desde el 15-11-2026, noche)
     decl = cfg.get("declaracion", "")
     out = []
     for m in pub:
