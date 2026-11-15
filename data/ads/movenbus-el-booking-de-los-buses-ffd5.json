@@ -1,0 +1,33 @@
+{
+ "advertiser": "Movenbus - el booking de los buses",
+ "created_at": "2026-11-15T19:50+00:00",
+ "crm_cuenta_id": null,
+ "cta": "Prueba Movenbus hoy mismo",
+ "end": "2026-12-31",
+ "headline": "Alquila tu autocar en minutos con MOVENBUS - Rent a bus in Spain in minutes",
+ "historial": [
+  {
+   "en": "2026-11-15T19:50+00:00",
+   "estado": "activo",
+   "por": "superadmin"
+  }
+ ],
+ "id": "movenbus-el-booking-de-los-buses-ffd5",
+ "label": "Publicidad",
+ "name": "Movenbus",
+ "nivel": "premium",
+ "sections": [],
+ "slots": [
+  "cabecera",
+  "articulo-lateral"
+ ],
+ "start": "2026-11-15",
+ "status": "activo",
+ "text": "Excursiones, circuitos, MICE, eventos...: organizar la movilidad de grupos nunca fue más fácil. Movenbus te permite alquilar los autocares que necesites con los principales operadores de autocar en toda España, en muchos casos en tiempo real.",
+ "tipo_contenido": "patrocinado",
+ "type": "publicidad",
+ "updated_at": "2026-11-15T19:50+00:00",
+ "url": "https://movenbus.com",
+ "utm": true,
+ "weight": 10
+}
