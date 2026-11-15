@@ -16,6 +16,7 @@
       («Análisis del director», «Análisis», «Reportaje», «Noticia», «Nota de prensa · Comunicado de …»), leída de
       app.moticias.com/buscador/tipos.json (lo genera src/export_search_index.py). Dentro de cada pieza la marca ya va
       en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
+   5. Oculta la marca «Powered by Ghost» de la ventana de entrada y suscripción de Ghost.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
   "use strict";
@@ -119,6 +120,28 @@
     if (!j) return;
     if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); cajasDelTema(); vigilarCajas(); }); else { publicidad(j); cajasDelTema(); vigilarCajas(); }
   }).catch(function () { vigilarCajas(); });
+
+  // ---------- 5. Sin «Powered by Ghost» ----------
+  // La ventana de entrada y suscripción de Ghost (Portal) pinta siempre la marca «Powered by Ghost» y no tiene ajuste para
+  // quitarla. Esa ventana va en marcos de la misma página (mismo origen), así que se le añade una regla que la oculta
+  // (decisión de Rainer, 15-11-2026). Si Ghost cambia el nombre de la clase, la marca vuelve a verse y nada más se rompe.
+  function sinMarcaGhost(f) {
+    try {
+      var doc = f.contentDocument;
+      if (!doc || !doc.head || doc.getElementById("mtx-sin-marca")) return;
+      var st = doc.createElement("style"); st.id = "mtx-sin-marca";
+      st.textContent = ".gh-portal-powered{display:none!important}";
+      doc.head.appendChild(st);
+    } catch (e) {}
+  }
+  function vigilarPortal() {
+    [].forEach.call(d.querySelectorAll('iframe[title^="portal-"]'), function (f) {
+      sinMarcaGhost(f);
+      if (!f.__mtx) { f.__mtx = 1; f.addEventListener("load", function () { sinMarcaGhost(f); }); }
+    });
+  }
+  if ("MutationObserver" in window) new MutationObserver(vigilarPortal).observe(d.documentElement, {childList: true, subtree: true});
+  vigilarPortal();
 
   // ---------- 4. Tipo de contenido ----------
   // Marca por tipo en los listados (portada, secciones, etiquetas, búsqueda). En la propia pieza ya va en el cuerpo.
