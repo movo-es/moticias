@@ -8,7 +8,7 @@ Propuesta del 14-11-2026, aprobada por Rainer el 15-11-2026.
 
 ## 1. Explorar lo que falta por saber
 - [x] 1.1 Boletín diario: comprobar en Ghost cómo sale hoy (envío automático de Ghost, a mano o ninguno) y anotarlo en `docs/manual-operativo.md`. Hecho (15-11-2026, Admin API): no sale ningún boletín diario. Hay dos boletines activos en Ghost («Moticias.com Noticias con M de Movilidad» y «Notas de prensa», semanal) y ninguna de las 95 piezas se ha enviado nunca por correo. Anotado en `docs/manual-operativo.md § 9`.
-- [ ] 1.2 Tema de Ghost: confirmar que `home.hbs` sigue excluyendo `tag:hash-comunicado` y qué etiquetas internas lee. **No verificable desde aquí:** la clave de integración de Ghost no puede leer el tema (403, «API tokens do not have permission»). Lo que sí se vio en la portada en vivo: el tema pinta por su cuenta dos cajas del grupo con la etiqueta antigua y sin `rel="sponsored"`; `m.js` las corrige en el navegador (`cajasDelTema`). La exclusión de `#comunicado` en `home.hbs` se confirma al versionar el tema (`publicar-en-ghost-v1`); hoy hay 0 notas publicadas, así que no hay nada que pueda colarse.
+- [ ] 1.2 (pasa a `publicar-en-ghost-v1`, tarea 6) Tema de Ghost: confirmar que `home.hbs` sigue excluyendo `tag:hash-comunicado` y qué etiquetas internas lee. **No verificable desde aquí:** la clave de integración de Ghost no puede leer el tema (403, «API tokens do not have permission»). Lo que sí se vio en la portada en vivo: el tema pinta por su cuenta dos cajas del grupo con la etiqueta antigua y sin `rel="sponsored"`; `m.js` las corrige en el navegador (`cajasDelTema`). La exclusión de `#comunicado` en `home.hbs` se confirma al versionar el tema (`publicar-en-ghost-v1`); hoy hay 0 notas publicadas, así que no hay nada que pueda colarse.
 
 ## 2. El campo y su módulo
 - [x] 2.1 `src/tipos.py`: `deducir`, `marca`, `etiqueta_ghost`, `rel`, y los comandos `migrar`, `validar`, `informe`.
@@ -20,7 +20,7 @@ Propuesta del 14-11-2026, aprobada por Rainer el 15-11-2026.
 - [x] 3.2 `verticals/movilidad.json → publicidad.tipos` (`grupo`, `patrocinio`, `publicidad`), `productos.etiqueta`, y la referencia de `data/campanas/movilidad-al-trabajo-pmst.json`.
 - [x] 3.3 `app/public/sitio/m.js`, `api/gestor.py`, `src/seguimiento.py`, `app/public/gestor/index.html`: comparan con `grupo`; `rel="sponsored noopener"` en todas las cajas.
 - [x] 3.4 `src/menciones.py`: etiqueta «Contenido patrocinado · servicio del grupo».
-- [ ] 3.5 Migración `supabase/migrations/009_tipos_de_contenido.sql` (identificadores del seguimiento y lista de tipos). Aplicarla en Supabase «moticias».
+- [x] 3.5 Migración `supabase/migrations/009_tipos_de_contenido.sql` (identificadores del seguimiento y lista de tipos). Aplicarla en Supabase «moticias». Aplicada el 15-11-2026 con el conector de Supabase: las 8 filas de vistas y las 8 comprobaciones de la caja del PMST siguen juntas bajo `grupo-movo-pmst`; la protección de «solo añadir» vuelve a estar activa.
 
 ## 4. Lectores del campo
 - [x] 4.1 `src/ghost_publish.py`: etiqueta interna `#tipo-…` y marca visible en el cuerpo; «Análisis del director» solo con la firma del director; «Reportaje».
@@ -43,6 +43,6 @@ Propuesta del 14-11-2026, aprobada por Rainer el 15-11-2026.
 - [x] 6.4 Búsqueda del término antiguo en el repositorio: cero resultados fuera de lo que la decisión 3 deje como histórico. Resultado: 0 fuera de lo histórico salvo una constante en `portal/app.js` (el portal antiguo acepta el tipo que aún guarda la base de su artefacto, hasta el 8-12-2026; decisión 2). 11 en propuestas antiguas, con nota de remisión.
 
 ## 7. Cierre
-- [ ] 7.1 Commit `tipos-de-contenido`, `push` a `main`, despliegue de Vercel comprobado.
-- [ ] 7.2 Republicar en Ghost las piezas (botón «Subir todo a la web ahora» o el cron) y comprobar una de cada tipo en moticias.com.
-- [ ] 7.3 Fundir la spec en `openspec/specs/tipos-de-contenido/` y archivar el cambio.
+- [x] 7.1 Commit `tipos-de-contenido`, `push` a `main`, despliegue de Vercel comprobado. Commit `ac103ff` en `main`; Vercel desplegó en menos de un minuto (`/buscador/tipos.json` y `?a=publicidad` con la etiqueta nueva y `rel`).
+- [x] 7.2 Republicar en Ghost las piezas (botón «Subir todo a la web ahora» o el cron) y comprobar una de cada tipo en moticias.com. 95 piezas republicadas conservando su estado en Ghost, sin errores; etiquetas renombradas (`--etiquetas`: 9 creadas, 32 cambiadas). Comprobado en moticias.com: «Noticia», «Análisis del director», «Análisis», «Reportaje» y la caja «Contenido patrocinado · servicio del grupo» con `rel="sponsored noopener"`. Notas de prensa publicadas: 0.
+- [x] 7.3 Fundir la spec en `openspec/specs/tipos-de-contenido/` y archivar el cambio. Spec en `openspec/specs/tipos-de-contenido/spec.md`; cambio archivado en `openspec/changes/archive/2026-11-15-tipos-de-contenido/`.
