@@ -1,0 +1,346 @@
+<title>Cola del editor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: la cola del gestor de MOTICIAS — cabecera negra, una columna de tarjetas, hoja inferior para filtros y acciones. */
+:root{
+  --bg:#f6f6f4;--card:#ffffff;--ink:#141414;--mute:#646a66;--line:#e1e3df;--soft:#f0f3f1;
+  --acc:#1c6b4a;--acc-soft:#e3f1ea;--warn:#9a5600;--warn-soft:#fff1dd;--bad:#a12b2b;--bad-soft:#f6e4e4;
+  --bar:#111111;--bar-ink:#ffffff;--bar-chip:#2a2a2a;--bar-chip-ink:#dddddd;--imp:#141414;--imp-off:#d7dad6;
+  --f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121413;--card:#1b1e1c;--ink:#ecefec;--mute:#9aa29d;--line:#2c312e;--soft:#222724;
+  --acc:#5fc192;--acc-soft:#183327;--warn:#e0a24f;--warn-soft:#33270f;--bad:#e27b7b;--bad-soft:#3a1d1d;
+  --bar:#000000;--bar-ink:#ffffff;--bar-chip:#262626;--bar-chip-ink:#cfcfcf;--imp:#ecefec;--imp-off:#3a403c;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121413;--card:#1b1e1c;--ink:#ecefec;--mute:#9aa29d;--line:#2c312e;--soft:#222724;
+  --acc:#5fc192;--acc-soft:#183327;--warn:#e0a24f;--warn-soft:#33270f;--bad:#e27b7b;--bad-soft:#3a1d1d;
+  --bar:#000000;--bar-ink:#ffffff;--bar-chip:#262626;--bar-chip-ink:#cfcfcf;--imp:#ecefec;--imp-off:#3a403c;color-scheme:dark}
+*{box-sizing:border-box}
+body{font:16px/1.45 var(--f);background:var(--bg);color:var(--ink);padding-bottom:96px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bar);color:var(--bar-ink);
+  padding-block:12px 8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{display:flex;align-items:center;gap:10px}
+.top b{font-size:17px;letter-spacing:.02em}
+.top small{margin-left:auto;opacity:.7;font-size:12px}
+.quien{display:flex;gap:4px;margin-left:8px}
+.quien button{background:var(--bar-chip);color:var(--bar-chip-ink);border:0;border-radius:14px;padding:4px 10px;font-size:12px}
+.quien button.on{background:var(--bar-ink);color:var(--bar)}
+.tabs{display:flex;gap:6px;margin-top:10px;overflow-x:auto}
+.tabs button{flex:1;min-width:max-content;background:var(--bar-chip);color:var(--bar-chip-ink);border:0;border-radius:18px;padding:8px 12px;font-size:14px}
+.tabs button.on{background:var(--bar-ink);color:var(--bar);font-weight:600}
+.tabs .n{opacity:.6;margin-left:4px;font-variant-numeric:tabular-nums}
+main{max-width:720px;margin:0 auto;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ejemplo{font-size:12px;color:var(--mute);margin:0 0 10px}
+.herr{display:flex;gap:8px;align-items:center;margin:0 0 10px}
+.herr select{flex:1;min-width:0}
+button,select,input,textarea{font:inherit;color:inherit}
+select,input,textarea{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px 10px;width:100%}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:9px 12px;min-height:42px;font-size:14px;cursor:pointer}
+.btn.neg{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.ok{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn.mal{color:var(--bad);border-color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.chipf:focus-visible,.it:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.activos{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.chipf{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:14px;padding:3px 10px;font-size:13px;cursor:pointer}
+.chipf::after{content:" ×";opacity:.7}
+.it{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;overflow:hidden}
+.it.sel{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.cab{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 14px 10px}
+.marca{width:24px;height:24px;margin-top:2px;accent-color:var(--acc)}
+.cuerpo{min-width:0}
+.l1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+.imp{display:inline-flex;gap:2px;align-items:center}
+.imp i{width:7px;height:14px;border-radius:2px;background:var(--imp-off);display:block}
+.imp i.on{background:var(--imp)}
+.imp b{font-size:12px;color:var(--ink);margin-left:3px;font-variant-numeric:tabular-nums}
+.t{font-weight:600;line-height:1.3;margin:6px 0 6px;text-wrap:balance}
+.et{display:flex;gap:5px;flex-wrap:wrap}
+.e{font-size:12px;border-radius:10px;padding:2px 8px;background:var(--soft);color:var(--ink)}
+.e.fp{background:var(--acc-soft);color:var(--acc)}
+.e.fs{background:var(--warn-soft);color:var(--warn)}
+.e.fn{background:var(--bad-soft);color:var(--bad)}
+.e.sol{border:1px dashed var(--mute);background:transparent}
+.e.est{font-weight:600}
+.cad{font-variant-numeric:tabular-nums}
+.cad.pronto{color:var(--bad);font-weight:600}
+.grupo{font-size:13px;color:var(--acc);background:none;border:0;padding:6px 0 0;cursor:pointer;text-align:left}
+.avisos{margin:6px 0 0;padding:8px 10px;background:var(--soft);border-radius:8px;font-size:13px;display:grid;gap:4px}
+.acc{display:flex;gap:6px;overflow-x:auto;padding:0 14px 12px;scrollbar-width:none}
+.acc .btn{white-space:nowrap;flex:none}
+.motivo{font-size:12px;color:var(--bad);padding:0 14px 10px;margin-top:-4px}
+.vacio{text-align:center;color:var(--mute);padding:40px 10px}
+.bloque{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--card);border-top:1px solid var(--line);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;gap:6px;align-items:center;overflow-x:auto}
+.bloque b{white-space:nowrap;font-size:14px;margin-right:4px}
+.bloque .btn{flex:none;white-space:nowrap}
+.velo{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20}
+.hoja{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--card);border-radius:16px 16px 0 0;max-height:86vh;overflow:auto;
+  padding-block:16px calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hoja h2{font-size:17px;margin:0 0 10px}
+.hoja label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+.ops{display:flex;flex-wrap:wrap;gap:6px}
+.op{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:5px 11px;font-size:14px;cursor:pointer}
+.op.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.op.off{opacity:.45;cursor:not-allowed}
+.pie{display:flex;gap:8px;margin-top:16px}
+.pie .btn{flex:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);
+  padding:10px 14px;border-radius:10px;font-size:14px;max-width:calc(100% - 32px);display:flex;gap:12px;align-items:center}
+.toast button{background:none;border:0;color:var(--bg);text-decoration:underline;font-size:14px;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.hoja{animation:sube .18s ease-out}@keyframes sube{from{transform:translateY(30px);opacity:.6}}}
+</style>
+
+<header>
+  <div class="top"><b>MOTICIAS · Cola</b>
+    <div class="quien" role="group" aria-label="Ver como">
+      <button id="q-jefe" class="on">Editor jefe</button><button id="q-ed">Editor</button>
+    </div>
+    <small id="hora"></small>
+  </div>
+  <div class="tabs" id="tabs">
+    <button data-t="cola" class="on">Cola<span class="n" id="n-cola"></span></button>
+    <button data-t="confirmados">Confirmados<span class="n" id="n-confirmados"></span></button>
+    <button data-t="archivo">Archivo<span class="n" id="n-archivo"></span></button>
+    <button data-t="papelera">Papelera<span class="n" id="n-papelera"></span></button>
+  </div>
+</header>
+
+<main>
+  <p class="ejemplo">Prototipo con temas de ejemplo: los botones funcionan, pero no se guarda nada.</p>
+  <div class="herr">
+    <select id="orden" aria-label="Ordenar">
+      <option value="imp">Más importantes primero</option>
+      <option value="cad">Lo que caduca antes</option>
+      <option value="nuevo">Más recientes</option>
+      <option value="hecho">Por fecha del hecho</option>
+    </select>
+    <button class="btn" id="b-filtros">Filtros</button>
+    <button class="btn" id="b-sel">Seleccionar</button>
+  </div>
+  <div class="activos" id="activos"></div>
+  <div id="lista"></div>
+</main>
+
+<div class="bloque" id="bloque" hidden></div>
+<div id="capa"></div>
+<div id="toast"></div>
+
+<script>
+const EJES = {
+  medio: {n:"Medio", v:{tierra:"Tierra", mar:"Mar", aire:"Aire", varios:"Varios medios", espacio:"Espacio"}, apagado:["espacio"]},
+  modo: {n:"Modo", v:{"tren-viajeros":"Tren de viajeros", autobus:"Autobús y autocar", "metro-tranvia":"Metro y tranvía", "taxi-vtc":"Taxi y VTC",
+    "transporte-demanda":"Transporte a la demanda", carretera:"Carretera y coche", "tren-mercancias":"Tren de mercancías", "mercancias-carretera":"Mercancías por carretera",
+    "pasaje-ferris":"Pasaje y ferris", puertos:"Puertos", "carga-maritima":"Carga marítima", aerolineas:"Aerolíneas", aeropuertos:"Aeropuertos", drones:"Drones", "carga-aerea":"Carga aérea"}},
+  tema: {n:"Tema", v:{regulacion:"Regulación", concesiones:"Concesiones", empresas:"Empresas", infraestructuras:"Infraestructuras", tecnologia:"Tecnología", seguridad:"Seguridad", analisis:"Análisis"}},
+  region: {n:"Región", v:{estado:"Estatal", ue:"UE", internacional:"Internacional", andalucia:"Andalucía", cataluna:"Cataluña", madrid:"Madrid", "pais-vasco":"País Vasco",
+    galicia:"Galicia", baleares:"Baleares", canarias:"Canarias", "comunidad-valenciana":"C. Valenciana", "castilla-y-leon":"Castilla y León", aragon:"Aragón"}},
+  imp: {n:"Importancia", v:{5:"5", 4:"4", 3:"3", 2:"2", 1:"1"}},
+  fia: {n:"Fiabilidad", v:{primaria:"Primaria", secundaria:"Secundaria reputada", sin_confirmar:"Sin confirmar"}},
+  estado: {n:"Estado", v:{nuevo:"Nuevo", propuesto:"Propuesto por un editor", en_edicion:"En edición"}},
+  cad: {n:"Caducidad", v:{hoy:"Caduca hoy o mañana", semana:"Esta semana", no:"No caduca"}},
+  sol: {n:"Solución del grupo", v:{MOVO:"MOVO · planes de movilidad", MUFMI:"MUFMI · transporte a la demanda", Movenbus:"Movenbus · autobús discrecional", ninguna:"Ninguna"}},
+  quien: {n:"Propuesto por", v:{agente:"Agente", persona:"Persona"}},
+};
+const SECCIONES = ["Tierra","Mar","Aire","Logística","Regulación","Licitaciones","Análisis"];
+// Temas de ejemplo (el prototipo no lee la base real).
+let T = [
+ {id:1, t:"Los sindicatos de Adif extienden a todos los operadores la huelga ferroviaria del 17 de noviembre", medio:"tierra", modo:["tren-viajeros"], tema:["empresas","seguridad"], region:["estado"], imp:5, impA:5, fia:"primaria", estado:"nuevo", hecho:"2026-11-14", lim:"2026-11-17", sol:"ninguna", quien:"agente", sec:"Tierra", tab:"cola",
+  avisos:["Railway Gazette · 14-11 · huelga del 17-N se extiende a todos los operadores","Nota de los sindicatos · 13-11 · convocatoria registrada","El Objective · 3-11 · primera convocatoria en Adif"]},
+ {id:2, t:"Transportes licita por urgencia los vuelos de servicio público de Melilla con Almería, Granada y Sevilla", medio:"aire", modo:["aerolineas"], tema:["concesiones"], region:["andalucia","estado"], imp:4, impA:4, fia:"primaria", estado:"nuevo", hecho:"2026-11-13", lim:"2026-11-19", sol:"ninguna", quien:"agente", sec:"Aire", tab:"cola", avisos:[]},
+ {id:3, t:"Un ayuntamiento de Castilla y León busca operador para un servicio de transporte a la demanda en 14 pedanías", medio:"tierra", modo:["transporte-demanda","autobus"], tema:["concesiones"], region:["castilla-y-leon"], imp:3, impA:3, fia:"primaria", estado:"propuesto", hecho:"2026-11-12", lim:"2026-11-28", sol:"MUFMI", quien:"persona", sec:"Licitaciones", tab:"cola", avisos:[]},
+ {id:4, t:"Empresas de más de 200 trabajadores: quedan tres semanas para presentar el plan de movilidad al trabajo", medio:"varios", modo:[], tema:["regulacion"], region:["estado"], imp:4, impA:3, fia:"primaria", estado:"nuevo", hecho:"2026-11-10", lim:"2026-12-05", sol:"MOVO", quien:"agente", sec:"Regulación", tab:"cola", avisos:[], corr:"Subida de 3 a 4: afecta a miles de empresas"},
+ {id:5, t:"Una naviera estudiaría abrir una línea de ferri entre Valencia e Ibiza en primavera", medio:"mar", modo:["pasaje-ferris"], tema:["empresas"], region:["comunidad-valenciana","baleares"], imp:2, impA:2, fia:"sin_confirmar", estado:"nuevo", hecho:"", lim:"", sol:"ninguna", quien:"agente", sec:"Mar", tab:"cola", avisos:["Una sola fuente: publicación en redes de un sindicato portuario"]},
+ {id:6, t:"Grupos de colegios y clubes deportivos: el autobús discrecional sube precios por el coste del conductor", medio:"tierra", modo:["autobus"], tema:["empresas"], region:["estado"], imp:3, impA:3, fia:"secundaria", estado:"en_edicion", hecho:"2026-11-11", lim:"", sol:"Movenbus", quien:"agente", sec:"Tierra", tab:"cola", avisos:["Dos medios del sector coinciden; falta la fuente primaria (tarifas publicadas o nota de la patronal)"]},
+ {id:7, t:"Aena adjudica la ampliación de la terminal de un aeropuerto canario", medio:"aire", modo:["aeropuertos"], tema:["infraestructuras","concesiones"], region:["canarias"], imp:4, impA:4, fia:"primaria", estado:"nuevo", hecho:"2026-11-14", lim:"", sol:"ninguna", quien:"agente", sec:"Aire", tab:"cola", avisos:[]},
+ {id:8, t:"Consorcios de transporte: quién decide las tarifas y cómo se reparte el déficit", medio:"varios", modo:["autobus","metro-tranvia"], tema:["analisis","regulacion"], region:["estado"], imp:4, impA:4, fia:"primaria", estado:"propuesto", hecho:"", lim:"", sol:"ninguna", quien:"persona", sec:"Análisis", tab:"cola", avisos:[], nocad:true},
+ {id:9, t:"El puerto de Bilbao recibe la terminal de Bilbao Mercancías", medio:"tierra", modo:["tren-mercancias"], tema:["infraestructuras"], region:["pais-vasco"], imp:4, impA:4, fia:"primaria", estado:"nuevo", hecho:"2026-11-13", lim:"", sol:"ninguna", quien:"agente", sec:"Logística", tab:"confirmados", avisos:[]},
+ {id:10, t:"Resultados de una aerolínea regional en el tercer trimestre", medio:"aire", modo:["aerolineas"], tema:["empresas"], region:["canarias"], imp:2, impA:2, fia:"primaria", estado:"nuevo", hecho:"2026-11-05", lim:"", sol:"ninguna", quien:"agente", sec:"Aire", tab:"archivo", avisos:[], caducado:true},
+];
+const HOY = "2026-11-16";
+let tab = "cola", orden = "imp", jefe = true, selModo = false, sel = new Set(), filtros = {}, abiertos = new Set(), ultimo = null;
+const $ = s => document.querySelector(s);
+const E = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dias = (a, b) => Math.round((new Date(b) - new Date(a)) / 864e5);
+function labor(d, n){ const x = new Date(d); let k = 0; while (k < n){ x.setDate(x.getDate()+1); if (x.getDay()%6) k++; } return x.toISOString().slice(0,10); }
+function caduca(x){ if (x.nocad) return null; if (x.lim) return x.lim; return x.hecho ? labor(x.hecho, 3) : labor(HOY, 3); }
+function cadTxt(x){ const c = caduca(x); if (!c) return {t:"No caduca", k:"no"}; const d = dias(HOY, c);
+  return {t: d < 0 ? "Caducado" : d === 0 ? "Caduca hoy" : d === 1 ? "Caduca mañana" : "Caduca en " + d + " días", k: d <= 1 ? "hoy" : d <= 7 ? "semana" : "mas", pronto: d <= 1}; }
+function valor(x, eje){ return {medio:[x.medio], modo:x.modo, tema:x.tema, region:x.region, imp:[String(x.imp)], fia:[x.fia], estado:[x.estado], cad:[cadTxt(x).k], sol:[x.sol], quien:[x.quien]}[eje]; }
+function pasa(x){ return Object.entries(filtros).every(([eje, vals]) => !vals.size || valor(x, eje).some(v => vals.has(v))); }
+function ordenar(a, b){
+  if (orden === "imp") return b.imp - a.imp || (caduca(a)||"9") .localeCompare(caduca(b)||"9");
+  if (orden === "cad") return (caduca(a)||"9999").localeCompare(caduca(b)||"9999") || b.imp - a.imp;
+  if (orden === "nuevo") return b.id - a.id;
+  return (b.hecho||"").localeCompare(a.hecho||"");
+}
+function impHTML(n){ return `<span class="imp" title="Importancia ${n} de 5">${[1,2,3,4,5].map(i => `<i class="${i<=n?"on":""}"></i>`).join("")}<b>${n}</b></span>`; }
+function fiaHTML(f){ return `<span class="e ${f==="primaria"?"fp":f==="secundaria"?"fs":"fn"}">${E(EJES.fia.v[f])}</span>`; }
+function pinta(){
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t === tab));
+  ["cola","confirmados","archivo","papelera"].forEach(k => $("#n-"+k).textContent = T.filter(x => x.tab === k).length);
+  $("#activos").innerHTML = Object.entries(filtros).flatMap(([eje, vals]) => [...vals].map(v => `<button class="chipf" data-q="${eje}|${E(v)}">${E(EJES[eje].n)}: ${E(EJES[eje].v[v] || v)}</button>`)).join("");
+  document.querySelectorAll(".chipf").forEach(b => b.onclick = () => { const [e, v] = b.dataset.q.split("|"); filtros[e].delete(v); pinta(); });
+  const xs = T.filter(x => x.tab === tab && pasa(x)).sort(ordenar);
+  $("#b-sel").textContent = selModo ? "Listo" : "Seleccionar";
+  $("#lista").innerHTML = xs.length ? xs.map(tarjeta).join("") : `<div class="vacio">${tab === "papelera" ? "La papelera está vacía." : "No hay temas con estos filtros."}</div>`;
+  xs.forEach(x => enganchar(x));
+  barra();
+}
+function tarjeta(x){
+  const c = cadTxt(x), s = sel.has(x.id);
+  const bloqueado = x.fia === "sin_confirmar";
+  const acciones = tab === "papelera"
+    ? `<button class="btn" data-a="recuperar">Recuperar</button>`
+    : tab === "archivo" ? `<button class="btn" data-a="recuperar">Volver a la cola</button><button class="btn mal" data-a="borrar">Borrar</button>`
+    : (jefe ? `<button class="btn ok" data-a="confirmar" ${bloqueado?"disabled":""}>${tab==="confirmados"?"Publicar":"Confirmar"}</button>` : `<button class="btn ok" data-a="proponer">Proponer</button>`)
+      + `<button class="btn" data-a="editar">Editar</button>`
+      + (jefe ? `<button class="btn" data-a="subir" aria-label="Subir importancia">▲ Importancia</button><button class="btn" data-a="bajar" aria-label="Bajar importancia">▼</button>` : "")
+      + `<button class="btn" data-a="seccion">Sección</button><button class="btn" data-a="archivar">Archivar</button><button class="btn mal" data-a="borrar">Borrar</button>`;
+  return `<article class="it ${s?"sel":""}" id="it-${x.id}">
+    <div class="cab" style="${selModo?"":"grid-template-columns:1fr"}">
+      ${selModo ? `<input type="checkbox" class="marca" aria-label="Seleccionar" ${s?"checked":""}>` : ""}
+      <div class="cuerpo">
+        <div class="l1">${impHTML(x.imp)}${x.imp !== x.impA ? `<span title="${E(x.corr||"")}">agente: ${x.impA}</span>` : ""}
+          <span class="e est">${E(EJES.estado.v[x.estado])}</span>
+          <span class="cad ${c.pronto?"pronto":""}">${x.caducado ? "Caducado" : E(c.t)}</span>
+          <span>${x.quien === "agente" ? "Propuesto por el agente" : "Propuesto por un editor"}</span></div>
+        <div class="t">${E(x.t)}</div>
+        <div class="et">
+          <span class="e">${E(EJES.medio.v[x.medio])}</span>${x.modo.map(m => `<span class="e">${E(EJES.modo.v[m])}</span>`).join("")}
+          ${x.tema.map(m => `<span class="e">${E(EJES.tema.v[m])}</span>`).join("")}${x.region.map(m => `<span class="e">${E(EJES.region.v[m])}</span>`).join("")}
+          ${fiaHTML(x.fia)}${x.hecho ? `<span class="e">Hecho: ${x.hecho.slice(8)}-${x.hecho.slice(5,7)}</span>` : ""}
+          ${x.sol !== "ninguna" ? `<span class="e sol">Solución: ${E(x.sol)}</span>` : ""}<span class="e">Sección: ${E(x.sec)}</span>
+        </div>
+        ${x.avisos.length > 1 ? `<button class="grupo" data-g>${abiertos.has(x.id) ? "Ocultar" : "Ver"} ${x.avisos.length} avisos sobre el mismo hecho</button>` : x.avisos.length ? `<div class="avisos">${E(x.avisos[0])}</div>` : ""}
+        ${abiertos.has(x.id) ? `<div class="avisos">${x.avisos.map(a => `<div>· ${E(a)}</div>`).join("")}</div>` : ""}
+      </div>
+    </div>
+    ${selModo ? "" : `<div class="acc">${acciones}</div>`}
+    ${bloqueado && !selModo && tab==="cola" && jefe ? `<div class="motivo">Sin confirmar: no se puede confirmar hasta tener una fuente mejor.</div>` : ""}
+  </article>`;
+}
+function enganchar(x){
+  const el = $("#it-"+x.id);
+  const m = el.querySelector(".marca"); if (m) m.onchange = () => { m.checked ? sel.add(x.id) : sel.delete(x.id); pinta(); };
+  const g = el.querySelector("[data-g]"); if (g) g.onclick = () => { abiertos.has(x.id) ? abiertos.delete(x.id) : abiertos.add(x.id); pinta(); };
+  el.querySelectorAll("[data-a]").forEach(b => b.onclick = () => accion(b.dataset.a, [x]));
+}
+function guardarDeshacer(){ ultimo = JSON.stringify(T); }
+function aviso(txt){
+  $("#toast").innerHTML = `<div class="toast">${E(txt)}${ultimo ? `<button id="deshacer">Deshacer</button>` : ""}</div>`;
+  const d = $("#deshacer"); if (d) d.onclick = () => { T = JSON.parse(ultimo); ultimo = null; $("#toast").innerHTML = ""; pinta(); };
+  clearTimeout(aviso._t); aviso._t = setTimeout(() => $("#toast").innerHTML = "", 5000);
+}
+function accion(a, xs){
+  if (a === "editar") return hojaEditar(xs[0]);
+  if (a === "seccion") return hojaSeccion(xs);
+  if (a === "subir" || a === "bajar") return hojaImp(xs, a === "subir" ? 1 : -1);
+  if (a === "confirmar" && xs.some(x => x.fia === "sin_confirmar")) { aviso("Hay temas sin confirmar: quítalos de la selección o busca una fuente mejor."); return; }
+  guardarDeshacer();
+  const n = xs.length, uno = n === 1 ? "1 tema" : n + " temas";
+  xs.forEach(x => {
+    if (a === "confirmar") x.tab = tab === "confirmados" ? "publicado" : "confirmados";
+    if (a === "proponer") x.estado = "propuesto";
+    if (a === "archivar") x.tab = "archivo";
+    if (a === "borrar") x.tab = "papelera";
+    if (a === "recuperar") x.tab = "cola";
+  });
+  sel.clear();
+  aviso({confirmar: tab === "confirmados" ? uno + " publicado (en el gestor real pasa a moticias.com)" : uno + " confirmado: pasa a redacción", proponer: uno + " propuesto al editor jefe",
+    archivar: uno + " archivado", borrar: uno + " en la papelera (recuperable)", recuperar: uno + " de vuelta en la cola"}[a]);
+  pinta();
+}
+function hoja(html, alAbrir){
+  $("#capa").innerHTML = `<div class="velo" id="velo"></div><div class="hoja" role="dialog" aria-modal="true">${html}</div>`;
+  $("#velo").onclick = cerrar; alAbrir && alAbrir();
+}
+function cerrar(){ $("#capa").innerHTML = ""; }
+function hojaImp(xs, d){
+  hoja(`<h2>${d > 0 ? "Subir" : "Bajar"} importancia${xs.length > 1 ? " de " + xs.length + " temas" : ""}</h2>
+    <p style="margin:0;color:var(--mute);font-size:14px">${xs.length === 1 ? `De ${xs[0].imp} a ${Math.max(1, Math.min(5, xs[0].imp + d))}. ` : ""}La corrección se guarda para que el agente aprenda.</p>
+    <label for="porque">Por qué (opcional, una frase)</label><input id="porque" placeholder="Ej.: afecta a todas las comunidades, no solo a una">
+    <div class="pie"><button class="btn" id="c-no">Cancelar</button><button class="btn neg" id="c-si">${d > 0 ? "Subir" : "Bajar"}</button></div>`);
+  $("#c-no").onclick = cerrar;
+  $("#c-si").onclick = () => { guardarDeshacer(); const p = $("#porque").value.trim(); xs.forEach(x => { x.imp = Math.max(1, Math.min(5, x.imp + d)); x.corr = p; }); sel.clear(); cerrar(); aviso("Importancia corregida" + (p ? " y motivo guardado" : "")); pinta(); };
+}
+function hojaSeccion(xs){
+  hoja(`<h2>Cambiar de sección</h2><div class="ops">${SECCIONES.map(s => `<button class="op ${xs.length===1 && xs[0].sec===s?"on":""}" data-s="${s}">${s}</button>`).join("")}</div>
+    <div class="pie"><button class="btn" id="c-no">Cancelar</button></div>`);
+  $("#c-no").onclick = cerrar;
+  document.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { guardarDeshacer(); xs.forEach(x => x.sec = b.dataset.s); sel.clear(); cerrar(); aviso("Sección: " + b.dataset.s); pinta(); });
+}
+function opsEje(eje, actual, multiple){
+  const ap = EJES[eje].apagado || [];
+  return `<div class="ops" data-eje="${eje}">${Object.entries(EJES[eje].v).map(([k, v]) => `<button class="op ${[].concat(actual).includes(k)?"on":""} ${ap.includes(k)?"off":""}" data-k="${k}" ${ap.includes(k)?"disabled title=\"Apagado\"":""}>${E(v)}</button>`).join("")}</div>`;
+}
+function hojaEditar(x){
+  hoja(`<h2>Editar tema</h2>
+    <label for="ed-t">Titular de trabajo</label><textarea id="ed-t" rows="3">${E(x.t)}</textarea>
+    <label>Medio</label>${opsEje("medio", x.medio)}
+    <label>Modo</label>${opsEje("modo", x.modo)}
+    <label>Tema</label>${opsEje("tema", x.tema)}
+    <label>Región</label>${opsEje("region", x.region)}
+    <label>Fiabilidad de la fuente</label>${opsEje("fia", x.fia)}
+    <label>Solución del grupo</label>${opsEje("sol", x.sol)}
+    <label for="ed-h">Fecha del hecho</label><input id="ed-h" type="date" value="${x.hecho}">
+    <label for="ed-l">Fecha límite (opcional)</label><input id="ed-l" type="date" value="${x.lim}">
+    <div class="pie"><button class="btn" id="c-no">Cancelar</button><button class="btn neg" id="c-si">Guardar</button></div>`, () => {
+    document.querySelectorAll(".hoja .ops").forEach(o => o.addEventListener("click", ev => {
+      const b = ev.target.closest(".op"); if (!b || b.disabled) return;
+      const multi = ["modo","tema","region"].includes(o.dataset.eje);
+      if (!multi) o.querySelectorAll(".op").forEach(z => z.classList.remove("on"));
+      b.classList.toggle("on", multi ? !b.classList.contains("on") : true);
+    }));
+  });
+  $("#c-no").onclick = cerrar;
+  $("#c-si").onclick = () => {
+    guardarDeshacer();
+    const v = eje => [...document.querySelectorAll(`.hoja [data-eje="${eje}"] .op.on`)].map(b => b.dataset.k);
+    x.t = $("#ed-t").value.trim() || x.t; x.medio = v("medio")[0] || x.medio; x.modo = v("modo"); x.tema = v("tema"); x.region = v("region");
+    x.fia = v("fia")[0] || x.fia; x.sol = v("sol")[0] || "ninguna"; x.hecho = $("#ed-h").value; x.lim = $("#ed-l").value;
+    cerrar(); aviso("Cambios guardados"); pinta();
+  };
+}
+function hojaFiltros(){
+  const copia = Object.fromEntries(Object.entries(filtros).map(([k, v]) => [k, new Set(v)]));
+  hoja(`<h2>Filtrar</h2>${Object.keys(EJES).map(eje => `<label>${E(EJES[eje].n)}</label>${opsEje(eje, [...(copia[eje]||[])])}`).join("")}
+    <div class="pie"><button class="btn" id="f-limpiar">Quitar filtros</button><button class="btn neg" id="f-ver">Ver temas</button></div>`, () => {
+    document.querySelectorAll(".hoja .ops").forEach(o => o.addEventListener("click", ev => {
+      const b = ev.target.closest(".op"); if (!b || b.disabled) return;
+      const eje = o.dataset.eje; copia[eje] = copia[eje] || new Set();
+      copia[eje].has(b.dataset.k) ? copia[eje].delete(b.dataset.k) : copia[eje].add(b.dataset.k); b.classList.toggle("on");
+    }));
+  });
+  $("#f-limpiar").onclick = () => { filtros = {}; cerrar(); pinta(); };
+  $("#f-ver").onclick = () => { filtros = copia; cerrar(); pinta(); };
+}
+function barra(){
+  const b = $("#bloque");
+  if (!selModo){ b.hidden = true; return; }
+  b.hidden = false;
+  const xs = T.filter(x => sel.has(x.id));
+  const n = xs.length;
+  const visibles = T.filter(x => x.tab === tab && pasa(x));
+  b.innerHTML = `<b>${n} ${n === 1 ? "seleccionado" : "seleccionados"}</b>
+    <button class="btn" id="s-todo">${n === visibles.length && n ? "Ninguno" : "Todos"}</button>`
+    + (tab === "papelera" || tab === "archivo" ? `<button class="btn" data-b="recuperar" ${n?"":"disabled"}>${tab==="papelera"?"Recuperar":"Volver a la cola"}</button>`
+    : (jefe ? `<button class="btn ok" data-b="confirmar" ${n?"":"disabled"}>Confirmar</button>` : `<button class="btn ok" data-b="proponer" ${n?"":"disabled"}>Proponer</button>`)
+      + (jefe ? `<button class="btn" data-b="subir" ${n?"":"disabled"}>▲</button><button class="btn" data-b="bajar" ${n?"":"disabled"}>▼</button>` : "")
+      + `<button class="btn" data-b="seccion" ${n?"":"disabled"}>Sección</button><button class="btn" data-b="archivar" ${n?"":"disabled"}>Archivar</button>`)
+    + (tab !== "papelera" ? `<button class="btn mal" data-b="borrar" ${n?"":"disabled"}>Borrar</button>` : "");
+  $("#s-todo").onclick = () => { if (n === visibles.length && n) sel.clear(); else visibles.forEach(x => sel.add(x.id)); pinta(); };
+  b.querySelectorAll("[data-b]").forEach(k => k.onclick = () => accion(k.dataset.b, xs));
+}
+$("#tabs").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; tab = b.dataset.t; sel.clear(); pinta(); };
+$("#orden").onchange = ev => { orden = ev.target.value; pinta(); };
+$("#b-filtros").onclick = hojaFiltros;
+$("#b-sel").onclick = () => { selModo = !selModo; sel.clear(); pinta(); };
+$("#q-jefe").onclick = () => { jefe = true; $("#q-jefe").classList.add("on"); $("#q-ed").classList.remove("on"); pinta(); };
+$("#q-ed").onclick = () => { jefe = false; $("#q-ed").classList.add("on"); $("#q-jefe").classList.remove("on"); pinta(); };
+$("#hora").textContent = "lunes 16-11 · 07:40";
+pinta();
+</script>
