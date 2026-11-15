@@ -2105,5 +2105,55 @@
    "tipo": "editorial"
   },
   "aviso_dias_sin_novedad": 14
+ },
+ "restauracion": {
+  "decidido": "2026-11-15",
+  "cambio": "restaurar-copia",
+  "regla": "Restauran el editor y el editor jefe desde la pestaña «Restaurar» del gestor. Nunca encima: se enseña qué cambia, se restaura con registro (commit nuevo o gestor_registro), se avisa al director y se puede deshacer. Las piezas firmadas por el director solo las restaura él. El editor restaura el contenido conservando el estado de hoy (no publica nada que no lo estuviera).",
+  "contenido": {
+   "data/articles/": "Piezas",
+   "data/ads/": "Publicidad",
+   "data/editions/": "Ediciones",
+   "data/agenda/": "Plazos",
+   "data/boletines/": "Boletines",
+   "data/productos/": "Productos"
+  },
+  "solo_superadmin_contenido": [
+   "data/productos/"
+  ],
+  "conservar_en_pieza": [
+   "status",
+   "revisiones",
+   "menciones",
+   "correcciones"
+  ],
+  "completar_si_faltan": [
+   "tipo_contenido",
+   "modo",
+   "submodo",
+   "temas",
+   "territorios",
+   "taxonomia_manual"
+  ],
+  "tablas_editor": [
+   "crm_cuentas",
+   "crm_personas",
+   "crm_pasos",
+   "crm_estados",
+   "crm_actividades",
+   "medios",
+   "periodistas",
+   "prensa_coberturas",
+   "prensa_envios",
+   "prensa_destinatarios",
+   "prensa_notas"
+  ],
+  "tablas_superadmin_ademas": [
+   "crm_contratos",
+   "pub_diario",
+   "pub_comprobaciones",
+   "encargos_gestor"
+  ],
+  "dias_copia_interna": 14
  }
 }

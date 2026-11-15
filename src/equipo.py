@@ -19,8 +19,8 @@ import datetime, hashlib, hmac, re, secrets
 
 PERFILES = {
     "superadmin": {"nombre": "Superadministrador (editor jefe)",
-                   "permisos": ["piezas", "redaccion", "productos", "publicidad", "equipo", "suscriptores", "crm", "contratos", "proponer", "barrido"]},
-    "editor": {"nombre": "Editor", "permisos": ["proponer", "crm", "suscriptores", "barrido"]},  # barrido: «Iniciar barrido de noticias ahora» (9-11-2026)
+                   "permisos": ["piezas", "redaccion", "productos", "publicidad", "equipo", "suscriptores", "crm", "contratos", "proponer", "barrido", "restaurar"]},
+    "editor": {"nombre": "Editor", "permisos": ["proponer", "crm", "suscriptores", "barrido", "restaurar"]},  # barrido: «Iniciar barrido de noticias ahora» (9-11-2026); restaurar: pestaña «Restaurar» (15-11-2026)
     "comercial": {"nombre": "Comercial", "permisos": ["proponer", "crm", "contratos", "suscriptores"]},
     "oficina": {"nombre": "Oficina", "permisos": ["proponer", "crm", "suscriptores", "notas_clientes"]},  # notas_clientes: aprueba y envía notas de prensa pagadas de clientes (decisión de Rainer, 9-11-2026)
 }

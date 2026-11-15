@@ -40,7 +40,8 @@ import redaccion as R  # noqa: E402
 import firma as F  # noqa: E402
 import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
-import tipos as T  # noqa: E402  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
+import tipos as T  # noqa: E402
+import restaurar as RS  # noqa: E402  (restauración desde el gestor; openspec restaurar-copia)  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
 EQUIPO_REPO = os.environ.get("EQUIPO_REPO", "movo-es/moticias-equipo")  # privado: datos personales del equipo
@@ -1249,6 +1250,134 @@ def html_esc(t):
     return str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# ---------- restauración (cambio restaurar-copia, «sí» de Rainer del 15-11-2026; migración 011, src/restaurar.py) ----------
+# Contenido: versiones de un documento de data/ desde el historial del repositorio; restaurar escribe una versión nueva.
+# Base privada: copia interna nocturna en el esquema `copia` (14 días); se recuperan filas o campos, nunca se borra nada.
+# Cada restauración avisa al director por correo y queda en gestor_registro.
+def _gh_fichero(ruta, ref):
+    st, r = gh("GET", "contents/%s?ref=%s" % (urllib.parse.quote(ruta), ref))
+    if st != 200 or "content" not in r:
+        return None
+    return json.loads(base64.b64decode(r["content"]).decode("utf-8"))
+
+
+def _avisar_restauracion(asunto, lineas, enlace):
+    para = (vertical().get("productos") or {}).get("email") or []
+    cuerpo = "<p>%s</p><p><a href=\"%s\">Abrir en el gestor</a> (desde ahí se deshace).</p>" % ("<br>".join(html_esc(l) for l in lineas), enlace)
+    try:
+        return M.enviar_correo("MOTICIAS · restauración: " + asunto, cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))[0]
+    except Exception:
+        return False
+
+
+def restaurables(q):
+    v, out = vertical(), []
+    q = (q or "").lower().strip()
+    for pref, nombre in (RS.cfg(v).get("contenido") or {}).items():
+        for f in sorted(glob.glob(os.path.join(ROOT, pref, "*.json")), reverse=True):
+            try:
+                d = json.load(open(f, encoding="utf-8"))
+            except ValueError:
+                continue
+            ruta = pref + os.path.basename(f)
+            t = RS.titulo(d, ruta)
+            if q and q not in (t + " " + ruta).lower():
+                continue
+            out.append({"ruta": ruta, "titulo": t, "clase": nombre, "fecha": d.get("date") or d.get("updated_at") or "", "autor": d.get("author")})
+            if len(out) >= 60:
+                return out
+    return out
+
+
+def versiones(ses, ruta):
+    v = vertical()
+    if not RS.ruta_valida(ruta, v):
+        return 400, {"error": "ese documento no se restaura desde el gestor"}
+    st, r = gh("GET", "commits?path=%s&sha=%s&per_page=30" % (urllib.parse.quote(ruta), BRANCH))
+    if st != 200:
+        return 502, {"error": "GitHub no da el historial (%s)" % st}
+    lista = [{"sha": c["sha"], "fecha": (c.get("commit", {}).get("author") or {}).get("date"), "autor": (c.get("commit", {}).get("author") or {}).get("name"),
+              "mensaje": (c.get("commit", {}).get("message") or "").split("\n")[0][:160]} for c in r]
+    actual = _gh_fichero(ruta, BRANCH)
+    return 200, {"ruta": ruta, "titulo": RS.titulo(actual, ruta), "versiones": lista}
+
+
+def version(ses, ruta, sha):
+    v = vertical()
+    if not RS.ruta_valida(ruta, v) or not re.fullmatch(r"[0-9a-f]{7,40}", sha or ""):
+        return 400, {"error": "petición no válida"}
+    antigua, actual = _gh_fichero(ruta, sha), _gh_fichero(ruta, BRANCH)
+    if antigua is None:
+        return 404, {"error": "esa versión no tiene el documento"}
+    ok, motivo = RS.puede_contenido(ses["perfil"], ruta, actual, antigua, v)
+    return 200, {"ruta": ruta, "sha": sha, "diferencias": RS.diferencias(antigua, actual), "restaurable": ok, "motivo": motivo}
+
+
+def restaurar_version(ses, d):
+    v = vertical()
+    ruta, sha = str(d.get("ruta") or ""), str(d.get("sha") or "")
+    if not RS.ruta_valida(ruta, v) or not re.fullmatch(r"[0-9a-f]{7,40}", sha):
+        return 400, {"error": "petición no válida"}
+    antigua = _gh_fichero(ruta, sha)
+    actual, sha_fich = leer(ruta)
+    if antigua is None:
+        return 404, {"error": "esa versión no tiene el documento"}
+    if sha_fich is None:
+        return 503, {"error": "falta GITHUB_TOKEN en Vercel"}
+    ok, motivo = RS.puede_contenido(ses["perfil"], ruta, actual, antigua, v)
+    if not ok:
+        return 403, {"error": motivo}
+    st, hist = gh("GET", "commits?path=%s&sha=%s&per_page=1" % (urllib.parse.quote(ruta), BRANCH))
+    previa = hist[0]["sha"] if st == 200 and hist else None
+    st, com = gh("GET", "commits/%s" % sha)
+    fecha_v = ((com.get("commit") or {}).get("author") or {}).get("date", "")[:16] if st == 200 else ""
+    quien = ses.get("nombre") or ses["perfil"]
+    nuevo = RS.restaurado(antigua, actual, ruta, ses["perfil"], quien, sha, fecha_v, d.get("motivo"), v)
+    if ruta.startswith("data/articles/"):
+        try:
+            T.comprobar(nuevo, "articles", v)
+        except ValueError as e:
+            return 400, {"error": "la versión restaurada no se puede publicar: %s" % e}
+    ok, det = escribir(ruta, nuevo, sha_fich, "Restauración de %s a la versión del %s (%s), por %s" % (ruta, fecha_v or "?", sha[:7], quien))
+    if not ok:
+        return 502, {"error": det}
+    web = None
+    if ruta.startswith("data/articles/"):
+        w_ok, w_det = republicar(nuevo, v)
+        web = {"ok": w_ok, "detalle": w_det}
+    BD.registrar(quien, "restaurar_version", ruta, {"version": sha[:7], "previa": (previa or "")[:7], "motivo": (d.get("motivo") or "")[:200]})
+    enlace = "https://app.moticias.com/gestor/?" + urllib.parse.urlencode({"vista": "restaurar", "ruta": ruta})
+    _avisar_restauracion(RS.titulo(nuevo, ruta), ["%s ha restaurado «%s» (%s) a la versión del %s." % (quien, RS.titulo(nuevo, ruta), ruta, fecha_v),
+                                                  "Motivo: %s" % (d.get("motivo") or "sin motivo"),
+                                                  "Para deshacer: abre el documento en «Restaurar» y elige la versión anterior a esta."], enlace)
+    return 200, {"ok": True, "commit": det, "web": web, "deshacer": {"ruta": ruta, "sha": previa}}
+
+
+def copia_rpc(nombre, cuerpo):
+    try:
+        return 200, BD.peticion("POST", "rpc/" + nombre, cuerpo=cuerpo)
+    except BD.ErrorBD as e:
+        return 400, {"error": str(e)[:300]}
+
+
+def copia_recuperar(ses, d):
+    v = vertical()
+    tabla = str(d.get("tabla") or "")
+    if tabla not in RS.tablas_permitidas(ses["perfil"], v):
+        return 403, {"error": "tu perfil no recupera datos de esa tabla"}
+    st, r = copia_rpc("copia_recuperar", {"p_tabla": tabla, "p_fecha": d.get("fecha"), "p_clave": d.get("clave") or {},
+                                          "p_campos": d.get("campos") or None})
+    if st != 200:
+        return st, r
+    quien = ses.get("nombre") or ses["perfil"]
+    BD.registrar(quien, "copia_recuperar", tabla, {"fecha": d.get("fecha"), "clave": d.get("clave"), "resultado": r})
+    _avisar_restauracion("%s · %s" % (tabla, d.get("fecha")),
+                         ["%s ha recuperado de la copia interna del %s una fila de «%s»." % (quien, d.get("fecha"), tabla),
+                          "Resultado: %s" % json.dumps(r, ensure_ascii=False)[:400]],
+                         "https://app.moticias.com/gestor/?vista=restaurar")
+    return 200, {"ok": True, "resultado": r}
+
+
 # ---------- secciones de moticias.com al día (decisión de Rainer, 15-11-2026) ----------
 # Las páginas de sección se pintan con el índice del buscador (app/public/buscador/index.json). Las tareas programadas no
 # pueden subirlo por el buzón (solo contenido), así que el servidor lo rehace desde data/ en cada pasada del cron
@@ -1601,6 +1730,22 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
             if a == "firma":
                 return self._enviar(200, informe_firma())
+            if a in ("restaurables", "versiones", "version", "copia_fechas", "copia_diferencias"):
+                if "restaurar" not in per:
+                    return self._enviar(403, {"error": "tu perfil no restaura"})
+                if a == "restaurables":
+                    return self._enviar(200, {"documentos": restaurables(q.get("q")), "tablas": RS.tablas_permitidas(ses["perfil"], vertical())})
+                if a == "versiones":
+                    return self._enviar(*versiones(ses, q.get("ruta", "")))
+                if a == "version":
+                    return self._enviar(*version(ses, q.get("ruta", ""), q.get("sha", "")))
+                if not BD.configurada():
+                    return self._enviar(503, {"error": "la base privada no está conectada"})
+                if a == "copia_fechas":
+                    return self._enviar(*copia_rpc("copia_fechas", {}))
+                if q.get("tabla") not in RS.tablas_permitidas(ses["perfil"], vertical()):
+                    return self._enviar(403, {"error": "tu perfil no recupera datos de esa tabla"})
+                return self._enviar(*copia_rpc("copia_diferencias", {"p_tabla": q.get("tabla"), "p_fecha": q.get("fecha"), "p_limite": 200}))
             if a == "copias":
                 if "equipo" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe ve las copias de seguridad"})
@@ -1769,6 +1914,14 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
+        if a in ("restaurar_version", "copia_recuperar"):
+            if "restaurar" not in per:
+                return self._enviar(403, {"error": "tu perfil no restaura"})
+            if a == "restaurar_version":
+                return self._enviar(*restaurar_version(ses, d))
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada no está conectada"})
+            return self._enviar(*copia_recuperar(ses, d))
         if a == "prensa":
             if "crm" not in per:
                 return self._enviar(403, {"error": "tu perfil no entra en prensa"})

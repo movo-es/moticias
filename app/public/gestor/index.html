@@ -77,6 +77,7 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
   <button data-v="suscriptores" hidden>Suscriptores</button>
   <button data-v="productos">Productos</button>
   <button data-v="equipo" hidden>Equipo</button>
+  <button data-v="restaurar" hidden>Restaurar</button>
 </nav>
 <main id="app"><div class="vacio">Cargando…</div></main>
 <div id="aviso"></div>
@@ -145,6 +146,7 @@ async function arrancar() {
   $("#quien").textContent = est.nombre && !/^Acceso común/.test(est.nombre) ? est.nombre.split(" ")[0] + " · " + (jefe() ? "editor jefe" : yo) : (jefe() ? "editor jefe" : yo) + " (común)";
   $("#nav").querySelector('[data-v="suscriptores"]').hidden = !puede("suscriptores");
   $("#nav").querySelector('[data-v="equipo"]').hidden = !puede("equipo");
+  $("#nav").querySelector('[data-v="restaurar"]').hidden = !puede("restaurar");
   $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
   $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
   $("#nav").querySelector('[data-v="prensa"]').hidden = !puede("crm");
@@ -159,7 +161,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -864,6 +866,86 @@ async function verSuscriptores() {
 const PERF = {superadmin:"Editor jefe (superadministrador)", editor:"Editor", comercial:"Comercial", oficina:"Oficina"};
 const PERF_TXT = {superadmin:"Todo. Solo él publica: edita, retira y reenfoca piezas, publica cajas y publicidad, cambia productos y equipo.", editor:"Propone cajas en las piezas; CRM (fuentes, medios); ve suscriptores.", comercial:"Propone publicidad y patrocinios; CRM con contratos; ve suscriptores.", oficina:"Propone cajas; CRM; ve suscriptores."};
 const ESTP = {activa:["pub","Activa"], invitada:["pro","Invitada"], suspendida:["ret","Suspendida"]};
+// ---------- Restaurar (cambio restaurar-copia, 15-11-2026) ----------
+// Contenido: versiones de un documento (historial del repositorio) → ver qué cambia → restaurar (versión nueva) → deshacer.
+// Base privada: copia interna de cada noche (14 días) → qué falta o cambió → recuperar. Nunca se borra nada; avisa al director.
+const fechaCorta = s => s ? String(s).slice(0, 16).replace("T", " ") : "";
+async function verRestaurar() {
+  app.innerHTML = `<div class="card"><h1>Restaurar</h1><p class="mute">Devuelve una pieza, una caja de publicidad o una edición a una versión anterior, o recupera fichas del CRM y de la base de prensa desde la copia de cada noche. Nunca se borra nada: se escribe una versión nueva, el director recibe un aviso y se puede deshacer.</p>
+    <div class="tabs" id="rt"><button data-t="c" class="on">Piezas y publicidad</button><button data-t="b">CRM y prensa</button></div><div id="rbody"></div></div>`;
+  $("#rt").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; $("#rt").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); b.dataset.t === "c" ? restContenido() : restBase(); };
+  const r = params().get("ruta");
+  if (r) return restVersiones(r);
+  restContenido();
+}
+async function restContenido(q) {
+  const box = $("#rbody");
+  box.innerHTML = `<label>Busca por título o fecha</label><input id="rq" value="${E(q || "")}" placeholder="Ej.: Renfe, 2026-11-12, Movenbus" inputmode="search"><div id="rl" class="vacio">Cargando…</div>`;
+  let t; $("#rq").oninput = () => { clearTimeout(t); t = setTimeout(() => lista($("#rq").value), 300); };
+  async function lista(qq) {
+    let d; try { d = await api("restaurables", null, {q: qq || ""}); } catch (e) { $("#rl").textContent = e.message; return; }
+    $("#rl").className = ""; $("#rl").innerHTML = d.documentos.length ? d.documentos.map(x => `<button class="item" data-r="${E(x.ruta)}"><span class="mute">${E(x.clase)} · ${E(x.fecha || "")}${x.autor ? " · " + E(x.autor) : ""}</span><div class="t">${E(x.titulo)}</div></button>`).join("") : `<p class="vacio">Nada con ese texto.</p>`;
+    $("#rl").onclick = ev => { const b = ev.target.closest("[data-r]"); if (b) restVersiones(b.dataset.r); };
+  }
+  lista(q);
+}
+async function restVersiones(ruta) {
+  const box = $("#rbody") || app;
+  box.innerHTML = `<div class="vacio">Cargando versiones…</div>`;
+  let d; try { d = await api("versiones", null, {ruta}); } catch (e) { box.innerHTML = `<p class="warn">${E(e.message)}</p>`; return; }
+  box.innerHTML = `<p><button class="b2" id="rvolver">← Otro documento</button></p><h2>${E(d.titulo)}</h2><p class="mute">${E(ruta)} · la primera es la de hoy</p>
+    ${d.versiones.map((x, i) => `<button class="item" data-s="${E(x.sha)}" ${i === 0 ? "disabled" : ""}><span class="mute">${E(fechaCorta(x.fecha))} · ${E(x.autor || "")}${i === 0 ? " · <b>versión de hoy</b>" : ""}</span><div class="t">${E(x.mensaje)}</div></button>`).join("")}<div id="rv"></div>`;
+  $("#rvolver").onclick = () => restContenido();
+  box.onclick = async ev => {
+    const b = ev.target.closest("[data-s]"); if (!b || b.disabled) return;
+    const v = $("#rv"); v.innerHTML = `<div class="vacio">Comparando…</div>`; v.scrollIntoView({behavior: "smooth"});
+    let x; try { x = await api("version", null, {ruta, sha: b.dataset.s}); } catch (e) { v.innerHTML = `<p class="warn">${E(e.message)}</p>`; return; }
+    v.innerHTML = `<div class="card"><h2>Qué cambia si restauras esta versión</h2>${x.diferencias.length ? x.diferencias.map(f => `<div class="cand" style="display:block"><b>${E(f.campo)}</b><div class="mute">Hoy: ${E(f.ahora ?? "—")}</div><div>Volvería a: ${E(f.antes ?? "—")}</div></div>`).join("") : `<p class="mute">Es igual que la de hoy.</p>`}
+      ${x.restaurable ? `<label>Motivo (queda en el historial y en el aviso al director)</label><input id="rmot" placeholder="Ej.: se cambió el titular por error"><p><button class="b" id="rgo" style="width:100%">Restaurar esta versión</button></p>` : `<p class="warn">${E(x.motivo)}</p>`}</div>`;
+    const go = $("#rgo"); if (!go) return;
+    go.onclick = async () => {
+      go.disabled = true;
+      try {
+        const r = await api("restaurar_version", {ruta, sha: x.sha, motivo: $("#rmot").value});
+        v.innerHTML = `<div class="okbox">Restaurado${r.web ? (r.web.ok ? " y publicado en la web" : " · la web se pondrá al día en la próxima publicación") : ""}. Se ha avisado al director.</div>${r.deshacer && r.deshacer.sha ? `<p><button class="b2" id="rdes" style="width:100%">Deshacer</button></p>` : ""}`;
+        const des = $("#rdes"); if (des) des.onclick = async () => { des.disabled = true; try { await api("restaurar_version", {ruta, sha: r.deshacer.sha, motivo: "deshacer la restauración anterior"}); aviso("Deshecho"); restVersiones(ruta); } catch (e) { aviso(e.message, true); des.disabled = false; } };
+      } catch (e) { aviso(e.message, true); go.disabled = false; }
+    };
+  };
+}
+const TABLAS = {crm_cuentas: "CRM · cuentas", crm_personas: "CRM · personas", crm_pasos: "CRM · siguientes pasos", crm_estados: "CRM · estados", crm_actividades: "CRM · actividades", crm_contratos: "CRM · contratos",
+  medios: "Prensa · medios", periodistas: "Prensa · periodistas", prensa_coberturas: "Prensa · coberturas", prensa_envios: "Prensa · envíos", prensa_destinatarios: "Prensa · destinatarios", prensa_notas: "Prensa · notas de clientes",
+  pub_diario: "Seguimiento · vistas y clics", pub_comprobaciones: "Seguimiento · comprobaciones", encargos_gestor: "Encargos de noticias"};
+const nombreFila = f => f && (f.nombre || f.titulo || f.razon_social || f.texto || f.asunto || f.url || "") || "";
+async function restBase() {
+  const box = $("#rbody"); box.innerHTML = `<div class="vacio">Cargando…</div>`;
+  let t, fs; try { t = await api("restaurables", null, {q: "\u0000"}); fs = await api("copia_fechas"); } catch (e) { box.innerHTML = `<p class="warn">${E(e.message)}</p>`; return; }
+  const fechas = (Array.isArray(fs) ? fs : []).map(x => typeof x === "string" ? x : (x.copia_fechas || Object.values(x)[0]));
+  box.innerHTML = `<p class="mute">Supabase guarda cada noche una copia de la base privada durante 14 días. Elige qué y de qué día: verás solo lo que falta hoy o lo que ha cambiado desde entonces.</p>
+    <label>Qué</label><select id="btab">${t.tablas.map(k => `<option value="${k}">${E(TABLAS[k] || k)}</option>`).join("")}</select>
+    <label>Copia del día</label><select id="bfec">${fechas.map(f => `<option>${E(f)}</option>`).join("") || "<option value=''>todavía no hay copias</option>"}</select>
+    <p><button class="b" id="bcmp" style="width:100%">Comparar con hoy</button></p><div id="bres"></div>`;
+  $("#bcmp").onclick = async () => {
+    const tabla = $("#btab").value, fecha = $("#bfec").value, res = $("#bres");
+    if (!fecha) return; res.innerHTML = `<div class="vacio">Comparando…</div>`;
+    let d; try { d = await api("copia_diferencias", null, {tabla, fecha}); } catch (e) { res.innerHTML = `<p class="warn">${E(e.message)}</p>`; return; }
+    const falt = d.faltan || [], camb = d.cambiadas || [];
+    res.innerHTML = (falt.length || camb.length ? "" : `<p class="okbox">Nada falta ni ha cambiado desde el ${E(fecha)}.</p>`)
+      + (falt.length ? `<h2>Faltan hoy (${d.total_faltan})</h2>` + falt.map((f, i) => `<div class="item"><div class="t">${E(nombreFila(f.fila) || JSON.stringify(f.clave))}</div><button class="b2" data-ins="${i}">Volver a añadir</button></div>`).join("") : "")
+      + (camb.length ? `<h2>Han cambiado (${d.total_cambiadas})</h2>` + camb.map((c, i) => `<div class="item"><div class="mute">${E(JSON.stringify(c.clave))}</div>${Object.entries(c.campos || {}).map(([k, v]) => `<label class="chk"><input type="checkbox" data-c="${i}" value="${E(k)}"> <span><b>${E(k)}</b> — hoy: ${E(JSON.stringify(v.ahora))} · el ${E(fecha)}: ${E(JSON.stringify(v.antes))}</span></label>`).join("")}<button class="b2" data-upd="${i}">Recuperar lo marcado</button></div>`).join("") : "");
+    res.onclick = async ev => {
+      const bi = ev.target.closest("[data-ins]"), bu = ev.target.closest("[data-upd]"); if (!bi && !bu) return;
+      const clave = bi ? falt[+bi.dataset.ins].clave : camb[+bu.dataset.upd].clave;
+      const campos = bu ? [...res.querySelectorAll(`input[data-c="${bu.dataset.upd}"]:checked`)].map(x => x.value) : null;
+      if (bu && !campos.length) return aviso("Marca al menos un campo", true);
+      (bi || bu).disabled = true;
+      try { const r = await api("copia_recuperar", {tabla, fecha, clave, campos}); const om = (r.resultado.omitidos || []);
+        aviso(r.resultado.accion === "insertada" ? "Recuperada" : r.resultado.accion === "nada" ? "Nada que recuperar" : "Recuperado" + (om.length ? " (no se quita «No contactar»)" : "")); $("#bcmp").click();
+      } catch (e) { aviso(e.message, true); (bi || bu).disabled = false; }
+    };
+  };
+}
+
 // Copias de seguridad en el Mac (cambio copia-de-seguridad-mac): solo fecha, tamaños y recuentos; nunca datos.
 function copiasCard(c) {
   if (!c || !c.configurada) return "";
