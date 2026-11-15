@@ -22,9 +22,9 @@ Propuesta del 15-11-2026. Aprobada por Rainer el 15-11-2026, con las tres decisi
 - [x] 4.1 `docs/copia-de-seguridad.md § Restaurar desde el gestor`, `docs/gestores-portal.md`, `docs/manual-operativo.md`, `CLAUDE.md`.
 
 ## 5. Pruebas
-- [ ] 5.1 (pendiente: desde esta sesión GitHub no permite escribir por su API; lectura de versiones y comparación comprobadas contra el repositorio real) Restaurar y deshacer una pieza de prueba (un anuncio en borrador), con el commit, la revisión y el aviso.
+- [x] 5.1 Restaurar y deshacer una pieza de prueba (un anuncio en borrador), con el commit, la revisión y el aviso. Hecho por Rainer el 15-11-2026 a las 22:40 y 22:41 con la plantilla de patrocinio: dos versiones nuevas en el repositorio (0265426 y b93cbd2), dos líneas en el registro del gestor y la plantilla de vuelta a como estaba. Corregido después: la comparación enseña lo que de verdad quedaría (antes mostraba «tipo_contenido → null», que el gestor rellena siempre).
 - [x] 5.2 Recuperar un campo cambiado de una ficha de prueba del CRM y comprobar que «No contactar» no se puede quitar. Hecho en la base dentro de una transacción que se deshizo al terminar: campos recuperados, ficha borrada reinsertada, «No contactar» conservado, equipo rechazado, sin llave no se ve nada.
 - [x] 5.3 Un editor de prueba no puede restaurar una pieza firmada por el director (403). Hecho: 403 «las piezas que firma el director solo las restaura él».
 
 ## 6. Cierre
-- [ ] 6.1 Fundir la spec en `openspec/specs/restauracion/` y archivar.
+- [x] 6.1 Fundir la spec en `openspec/specs/restauracion/` y archivar. Hecho el 15-11-2026.

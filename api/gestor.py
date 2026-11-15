@@ -1310,7 +1310,10 @@ def version(ses, ruta, sha):
     if antigua is None:
         return 404, {"error": "esa versión no tiene el documento"}
     ok, motivo = RS.puede_contenido(ses["perfil"], ruta, actual, antigua, v)
-    return 200, {"ruta": ruta, "sha": sha, "diferencias": RS.diferencias(antigua, actual), "restaurable": ok, "motivo": motivo}
+    # Se compara lo que de verdad quedaría (con lo que se conserva y se completa al restaurar), sin el registro de la operación
+    quedaria = RS.restaurado(antigua, actual, ruta, ses["perfil"], "", sha, "", "", v)
+    dif = [f for f in RS.diferencias(quedaria, actual) if f["campo"] not in ("revisiones", "revised_at", "updated_at")]
+    return 200, {"ruta": ruta, "sha": sha, "diferencias": dif, "restaurable": ok, "motivo": motivo}
 
 
 def restaurar_version(ses, d):

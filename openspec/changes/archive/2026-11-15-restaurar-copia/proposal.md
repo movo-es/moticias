@@ -1,6 +1,6 @@
 # Cambio: restaurar-copia
 
-Fecha: 15 de noviembre de 2026. Origen: encargo de Rainer del mismo día («un proceso de restaurar de copia de seguridad que pueda cualquiera con perfil de editor»). Estado: **aprobada por Rainer el 15-11-2026** («sí» a la propuesta y a sus tres decisiones tal como se proponen); aplicada salvo la prueba real de escritura desde el gestor. Se apoya en `copia-de-seguridad-mac`.
+Fecha: 15 de noviembre de 2026. Origen: encargo de Rainer del mismo día («un proceso de restaurar de copia de seguridad que pueda cualquiera con perfil de editor»). Estado: **aprobada por Rainer el 15-11-2026** («sí» a la propuesta y a sus tres decisiones tal como se proponen); aplicada, probada y archivada el 15-11-2026. Se apoya en `copia-de-seguridad-mac`.
 
 Respuesta corta: «Restaurar» pasa a ser una pantalla del gestor, desde el móvil y sin el Mac, para dos casos: devolver una pieza, un anuncio, un producto o una edición a una versión anterior (desde el historial del repositorio) y recuperar registros de la base privada (CRM, base de prensa, equipo, seguimiento) desde una copia diaria que la propia Supabase guarda en un esquema aparte. Nunca se restaura encima: siempre se enseña qué cambia, se restaura con un registro y se puede deshacer. El desastre total (perder el proyecto de Supabase, Ghost o GitHub) sigue siendo cosa del editor jefe con la copia cifrada del Mac (`docs/copia-de-seguridad.md`).
 
