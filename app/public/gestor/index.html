@@ -223,6 +223,8 @@ function qOrden(a, b){
 async function verCola(){
   app.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando la cola…</div>`;
   try { Q.datos = await api("cola", null, {pestana: Q.pestana}); } catch (e) { app.innerHTML = `<div class="card"><h1>Cola</h1><p class="mute">${E(e.message)}</p></div>`; return; }
+  Q.voz = null;
+  if (Q.datos.yo.jefe && Q.pestana === "cola") { try { Q.voz = await api("voz"); } catch (e) {} }
   qPinta();
 }
 function qPinta(){
@@ -233,6 +235,7 @@ function qPinta(){
   <div class="q-herr"><select id="q-orden" aria-label="Ordenar"><option value="imp">Más importantes primero</option><option value="cad">Lo que caduca antes</option><option value="nuevo">Más recientes</option><option value="hecho">Por fecha del hecho</option></select>
     <button class="b2" id="q-fil">Filtros</button><button class="b2" id="q-sel">${Q.selModo ? "Listo" : "Seleccionar"}</button></div>
   <div class="q-act" id="q-act">${Object.entries(Q.filtros).flatMap(([eje, vals]) => [...vals].map(v => `<button data-q="${eje}|${E(v)}">${E(ejes[eje].n)}: ${E(ejes[eje].v[v] || v)}</button>`)).join("")}</div>
+  ${qVoz()}
   ${Q.pestana === "cola" ? `<p><button class="b2" id="q-nuevo" style="width:100%">+ Proponer un tema</button></p>` : ""}
   <div id="q-lista">${xs.length ? xs.map(qTarjeta).join("") : `<div class="vacio">${Q.pestana === "papelera" ? "La papelera está vacía." : Object.keys(Q.filtros).length ? "No hay temas con estos filtros." : "No hay temas aquí todavía. Los propone el barrido de la mañana, las batidas y los editores."}</div>`}</div>`;
   $("#q-orden").value = Q.orden;
@@ -243,7 +246,48 @@ function qPinta(){
   const nv = $("#q-nuevo"); if (nv) nv.onclick = () => qEditar(null);
   document.querySelectorAll("#q-act button").forEach(b => b.onclick = () => { const [e, v] = b.dataset.q.split("|"); Q.filtros[e].delete(v); qPinta(); });
   xs.forEach(t => qEnganchar(t));
+  qVozEnganchar();
   qBloque(xs);
+}
+// «La voz del editor» (cambio menu-y-voz-del-editor, 16-11-2026): las propuestas del sábado, para aprobar texto e imagen.
+function qFechaLarga(iso){ try { return new Date(iso).toLocaleString("es-ES", {weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit", timeZone:"Europe/Madrid"}); } catch (e) { return iso; } }
+function qVoz(){
+  const V = Q.voz; if (!V || !(V.propuestas || []).length) return "";
+  return `<div class="card" style="border-color:#f26b1d"><h2>La voz del editor · propuestas</h2>
+    <p class="mute">Texto e imagen necesitan tu aprobación. Lo que apruebes sale el ${E(qFechaLarga(V.lunes))}. Sin aprobación no se publica nada.</p>
+    ${V.propuestas.map(p => `<div class="paso" style="display:block;padding:12px 0">
+      ${p.ghost ? `<img src="${E(p.ghost)}" alt="${E((p.image || {}).alt || "")}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin:0 0 6px">` : ""}
+      ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="mute" style="font-size:12px">Sin imagen</div>`}
+      <div class="q-t">${E(p.title)}</div>${p.enfoque ? `<div class="mute">Enfoque: ${E(p.enfoque)}</div>` : ""}
+      <div class="mute" style="font-size:12px">${p.palabras} palabras · ${p.status === "publicado" ? "Aprobada: sale el " + E(qFechaLarga(p.published_at)) : "Pendiente de tu aprobación"}</div>
+      <div class="q-acc" style="padding:8px 0 0">${p.status === "publicado" ? `<a class="b2" href="?pieza=${encodeURIComponent(p.id)}">Ver</a>` :
+        `<button class="b" data-voz-ok="${E(p.id)}">Aprobar</button><a class="b2" href="?pieza=${encodeURIComponent(p.id)}&accion=editar">Leer y editar</a><button class="b2" data-voz-otra="${E(p.id)}">Pedir otra versión</button>`}</div>
+    </div>`).join("")}</div>`;
+}
+function qVozEnganchar(){
+  document.querySelectorAll("[data-voz-ok]").forEach(b => b.onclick = () => {
+    const p = Q.voz.propuestas.find(x => x.id === b.dataset.vozOk);
+    const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Saldrá el ${E(qFechaLarga(Q.voz.lunes))}, firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
+      <label class="chk"><input type="checkbox" id="v-t"> He leído el texto y lo apruebo</label>
+      ${p.image ? `<label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>` : ""}
+      <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Aprobar y programar</button></div>`);
+    c.querySelector("#q-no").onclick = qCerrar;
+    c.querySelector("#q-si").onclick = async () => {
+      const t = c.querySelector("#v-t").checked, i = p.image ? c.querySelector("#v-i").checked : true;
+      if (!t || !i) return aviso("Marca el texto y la imagen para aprobar", true);
+      try { await api("redaccion", {id: p.id, accion: "publicar", texto_ok: true, imagen_ok: true}); aviso("Aprobada: sale el " + qFechaLarga(Q.voz.lunes)); qCerrar(); verCola(); } catch (e) { aviso(e.message, true); }
+    };
+  });
+  document.querySelectorAll("[data-voz-otra]").forEach(b => b.onclick = () => {
+    const c = qHoja(`<h2>Pedir otra versión</h2><p class="mute">Di qué cambiar: el enfoque, el tono, un dato, o pedir otra imagen. La redacción lo rehace en su próxima pasada y te avisa; sigue sin publicarse hasta que la apruebes.</p>
+      <label for="v-ins">Qué quieres</label><textarea id="v-ins" placeholder="Ej.: más directo con el Ministerio; otra imagen, sin vías vacías"></textarea>
+      <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Pedir</button></div>`);
+    c.querySelector("#q-no").onclick = qCerrar;
+    c.querySelector("#q-si").onclick = async () => {
+      const ins = c.querySelector("#v-ins").value.trim(); if (!ins) return aviso("Escribe qué quieres cambiar", true);
+      try { await api("retoque", {pieza: b.dataset.vozOtra, instruccion: "La voz del editor (propuesta sin publicar): " + ins}); aviso("Pedido: la redacción prepara otra versión"); qCerrar(); } catch (e) { aviso(e.message, true); }
+    };
+  });
 }
 function qImp(n){ n = n || 0; return `<span class="q-imp" title="Importancia ${n} de 5">${[1,2,3,4,5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}<b>${n || "?"}</b></span>`; }
 function qTarjeta(t){

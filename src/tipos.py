@@ -76,7 +76,7 @@ def deducir(doc, coleccion="articles"):
     if doc.get("sponsored_by"):
         return "patrocinado"
     k = doc.get("kind")
-    if k in ("analisis", "reportaje"):
+    if k in ("analisis", "reportaje", "opinion"):
         return "editorial"
     if k == "noticia":
         return "noticia"
@@ -97,6 +97,8 @@ def marca(doc, coleccion="articles", v=None):
     if t == "editorial":
         if doc.get("kind") == "reportaje":
             return m["reportaje"]
+        if doc.get("kind") == "opinion":  # «La voz del editor» (16-11-2026): siempre señalada como opinión
+            return m.get("opinion", "Opinión · La voz del editor")
         return m["analisis_director"] if es_del_director(doc, v) else m["analisis"]
     if t == "noticia":
         return m["noticia"]

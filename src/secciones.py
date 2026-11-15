@@ -34,8 +34,17 @@ def reglas(v):
     return {k: r for k, r in (v.get("secciones_web") or {}).items() if isinstance(r, dict)}
 
 
+MERCANCIAS = set()
+
+
 def pertenece(p, r):
     if r.get("modo") and p.get("m") != r["modo"]:
+        return False
+    if r.get("medio") and (p.get("md") or p.get("m")) != r["medio"]:
+        return False
+    if r.get("mercancias") and not (p.get("m") == "logistica" or set(p.get("mo") or []) & MERCANCIAS):
+        return False
+    if r.get("kind") and p.get("kind") != r["kind"]:
         return False
     if r.get("tema") and r["tema"] not in (p.get("te") or []):
         return False
@@ -45,6 +54,7 @@ def pertenece(p, r):
 
 
 def reparto(indice, rs):
+    MERCANCIAS.update(indice.get("mercancias") or [])
     return {s: [p for p in indice.get("piezas", []) if pertenece(p, r)] for s, r in rs.items()}
 
 

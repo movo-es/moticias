@@ -22,7 +22,7 @@ Por el buzón solo entra contenido: `data/`, `docs/ediciones.md`, `docs/fuentes.
 
 1. `https://app.moticias.com/api/gestor?a=yo` da `true` en `configurado`, `escritura`, `ghost`, `bd` y, si se hizo el paso 4, `barrido` (solo dice si la variable existe; no enseña su valor).
 2. En Supabase, `select lote, parte, partes, estado, sha, error from repo_buzon order by creado_at desc limit 10;` no tiene lotes en `pendiente` de más de 15 minutos ni en `error`.
-3. La cabecera de `https://www.moticias.com/` dice «Edición nº N» con la última edición de `data/editions/`.
+3. La cabecera de `https://www.moticias.com/` dice la fecha de la última edición de `data/editions/` (sin número desde el 15-11-2026; el número está en la etiqueta interna `moticias-edicion` de la página `edicion-hoy`).
 
 ## Si un lote queda en `error`
 

@@ -632,6 +632,59 @@ def _aplicar_firma(a, quiere, v):
             a["author_note"] = (v.get("editorial") or {}).get("interests_note_redaccion") or F.NOTA_REDACCION
 
 
+def proximo_lunes_8():
+    """El próximo lunes a las 08:00 (Europe/Madrid; horario de invierno UTC+1, de verano UTC+2) como ISO con zona. Si hoy es
+    lunes y aún no son las 08:00, hoy."""
+    utc = datetime.datetime.now(datetime.timezone.utc)
+    def desfase(dia):  # último domingo de marzo → último domingo de octubre: verano
+        ult = lambda m: max(datetime.date(dia.year, m, d) for d in range(25, 32) if datetime.date(dia.year, m, d).weekday() == 6)  # noqa: E731
+        return 2 if ult(3) <= dia < ult(10) else 1
+    hoy = (utc + datetime.timedelta(hours=1)).date()
+    for n in range(0, 8):
+        dia = hoy + datetime.timedelta(days=n)
+        if dia.weekday() != 0:
+            continue
+        h = desfase(dia)
+        cuando = datetime.datetime(dia.year, dia.month, dia.day, 8, 0, tzinfo=datetime.timezone(datetime.timedelta(hours=h)))
+        if cuando > utc + datetime.timedelta(minutes=10):
+            return cuando.isoformat()
+    dia = hoy + datetime.timedelta(days=7 - hoy.weekday())
+    return datetime.datetime(dia.year, dia.month, dia.day, 8, 0, tzinfo=datetime.timezone(datetime.timedelta(hours=desfase(dia)))).isoformat()
+
+
+def voz_propuestas():
+    """Las propuestas de «La voz del editor» pendientes de aprobación (kind opinion), con lo que hace falta para decidir."""
+    out = []
+    for f in sorted(glob.glob(os.path.join(ROOT, "data", "articles", "*.json"))):
+        try:
+            a = json.load(open(f, encoding="utf-8"))
+        except ValueError:
+            continue
+        if a.get("kind") != "opinion" or a.get("status") not in ("pendiente", "borrador", "publicado"):
+            continue
+        if a.get("status") == "publicado" and (a.get("published_at") or "") < datetime.datetime.now().astimezone().isoformat():
+            continue  # ya salió
+        img = a.get("image") or {}
+        out.append({"id": a["id"], "title": a.get("title"), "subtitle": a.get("subtitle"), "enfoque": (a.get("voz") or {}).get("enfoque") or a.get("summary"),
+                    "palabras": len((a.get("body_md") or "").split()), "status": a.get("status"), "published_at": a.get("published_at"),
+                    "semana": (a.get("voz") or {}).get("semana"), "image": {"src": img.get("src"), "credit": img.get("credit"), "license": img.get("license"),
+                    "source_url": img.get("source_url") or img.get("url"), "alt": img.get("alt")} if img else None,
+                    "ghost": FOTOS_GHOST_URL(img.get("src"))})
+    return sorted(out, key=lambda x: (x["status"] != "pendiente", x["id"]))
+
+
+def FOTOS_GHOST_URL(src):
+    if not src:
+        return None
+    if str(src).startswith("http"):
+        return src
+    try:
+        m = json.load(open(os.path.join(ROOT, "portal", "img", "ghost-urls.json"), encoding="utf-8"))
+        return m.get(str(src)[4:]) if str(src).startswith("img/") else None
+    except (OSError, ValueError):
+        return None
+
+
 def _subir(a, v, estado=None):
     url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
     if not url or not key or ":" not in key:
@@ -689,6 +742,12 @@ def accion_redaccion(ses, d, cabeceras):
         elif acc == "publicar":  # el visto bueno del editor jefe a una pieza pendiente
             if a.get("status") not in ("pendiente", "borrador"):
                 return 400, {"error": "la pieza no está pendiente"}
+            if a.get("kind") == "opinion":  # «La voz del editor»: texto e imagen aprobados expresamente; sale el lunes a las 08:00
+                if not (d.get("texto_ok") and (d.get("imagen_ok") or not a.get("image"))):
+                    return 400, {"error": "aprueba expresamente el texto y la imagen"}
+                a["published_at"] = proximo_lunes_8()
+                a["date"] = a["published_at"][:10]
+                a.setdefault("voz", {})["aprobada"] = R.ahora()
             a["status"] = "publicado"
             a.setdefault("revisiones", []).append({"en": R.ahora(), "por": quien, "accion": "aprobar y publicar"})
             estado, mensaje = "published", "Redacción: %s aprueba y publica %s" % (quien, pid)
@@ -1974,6 +2033,10 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(200, {"encargos": filas, "dominios": _dominios()[0]["dominios"], "clases": CLASES_FUENTE})
             if a == "cola":
                 return self._enviar(*cola_listar(ses, q.get("pestana") or "cola"))
+            if a == "voz":
+                if "redaccion" not in per:
+                    return self._enviar(403, {"error": "solo el editor jefe aprueba «La voz del editor»"})
+                return self._enviar(200, {"propuestas": voz_propuestas(), "lunes": proximo_lunes_8()})
             if a == "retoques":
                 return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
             if a == "productos":

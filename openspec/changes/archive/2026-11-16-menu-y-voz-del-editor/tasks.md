@@ -1,0 +1,7 @@
+- [x] Etiquetas de Ghost de los modos y de «La voz del editor»; 95 piezas republicadas sin errores
+- [x] Menú con submenús en `m.js` (probado en el móvil y en el ordenador sobre la web real)
+- [x] Secciones por medio y mercancías; página `/la-voz-del-editor/`
+- [x] Tipo y marca de opinión; fuera del cupo de firma
+- [x] Aprobación en el gestor con programación del lunes 08:00
+- [x] Tarea programada de los sábados (`trig_01DcPARRcwkRaoyZWnJxpEf5`)
+- [ ] Rainer: permisos «Automático» y conector de Supabase en esa tarea

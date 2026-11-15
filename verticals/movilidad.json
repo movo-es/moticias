@@ -250,7 +250,8 @@
    "patrocinado_grupo": "Contenido patrocinado",
    "patrocinado_grupo_caja": "Contenido patrocinado",
    "patrocinado_cliente": "Contenido patrocinado · %(cliente)s",
-   "publicidad": "Publicidad"
+   "publicidad": "Publicidad",
+   "opinion": "Opinión · La voz del editor"
   },
   "etiquetas_ghost": {
    "editorial": "#tipo-editorial",
@@ -2439,7 +2440,8 @@
   "batida_manana": "trig_012Sc1jheY62WPUukGPstLqk",
   "batida_tarde": "trig_01A5CAWQfbfusMNxU3krTUVU",
   "barrido": "trig_012Sc1jheY62WPUukGPstLqk",
-  "nota": "ids de las tareas programadas de la cuenta de Rainer; el botón «Iniciar barrido de noticias ahora» lanza «barrido» con RUTINA_BARRIDO_TOKEN (solo en Vercel)"
+  "nota": "ids de las tareas programadas de la cuenta de Rainer; el botón «Iniciar barrido de noticias ahora» lanza «barrido» con RUTINA_BARRIDO_TOKEN (solo en Vercel)",
+  "voz_del_editor": "trig_01DcPARRcwkRaoyZWnJxpEf5"
  },
  "copias": {
   "decidido": "2026-11-15",
@@ -2476,18 +2478,18 @@
   "aviso_a": null
  },
  "secciones_web": {
-  "nota": "Qué piezas enseña cada página de sección de moticias.com. Lo usan app/public/sitio/m.js (vía el índice del buscador) y src/secciones.py (comprobación tras cada publicación). modo = eje 1, tema = eje 2, tipo = tipo de contenido.",
+  "nota": "Qué piezas enseña cada página de sección de moticias.com. Lo usan app/public/sitio/m.js (vía el índice del buscador) y src/secciones.py. medio = Medio de las etiquetas comunes (con el eje antiguo como reserva), mercancias = cualquier modo de mercancías, tema = Tema, tipo = tipo de contenido, kind = clase de pieza (16-11-2026).",
   "tierra": {
-   "modo": "tierra"
+   "medio": "tierra"
   },
   "mar": {
-   "modo": "mar"
+   "medio": "mar"
   },
   "aire": {
-   "modo": "aire"
+   "medio": "aire"
   },
   "logistica": {
-   "modo": "logistica"
+   "mercancias": true
   },
   "regulacion": {
    "tema": "regulacion"
@@ -2498,7 +2500,10 @@
   "analisis": {
    "tipo": "editorial"
   },
-  "aviso_dias_sin_novedad": 14
+  "aviso_dias_sin_novedad": 14,
+  "la-voz-del-editor": {
+   "kind": "opinion"
+  }
  },
  "restauracion": {
   "decidido": "2026-11-15",
@@ -2557,5 +2562,27 @@
    "redaccion@moticias.com",
    "ruphoff@avionline.es"
   ]
+ },
+ "voz_del_editor": {
+  "decidido": "2026-11-16",
+  "cambio": "menu-y-voz-del-editor",
+  "regla": "Temas espinosos con el enfoque y el estilo del editor jefe, firmados «Rainer Uphoff» y marcados como opinión («Opinión · La voz del editor»). Los sábados a las 08:00 (Europe/Madrid) una tarea en la nube propone dos o tres temas según lo más debatido de la semana, cada uno con enfoque, borrador e imagen candidata con crédito y licencia. Texto e imagen necesitan siempre su aprobación (aprobar, editar o pedir otra versión); sin aprobación no se publica nada. Lo aprobado sale el lunes siguiente a las 08:00, programado en Ghost.",
+  "kind": "opinion",
+  "tipo_contenido": "editorial",
+  "autor": "Rainer Uphoff",
+  "publicar": "lunes 08:00 Europe/Madrid",
+  "propuestas_por_semana": [
+   2,
+   3
+  ],
+  "palabras": [
+   700,
+   1100
+  ],
+  "estilo": "Referencia: las piezas firmadas por el editor jefe (author «Rainer Uphoff» en data/articles). Frases cortas, tesis en el primer párrafo, datos con su fuente primaria enlazada, una objeción leal al propio argumento y un cierre con lo que debería decidirse y quién. Sin adjetivos vacíos ni descalificaciones personales.",
+  "cupo_firma": "No cuenta en el cupo del 10 % de la firma del editor jefe: es su columna y se señala como opinión.",
+  "ghost_etiqueta": "la-voz-del-editor",
+  "pagina": "/la-voz-del-editor/",
+  "tarea": "docs/tarea-voz-del-editor.md (comando /voz-del-editor)"
  }
 }

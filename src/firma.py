@@ -40,8 +40,9 @@ def cargar(root=ROOT):
 
 
 def cuenta(a):
-    """Piezas que cuentan para el cupo: publicadas o pendientes de aprobación (no retiradas ni borradores)."""
-    return a.get("status") in (None, "publicado", "pendiente")
+    """Piezas que cuentan para el cupo: publicadas o pendientes de aprobación (no retiradas ni borradores). «La voz del editor»
+    (kind opinion) no cuenta: es su columna, señalada como opinión (16-11-2026)."""
+    return a.get("status") in (None, "publicado", "pendiente") and a.get("kind") != "opinion"
 
 
 def es_del_director(a, c):

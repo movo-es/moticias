@@ -18,12 +18,17 @@
       en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
    6. Pinta las páginas de sección con sus piezas (la plantilla del tema salía vacía).
    5. Oculta la marca «Powered by Ghost» de la ventana de entrada y suscripción de Ghost.
+   7. Menú con submenús (cambio menu-y-voz-del-editor, 16-11-2026): Portada · La voz del editor (destacado fijo) · Tierra ▾ ·
+      Mar ▾ · Aire ▾ · Logística ▾ · Temas ▾ · Regiones ▾ · Análisis. Datos y recuentos de tipos.json → menu. En el móvil la
+      barra sigue en su sitio (no se pega arriba ni tapa los titulares) y los submenús se abren como hoja inferior.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
   "use strict";
   var API = "https://app.moticias.com";
   var d = document;
   var E = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]; }); };
+  var _tipos = null;
+  var tiposJSON = function () { return _tipos || (_tipos = fetch(API + "/buscador/tipos.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })); };
   var css = d.createElement("style");
   css.textContent =
     ".mtx-hueco{margin:14px auto}.mtx-hueco.mtx-cab{max-width:1180px;padding:0 16px}.mtx-hueco .ad{margin:0}" +
@@ -147,7 +152,8 @@
     licitaciones: function (p) { return (p.te || []).indexOf("concesiones") >= 0; },
     analisis: function (p) { return p.tc === "editorial"; }
   };
-  var secActual = (location.pathname.match(/^\/([a-z]+)\/?$/) || [])[1];
+  SECCIONES["la-voz-del-editor"] = function (p) { return p.kind === "opinion"; };
+  var secActual = (location.pathname.match(/^\/([a-z-]+)\/?$/) || [])[1];
   if (secActual && SECCIONES[secActual] && d.querySelector("main#main")) {
     css.textContent += ".mtx-sec{list-style:none;margin:0;padding:0;display:grid;gap:22px}" +
       ".mtx-sec li{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding-bottom:22px;border-bottom:1px solid #e5e7eb}" +
@@ -166,13 +172,17 @@
       var subs = {};
       (ix.taxonomia.modos || []).forEach(function (m) { (m.submodos || []).forEach(function (s) { subs[s.id] = s.nombre; }); });
       var regla = (ix.secciones || {})[secActual];  // reglas del vertical (secciones_web); si no vienen, las de aquí
-      var filtro = regla ? function (p) { return (!regla.modo || p.m === regla.modo) && (!regla.tema || (p.te || []).indexOf(regla.tema) >= 0) && (!regla.tipo || p.tc === regla.tipo); } : SECCIONES[secActual];
+      var merc = ix.mercancias || [];
+      // Reglas de secciones_web (16-11-2026): medio (con el eje antiguo como reserva), mercancías, tema, tipo y clase de pieza.
+      var filtro = regla ? function (p) { return (!regla.modo || p.m === regla.modo) && (!regla.medio || (p.md || p.m) === regla.medio) &&
+        (!regla.mercancias || p.m === "logistica" || (p.mo || []).some(function (x) { return merc.indexOf(x) >= 0; })) &&
+        (!regla.tema || (p.te || []).indexOf(regla.tema) >= 0) && (!regla.tipo || p.tc === regla.tipo) && (!regla.kind || p.kind === regla.kind); } : SECCIONES[secActual];
       var lista = ix.piezas.filter(filtro).sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
       var main = d.querySelector("main#main"), vacio = main.querySelector("p.empty");
       var caja = vacio ? vacio.parentNode : null;
       if (!caja) { var sec0 = d.createElement("section"); sec0.className = "block"; caja = d.createElement("div"); caja.className = "wrap"; sec0.appendChild(caja); main.insertBefore(sec0, main.firstChild); }
       if (vacio) vacio.remove();
-      if (!lista.length) { caja.insertAdjacentHTML("beforeend", '<p class="empty">Todavía no hay piezas en esta sección.</p>'); return; }
+      if (!lista.length) { caja.insertAdjacentHTML("beforeend", '<p class="empty">' + (secActual === "la-voz-del-editor" ? "La primera columna se publicará un lunes, en cuanto el editor jefe apruebe la primera propuesta." : "Todavía no hay piezas en esta sección.") + "</p>"); return; }
       var ul = d.createElement("ul"); ul.className = "mtx-sec"; caja.appendChild(ul);
       var n = 0;
       function mas() {
@@ -245,7 +255,7 @@
   }
   cajasDelTema();
   if (!d.body.classList.contains("post-template")) {
-    fetch(API + "/buscador/tipos.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.piezas) marcas(j.piezas); }).catch(function () {});
+    tiposJSON().then(function (j) { if (j && j.piezas) marcas(j.piezas); }).catch(function () {});
   }
 
   // ---------- 2. Editor jefe ----------
@@ -284,4 +294,82 @@
     fetch(API + "/api/gestor?a=yo", {credentials: "include"}).then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) { if (j && j.jefe) herramientas(); }).catch(function () {});
   }
+
+  // ---------- 7. Menú con submenús y «La voz del editor» ----------
+  (function () {
+    var nav = d.querySelector("header.masthead nav.nav");
+    if (!nav) return;
+    css.textContent +=
+      "nav.nav{position:relative}nav.nav .mtx-v{display:inline-flex;align-items:center;gap:6px}" +
+      "nav.nav .mtx-voz{border:1.5px solid #f26b1d;color:#b8470b!important;border-radius:999px}nav.nav .mtx-voz:hover{background:#fff4ec}" +
+      "nav.nav .mtx-voz::before{content:'';width:7px;height:7px;border-radius:50%;background:#f26b1d;display:inline-block;margin-right:6px;vertical-align:1px}" +
+      "nav.nav a.mtx-sub{display:inline-flex;align-items:center}" +
+      "nav.nav a.mtx-sub::after{content:'';width:5px;height:5px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:rotate(45deg);opacity:.55;margin:-3px 0 0 7px}" +
+      "nav.nav a.mtx-sub[aria-expanded=true]::after{transform:rotate(-135deg);margin-top:3px}" +
+      ".mtx-panel{position:absolute;z-index:60;background:#fff;border:1px solid #e3e6ea;border-radius:12px;box-shadow:0 12px 32px rgba(11,37,69,.14);padding:16px 18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 18px}" +
+      ".mtx-panel h4{grid-column:1/-1;margin:0 0 6px;font:700 11px/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7280}" +
+      ".mtx-panel a{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:8px;color:#0b2545;text-decoration:none;font:500 15px/1.3 system-ui,sans-serif;text-transform:none;letter-spacing:0}" +
+      ".mtx-panel a:hover,.mtx-panel a:focus{background:#f1f4f8}.mtx-panel a small{color:#8a94a3;font-variant-numeric:tabular-nums}" +
+      ".mtx-panel a.mtx-todo{font-weight:700}.mtx-panel .mtx-sep{grid-column:1/-1;height:1px;background:#eef0f3;margin:6px 0}" +
+      ".mtx-velo{position:fixed;inset:0;background:rgba(11,37,69,.35);z-index:59}" +
+      "@media(max-width:760px){.mtx-panel{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:72vh;overflow:auto;border-radius:16px 16px 0 0;grid-template-columns:1fr 1fr;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}" +
+      ".mtx-panel a{font-size:15px;padding:10px}}";
+    var abierto = null, velo = null;
+    function cerrar() {
+      if (abierto) { abierto.btn.setAttribute("aria-expanded", "false"); abierto.panel.remove(); abierto = null; }
+      if (velo) { velo.remove(); velo = null; }
+    }
+    function enlace(x, todo) {
+      return '<a href="' + E(x.url) + '"' + (todo ? ' class="mtx-todo"' : "") + "><span>" + E(x.nombre) + "</span>" + (x.n != null ? "<small>" + x.n + "</small>" : "") + "</a>";
+    }
+    function abrir(btn, html) {
+      if (abierto && abierto.btn === btn) return cerrar();
+      cerrar();
+      var p = d.createElement("div"); p.className = "mtx-panel"; p.setAttribute("role", "menu"); p.innerHTML = html;
+      if (window.matchMedia("(max-width:760px)").matches) { velo = d.createElement("div"); velo.className = "mtx-velo"; velo.onclick = cerrar; d.body.appendChild(velo); d.body.appendChild(p); }
+      else {  // la barra recorta lo que sobresale (desplazamiento horizontal): el panel va en el cuerpo, bajo la barra
+        var r = nav.getBoundingClientRect();
+        p.style.top = (r.bottom + window.scrollY + 6) + "px"; p.style.left = (r.left + window.scrollX) + "px"; p.style.width = r.width + "px";
+        d.body.appendChild(p);
+      }
+      btn.setAttribute("aria-expanded", "true"); abierto = {btn: btn, panel: p};
+      var a = p.querySelector("a"); if (a) a.focus({preventScroll: true});
+    }
+    d.addEventListener("keydown", function (e) { if (e.key === "Escape") cerrar(); });
+    d.addEventListener("click", function (e) { if (abierto && !abierto.panel.contains(e.target) && e.target !== abierto.btn) cerrar(); });
+    function boton(texto, html, antes, url) {
+      // Enlace (el tema le da el mismo estilo que a los demás; sin JavaScript lleva a la página) que abre el submenú.
+      var b = d.createElement("a"); b.href = url || "#"; b.className = "mtx-sub"; b.textContent = texto; b.setAttribute("role", "button");
+      b.setAttribute("aria-haspopup", "true"); b.setAttribute("aria-expanded", "false");
+      b.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); abrir(b, html()); });
+      nav.insertBefore(b, antes || null);
+      return b;
+    }
+    tiposJSON().then(function (j) {
+      var m = j && j.menu;
+      if (!m) return;
+      var portada = nav.querySelector(".nav-portada"), analisis = nav.querySelector(".nav-analisis");
+      // «La voz del editor»: destacado fijo, justo después de Portada (en el móvil se ve sin desplazar la barra).
+      var voz = d.createElement("a"); voz.href = m.voz.url; voz.className = "mtx-voz"; voz.textContent = m.voz.nombre;
+      if (location.pathname.indexOf("/la-voz-del-editor") === 0) voz.setAttribute("aria-current", "page");
+      nav.insertBefore(voz, portada ? portada.nextSibling : nav.firstChild);
+      // Tierra, Mar y Aire: el enlace de siempre abre el submenú; dentro, «Todo …» y cada modo.
+      (m.medios || []).forEach(function (md) {
+        var a = nav.querySelector(".nav-" + md.id);
+        var html = function () { return "<h4>" + E(md.nombre) + "</h4>" + enlace({nombre: "Todo " + md.nombre.toLowerCase(), url: md.url, n: md.n}, true) +
+          md.modos.map(function (x) { return enlace(x); }).join(""); };
+        var b = boton(md.nombre, html, a, md.url);
+        if (a) { b.className += " " + a.className; a.remove(); }
+      });
+      // Logística (modos de mercancías de cualquier medio), Temas (con Regulación y Licitaciones) y Regiones.
+      var ref = nav.querySelector(".nav-regulacion") || analisis;
+      if (m.logistica && m.logistica.modos.length) boton(m.logistica.nombre, function () { return "<h4>Logística</h4>" + enlace({nombre: "Toda la logística", url: m.logistica.url}, true) + m.logistica.modos.map(function (x) { return enlace(x); }).join(""); }, ref, m.logistica.url);
+      boton("Temas", function () { return "<h4>Temas</h4>" + m.secciones.map(function (x) { return enlace(x, true); }).join("") + '<div class="mtx-sep"></div>' + m.temas.map(function (x) { return enlace(x); }).join(""); }, ref);
+      boton("Regiones", function () {
+        var sup = m.regiones.filter(function (x) { return x.tipo !== "ccaa"; }), cc = m.regiones.filter(function (x) { return x.tipo === "ccaa"; });
+        return "<h4>Regiones</h4>" + sup.map(function (x) { return enlace(x, true); }).join("") + '<div class="mtx-sep"></div>' + cc.map(function (x) { return enlace(x); }).join("");
+      }, ref);
+      [].forEach.call(nav.querySelectorAll(".nav-regulacion, .nav-licitaciones"), function (a) { a.remove(); });
+    }).catch(function () {});
+  })();
 })();

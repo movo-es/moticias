@@ -62,6 +62,8 @@ def construir(data_dir=None, base="https://www.moticias.com", vertical="movilida
         d = json.load(open(p, encoding="utf-8"))
         if d.get("status") != "publicado":  # solo lo que el lector puede abrir (sin estado = sin aprobar; 15-11-2026)
             continue
+        if (d.get("published_at") or "") > __import__("datetime").datetime.now().astimezone().isoformat():
+            continue  # programada (p. ej. «La voz del editor» aprobada que sale el lunes): aún no se ve
         piezas.append(entrada(d, base))
     piezas.sort(key=lambda e: (e["d"] or "", e["id"]), reverse=True)
     v = json.load(open(os.path.join(ROOT, "verticals", vertical + ".json"), encoding="utf-8"))
@@ -74,13 +76,43 @@ def construir(data_dir=None, base="https://www.moticias.com", vertical="movilida
         },
         "secciones": {k: r for k, r in (v.get("secciones_web") or {}).items() if isinstance(r, dict)},
         "sinonimos": tx.busqueda.get("sinonimos", []),
+        "mercancias": [k for k, x in tx.modos_t.items() if x["mercancias"]],
         "piezas": piezas,
+        "menu": menu(tx, piezas, base),
     }
+
+
+def menu(tx, piezas, base="https://www.moticias.com"):
+    """Menú con submenús (cambio menu-y-voz-del-editor, 16-11-2026): medios con sus modos, logística (modos de mercancías de
+    todos los medios), temas, regiones y «La voz del editor», con cuántas piezas publicadas hay en cada opción. Las opciones
+    sin piezas no se enseñan; un medio apagado (espacio) tampoco."""
+    import ghost_publish as G  # noqa: E402
+    b = base.rstrip("/")
+    cuenta = lambda f: sum(1 for p in piezas if f(p))  # noqa: E731
+    modo = lambda mid: {"id": mid, "nombre": tx.modos_t[mid]["nombre"], "url": "%s/tag/%s/" % (b, G.slug_modo(tx, mid)),  # noqa: E731
+                        "n": cuenta(lambda p: mid in (p.get("mo") or []))}
+    medios = []
+    for mid, m in tx.medios.items():
+        if not m.get("activo") or mid == "varios":
+            continue
+        ms = [modo(k) for k, x in tx.modos_t.items() if x["medio"] == mid and not x["mercancias"]]
+        medios.append({"id": mid, "nombre": m["nombre"], "url": "%s/%s/" % (b, mid), "n": cuenta(lambda p: p.get("md") == mid),
+                       "modos": [x for x in ms if x["n"]]})
+    logi = [modo(k) for k, x in tx.modos_t.items() if x["mercancias"]]
+    temas = [{"id": t, "nombre": x["nombre"], "url": "%s/tag/tema-%s/" % (b, t), "n": cuenta(lambda p: t in (p.get("te") or []))}
+             for t, x in tx.temas.items()]
+    regiones = [{"id": t, "nombre": x.get("nombre_corto") or x["nombre"], "tipo": x["tipo"], "url": "%s/tag/t-%s/" % (b, t),
+                 "n": cuenta(lambda p: t in (p.get("tr") or []))} for t, x in tx.territorios.items()]
+    voz = [{"id": p["id"], "t": p.get("t"), "url": p.get("url"), "d": p.get("d"), "img": p.get("gi")} for p in piezas if p.get("kind") == "opinion"]
+    return {"medios": medios, "logistica": {"nombre": "Logística", "url": "%s/logistica/" % b, "modos": [x for x in logi if x["n"]]},
+            "temas": [x for x in temas if x["n"]], "secciones": [{"nombre": "Regulación", "url": "%s/regulacion/" % b}, {"nombre": "Licitaciones", "url": "%s/licitaciones/" % b}],
+            "regiones": [x for x in regiones if x["n"]], "analisis": {"nombre": "Análisis", "url": "%s/analisis/" % b},
+            "voz": {"nombre": "La voz del editor", "url": "%s/la-voz-del-editor/" % b, "piezas": voz[:12]}}
 
 
 def textos(out):
     """(index.json, tipos.json) como texto, listos para escribir o subir."""
-    ligero = {"generado": out["generado"], "piezas": {p["id"]: [p["tc"], p["mc"]] for p in out["piezas"]}}
+    ligero = {"generado": out["generado"], "piezas": {p["id"]: [p["tc"], p["mc"]] for p in out["piezas"]}, "menu": out.get("menu")}
     return json.dumps(out, ensure_ascii=False, separators=(",", ":")), json.dumps(ligero, ensure_ascii=False, separators=(",", ":"))
 
 

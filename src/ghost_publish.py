@@ -292,6 +292,19 @@ def taxonomia(vertical):
     return _TX[vid]
 
 
+VOZ = {"nombre": "La voz del editor", "slug": "la-voz-del-editor",
+       "descripcion": "La voz del editor: temas espinosos del transporte y la movilidad con el enfoque y la firma del editor jefe de MOTICIAS, Rainer Uphoff. Opinión, señalada como tal; los hechos, con su fuente primaria."}
+
+
+def slug_modo(tx, mid):
+    """Slug de la etiqueta de Ghost de un modo. Si el eje antiguo tenía un submodo con el mismo id y el mismo nombre
+    (Puertos, Aerolíneas, Aeropuertos), se reutiliza su etiqueta m-… (Ghost busca las etiquetas por nombre)."""
+    viejo = tx.submodos.get(mid)
+    if viejo and plano(viejo[1]["nombre"]) == plano(tx.modos_t[mid]["nombre"]):
+        return "m-" + mid
+    return "modo-" + mid
+
+
 def etiquetas_taxonomia(tx):
     """Las etiquetas públicas de los tres ejes, con slug fijo (el tema de Ghost filtra por slug) y descripción (sale en llms.txt).
     Modo: m-<submodo> · Tema: tema-<id> · Territorio: t-<id>."""
@@ -300,6 +313,16 @@ def etiquetas_taxonomia(tx):
         for sm in m["submodos"]:
             out.append({"name": sm["nombre"] if sm["id"] != "transversal" else "Transversal", "slug": "m-" + sm["id"],
                         "description": "Piezas de MOTICIAS sobre %s (%s): noticias, regulación, contratos y análisis." % (sm["nombre"].lower(), m["nombre"].lower())})
+    # Modos de las etiquetas comunes (15-11-2026): los que coinciden en nombre con un eje antiguo reutilizan su etiqueta.
+    vistos = {e["slug"] for e in out}
+    for mid, m in tx.modos_t.items():
+        sl = slug_modo(tx, mid)
+        if sl in vistos:
+            continue
+        vistos.add(sl)
+        out.append({"name": m["nombre"], "slug": sl, "description": "Piezas de MOTICIAS sobre %s (%s): noticias, regulación, contratos y análisis." % (
+            m["nombre"].lower(), tx.medios[m["medio"]]["nombre"].lower())})
+    out.append({"name": VOZ["nombre"], "slug": VOZ["slug"], "description": VOZ["descripcion"]})
     for t in tx.tax["temas"]:
         out.append({"name": t["nombre"], "slug": "tema-" + t["id"], "description": "Piezas de MOTICIAS del tema «%s» en transporte, movilidad y logística." % t["nombre"]})
     for t in tx.tax["territorios"]:
@@ -319,6 +342,11 @@ def etiquetas_pieza(a, tx):
         # «m-transversal-2», «-3»… una por pieza; corregido el 15-11-2026).
         nombre_sm = sm["nombre"] if sm["id"] != "transversal" else "Transversal"
         tags.append({"name": nombre_sm, "slug": "m-" + sm["id"]}); nombres_ejes.add(plano(sm["nombre"])); nombres_ejes.add(plano(nombre_sm))
+    for mid in a.get("modos") or []:
+        if mid in tx.modos_t and not any(x.get("slug") == slug_modo(tx, mid) for x in tags):
+            tags.append({"name": tx.modos_t[mid]["nombre"], "slug": slug_modo(tx, mid)}); nombres_ejes.add(plano(tx.modos_t[mid]["nombre"]))
+    if a.get("kind") == "opinion":
+        tags.append({"name": VOZ["nombre"], "slug": VOZ["slug"]})
     for t in a.get("temas") or []:
         if t in tx.temas:
             tags.append({"name": tx.temas[t]["nombre"], "slug": "tema-" + t}); nombres_ejes.add(plano(tx.temas[t]["nombre"]))
@@ -486,6 +514,14 @@ def asegurar_etiquetas(tx, base_url, token):
 # ---------- publicación ----------
 def upsert(post, status, base_url, token):
     base_url = admin_base(base_url)
+    # «La voz del editor» se aprueba antes y sale el lunes: con fecha futura, Ghost la deja programada (scheduled).
+    if status == "published" and post.get("published_at"):
+        try:
+            cuando = datetime.datetime.fromisoformat(str(post["published_at"]).replace("Z", "+00:00"))
+            if cuando.tzinfo and cuando > datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=2):
+                status = "scheduled"
+        except ValueError:
+            pass
     post = dict(post, status=status)
     st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,updated_at" % (base_url, post["slug"]), token)
     if st == 200 and found.get("posts"):
