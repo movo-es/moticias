@@ -342,8 +342,25 @@ def informe(piezas, vertical, base_url, fecha):
     return "\n".join(md), "\n".join(h)
 
 
+def remitentes_avisos(vertical=None):
+    """Remitentes de los avisos internos, por orden (verticals → avisos.remitentes): si Brevo rechaza el primero (dominio sin
+    verificar), se prueba el siguiente. 15-11-2026: moticias.com aún no está verificado en Brevo."""
+    if vertical is None:
+        vertical = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
+    av = vertical.get("avisos") or {}
+    return [(r, av.get("nombre") or vertical.get("name", "MOTICIAS")) for r in av.get("remitentes") or ["redaccion@moticias.com"]]
+
+
 def enviar_correo(asunto, cuerpo_html, para, de, dry_run=False):
-    """Brevo transaccional (api.brevo.com/v3/smtp/email). Devuelve (ok, detalle)."""
+    """Brevo transaccional (api.brevo.com/v3/smtp/email). Devuelve (ok, detalle). `de` es (correo, nombre) o una lista de
+    ellos: si Brevo rechaza un remitente (400, sin verificar), se prueba el siguiente."""
+    if isinstance(de, list):
+        ultimo = (False, "sin remitentes")
+        for r in de:
+            ultimo = enviar_correo(asunto, cuerpo_html, para, r, dry_run)
+            if ultimo[0] or not ultimo[1].startswith("HTTP 400"):
+                return ultimo
+        return ultimo
     key = os.environ.get("BREVO_API_KEY")
     body = {"sender": {"email": de[0], "name": de[1]}, "to": [{"email": p} for p in para], "subject": asunto, "htmlContent": cuerpo_html}
     if dry_run or not key:
@@ -408,7 +425,7 @@ def main():
     para = cfg.get("email") or ["ruphoff@avionline.es"]
     if isinstance(para, str):
         para = [para]
-    de = (cfg.get("remitente") or os.environ.get("MENCIONES_FROM") or "redaccion@moticias.com", vertical.get("name", "MOTICIAS"))
+    de = [(os.environ["MENCIONES_FROM"], vertical.get("name", "MOTICIAS"))] if os.environ.get("MENCIONES_FROM") else remitentes_avisos(vertical)
     asunto = "%s · menciones del grupo %s (%d)" % (vertical.get("name", "MOTICIAS"), fecha, md.count("\n## "))
     ok, det = enviar_correo(asunto, h, para, de, args.dry_run)
     reg = {"fecha": fecha, "menciones": md.count("\n## "), "para": para, "enviado": ok, "detalle": det, "en": datetime.datetime.now().astimezone().isoformat(timespec="minutes")}

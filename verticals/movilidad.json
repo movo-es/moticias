@@ -2155,5 +2155,13 @@
    "encargos_gestor"
   ],
   "dias_copia_interna": 14
+ },
+ "avisos": {
+  "nota": "Remitentes de los avisos internos al director (restauración, copias, secciones, menciones), por orden: si Brevo rechaza uno, se usa el siguiente. moticias.com no está verificado en Brevo (15-11-2026): hasta que lo esté, los avisos salen de ruphoff@avionline.es, el remitente dado de alta en Brevo.",
+  "nombre": "MOTICIAS",
+  "remitentes": [
+   "redaccion@moticias.com",
+   "ruphoff@avionline.es"
+  ]
  }
 }

@@ -1242,7 +1242,7 @@ def copias_vigilar():
     cuerpo = ("<p>Copias de seguridad de MOTICIAS en el Mac:</p><ul>%s</ul><p>Producción sigue funcionando: esto solo avisa de que el "
               "respaldo no está al día. Basta con encender el Mac y dejarlo despierto un rato; la copia se hace sola. "
               "Detalle en el gestor: https://app.moticias.com/gestor/ → Equipo → Copias.</p>" % "".join("<li>%s</li>" % html_esc(m) for m in motivos))
-    ok, det = M.enviar_correo("MOTICIAS · copia de seguridad: %s" % motivos[0], cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))
+    ok, det = M.enviar_correo("MOTICIAS · copia de seguridad: %s" % motivos[0], cuerpo, para, M.remitentes_avisos(vertical()))
     return {"aviso": motivos, "enviado": ok, "detalle": det if not ok else None}
 
 
@@ -1265,8 +1265,12 @@ def _avisar_restauracion(asunto, lineas, enlace):
     para = (vertical().get("productos") or {}).get("email") or []
     cuerpo = "<p>%s</p><p><a href=\"%s\">Abrir en el gestor</a> (desde ahí se deshace).</p>" % ("<br>".join(html_esc(l) for l in lineas), enlace)
     try:
-        return M.enviar_correo("MOTICIAS · restauración: " + asunto, cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))[0]
-    except Exception:
+        ok, det = M.enviar_correo("MOTICIAS · restauración: " + asunto, cuerpo, para, M.remitentes_avisos(vertical()))
+        if not ok:
+            BD.registrar("sistema", "aviso_fallido", asunto[:200], {"detalle": det[:300]})
+        return ok
+    except Exception as e:
+        BD.registrar("sistema", "aviso_fallido", asunto[:200], {"detalle": str(e)[:300]})
         return False
 
 
@@ -1433,7 +1437,7 @@ def secciones_vigilar():
             cuerpo = ("<p>Comprobación de las secciones de moticias.com tras la última actualización:</p><ul>%s</ul><p>Detalle por sección: %s</p>"
                       % ("".join("<li>%s</li>" % html_esc(p) for p in res["problemas"]),
                          html_esc(", ".join("%s %d/%d" % (s, x["servidas"], x["esperadas"]) for s, x in res["secciones"].items()))))
-            ok, det = M.enviar_correo("MOTICIAS · las secciones no enseñan lo que deberían", cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))
+            ok, det = M.enviar_correo("MOTICIAS · las secciones no enseñan lo que deberían", cuerpo, para, M.remitentes_avisos(vertical()))
             BD.registrar("cron", "secciones_aviso", None, {"problemas": res["problemas"][:5], "enviado": ok})
             res["aviso"] = {"enviado": ok}
     return res
@@ -1690,7 +1694,7 @@ class handler(BaseHTTPRequestHandler):
             cab = self._cab()
             r = {"rol": ses and ses["perfil"], "nombre": ses and ses["nombre"], "permisos": ses and ses["permisos"],
                  "configurado": bool(_claves()["superadmin"]), "escritura": bool(os.environ.get("GITHUB_TOKEN")),
-                 "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"]), "bd": BD.configurada(), "barrido": bool(os.environ.get("RUTINA_BARRIDO_TOKEN")),
+                 "ghost": bool(os.environ.get("GHOST_ADMIN_KEY")), "oficina": bool(_claves()["oficina"]), "bd": BD.configurada(), "barrido": bool(os.environ.get("RUTINA_BARRIDO_TOKEN")), "brevo": bool(os.environ.get("BREVO_API_KEY")),
                  "ia": bool(os.environ.get("AI_GATEWAY_API_KEY") or cab.get("x-vercel-oidc-token") or os.environ.get("VERCEL_OIDC_TOKEN"))}
             marca = MARCA in self._galletas()
             cookie = None
@@ -1917,6 +1921,13 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
+        if a == "probar_aviso":  # diagnóstico: manda un correo de prueba al director y enseña lo que contesta Brevo
+            if "equipo" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe"})
+            v = vertical()
+            para = (v.get("productos") or {}).get("email") or []
+            ok, det = M.enviar_correo("MOTICIAS · correo de prueba de los avisos", "<p>Si lees esto, los avisos del gestor llegan.</p>", para, M.remitentes_avisos(v))
+            return self._enviar(200, {"ok": ok, "detalle": det[:300], "para": para, "remitentes": [r[0] for r in M.remitentes_avisos(v)]})
         if a in ("restaurar_version", "copia_recuperar"):
             if "restaurar" not in per:
                 return self._enviar(403, {"error": "tu perfil no restaura"})

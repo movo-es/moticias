@@ -965,8 +965,10 @@ async function verEquipo() {
   app.innerHTML = `<div class="vacio">Cargando equipo…</div>`;
   let d; try { d = await api("equipo"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
   let cp = null; try { cp = await api("copias"); } catch (e) { cp = null; }
+  setTimeout(() => { const b = $("#paviso"); if (b) b.onclick = async () => { b.disabled = true; try { const r = await api("probar_aviso", {}); $("#raviso").innerHTML = r.ok ? `<p class="okbox">Enviado a ${E(r.para.join(", "))}. Mira tu bandeja (y spam) en un minuto.</p>` : `<p class="warn">Brevo no lo ha enviado: ${E(r.detalle)}</p>`; } catch (e) { $("#raviso").innerHTML = `<p class="warn">${E(e.message)}</p>`; } b.disabled = false; }; }, 0);
   const sel = (id, v) => `<select data-perfil="${id}">${Object.keys(PERF).map(k => `<option value="${k}" ${k===v?"selected":""}>${PERF[k]}</option>`).join("")}</select>`;
   app.innerHTML = (d.accesible ? "" : `<div class="card" style="border-color:#e7c48d"><b>Falta dónde guardar el equipo</b><p class="mute">El equipo se guarda en la base privada del gestor; mientras no esté conectada, en ${E(d.almacen || d.repositorio)}, al que la llave de GitHub del gestor aún no llega.</p></div>`)
+  + `<div class="card"><h2>Correo de avisos</h2><p class="mute">Los avisos del gestor (restauraciones, copias, secciones, menciones) te llegan por correo. Comprueba que salen:</p><p><button class="b2" id="paviso" style="width:100%">Enviar correo de prueba</button></p><div id="raviso"></div></div>`
   + copiasCard(cp)
   + `<div class="card"><h1>Equipo</h1><p class="mute">Cada persona entra con su correo y su contraseña. La das de alta aquí y le mandas el enlace: con él crea su contraseña. Nunca se borra a nadie: se suspende. Solo el editor jefe publica; los demás proponen.</p>
     <form id="nueva"><label>Nombre</label><input id="nn" required maxlength="80"><label>Correo</label><input id="ne" type="email" required inputmode="email">
