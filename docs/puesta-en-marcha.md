@@ -27,3 +27,7 @@ Por el buzón solo entra contenido: `data/`, `docs/ediciones.md`, `docs/fuentes.
 ## Si un lote queda en `error`
 
 El mensaje dice qué fichero no encajaba: casi siempre, alguien cambió en `main` ese mismo fichero (por ejemplo, `docs/ediciones.md`) desde que la tarea lo leyó. La siguiente sesión con el repositorio al día vuelve a preparar el lote; nada se pisa ni se borra.
+
+## Copia de seguridad en el Mac (cambio `copia-de-seguridad-mac`, 15-11-2026)
+
+Es un respaldo: nada de lo anterior depende de ella. Instalación y comprobación en `docs/copia-de-seguridad.md`. Una sola vez, además: el espejo privado del repositorio (crear `movo-es/moticias-respaldo` vacío y privado, un token con permiso de escritura solo en él y guardarlo como secreto `ESPEJO_TOKEN` de Actions en `movo-es/moticias`). Comprobación: gestor → Equipo → «Copias de seguridad», y en GitHub, Actions → «espejo» en verde.

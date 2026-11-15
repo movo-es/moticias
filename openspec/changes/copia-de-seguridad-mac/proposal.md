@@ -1,6 +1,6 @@
 # Cambio: copia-de-seguridad-mac
 
-Fecha: 15 de noviembre de 2026. Origen: decisión de Rainer del mismo día («todo vive en la nube y el MacBook recibe copias regulares, solo como respaldo»). Estado: **propuesta, pendiente del «sí» de Rainer y de sus tres decisiones**. No se aplica nada hasta entonces.
+Fecha: 15 de noviembre de 2026. Origen: decisión de Rainer del mismo día («todo vive en la nube y el MacBook recibe copias regulares, solo como respaldo»). Estado: **aprobada por Rainer el 15-11-2026** («sí» a la propuesta y a las tres decisiones tal como se proponen); en aplicación.
 
 Respuesta corta: el propio macOS lanza, cuando el Mac está encendido, una copia de tres cosas —el repositorio con todo su historial, la base privada de Supabase y lo que solo está en Ghost— en una carpeta aparte (`~/Copias/MOTICIAS/`), cifrada en lo que tiene datos personales y con las claves en el llavero. Cada copia deja un registro sin datos (fecha, tamaños, huellas) que el gestor enseña; si pasan demasiados días sin copia, avisa. Una prueba de restauración documentada y periódica dice si la copia sirve. Nada en producción ni ninguna tarea programada depende del Mac: si el Mac no se enciende, lo único que pasa es que llega el aviso.
 
@@ -40,3 +40,11 @@ Producción sigue entera en la nube (Vercel, Supabase, Ghost, GitHub, tareas pro
 1. **Cada cuánto.** Propuesta: a diario a las 13:30 (hora a la que el Mac suele estar encendido) y aviso si pasan **3 días** sin copia correcta; prueba de restauración automática **cada mes** (el primer lunes).
 2. **Cuántas copias se conservan.** Propuesta: las 7 últimas diarias, 4 semanales y 12 mensuales (con el tamaño de hoy, menos de 100 MB en total).
 3. **Segunda copia en la nube.** Propuesta: **sí, solo del repositorio**, en un repositorio privado espejo (`movo-es/moticias-respaldo`, actualizado por un cron de Vercel, sin depender del Mac). La base privada y los miembros de Ghost seguirían **solo en el Mac**, como pidió; si quiere también una segunda copia cifrada de esos datos fuera del Mac, hay que elegir dónde (un disco externo o un servicio europeo) y decidirlo aparte.
+
+## Decisiones de Rainer (15-11-2026)
+
+1. **Frecuencia:** a diario a las 13:30; aviso si pasan más de 3 días sin copia correcta; prueba de restauración el primer lunes de cada mes (y siempre que la última correcta tenga más de 35 días).
+2. **Conservación:** 7 diarias, 4 semanales y 12 mensuales.
+3. **Segunda copia en la nube:** sí, solo del repositorio, en `movo-es/moticias-respaldo` (privado). La base privada y los miembros de Ghost, solo en el Mac.
+
+Decisión técnica (0.2): imagen de disco cifrada de macOS (AES-256, `hdiutil`), sin instalar nada; los datos se escriben directamente dentro de la imagen.

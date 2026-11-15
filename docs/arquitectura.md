@@ -44,6 +44,7 @@ Respuesta corta: este repositorio es la única fuente de verdad de MOTICIAS. Tod
 | Textos legales | `docs/legal/` (con los datos de Avionline) → páginas de Ghost | Rainer (revisión profesional después) |
 | Tema de moticias.com y textos de referencia de `llms.txt` | `ghost/theme/`, `ghost/` | `src/ghost_theme.py`; nunca el panel de Ghost |
 | Estrategia 2027 y su cambio | `docs/estrategia-2027.md`, `openspec/changes/plataforma-2027/` | Rainer y Code, método OpenSpec |
+| Copia de seguridad en el Mac (respaldo, nunca dependencia) | guiones en `scripts/copia-mac/`; copias en `~/Copias/MOTICIAS/` del Mac (base privada y Ghost, cifradas); registro sin datos en `copias_registro` (migración 010); espejo privado del repositorio `movo-es/moticias-respaldo` (`.github/workflows/espejo.yml`); `docs/copia-de-seguridad.md` | el Mac cada día (launchd); el cron `copias_vigilar` avisa si faltan copias |
 | Trabajo temporal de una sesión | `work/` (ignorado por git) | nadie lo conserva |
 
 ## 2. Las tres vías de actualización

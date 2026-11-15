@@ -864,11 +864,28 @@ async function verSuscriptores() {
 const PERF = {superadmin:"Editor jefe (superadministrador)", editor:"Editor", comercial:"Comercial", oficina:"Oficina"};
 const PERF_TXT = {superadmin:"Todo. Solo él publica: edita, retira y reenfoca piezas, publica cajas y publicidad, cambia productos y equipo.", editor:"Propone cajas en las piezas; CRM (fuentes, medios); ve suscriptores.", comercial:"Propone publicidad y patrocinios; CRM con contratos; ve suscriptores.", oficina:"Propone cajas; CRM; ve suscriptores."};
 const ESTP = {activa:["pub","Activa"], invitada:["pro","Invitada"], suspendida:["ret","Suspendida"]};
+// Copias de seguridad en el Mac (cambio copia-de-seguridad-mac): solo fecha, tamaños y recuentos; nunca datos.
+function copiasCard(c) {
+  if (!c || !c.configurada) return "";
+  const kb = n => n == null ? "—" : n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.round(n / 1024) + " KB";
+  const cuando = (f, d) => f ? `${E(f.fin.slice(0, 16).replace("T", " "))} (hace ${E(String(d))} días)` : "todavía ninguna";
+  const mal = c.dias_sin_copia == null || c.dias_sin_copia > c.umbral_dias, malp = c.dias_sin_prueba == null || c.dias_sin_prueba > c.umbral_prueba_dias;
+  const u = c.ultima_copia, pt = (u && u.partes) || {};
+  return `<div class="card" style="${mal || malp ? "border-color:#e7c48d" : ""}"><h1>Copias de seguridad</h1>
+    <p class="mute">El Mac guarda cada día una copia del repositorio, de la base privada y de Ghost (cifradas las dos últimas). Es solo un respaldo: la web no depende de él.</p>
+    <p><b>Última copia:</b> ${cuando(u, c.dias_sin_copia)}${u && u.equipo ? " · " + E(u.equipo) : ""}<br>
+    <b>Última copia probada (restaurada):</b> ${cuando(c.ultima_prueba, c.dias_sin_prueba)}</p>
+    ${u ? `<p class="mute">Repositorio ${kb((pt.repo||{}).bytes)} · base privada ${kb((pt.base||{}).bytes)} · Ghost ${kb((pt.ghost||{}).bytes)}${(pt.ghost||{}).miembros != null ? " (" + E(String(pt.ghost.miembros)) + " miembros)" : ""}</p>` : ""}
+    ${c.ultimo_intento && !c.ultimo_intento.ok ? `<p style="color:#a12b2b">El último intento falló: ${E(c.ultimo_intento.error || "sin detalle")}</p>` : ""}
+    ${mal ? `<p style="color:#8a5a00">Más de ${E(String(c.umbral_dias))} días sin copia: enciende el Mac y déjalo despierto un rato.</p>` : ""}</div>`;
+}
 async function verEquipo() {
   app.innerHTML = `<div class="vacio">Cargando equipo…</div>`;
   let d; try { d = await api("equipo"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  let cp = null; try { cp = await api("copias"); } catch (e) { cp = null; }
   const sel = (id, v) => `<select data-perfil="${id}">${Object.keys(PERF).map(k => `<option value="${k}" ${k===v?"selected":""}>${PERF[k]}</option>`).join("")}</select>`;
   app.innerHTML = (d.accesible ? "" : `<div class="card" style="border-color:#e7c48d"><b>Falta dónde guardar el equipo</b><p class="mute">El equipo se guarda en la base privada del gestor; mientras no esté conectada, en ${E(d.almacen || d.repositorio)}, al que la llave de GitHub del gestor aún no llega.</p></div>`)
+  + copiasCard(cp)
   + `<div class="card"><h1>Equipo</h1><p class="mute">Cada persona entra con su correo y su contraseña. La das de alta aquí y le mandas el enlace: con él crea su contraseña. Nunca se borra a nadie: se suspende. Solo el editor jefe publica; los demás proponen.</p>
     <form id="nueva"><label>Nombre</label><input id="nn" required maxlength="80"><label>Correo</label><input id="ne" type="email" required inputmode="email">
     <label>Perfil</label><select id="np">${Object.keys(PERF).map(k => `<option value="${k}" ${k==="editor"?"selected":""}>${PERF[k]} — ${PERF_TXT[k]}</option>`).join("")}</select>

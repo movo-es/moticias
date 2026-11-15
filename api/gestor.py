@@ -1200,6 +1200,53 @@ def lanzar_barrido(ses, pista):
 # La tarea programada no tiene las claves de Ghost; Vercel sí. Este cron mira qué edición enseña la portada de
 # moticias.com (página «edicion-hoy») y, si en data/editions/ hay alguna posterior, la publica con los mismos scripts
 # que la rutina (ghost_publish.py y ghost_edicion.py), en orden. Si la web ya está al día, no hace nada.
+# ---------- copias de seguridad en el Mac (cambio copia-de-seguridad-mac; migración 010) ----------
+# El Mac manda solo fecha, tamaños, huellas y recuentos (nunca datos). Producción no depende de él: si no hay copias,
+# lo único que pasa es que el cron diario avisa por correo.
+def copias_resumen():
+    if not BD.configurada():
+        return {"configurada": False}
+    cfg = vertical().get("copias") or {}
+    filas = BD.leer("copias_registro", select="id,clase,ok,inicio,fin,equipo,partes,error", order="fin.desc", limit="40")
+    ult = next((f for f in filas if f["clase"] == "copia" and f["ok"]), None)
+    prueba = next((f for f in filas if f["clase"] == "prueba" and f["ok"]), None)
+    ahora = datetime.datetime.now(datetime.timezone.utc)
+    dias = lambda f: None if not f else round((ahora - datetime.datetime.fromisoformat(f["fin"].replace("Z", "+00:00"))).total_seconds() / 86400, 1)
+    return {"configurada": True, "ultima_copia": ult, "dias_sin_copia": dias(ult), "ultima_prueba": prueba, "dias_sin_prueba": dias(prueba),
+            "ultimo_intento": filas[0] if filas else None, "historial": filas[:14],
+            "umbral_dias": cfg.get("aviso_dias_sin_copia", 3), "umbral_prueba_dias": cfg.get("aviso_dias_sin_prueba", 35)}
+
+
+def copias_vigilar():
+    """Cron diario: avisa a Rainer por correo si pasan más días de los fijados sin una copia correcta, si la última falló o
+    si hace más de un mes que no se prueba una restauración."""
+    r = copias_resumen()
+    if not r.get("configurada"):
+        return {"aviso": None, "motivo": "base sin configurar"}
+    motivos = []
+    if r["dias_sin_copia"] is None:
+        motivos.append("todavía no ha llegado ninguna copia del Mac")
+    elif r["dias_sin_copia"] > r["umbral_dias"]:
+        motivos.append("hace %s días de la última copia correcta (%s)" % (r["dias_sin_copia"], r["ultima_copia"]["fin"][:16].replace("T", " ")))
+    if r["ultimo_intento"] and not r["ultimo_intento"]["ok"]:
+        motivos.append("el último intento falló: %s" % (r["ultimo_intento"].get("error") or "sin detalle"))
+    if r["ultima_copia"] and (r["dias_sin_prueba"] is None or r["dias_sin_prueba"] > r["umbral_prueba_dias"]):
+        motivos.append("no hay una prueba de restauración correcta en los últimos %s días" % r["umbral_prueba_dias"])
+    if not motivos:
+        return {"aviso": None, "dias_sin_copia": r["dias_sin_copia"]}
+    v = vertical()
+    para = (v.get("copias") or {}).get("aviso_a") or (v.get("productos") or {}).get("email") or []
+    cuerpo = ("<p>Copias de seguridad de MOTICIAS en el Mac:</p><ul>%s</ul><p>Producción sigue funcionando: esto solo avisa de que el "
+              "respaldo no está al día. Basta con encender el Mac y dejarlo despierto un rato; la copia se hace sola. "
+              "Detalle en el gestor: https://app.moticias.com/gestor/ → Equipo → Copias.</p>" % "".join("<li>%s</li>" % html_esc(m) for m in motivos))
+    ok, det = M.enviar_correo("MOTICIAS · copia de seguridad: %s" % motivos[0], cuerpo, para, ("redaccion@moticias.com", "MOTICIAS"))
+    return {"aviso": motivos, "enviado": ok, "detalle": det if not ok else None}
+
+
+def html_esc(t):
+    return str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def ghost_al_dia(solo=None):
     import re as _re, shutil, subprocess
     url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
@@ -1403,6 +1450,11 @@ class handler(BaseHTTPRequestHandler):
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
             return self._enviar(200, ghost_al_dia())
+        if a == "copias_vigilar":  # Vercel Cron (diario): ¿hay copia reciente del Mac? Si no, correo a Rainer
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            return self._enviar(200, copias_vigilar())
         if a == "aplicar_buzon":  # Vercel Cron (cada 10 min): sube a main lo que las tareas dejaron en el buzón (migración 008)
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
@@ -1482,6 +1534,10 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(200 if r else 404, r or {"error": "pieza no encontrada"})
             if a == "firma":
                 return self._enviar(200, informe_firma())
+            if a == "copias":
+                if "equipo" not in per:
+                    return self._enviar(403, {"error": "solo el editor jefe ve las copias de seguridad"})
+                return self._enviar(200, copias_resumen())
             if a == "seguimiento":
                 if "publicidad" not in per and "contratos" not in per:
                     return self._enviar(403, {"error": "tu perfil no ve el seguimiento de la publicidad"})
@@ -1540,6 +1596,16 @@ class handler(BaseHTTPRequestHandler):
             d = json.loads(self.rfile.read(min(n, 400000)) or b"{}") if n else {}
         except (ValueError, json.JSONDecodeError):
             return self._enviar(400, {"error": "JSON no válido"})
+        if a == "copia":  # el Mac anota una copia o una prueba (token propio; solo fecha, tamaños, huellas y recuentos)
+            if not BD.configurada():
+                return self._enviar(503, {"error": "la base privada no está conectada"})
+            datos = {k: d.get(k) for k in ("clase", "ok", "inicio", "equipo", "partes", "error")}
+            try:
+                fila = BD.peticion("POST", "rpc/copia_anotar", cuerpo={"p_token": str(d.get("token") or ""), "p_datos": datos})
+            except BD.ErrorBD as e:
+                time.sleep(1)
+                return self._enviar(403 if "token" in str(e) else 502, {"error": str(e)[:200]})
+            return self._enviar(200, {"ok": True, "id": fila})
         if a == "evento":  # pública: visualizaciones y clics que manda el script de moticias.com (sendBeacon, texto plano)
             S.evento(d, self.headers.get("User-Agent"))
             return self._enviar(204, {}, cors="*")

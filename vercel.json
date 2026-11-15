@@ -93,6 +93,10 @@
   {
    "path": "/api/gestor?a=aplicar_buzon",
    "schedule": "*/10 * * * *"
+  },
+  {
+   "path": "/api/gestor?a=copias_vigilar",
+   "schedule": "5 8 * * *"
   }
  ]
 }

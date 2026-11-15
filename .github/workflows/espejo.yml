@@ -1,0 +1,33 @@
+# MOTICIAS · Espejo privado del repositorio (cambio copia-de-seguridad-mac, decisión 3 de Rainer, 15-11-2026).
+# Copia todas las ramas y etiquetas de movo-es/moticias en el repositorio privado movo-es/moticias-respaldo después de cada
+# subida a main y una vez al día. Solo el repositorio (que ya es público): nunca la base privada ni los miembros de Ghost.
+# No depende del Mac. Necesita el secreto ESPEJO_TOKEN (token con permiso de escritura solo en moticias-respaldo); si falta,
+# avisa y no falla.
+name: espejo
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: espejo
+  cancel-in-progress: false
+jobs:
+  espejo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copiar ramas y etiquetas al repositorio privado
+        env:
+          ESPEJO_TOKEN: ${{ secrets.ESPEJO_TOKEN }}
+        run: |
+          if [ -z "$ESPEJO_TOKEN" ]; then
+            echo "::warning::Falta el secreto ESPEJO_TOKEN: el espejo privado no se ha actualizado (docs/copia-de-seguridad.md)."
+            exit 0
+          fi
+          git clone --quiet --bare "https://github.com/${GITHUB_REPOSITORY}.git" origen.git
+          cd origen.git
+          git push --quiet --prune "https://x-access-token:${ESPEJO_TOKEN}@github.com/movo-es/moticias-respaldo.git" "+refs/heads/*:refs/heads/*" "+refs/tags/*:refs/tags/*"
+          echo "Espejo al día: $(git rev-parse refs/heads/main)"

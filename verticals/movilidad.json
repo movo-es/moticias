@@ -2044,5 +2044,39 @@
   "batida_tarde": "trig_01A5CAWQfbfusMNxU3krTUVU",
   "barrido": "trig_012Sc1jheY62WPUukGPstLqk",
   "nota": "ids de las tareas programadas de la cuenta de Rainer; el botón «Iniciar barrido de noticias ahora» lanza «barrido» con RUTINA_BARRIDO_TOKEN (solo en Vercel)"
+ },
+ "copias": {
+  "decidido": "2026-11-15",
+  "cambio": "copia-de-seguridad-mac",
+  "regla": "Todo vive en la nube; el MacBook de Rainer recibe copias regulares solo como respaldo. Nada en producción ni ninguna tarea programada depende del Mac. Datos personales (base privada, miembros de Ghost) solo cifrados y solo en el Mac. Claves en el llavero de macOS. Una copia sin prueba de restauración no cuenta.",
+  "carpeta": "~/Copias/MOTICIAS",
+  "hora": "13:30",
+  "aviso_dias_sin_copia": 3,
+  "prueba": "primer lunes de cada mes",
+  "aviso_dias_sin_prueba": 35,
+  "conservar": {
+   "diarias": 7,
+   "semanales": 4,
+   "mensuales": 12
+  },
+  "espejo_nube": {
+   "repositorio": "movo-es/moticias-respaldo",
+   "solo": "repositorio (público); nunca la base privada ni los miembros de Ghost"
+  },
+  "supabase": {
+   "proyecto": "cjrntzaqmvhgscdgiehs",
+   "usuario_lectura": "copia_lectura",
+   "region": "eu-central-1"
+  },
+  "llavero": {
+   "servicio": "moticias-copia",
+   "cuentas": [
+    "supabase-url",
+    "ghost-admin-key",
+    "cifrado",
+    "token-registro"
+   ]
+  },
+  "aviso_a": null
  }
 }
