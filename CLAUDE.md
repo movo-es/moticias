@@ -46,7 +46,7 @@ Este repositorio es la única fuente de verdad: reglas, fuentes, contenido y dec
 
 - Es experto senior en transporte y movilidad e «ignorante» en lo técnico fuera de su campo: explica sin dar por supuestos conocimientos de programación.
 - Todo comando para copiar y pegar lleva delante el `cd` a este proyecto, en un bloque copiable: trabaja con varios repositorios a la vez (`movo-es/movo`, `movo-es/avionline-contabilidad`, este).
-- Supabase (decisión de Rainer, 15-11-2026): aplicar migraciones (`apply_migration`) y ejecutar SQL (`execute_sql`) con el conector en el proyecto «moticias» están concedidos siempre; no se le pregunta. Sigue valiendo todo lo demás: migraciones que se pueden aplicar dos veces, nada se borra y nunca datos personales en el repositorio.
+- Supabase (decisión de Rainer, 15-11-2026, ampliada el mismo día): autorización general y permanente para todas las operaciones con Supabase (consultas, migraciones, SQL, funciones, trabajos programados, ajustes) sin preguntarle. Después se le cuenta qué se hizo, en claro. Sigue valiendo todo lo demás: migraciones que se pueden aplicar dos veces, nada se borra y nunca datos personales en el repositorio.
 - Todo debe funcionar en la nube, sin su ordenador abierto, y poder revisarse y aprobarse desde el móvil.
 - Publicación web: subdirectorios, nunca subdominios; estructura answer-first; Schema.org; `llms.txt`; datos propios antes que resúmenes.
 
