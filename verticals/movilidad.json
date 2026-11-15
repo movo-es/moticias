@@ -2551,9 +2551,10 @@
   "dias_copia_interna": 14
  },
  "avisos": {
-  "nota": "Remitentes de los avisos internos al editor jefe (restauración, copias, secciones, menciones), por orden. Brevo rechaza redaccion@moticias.com mientras moticias.com no esté autenticado (comprobado el 15-11-2026 en su registro de envíos: el rechazo llega después del envío, así que no hay reserva automática). Cuando moticias.com esté autenticado en Brevo, poner primero «redaccion@moticias.com».",
+  "nota": "Remitentes de los avisos internos al director (restauración, copias, secciones, menciones), por orden: si Brevo rechaza uno en el momento del envío, se usa el siguiente. moticias.com autenticado en Brevo el 15-11-2026 (registros DKIM, código Brevo, DMARC y subdominio de marca en Hostinger).",
   "nombre": "MOTICIAS",
   "remitentes": [
+   "redaccion@moticias.com",
    "ruphoff@avionline.es"
   ]
  }
