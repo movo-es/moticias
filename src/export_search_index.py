@@ -25,13 +25,22 @@ def recortar(s, n=220):
     return s if len(s) <= n else s[: n - 1].rsplit(" ", 1)[0] + "…"
 
 
+FOTOS_GHOST = {}
+try:
+    FOTOS_GHOST = json.load(open(os.path.join(ROOT, "portal", "img", "ghost-urls.json"), encoding="utf-8"))
+except (OSError, ValueError):
+    pass
+
+
 def entrada(a, base):
     img = a.get("image") or {}
+    src = img.get("src") or ""
+    gi = src if src.startswith("http") else FOTOS_GHOST.get(src[4:]) if src.startswith("img/") else None
     return {
         "id": a["id"], "t": a.get("title"), "k": a.get("kicker"), "s": a.get("subtitle"), "r": recortar(a.get("summary")),
         "d": a.get("date"), "kind": a.get("kind"), "au": a.get("author"), "f": a.get("featured") or 0,
         "m": a.get("modo"), "sm": a.get("submodo"), "te": a.get("temas") or [], "tr": a.get("territorios") or [], "tg": a.get("tags") or [],
-        "img": img.get("src"), "alt": img.get("alt"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),
+        "img": img.get("src"), "gi": gi, "alt": img.get("alt"), "sec": a.get("section"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),
         "pat": bool(a.get("menciones")) or bool(a.get("sponsored_by")),
         # tipo de contenido (editorial · noticia · nota_de_prensa · patrocinado) y la marca que ve el lector
         "tc": T.tipo(a, "articles"), "mc": T.marca(a, "articles"), "dir": T.es_del_director(a),

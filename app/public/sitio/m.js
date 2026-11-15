@@ -16,6 +16,7 @@
       («Análisis del director», «Análisis», «Reportaje», «Noticia», «Nota de prensa · Comunicado de …»), leída de
       app.moticias.com/buscador/tipos.json (lo genera src/export_search_index.py). Dentro de cada pieza la marca ya va
       en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
+   6. Pinta las páginas de sección con sus piezas (la plantilla del tema salía vacía).
    5. Oculta la marca «Powered by Ghost» de la ventana de entrada y suscripción de Ghost.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
@@ -59,7 +60,7 @@
     usadas[c[0].id] = 1; return c[0];
   }
   function utm(u, x, hueco) {
-    try { var url = new URL(u); if (!url.searchParams.get("utm_source")) { url.searchParams.set("utm_source", "moticias"); url.searchParams.set("utm_medium", x.tipo); url.searchParams.set("utm_campaign", x.campana); url.searchParams.set("utm_content", hueco); } return url.toString(); } catch (e) { return u; }
+    try { var url = new URL(u); if (!/^https?:$/.test(url.protocol)) return u; if (!url.searchParams.get("utm_source")) { url.searchParams.set("utm_source", "moticias"); url.searchParams.set("utm_medium", x.tipo); url.searchParams.set("utm_campaign", x.campana); url.searchParams.set("utm_content", hueco); } return url.toString(); } catch (e) { return u; }
   }
   function caja(x, hueco, ancha) {
     var rel = "sponsored noopener";  // sin excepción: también las cajas del grupo
@@ -121,6 +122,63 @@
     if (d.body.classList.contains("post-template")) cuandoEste("aside.m-aside", function () { publicidad(j); cajasDelTema(); vigilarCajas(); }); else { publicidad(j); cajasDelTema(); vigilarCajas(); }
   }).catch(function () { vigilarCajas(); });
 
+  // ---------- 6. Secciones ----------
+  // Las páginas de sección (/tierra/, /mar/, /aire/, /logistica/, /regulacion/, /licitaciones/, /analisis/) usan la
+  // plantilla «custom-seccion» del tema, que no está en el repositorio y salía vacía (15-11-2026). Hasta que el tema se
+  // versione (publicar-en-ghost-v1), este script pinta cada sección con las piezas publicadas, leídas del índice del
+  // buscador (app.moticias.com/buscador/index.json) y filtradas por los tres ejes (modo, tema) o por el tipo de contenido.
+  var SECCIONES = {
+    tierra: function (p) { return p.m === "tierra"; },
+    mar: function (p) { return p.m === "mar"; },
+    aire: function (p) { return p.m === "aire"; },
+    logistica: function (p) { return p.m === "logistica"; },
+    regulacion: function (p) { return (p.te || []).indexOf("regulacion") >= 0; },
+    licitaciones: function (p) { return (p.te || []).indexOf("concesiones") >= 0; },
+    analisis: function (p) { return p.tc === "editorial"; }
+  };
+  var secActual = (location.pathname.match(/^\/([a-z]+)\/?$/) || [])[1];
+  if (secActual && SECCIONES[secActual] && d.querySelector("main#main")) {
+    css.textContent += ".mtx-sec{list-style:none;margin:0;padding:0;display:grid;gap:22px}" +
+      ".mtx-sec li{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding-bottom:22px;border-bottom:1px solid #e5e7eb}" +
+      ".mtx-sec img{width:200px;height:130px;object-fit:cover;border-radius:6px;background:#eef0f2}" +
+      ".mtx-sec .sf{display:flex;align-items:center;justify-content:center;width:200px;height:130px;border-radius:6px;background:#0b2545;color:#fff;font:700 13px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}" +
+      ".mtx-sec .k{font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6b7280;margin:0 0 6px}" +
+      ".mtx-sec .k b{color:#7a1f2b;font-weight:700}" +
+      ".mtx-sec h2{font-size:21px;line-height:1.25;margin:0 0 6px}.mtx-sec h2 a{color:inherit;text-decoration:none}" +
+      ".mtx-sec p.r{margin:0;color:#374151;font-size:15px;line-height:1.45}" +
+      ".mtx-mas{margin:22px 0 0;padding:10px 18px;border:1px solid #d1d5db;border-radius:20px;background:#fff;font:600 14px system-ui,sans-serif;cursor:pointer}" +
+      "@media(max-width:640px){.mtx-sec li{grid-template-columns:1fr}.mtx-sec img,.mtx-sec .sf{width:100%;height:190px}}";
+    var MES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    var fecha = function (iso) { var x = String(iso || "").split("-"); return x.length === 3 ? (+x[2]) + " " + MES[+x[1] - 1] + " " + x[0] : ""; };
+    fetch(API + "/buscador/index.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (ix) {
+      if (!ix || !ix.piezas) return;
+      var subs = {};
+      (ix.taxonomia.modos || []).forEach(function (m) { (m.submodos || []).forEach(function (s) { subs[s.id] = s.nombre; }); });
+      var lista = ix.piezas.filter(SECCIONES[secActual]).sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
+      var main = d.querySelector("main#main"), vacio = main.querySelector("p.empty");
+      var caja = vacio ? vacio.parentNode : null;
+      if (!caja) { var sec0 = d.createElement("section"); sec0.className = "block"; caja = d.createElement("div"); caja.className = "wrap"; sec0.appendChild(caja); main.insertBefore(sec0, main.firstChild); }
+      if (vacio) vacio.remove();
+      if (!lista.length) { caja.insertAdjacentHTML("beforeend", '<p class="empty">Todavía no hay piezas en esta sección.</p>'); return; }
+      var ul = d.createElement("ul"); ul.className = "mtx-sec"; caja.appendChild(ul);
+      var n = 0;
+      function mas() {
+        lista.slice(n, n + 20).forEach(function (p) {
+          var li = d.createElement("li");
+          li.innerHTML = (p.gi ? '<a href="' + E(p.url) + '"><img src="' + E(p.gi) + '" alt="' + E(p.alt) + '" loading="lazy"></a>' : '<a class="sf" href="' + E(p.url) + '" aria-hidden="true">' + E(subs[p.sm] || "MOTICIAS") + "</a>") +
+            '<div><p class="k"><b>' + E(p.mc || "") + "</b> · " + E(subs[p.sm] || "") + " · " + E(fecha(p.d)) + "</p>" +
+            '<h2><a href="' + E(p.url) + '">' + E(p.t) + "</a></h2>" + (p.r ? '<p class="r">' + E(p.r) + "</p>" : "") + "</div>";
+          ul.appendChild(li);
+        });
+        n += 20;
+        var b = caja.querySelector(".mtx-mas");
+        if (n < lista.length && !b) { b = d.createElement("button"); b.className = "mtx-mas"; b.textContent = "Ver más"; b.onclick = mas; caja.appendChild(b); }
+        else if (n >= lista.length && b) b.remove();
+      }
+      mas();
+    }).catch(function () {});
+  }
+
   // ---------- 5. Sin «Powered by Ghost» ----------
   // La ventana de entrada y suscripción de Ghost (Portal) pinta siempre la marca «Powered by Ghost» y no tiene ajuste para
   // quitarla. Esa ventana va en marcos de la misma página (mismo origen), así que se le añade una regla que la oculta
@@ -152,7 +210,7 @@
     [].forEach.call(d.querySelectorAll("main h1 a[href], main h2 a[href], main h3 a[href], .lead h2 a, .second h3 a, .m-map-list a[href]"), function (a) {
       try { var u = new URL(a.href, location.href); } catch (e) { return; }
       var mm = u.host === location.host && u.pathname.match(SLUG_TC), x = mm && tc[mm[1]];
-      if (!x || (u.pathname === location.pathname) || a.parentNode.querySelector(".mtx-tc")) return;
+      if (!x || (u.pathname === location.pathname) || a.parentNode.querySelector(".mtx-tc") || a.closest(".mtx-sec")) return;
       var s = d.createElement("span");
       s.className = "mtx-tc t-" + x[0]; s.textContent = x[1];
       s.style.display = "block"; a.insertAdjacentElement("beforebegin", s);

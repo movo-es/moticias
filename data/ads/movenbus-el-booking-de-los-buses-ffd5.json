@@ -13,7 +13,7 @@
   }
  ],
  "id": "movenbus-el-booking-de-los-buses-ffd5",
- "label": "Publicidad",
+ "label": "Contenido patrocinado · servicio del grupo",
  "name": "Movenbus",
  "nivel": "premium",
  "sections": [],
@@ -25,7 +25,7 @@
  "status": "activo",
  "text": "Excursiones, circuitos, MICE, eventos...: organizar la movilidad de grupos nunca fue más fácil. Movenbus te permite alquilar los autocares que necesites con los principales operadores de autocar en toda España, en muchos casos en tiempo real.",
  "tipo_contenido": "patrocinado",
- "type": "publicidad",
+ "type": "grupo",
  "updated_at": "2026-11-15T19:50+00:00",
  "url": "https://movenbus.com",
  "utm": true,

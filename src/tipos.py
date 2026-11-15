@@ -18,6 +18,7 @@ Uso:
   python3 -I src/tipos.py pieza data/articles/<id>.json   # tipo, marca y etiquetas de un documento (JSON)
 """
 import glob, json, os, sys
+from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TIPOS = ("editorial", "noticia", "nota_de_prensa", "patrocinado")
@@ -108,11 +109,37 @@ def marca(doc, coleccion="articles", v=None):
     return ""
 
 
+def dominios_grupo(v=None):
+    """Dominios de las empresas del grupo (verticals → grupo.marcas y editor) y del propio medio."""
+    v = v or vertical()
+    g = v.get("grupo") or {}
+    urls = [m.get("url") for m in g.get("marcas") or []] + [(g.get("editor") or {}).get("url"), "https://" + (v.get("domain") or "")]
+    out = set()
+    for u in urls:
+        h = urlparse(u or "").hostname or ""
+        if h:
+            out.add(h[4:] if h.startswith("www.") else h)
+    return out
+
+
+def anuncio_es_del_grupo(ad, v=None):
+    """Una caja anuncia un servicio del grupo si enlaza a un dominio del grupo o su anunciante es una marca del grupo."""
+    v = v or vertical()
+    h = urlparse(str(ad.get("url") or "")).hostname or ""
+    h = h[4:] if h.startswith("www.") else h
+    if str(ad.get("url") or "").startswith("mailto:"):
+        h = str(ad["url"]).split("@", 1)[-1].split("?", 1)[0].lower()
+    if any(h == dom or h.endswith("." + dom) for dom in dominios_grupo(v)):
+        return True
+    anunciante = (ad.get("advertiser") or "").lower()
+    return any(m.get("nombre") and m["nombre"].lower() in anunciante for m in (v.get("grupo") or {}).get("marcas") or [])
+
+
 def marca_anuncio(ad, v=None):
     """Etiqueta de una caja de `data/ads/` según su `type`: grupo · patrocinio (cliente) · publicidad."""
     m = cfg(v).get("marcas") or {}
     t = ad.get("type") or "publicidad"
-    if t == "grupo":
+    if t == "grupo" or anuncio_es_del_grupo(ad, v):  # lo del grupo es siempre «servicio del grupo», lo hayan tipado como lo hayan tipado
         return m["patrocinado_grupo"]
     if t == "patrocinio":
         return m["patrocinado_cliente"] % {"cliente": ad.get("advertiser") or "cliente"}
@@ -170,6 +197,8 @@ def errores(doc, coleccion="articles", v=None):
             out.append("una nota de prensa no va en data/articles/ (va en data/notas-de-prensa/)")
     if coleccion == "notas-de-prensa" and doc.get("featured"):
         out.append("una nota de prensa no va en la portada")
+    if coleccion == "ads" and doc.get("type") != "grupo" and anuncio_es_del_grupo(doc, v):
+        out.append("anuncia un servicio del grupo: su tipo es «grupo» («Contenido patrocinado · servicio del grupo»)")
     if coleccion == "ads" and (doc.get("type") or "") not in TIPOS_ANUNCIO:
         out.append("tipo de anuncio desconocido: %s (admitidos: %s)" % (doc.get("type"), ", ".join(TIPOS_ANUNCIO)))
     if d and t != d and not out:

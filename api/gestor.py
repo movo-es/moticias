@@ -418,13 +418,13 @@ def publicidad_publica():
     huecos = set((pub.get("huecos") or {}).keys())
     hoy, out = _hoy(), {}
     for a in anuncios():
-        if a.get("status") != "activo" or not a.get("url") or not str(a.get("url")).startswith("https://"):
+        if a.get("status") != "activo" or not a.get("url") or not str(a.get("url")).startswith(("https://", "mailto:")):
             continue
         if (a.get("start") and a["start"] > hoy) or (a.get("end") and a["end"] < hoy):
             continue
         # La etiqueta sale siempre de src/tipos.py: el lector ve «Contenido patrocinado · servicio del grupo»,
         # «Contenido patrocinado · <cliente>» o «Publicidad», nunca otro texto. Todos los enlaces llevan rel="sponsored".
-        caja = {"id": a["id"], "tipo": a.get("type") or "publicidad", "etiqueta": T.marca_anuncio(a, v), "rel": T.rel("patrocinado"),
+        caja = {"id": a["id"], "tipo": "grupo" if T.anuncio_es_del_grupo(a, v) else (a.get("type") or "publicidad"), "etiqueta": T.marca_anuncio(a, v), "rel": T.rel("patrocinado"),
                 "anunciante": a.get("advertiser") or "", "titular": a.get("headline") or "", "texto": a.get("text") or "", "cta": a.get("cta") or "",
                 "url": a["url"], "nivel": a.get("nivel") or "estandar", "peso": int(a.get("weight") or 1), "imagen": a.get("image") or None,
                 "secciones": a.get("sections") or [], "campana": a.get("utm_campaign") or a["id"]}
@@ -453,8 +453,8 @@ def accion_anuncio(ses, d):
     if "slots" in cambios:
         if not isinstance(cambios["slots"], list) or not set(cambios["slots"]) <= set((pub.get("huecos") or {}).keys()):
             return 400, {"error": "hueco no válido"}
-    if cambios.get("url") and not str(cambios["url"]).startswith("https://"):
-        return 400, {"error": "el enlace tiene que empezar por https://"}
+    if cambios.get("url") and not str(cambios["url"]).startswith(("https://", "mailto:")):
+        return 400, {"error": "el enlace tiene que empezar por https:// (o mailto: para escribir a un correo)"}
     for k in ("start", "end"):
         if cambios.get(k) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(cambios[k])):
             return 400, {"error": "fecha no válida (%s)" % k}
@@ -492,10 +492,12 @@ def accion_anuncio(ses, d):
         a.setdefault("historial", []).append({"en": datetime.datetime.now().astimezone().isoformat(timespec="minutes"), "estado": cambios["status"],
                                               "por": ses["perfil"]})
     a.update(cambios)
+    if T.anuncio_es_del_grupo(a, v):  # enlaza a una empresa del grupo: siempre «servicio del grupo» (tipos-de-contenido)
+        a["type"] = "grupo"
     a["tipo_contenido"] = "patrocinado"
     a["label"] = T.marca_anuncio(a, v)  # la etiqueta visible no se escribe a mano: sale del tipo (y del cliente, si paga uno)
     if a.get("status") == "activo" and (not a.get("url") or not a.get("slots") or not a.get("headline")):
-        return 400, {"error": "para activarla necesita titular, enlace https:// y al menos un hueco"}
+        return 400, {"error": "para activarla necesita titular, enlace (https:// o mailto:) y al menos un hueco"}
     a["updated_at"] = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
     for k in ("amount_eur", "contact", "invoice_ref"):  # lo comercial va al CRM (privado), no al repositorio público
         a.pop(k, None)

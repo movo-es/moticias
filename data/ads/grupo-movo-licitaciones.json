@@ -17,6 +17,7 @@
  "image": null,
  "label": "Contenido patrocinado · servicio del grupo",
  "name": "Grupo · MOVO valoración de licitaciones",
+ "nivel": "estandar",
  "notes": "Embudo hacia MOVO. Medir solicitudes recibidas por asunto del correo.",
  "pricing": "sin coste · servicio del grupo",
  "sections": [
@@ -26,8 +27,7 @@
  ],
  "slots": [
   "portada-medio",
-  "articulo-cierre",
-  "seccion"
+  "articulo-cierre"
  ],
  "start": "2026-11-04",
  "status": "terminado",

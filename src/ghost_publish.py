@@ -315,7 +315,10 @@ def etiquetas_pieza(a, tx):
     nombres_ejes = set()
     if a.get("submodo") and a["submodo"] in tx.submodos:
         sm = tx.submodos[a["submodo"]][1]
-        tags.append({"name": sm["nombre"], "slug": "m-" + sm["id"]}); nombres_ejes.add(plano(sm["nombre"]))
+        # El mismo nombre que etiquetas_taxonomia (Ghost busca la etiqueta por nombre: con otro nombre creaba
+        # «m-transversal-2», «-3»… una por pieza; corregido el 15-11-2026).
+        nombre_sm = sm["nombre"] if sm["id"] != "transversal" else "Transversal"
+        tags.append({"name": nombre_sm, "slug": "m-" + sm["id"]}); nombres_ejes.add(plano(sm["nombre"])); nombres_ejes.add(plano(nombre_sm))
     for t in a.get("temas") or []:
         if t in tx.temas:
             tags.append({"name": tx.temas[t]["nombre"], "slug": "tema-" + t}); nombres_ejes.add(plano(tx.temas[t]["nombre"]))

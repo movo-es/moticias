@@ -17,18 +17,17 @@
  "pricing": "sin coste · servicio del grupo",
  "sections": [],
  "slots": [
-  "portada-pie",
-  "articulo-lateral",
-  "blog"
+  "pie"
  ],
  "start": "2026-11-04",
  "status": "activo",
  "text": "Patrocinios de sección, banners y presencia en ediciones a medida. Siempre señalizados y separados del contenido editorial.",
  "type": "grupo",
- "updated_at": "2026-11-04T18:00:00+01:00",
- "url": "#anunciate",
+ "updated_at": "2026-11-15T21:00+01:00",
+ "url": "mailto:redaccion@moticias.com?subject=Publicidad%20y%20patrocinios%20en%20MOTICIAS",
  "utm": true,
  "utm_campaign": "",
  "weight": 1,
- "tipo_contenido": "patrocinado"
+ "tipo_contenido": "patrocinado",
+ "nivel": "basico"
 }
