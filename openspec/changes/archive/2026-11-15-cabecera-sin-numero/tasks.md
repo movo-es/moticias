@@ -1,0 +1,5 @@
+- [x] Título de `edicion-hoy` solo con el día; número en `<meta name="moticias-edicion">` (`src/ghost_edicion.py`)
+- [x] `ghost_al_dia` lee el número de la etiqueta, con el título como reserva y sin republicar a ciegas (`api/gestor.py`)
+- [x] Comprobación de la tarea diaria por fecha (`docs/tarea-edicion-diaria.md`)
+- [x] Desplegar en Vercel antes de republicar la página
+- [x] Republicar la página de la última edición y comprobar www.moticias.com

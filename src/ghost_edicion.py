@@ -5,7 +5,7 @@
   python3 -I src/ghost_edicion.py --date AAAA-MM-DD               actualiza la página «edicion-hoy» en Ghost
 
 Qué es. La portada de www.moticias.com la pinta el tema a partir de dos cosas: los posts (cada pieza, que sube
-src/ghost_publish.py) y la página de Ghost con slug `edicion-hoy`, de la que toma el título («Edición nº N · día»),
+src/ghost_publish.py) y la página de Ghost con slug `edicion-hoy`, de la que toma el título (solo el día: «sábado, 14 de noviembre de 2026»),
 el extracto («Cierre HH:MM CET») y el cuerpo con los bloques de la edición: teletipo del BOE, documento del día, mapa de la
 semana, tabla de boletines, próximos plazos y nota metodológica. Este script construye ese cuerpo desde `data/`
 (editions, boletines, agenda, articles) y lo guarda en la página. Si la página no la actualiza nadie, la web sigue
@@ -17,6 +17,10 @@ notas de prensa (#comunicado, #tipo-nota-de-prensa) y lo patrocinado no entran e
 Decisión de Rainer (9-11-2026): el resumen de la edición («Edición nº N de MOTICIAS, …: P piezas, B referencias del BOE y
 A plazos. Apertura: …») NO va arriba, distrae; va al final de la edición, en pequeño. Por eso `meta_description` de la
 página queda vacía (el tema la pintaba bajo el título) y el resumen se escribe como última línea del cuerpo.
+
+Cabecera sin número (decisión de Rainer, 15-11-2026, cambio `cabecera-sin-numero`): la cabecera de moticias.com enseña
+solo la fecha y la hora; el número de la edición se conserva en `data/editions/` y, en Ghost, en una etiqueta <meta> de la
+inyección de cabecera de la página (`moticias-edicion`), que no ve el lector y de la que lo lee el cron `ghost_al_dia`.
 
 Variables de entorno (nunca en el repositorio): GHOST_URL y GHOST_ADMIN_KEY (id:secret), como en ghost_publish.py.
 """
@@ -173,7 +177,9 @@ def construir(dia, vertical):
     h.append('<p class="m-fin-ed">FIN DE EDICIÓN · %s, %s CET</p>' % (e(sin_dia(dia)), e(ed.get("closed_at") or "")))
     h.append("</div>")
     h.append("<!--kg-card-end: html-->")
-    pagina = {"title": "Edición nº %s · %s" % (ed.get("number"), larga(dia)), "custom_excerpt": "Cierre %s CET" % (ed.get("closed_at") or ""),
+    pagina = {"title": larga(dia), "custom_excerpt": "Cierre %s CET" % (ed.get("closed_at") or ""),
+              # El número no se enseña (15-11-2026), pero se guarda aquí para saber qué edición tiene la web.
+              "codeinjection_head": '<meta name="moticias-edicion" content="%s" data-fecha="%s">' % (e(ed.get("number")), e(dia)),
               # Un espacio de anchura cero: con la descripción vacía, Ghost pinta en su lugar la descripción del sitio, y el tema
               # la mostraba bajo el título. Hasta que el tema versionado quite ese párrafo (y la regla CSS de
               # ghost/inyeccion-cabecera.html lo oculte), así queda en blanco.

@@ -1457,9 +1457,15 @@ def ghost_al_dia(solo=None):
             pass
     base, tok = G.admin_base(url.rstrip("/")), G.ghost_token(key)
     st, r = G.api("GET", base + "/ghost/api/admin/pages/slug/edicion-hoy/", tok)
-    titulo = ((r or {}).get("pages") or [{}])[0].get("title", "") if st == 200 else ""
-    m = _re.search(r"n\D{0,3}(\d+)", titulo)
+    if st != 200:
+        return {"ok": False, "error": "no se pudo leer la página edicion-hoy de Ghost (%s)" % st}
+    pag = ((r or {}).get("pages") or [{}])[0]
+    # Desde el 15-11-2026 el título es solo la fecha; el número va en <meta name="moticias-edicion"> (cambio cabecera-sin-numero).
+    m = _re.search(r'name="moticias-edicion" content="(\d+)"', pag.get("codeinjection_head") or "") \
+        or _re.search(r"n\D{0,3}(\d+)", pag.get("title", ""))
     en_web = int(m.group(1)) if m else 0
+    if not en_web and not solo:  # sin número no se sabe qué tiene la web: no se republica todo a ciegas
+        return {"ok": False, "error": "la página edicion-hoy no dice qué edición tiene; publícala a mano con ghost_edicion.py"}
     faltan = [f for f, n in sorted(eds.items()) if n > en_web] if not solo else [solo]
     if not faltan:
         return {"ok": True, "en_web": en_web, "publicadas": []}
