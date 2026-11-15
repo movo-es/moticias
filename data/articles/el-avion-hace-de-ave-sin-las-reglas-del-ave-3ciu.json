@@ -187,5 +187,13 @@
  ],
  "title": "El avión hace de AVE sin las reglas del AVE",
  "why": "La capacidad aérea que sostiene el corredor es voluntaria y el tope de precios no la alcanza sin aval europeo, mientras la reapertura llegará con menos frecuencias hasta comienzos de 2027.",
- "tipo_contenido": "editorial"
+ "tipo_contenido": "editorial",
+ "medio": "aire",
+ "modos": [
+  "aerolineas"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-10",
+ "importancia": 4
 }

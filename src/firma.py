@@ -22,6 +22,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def config(vertical):
     ed = vertical.get("editorial") or {}
     c = dict({"max_pct": 10, "objetivo_pct": 7, "ventana_dias": 30, "tipos": ["analisis", "reportaje"]}, **(ed.get("firma_director") or {}))
+    c["importancia_minima"] = ((vertical.get("taxonomia") or {}).get("importancia") or {}).get("firma_minima", 4)
     c["director"] = ed.get("director", "Rainer Uphoff")  # siempre con apellido (Rainer, 9-11-2026)
     c["director_antes"] = set(ed.get("director_firma_antigua") or [])
     c["director_role"] = ed.get("director_role", "Editor jefe de MOTICIAS")
@@ -67,7 +68,11 @@ def importante(a, c):
         return False, "el editor jefe pidió firma de la redacción"
     if a.get("kind") not in c["tipos"]:
         return False, "las %ss las firma la redacción" % (a.get("kind") or "pieza")
-    if str(a.get("relevance") or "").upper() != "ALTA":
+    # Desde el 15-11-2026 (etiquetas comunes) manda la importancia 1–5: 4 o 5 equivale a la antigua relevancia ALTA.
+    if a.get("importancia") in (1, 2, 3, 4, 5):
+        if a["importancia"] < c.get("importancia_minima", 4):
+            return False, "importancia %s (hace falta %s o más)" % (a["importancia"], c.get("importancia_minima", 4))
+    elif str(a.get("relevance") or "").upper() != "ALTA":
         return False, "relevancia no ALTA"
     mot = a.get("motivo_importante")
     if mot:

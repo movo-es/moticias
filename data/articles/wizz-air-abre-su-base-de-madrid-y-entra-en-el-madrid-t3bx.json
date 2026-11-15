@@ -204,5 +204,14 @@
   "ue"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "aire",
+ "modos": [
+  "aerolineas",
+  "aeropuertos"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-06",
+ "importancia": 3
 }

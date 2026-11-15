@@ -213,5 +213,14 @@
    "por": "sistema",
    "accion": "sin estado y en borrador en Ghost desde su edición: pasa a la cola de aprobación del editor jefe"
   }
- ]
+ ],
+ "medio": "tierra",
+ "modos": [
+  "autobus",
+  "carretera"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-19",
+ "importancia": 4
 }

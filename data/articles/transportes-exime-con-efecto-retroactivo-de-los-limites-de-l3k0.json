@@ -215,5 +215,13 @@
  ],
  "title": "Transportes exime con efecto retroactivo de los límites de conducción a los autobuses del corte de Urda",
  "why": "Da cobertura legal, con efecto retroactivo, a los excesos de conducción de los cinco primeros días del corte, pero solo a quien comunique sus matrículas. Desde el 2 de noviembre rigen los límites ordinarios aunque los planes alternativos continúan, lo que obliga a dimensionar las tripulaciones con las reglas de siempre.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "tierra",
+ "modos": [
+  "autobus"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-10",
+ "importancia": 3
 }

@@ -137,5 +137,12 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "tren-mercancias"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "importancia": 4
 }

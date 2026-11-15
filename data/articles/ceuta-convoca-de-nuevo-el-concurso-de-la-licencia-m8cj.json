@@ -179,5 +179,13 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "mar",
+ "modos": [
+  "puertos"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-12-28",
+ "importancia": 3
 }

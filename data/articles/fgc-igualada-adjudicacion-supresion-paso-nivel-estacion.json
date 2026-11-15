@@ -222,5 +222,13 @@
   "cataluna"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros",
+  "metro-tranvia"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }

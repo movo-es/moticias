@@ -174,5 +174,12 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "aire",
+ "modos": [
+  "aeropuertos"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }

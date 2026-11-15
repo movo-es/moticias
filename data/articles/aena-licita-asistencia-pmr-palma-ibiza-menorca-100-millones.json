@@ -224,5 +224,13 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "aire",
+ "modos": [
+  "aeropuertos"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-17",
+ "importancia": 4
 }

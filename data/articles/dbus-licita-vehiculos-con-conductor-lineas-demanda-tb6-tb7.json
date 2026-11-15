@@ -211,5 +211,14 @@
   "ue"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "transporte-demanda",
+  "autobus"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-30",
+ "importancia": 3
 }

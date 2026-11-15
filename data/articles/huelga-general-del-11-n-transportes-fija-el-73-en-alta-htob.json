@@ -208,5 +208,12 @@
  ],
  "title": "Huelga general del 11-N: Transportes fija el 73 % en alta velocidad y el 75 % de Cercanías en hora punta",
  "why": "Fija el día central de tres jornadas seguidas de servicio reducido, con el corredor Madrid–Andalucía cortado desde Urda. Cuantifica el impacto del paro general en el tren y deja a Renfe con menos de un tercio de la plantilla convocada designada para sostener el 73 % de la larga distancia.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "importancia": 4
 }

@@ -187,5 +187,12 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "mar",
+ "modos": [
+  "pasaje-ferris"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "importancia": 4
 }

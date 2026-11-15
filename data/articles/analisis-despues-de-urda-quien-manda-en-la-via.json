@@ -149,5 +149,13 @@
    "por": "sistema",
    "accion": "sin estado y en borrador en Ghost desde su edición: pasa a la cola de aprobación del editor jefe"
   }
- ]
+ ],
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-05",
+ "importancia": 4
 }

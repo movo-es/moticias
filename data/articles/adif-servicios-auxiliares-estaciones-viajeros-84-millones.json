@@ -214,5 +214,12 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }

@@ -174,5 +174,13 @@
  ],
  "title": "Grimaldi se queda con cuatro licencias del servicio al pasaje en los cinco puertos del Estado en Baleares",
  "why": "El servicio al pasaje ordena el embarque de pasajeros y vehículos en ferris y escalas de cruceros; que un mismo prestador tenga licencias en los cinco puertos del Estado en Baleares hasta 2028 fija la estructura de ese servicio para las próximas temporadas.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "mar",
+ "modos": [
+  "puertos",
+  "pasaje-ferris"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }

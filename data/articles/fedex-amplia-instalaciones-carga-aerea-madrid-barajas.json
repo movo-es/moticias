@@ -143,5 +143,13 @@
   "internacional"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "aire",
+ "modos": [
+  "carga-aerea",
+  "aeropuertos"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }

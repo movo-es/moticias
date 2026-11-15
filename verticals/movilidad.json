@@ -349,211 +349,347 @@
   ]
  },
  "taxonomia": {
-  "nota": "Tres ejes independientes por pieza. `modo` (qué se mueve) y `submodo`; `temas` (qué tipo de hecho; el primero es el principal); `territorios` (dónde decide o a quién afecta; uno o varios). `section` y `subsector` se mantienen por compatibilidad con el portal, la hemeroteca y Ghost; los tres ejes son los que alimentan menús, filtros y buscador.",
-  "modos": [
+  "nota": "Etiquetas comunes (cambio `etiquetas-comunes`, decisión de Rainer del 15-11-2026): una sola taxonomía para la cola del editor, el menú, la publicidad y el panel SEO. Ejes que ve el lector: Medio (`medio`), Modo (`modos`), Tema (`temas`) y Región (`territorios`); internos: Importancia (`importancia`, 1–5), Fiabilidad de la fuente (`fiabilidad`), Fecha del hecho (`event_date`) y Fecha límite (`fecha_limite`). La palabra «ámbito» ya no se usa. `modo`/`submodo` (el eje antiguo: tierra, mar, aire, logística, transversal) se conservan por compatibilidad con la base de prensa, Ghost (`m-`) y el mapa, igual que `section` y `subsector`.",
+  "nombres": {
+   "medio": "Medio",
+   "modos": "Modo",
+   "temas": "Tema",
+   "territorios": "Región",
+   "importancia": "Importancia",
+   "fiabilidad": "Fiabilidad de la fuente",
+   "event_date": "Fecha del hecho",
+   "fecha_limite": "Fecha límite"
+  },
+  "medios": [
    {
     "id": "tierra",
     "nombre": "Tierra",
-    "submodos": [
-     {
-      "id": "autobus",
-      "nombre": "Autobús",
-      "alias": [
-       "autobús",
-       "autobuses",
-       "bus",
-       "autocar",
-       "autocares",
-       "discrecional",
-       "interurbano",
-       "concesional"
-      ]
-     },
-     {
-      "id": "ferrocarril",
-      "nombre": "Ferrocarril",
-      "alias": [
-       "tren",
-       "trenes",
-       "ferroviario",
-       "ferroviaria",
-       "renfe",
-       "adif",
-       "alta velocidad",
-       "ave",
-       "cercanías",
-       "ouigo",
-       "iryo"
-      ]
-     },
-     {
-      "id": "urbano",
-      "nombre": "Movilidad urbana",
-      "alias": [
-       "metro",
-       "tranvía",
-       "emt",
-       "tmb",
-       "movilidad urbana",
-       "bicicleta",
-       "patinete",
-       "vtc",
-       "taxi",
-       "zona de bajas emisiones",
-       "zbe"
-      ]
-     },
-     {
-      "id": "carretera",
-      "nombre": "Carretera",
-      "alias": [
-       "carreteras",
-       "autovía",
-       "autopista",
-       "peaje",
-       "peajes",
-       "dgt",
-       "tráfico",
-       "camión"
-      ]
-     }
-    ]
+    "activo": true
    },
    {
     "id": "mar",
     "nombre": "Mar",
-    "submodos": [
-     {
-      "id": "puertos",
-      "nombre": "Puertos",
-      "alias": [
-       "puerto",
-       "puertos",
-       "autoridad portuaria",
-       "puertos del estado",
-       "terminal",
-       "estiba"
-      ]
-     },
-     {
-      "id": "maritimo",
-      "nombre": "Transporte marítimo",
-      "alias": [
-       "marítimo",
-       "naviera",
-       "naviero",
-       "buque",
-       "ferry",
-       "ferris",
-       "balearia",
-       "armas",
-       "trasmediterránea",
-       "marina mercante",
-       "línea marítima"
-      ]
-     }
-    ]
+    "activo": true
    },
    {
     "id": "aire",
     "nombre": "Aire",
-    "submodos": [
-     {
-      "id": "aerolineas",
-      "nombre": "Aerolíneas",
-      "alias": [
-       "aerolínea",
-       "aerolíneas",
-       "compañía aérea",
-       "iberia",
-       "vueling",
-       "ryanair",
-       "wizz",
-       "air europa",
-       "binter",
-       "ruta aérea"
-      ]
-     },
-     {
-      "id": "aeropuertos",
-      "nombre": "Aeropuertos",
-      "alias": [
-       "aeropuerto",
-       "aeropuertos",
-       "aena",
-       "barajas",
-       "el prat",
-       "dora",
-       "tasas aeroportuarias",
-       "enaire",
-       "navegación aérea"
-      ]
-     }
+    "activo": true
+   },
+   {
+    "id": "espacio",
+    "nombre": "Espacio",
+    "activo": false,
+    "nota": "Creado y apagado (15-11-2026): se enciende poniendo activo a true, sin tocar código."
+   },
+   {
+    "id": "varios",
+    "nombre": "Varios medios",
+    "activo": true,
+    "nota": "Piezas que tocan a todos los medios (antes «Transversal»)."
+   }
+  ],
+  "modos_transporte": [
+   {
+    "id": "tren-viajeros",
+    "nombre": "Tren de viajeros",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [
+     "ferrocarril"
+    ],
+    "alias": [
+     "tren",
+     "trenes",
+     "ferroviario",
+     "ferroviaria",
+     "renfe",
+     "alta velocidad",
+     "ave",
+     "cercanías",
+     "rodalies",
+     "ouigo",
+     "iryo",
+     "media distancia",
+     "maquinistas"
     ]
    },
    {
-    "id": "logistica",
-    "nombre": "Logística",
-    "submodos": [
-     {
-      "id": "logistica-tierra",
-      "nombre": "Mercancías por tierra",
-      "alias": [
-       "mercancías",
-       "mercancias",
-       "carga",
-       "transporte de mercancías",
-       "camiones",
-       "ferrocarril de mercancías",
-       "intermodal",
-       "multimodal",
-       "terminal logística",
-       "paquetería"
-      ]
-     },
-     {
-      "id": "logistica-mar",
-      "nombre": "Mercancías por mar",
-      "alias": [
-       "contenedores",
-       "teu",
-       "portacontenedores",
-       "granel",
-       "zal",
-       "zona de actividades logísticas"
-      ]
-     },
-     {
-      "id": "logistica-aire",
-      "nombre": "Carga aérea",
-      "alias": [
-       "carga aérea",
-       "cargo",
-       "aduanas",
-       "paquetería exprés"
-      ]
-     }
+    "id": "autobus",
+    "nombre": "Autobús y autocar",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [
+     "autobus"
+    ],
+    "alias": [
+     "autobús",
+     "autobuses",
+     "bus",
+     "autocar",
+     "autocares",
+     "discrecional",
+     "interurbano",
+     "concesional",
+     "mapa concesional",
+     "emt",
+     "dbus",
+     "alsa",
+     "avanza",
+     "monbus",
+     "tussam",
+     "guaguas"
     ]
    },
    {
-    "id": "transversal",
-    "nombre": "Transversal",
-    "submodos": [
-     {
-      "id": "transversal",
-      "nombre": "Todos los modos",
-      "alias": [
-       "intermodal",
-       "movilidad sostenible",
-       "pmst",
-       "plan de movilidad",
-       "ley de movilidad",
-       "sistema de transporte"
-      ]
-     }
+    "id": "metro-tranvia",
+    "nombre": "Metro y tranvía",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "metro",
+     "tranvía",
+     "tranvías",
+     "metro ligero",
+     "fgc",
+     "tmb"
+    ]
+   },
+   {
+    "id": "taxi-vtc",
+    "nombre": "Taxi y VTC",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "taxi",
+     "taxis",
+     "vtc",
+     "cabify",
+     "uber"
+    ]
+   },
+   {
+    "id": "transporte-demanda",
+    "nombre": "Transporte a la demanda",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "transporte a la demanda",
+     "a demanda",
+     "tad",
+     "bajo demanda"
+    ]
+   },
+   {
+    "id": "carretera",
+    "nombre": "Carretera y coche",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [
+     "carretera"
+    ],
+    "alias": [
+     "carretera",
+     "carreteras",
+     "autovía",
+     "autopista",
+     "peaje",
+     "peajes",
+     "dgt",
+     "tráfico",
+     "coche",
+     "vehículo eléctrico"
+    ]
+   },
+   {
+    "id": "bici-movilidad-personal",
+    "nombre": "Bicicleta y movilidad personal",
+    "medio": "tierra",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "bicicleta",
+     "bici",
+     "patinete",
+     "movilidad personal",
+     "vmp"
+    ]
+   },
+   {
+    "id": "mercancias-carretera",
+    "nombre": "Mercancías por carretera",
+    "medio": "tierra",
+    "mercancias": true,
+    "desde_submodo": [
+     "logistica-tierra"
+    ],
+    "alias": [
+     "camión",
+     "camiones",
+     "transporte de mercancías por carretera",
+     "paquetería",
+     "última milla"
+    ]
+   },
+   {
+    "id": "tren-mercancias",
+    "nombre": "Tren de mercancías",
+    "medio": "tierra",
+    "mercancias": true,
+    "desde_submodo": [],
+    "alias": [
+     "ferrocarril de mercancías",
+     "tren de mercancías",
+     "autopista ferroviaria",
+     "intermodal ferroviario"
+    ]
+   },
+   {
+    "id": "pasaje-ferris",
+    "nombre": "Pasaje y ferris",
+    "medio": "mar",
+    "mercancias": false,
+    "desde_submodo": [
+     "maritimo"
+    ],
+    "alias": [
+     "ferry",
+     "ferris",
+     "naviera",
+     "buque",
+     "línea marítima",
+     "balearia",
+     "armas",
+     "trasmediterránea",
+     "pasaje",
+     "cruceros",
+     "bus nàutic"
+    ]
+   },
+   {
+    "id": "puertos",
+    "nombre": "Puertos",
+    "medio": "mar",
+    "mercancias": false,
+    "desde_submodo": [
+     "puertos"
+    ],
+    "alias": [
+     "puerto",
+     "puertos",
+     "autoridad portuaria",
+     "puertos del estado",
+     "terminal",
+     "estiba",
+     "practicaje"
+    ]
+   },
+   {
+    "id": "carga-maritima",
+    "nombre": "Carga marítima",
+    "medio": "mar",
+    "mercancias": true,
+    "desde_submodo": [
+     "logistica-mar"
+    ],
+    "alias": [
+     "contenedores",
+     "teu",
+     "portacontenedores",
+     "granel",
+     "zal",
+     "carga marítima"
+    ]
+   },
+   {
+    "id": "aerolineas",
+    "nombre": "Aerolíneas",
+    "medio": "aire",
+    "mercancias": false,
+    "desde_submodo": [
+     "aerolineas"
+    ],
+    "alias": [
+     "aerolínea",
+     "aerolíneas",
+     "compañía aérea",
+     "iberia",
+     "vueling",
+     "ryanair",
+     "wizz",
+     "air europa",
+     "binter",
+     "ruta aérea",
+     "vuelos"
+    ]
+   },
+   {
+    "id": "aeropuertos",
+    "nombre": "Aeropuertos",
+    "medio": "aire",
+    "mercancias": false,
+    "desde_submodo": [
+     "aeropuertos"
+    ],
+    "alias": [
+     "aeropuerto",
+     "aeropuertos",
+     "aena",
+     "barajas",
+     "el prat",
+     "dora",
+     "tasas aeroportuarias",
+     "enaire",
+     "navegación aérea"
+    ]
+   },
+   {
+    "id": "drones",
+    "nombre": "Drones",
+    "medio": "aire",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "dron",
+     "drones",
+     "uas",
+     "u-space",
+     "aeronaves no tripuladas"
+    ]
+   },
+   {
+    "id": "carga-aerea",
+    "nombre": "Carga aérea",
+    "medio": "aire",
+    "mercancias": true,
+    "desde_submodo": [
+     "logistica-aire"
+    ],
+    "alias": [
+     "carga aérea",
+     "cargo aéreo",
+     "paquetería exprés"
+    ]
+   },
+   {
+    "id": "lanzadores-satelites",
+    "nombre": "Lanzadores y satélites",
+    "medio": "espacio",
+    "mercancias": false,
+    "desde_submodo": [],
+    "alias": [
+     "lanzador",
+     "lanzadores",
+     "satélite",
+     "satélites",
+     "agencia espacial"
     ]
    }
   ],
+  "modos_transporte_nota": "Un modo pertenece a un medio; los de `mercancias: true` forman la sección /logistica/. Un modo cuyo medio esté apagado no se propone ni se enseña. `desde_submodo` traduce el eje antiguo cuando el texto no dice más.",
   "temas": [
    {
     "id": "regulacion",
@@ -713,7 +849,8 @@
      "puertos del estado",
      "dgt",
      "cnmc"
-    ]
+    ],
+    "nombre_corto": "Estatal"
    },
    {
     "id": "ue",
@@ -732,7 +869,8 @@
      "consejo europeo",
      "doue",
      "eurocámara"
-    ]
+    ],
+    "nombre_corto": "UE"
    },
    {
     "id": "internacional",
@@ -753,7 +891,8 @@
      "marruecos",
      "estados unidos",
      "china"
-    ]
+    ],
+    "nombre_corto": "Internacional"
    },
    {
     "id": "andalucia",
@@ -1198,7 +1337,259 @@
      "melillense"
     ]
    }
-  ]
+  ],
+  "importancia": {
+   "decidido": "2026-11-15",
+   "escala": {
+    "5": "Cambia las reglas o el mercado en toda España: ley o real decreto, adjudicación o mapa concesional de más de 50 M€, accidente grave, huelga estatal, cese o nombramiento de ministro o de presidente de Renfe, Adif o Aena.",
+    "4": "Afecta a un modo entero o a una comunidad: decreto autonómico, licitación de 10 a 50 M€, sentencia que sienta precedente, alto cargo de segundo nivel.",
+    "3": "Interesa a un segmento profesional: licitación de 1 a 10 M€, consulta pública, resultados de una empresa grande, plazo que vence.",
+    "2": "De nicho o local: concesión municipal, licitación pequeña, dato de una empresa mediana.",
+    "1": "Contexto: para el archivo y el buscador, no para la portada."
+   },
+   "desde_relevancia": {
+    "ALTA": 4,
+    "MEDIA": 3,
+    "BAJA": 2
+   },
+   "con_motivo_importante": 5,
+   "firma_minima": 4,
+   "aprendizaje": "La propone el agente (`importancia_agente`) y el editor jefe la corrige (`importancia`). Cada corrección se guarda con una frase opcional; el agente lee las últimas como ejemplos antes de proponer y una vez al mes se enseña en qué acierta y en qué falla."
+  },
+  "fiabilidad": {
+   "decidido": "2026-11-15",
+   "escala_de": "MOVO (conocimiento): verificado en fuente primaria · rastro secundario · no encontrado",
+   "niveles": [
+    {
+     "id": "primaria",
+     "nombre": "Primaria",
+     "regla": "BOE, diarios oficiales, nota del organismo, documento de la empresa. Se puede confirmar y publicar."
+    },
+    {
+     "id": "secundaria",
+     "nombre": "Secundaria reputada",
+     "regla": "Medios y fuentes de docs/fuentes.md. Se puede confirmar solo con dos que coinciden; queda marcada «buscar primaria» y el agente la sigue buscando."
+    },
+    {
+     "id": "sin_confirmar",
+     "nombre": "Sin confirmar",
+     "regla": "Una sola fuente secundaria, redes o rumor. Entra en la cola como aviso; «Confirmar» bloqueado hasta que haya una fuente mejor; si caduca, va al archivo, no a la papelera."
+    }
+   ],
+   "visible_al_lector": false
+  },
+  "fechas": {
+   "event_date": "Fecha del hecho: el día en que ocurrió lo que cuenta la pieza, tomada de la fuente primaria; si no consta, vacía. Nunca se deduce.",
+   "fecha_limite": "Opcional: el próximo día que importa (fin de plazo, entrada en vigor, día de la huelga, fin de una consulta). Alimenta la caducidad de la cola, los próximos plazos y el orden «lo que vence antes».",
+   "caducidad_dias_laborables": 3,
+   "no_caducan": "Lo editorial (análisis, reportajes, «La voz del editor») y los textos de referencia o académicos no caducan nunca: bajan por fecha en su sección pero, con filtros del lector, pueden salir los primeros y no pierden peso con los días."
+  },
+  "orden_lector": "Con filtros: primero lo que mejor encaja, después la importancia y por último la fecha; las noticias pierden peso con los días, lo que no caduca no. Sin filtros (portada y secciones): por fecha, con la apertura que elige el editor jefe. El lector ve medio, modo, tema y región como etiquetas que se pueden pulsar y la fecha del hecho si es distinta de la de publicación; no ve importancia, fiabilidad ni quién lo propuso.",
+  "modos": [
+   {
+    "id": "tierra",
+    "nombre": "Tierra",
+    "submodos": [
+     {
+      "id": "autobus",
+      "nombre": "Autobús",
+      "alias": [
+       "autobús",
+       "autobuses",
+       "bus",
+       "autocar",
+       "autocares",
+       "discrecional",
+       "interurbano",
+       "concesional"
+      ]
+     },
+     {
+      "id": "ferrocarril",
+      "nombre": "Ferrocarril",
+      "alias": [
+       "tren",
+       "trenes",
+       "ferroviario",
+       "ferroviaria",
+       "renfe",
+       "adif",
+       "alta velocidad",
+       "ave",
+       "cercanías",
+       "ouigo",
+       "iryo"
+      ]
+     },
+     {
+      "id": "urbano",
+      "nombre": "Movilidad urbana",
+      "alias": [
+       "metro",
+       "tranvía",
+       "emt",
+       "tmb",
+       "movilidad urbana",
+       "bicicleta",
+       "patinete",
+       "vtc",
+       "taxi",
+       "zona de bajas emisiones",
+       "zbe"
+      ]
+     },
+     {
+      "id": "carretera",
+      "nombre": "Carretera",
+      "alias": [
+       "carreteras",
+       "autovía",
+       "autopista",
+       "peaje",
+       "peajes",
+       "dgt",
+       "tráfico",
+       "camión"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "mar",
+    "nombre": "Mar",
+    "submodos": [
+     {
+      "id": "puertos",
+      "nombre": "Puertos",
+      "alias": [
+       "puerto",
+       "puertos",
+       "autoridad portuaria",
+       "puertos del estado",
+       "terminal",
+       "estiba"
+      ]
+     },
+     {
+      "id": "maritimo",
+      "nombre": "Transporte marítimo",
+      "alias": [
+       "marítimo",
+       "naviera",
+       "naviero",
+       "buque",
+       "ferry",
+       "ferris",
+       "balearia",
+       "armas",
+       "trasmediterránea",
+       "marina mercante",
+       "línea marítima"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "aire",
+    "nombre": "Aire",
+    "submodos": [
+     {
+      "id": "aerolineas",
+      "nombre": "Aerolíneas",
+      "alias": [
+       "aerolínea",
+       "aerolíneas",
+       "compañía aérea",
+       "iberia",
+       "vueling",
+       "ryanair",
+       "wizz",
+       "air europa",
+       "binter",
+       "ruta aérea"
+      ]
+     },
+     {
+      "id": "aeropuertos",
+      "nombre": "Aeropuertos",
+      "alias": [
+       "aeropuerto",
+       "aeropuertos",
+       "aena",
+       "barajas",
+       "el prat",
+       "dora",
+       "tasas aeroportuarias",
+       "enaire",
+       "navegación aérea"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "logistica",
+    "nombre": "Logística",
+    "submodos": [
+     {
+      "id": "logistica-tierra",
+      "nombre": "Mercancías por tierra",
+      "alias": [
+       "mercancías",
+       "mercancias",
+       "carga",
+       "transporte de mercancías",
+       "camiones",
+       "ferrocarril de mercancías",
+       "intermodal",
+       "multimodal",
+       "terminal logística",
+       "paquetería"
+      ]
+     },
+     {
+      "id": "logistica-mar",
+      "nombre": "Mercancías por mar",
+      "alias": [
+       "contenedores",
+       "teu",
+       "portacontenedores",
+       "granel",
+       "zal",
+       "zona de actividades logísticas"
+      ]
+     },
+     {
+      "id": "logistica-aire",
+      "nombre": "Carga aérea",
+      "alias": [
+       "carga aérea",
+       "cargo",
+       "aduanas",
+       "paquetería exprés"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "transversal",
+    "nombre": "Transversal",
+    "submodos": [
+     {
+      "id": "transversal",
+      "nombre": "Todos los modos",
+      "alias": [
+       "intermodal",
+       "movilidad sostenible",
+       "pmst",
+       "plan de movilidad",
+       "ley de movilidad",
+       "sistema de transporte"
+      ]
+     }
+    ]
+   }
+  ],
+  "modos_nota": "Eje antiguo (hasta el 15-11-2026 «modo/submodo»): por dentro sigue alimentando la base de prensa, las etiquetas `m-` de Ghost y el mapa; el lector ya no lo ve con ese nombre."
  },
  "busqueda": {
   "nota": "Diccionario común del buscador web (índice estático + JavaScript del tema) y de src/buscador.py: cada grupo son términos equivalentes para la búsqueda. Las palabras se comparan sin tildes ni mayúsculas y con raíz tosca (plurales, derivados).",

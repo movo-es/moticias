@@ -203,5 +203,12 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "autobus"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "importancia": 4
 }

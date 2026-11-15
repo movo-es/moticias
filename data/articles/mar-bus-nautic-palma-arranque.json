@@ -229,5 +229,14 @@
   "baleares"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "mar",
+ "modos": [
+  "puertos",
+  "pasaje-ferris"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-12-21",
+ "importancia": 3
 }

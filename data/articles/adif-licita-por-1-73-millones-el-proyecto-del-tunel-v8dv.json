@@ -170,5 +170,13 @@
  ],
  "title": "Adif licita por 1,73 millones el proyecto del túnel ferroviario de Gijón y las estaciones de Bibio y Viesques",
  "why": "Es el contrato que permitirá licitar después la obra del túnel y de dos estaciones urbanas en Gijón, la parte ferroviaria de una integración que acumula convenios desde 2019 y un estudio informativo aprobado en 2022.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-12-14",
+ "importancia": 3
 }

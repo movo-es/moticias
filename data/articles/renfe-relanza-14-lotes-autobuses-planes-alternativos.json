@@ -199,5 +199,13 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "tierra",
+ "modos": [
+  "autobus",
+  "tren-viajeros"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "importancia": 4
 }

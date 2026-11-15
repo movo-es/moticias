@@ -224,5 +224,13 @@
   "ue"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "aire",
+ "modos": [
+  "aerolineas"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-06",
+ "importancia": 4
 }

@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""MOTICIAS · Taxonomía de tres ejes (modo · tema · territorio) y diccionario de sinónimos. Solo biblioteca estándar.
+"""MOTICIAS · Etiquetas comunes y diccionario de sinónimos. Solo biblioteca estándar.
+
+Etiquetas comunes (cambio `etiquetas-comunes`, decisión de Rainer del 15-11-2026): una sola taxonomía para la cola del editor,
+el menú, la publicidad y el panel SEO. Lo que ve el lector: Medio (`medio`), Modo (`modos`), Tema (`temas`), Región
+(`territorios`). Interno: Importancia (`importancia` 1–5, con la propuesta del agente en `importancia_agente`), Fiabilidad de la
+fuente (`fiabilidad`), Fecha del hecho (`event_date`) y Fecha límite (`fecha_limite`). El eje antiguo `modo`/`submodo` se conserva.
+
+  python3 -I src/taxonomia.py etiquetas            # informe de las etiquetas comunes que faltan o cambiarían, sin tocar nada
+  python3 -I src/taxonomia.py etiquetas --aplicar  # las escribe en las piezas (respeta lo que haya corregido el editor jefe)
+  python3 -I src/taxonomia.py validar              # para (código 1) si una pieza no tiene medio, modo, tema, región, importancia o fiabilidad
+
 
 Lee `verticals/<vertical>.json` → `taxonomia` y `busqueda`. Lo usan:
   - src/buscador.py (sinónimos, detección de territorio, vecinos),
@@ -46,6 +56,9 @@ class Taxonomia:
         self.modos = {m["id"]: m for m in self.tax["modos"]}
         self.submodos = {s["id"]: (m["id"], s) for m in self.tax["modos"] for s in m["submodos"]}
         self.temas = {t["id"]: t for t in self.tax["temas"]}
+        self.medios = {m["id"]: m for m in self.tax.get("medios", [])}
+        self.modos_t = {m["id"]: m for m in self.tax.get("modos_transporte", []) if self.medios.get(m["medio"], {}).get("activo")}
+        self._alias_modo_t = [(plano(al), m["id"]) for m in self.modos_t.values() for al in m["alias"]]
         self.territorios = {t["id"]: t for t in self.tax["territorios"]}
         # alias planos → id (frases de varias palabras incluidas)
         self._alias_sub = [(plano(a), s["id"]) for m in self.tax["modos"] for s in m["submodos"] for a in s["alias"]]
@@ -175,6 +188,108 @@ class Taxonomia:
         return {"modo": modo, "submodo": sub, "temas": temas, "territorios": terr}
 
 
+    # ---- etiquetas comunes (15-11-2026) -----------------------------------------------------------------------------
+    def modos_t_en(self, texto):
+        t = " " + plano(texto) + " "
+        cuenta = {}
+        for alias, mid in self._alias_modo_t:
+            n = t.count(" " + alias + " ")
+            if n:
+                cuenta[mid] = cuenta.get(mid, 0) + n * (2 if " " in alias else 1)
+        return [k for k, _ in sorted(cuenta.items(), key=lambda kv: -kv[1])]
+
+    def medio_y_modos(self, a):
+        """(medio, [modos]) a partir del eje antiguo y del texto. Logística va dentro de su medio; «transversal» → «varios»."""
+        sub = a.get("submodo") or self.clasificar(a)["submodo"]
+        viejo = a.get("modo") or self.submodos.get(sub, ("transversal",))[0]
+        cab = " ".join(str(a.get(k) or "") for k in ("kicker", "title", "subtitle")) + " " + " ".join(a.get("tags") or [])
+        base = [m["id"] for m in self.modos_t.values() if sub in m["desde_submodo"]]
+        hallados = self.modos_t_en(cab)
+        if sub == "ferrocarril" and (a.get("section") == "logistica" or "tren-mercancias" in hallados):
+            base = ["tren-mercancias"]
+        if sub.startswith("logistica-"):  # mercancías: manda el modo de mercancías que nombre la cabecera
+            merc = [h for h in hallados if self.modos_t[h]["mercancias"] and (not base or self.modos_t[h]["medio"] == self.modos_t[base[0]]["medio"])]
+            base = merc[:1] or base
+        if sub == "urbano":
+            base = [h for h in hallados if self.modos_t[h]["medio"] == "tierra"][:1] or ["metro-tranvia"]
+        if sub == "transversal":
+            medio, modos = "varios", hallados[:2]
+        else:
+            modos = base[:1]
+            medio = self.modos_t[modos[0]]["medio"] if modos else viejo
+            # un segundo modo solo si la cabecera lo nombra y es del mismo medio
+            for h in hallados:
+                if h not in modos and self.modos_t[h]["medio"] == medio and len(modos) < 2:
+                    modos.append(h)
+        if medio not in self.medios or not self.medios[medio].get("activo"):
+            medio = "varios"
+        return medio, modos
+
+    def importancia_de(self, a):
+        imp = self.tax.get("importancia", {})
+        if a.get("motivo_importante"):
+            return imp.get("con_motivo_importante", 5)
+        return imp.get("desde_relevancia", {}).get(str(a.get("relevance") or "").upper(), 3)
+
+    @staticmethod
+    def fiabilidad_de(a):
+        """primaria si alguna fuente es oficial; secundaria si hay dos medios distintos; si no, sin_confirmar."""
+        fs = a.get("sources") or []
+        if any((f.get("kind") or "") == "oficial" for f in fs):
+            return "primaria"
+        if len({(f.get("outlet") or f.get("url") or "").lower() for f in fs if f.get("kind") == "medios"}) >= 2:
+            return "secundaria"
+        return "sin_confirmar"
+
+    @staticmethod
+    def fecha_limite_de(a, agenda_por_url):
+        """La primera fecha de la agenda enlazada a una fuente de la pieza, posterior a la fecha del hecho. Nunca se deduce."""
+        desde = a.get("event_date") or a.get("date") or ""
+        fechas = sorted(d for f in (a.get("sources") or []) for d in agenda_por_url.get(f.get("url") or "", []) if d >= desde)
+        return fechas[0] if fechas else None
+
+    @staticmethod
+    def no_caduca(a):
+        """Lo editorial (análisis, reportajes, «La voz del editor») y lo de referencia no caduca nunca."""
+        return a.get("tipo_contenido") == "editorial" or a.get("kind") in ("analisis", "reportaje", "opinion", "referencia") or bool(a.get("no_caduca"))
+
+    def etiquetas(self, a, agenda_por_url=None):
+        medio, modos = self.medio_y_modos(a)
+        out = {"medio": medio, "modos": modos, "importancia_agente": self.importancia_de(a), "fiabilidad": self.fiabilidad_de(a)}
+        fl = self.fecha_limite_de(a, agenda_por_url or {})
+        if fl:
+            out["fecha_limite"] = fl
+        return out
+
+    def faltan(self, a):
+        """Etiquetas obligatorias que le faltan a una pieza (sin ellas no se publica)."""
+        f = []
+        if a.get("medio") not in self.medios:
+            f.append("medio")
+        if not a.get("modos") and a.get("medio") != "varios":
+            f.append("modos")
+        for k in ("temas", "territorios"):
+            if not a.get(k):
+                f.append(k)
+        if a.get("importancia") not in (1, 2, 3, 4, 5):
+            f.append("importancia")
+        if a.get("fiabilidad") not in ("primaria", "secundaria", "sin_confirmar"):
+            f.append("fiabilidad")
+        return f
+
+
+def agenda_por_url(data_dir):
+    out = {}
+    for p in glob.glob(os.path.join(data_dir, "agenda", "*.json")):
+        try:
+            d = json.load(open(p, encoding="utf-8"))
+        except Exception:
+            continue
+        if d.get("url") and d.get("date"):
+            out.setdefault(d["url"], []).append(d["date"])
+    return out
+
+
 def _articulos(data_dir):
     return sorted(glob.glob(os.path.join(data_dir, "articles", "*.json")))
 
@@ -182,7 +297,8 @@ def _articulos(data_dir):
 def main():
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument("accion", choices=["informe", "aplicar", "pieza"])
+    ap.add_argument("accion", choices=["informe", "aplicar", "pieza", "etiquetas", "validar"])
+    ap.add_argument("--aplicar", action="store_true", help="con «etiquetas»: escribe en las piezas")
     ap.add_argument("ruta", nargs="?")
     ap.add_argument("--data", default=os.path.join(ROOT, "data"))
     ap.add_argument("--forzar", action="store_true")
@@ -190,8 +306,42 @@ def main():
     a = ap.parse_args()
     tx = Taxonomia(a.vertical)
     if a.accion == "pieza":
-        print(json.dumps(tx.clasificar(json.load(open(a.ruta, encoding="utf-8"))), ensure_ascii=False))
+        d = json.load(open(a.ruta, encoding="utf-8"))
+        c = tx.clasificar(d)
+        d2 = dict(d, **c)
+        c.update(tx.etiquetas(d2, agenda_por_url(a.data)))
+        c.setdefault("importancia", d.get("importancia") or c["importancia_agente"])
+        print(json.dumps(c, ensure_ascii=False))
         return
+    if a.accion == "etiquetas":
+        ag, cambiadas, filas = agenda_por_url(a.data), 0, []
+        for p in _articulos(a.data):
+            d = json.load(open(p, encoding="utf-8"))
+            e = tx.etiquetas(d, ag)
+            nuevo = dict(d)
+            for k, val in e.items():
+                if k in ("medio", "modos") and d.get("etiquetas_manual"):
+                    continue
+                nuevo[k] = val
+            if "importancia" not in d:  # la del editor jefe manda; si no la ha corregido, vale la del agente
+                nuevo["importancia"] = e["importancia_agente"]
+            if nuevo != d:
+                cambiadas += 1
+                filas.append("%-58s %-8s %-38s imp %s · %-13s %s" % (d["id"][:58], nuevo["medio"], "+".join(nuevo["modos"]),
+                             nuevo["importancia"], nuevo["fiabilidad"], nuevo.get("fecha_limite") or ""))
+                if a.aplicar:
+                    json.dump(nuevo, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+                    open(p, "a", encoding="utf-8").write("\n")
+        print("\n".join(filas))
+        print("piezas %s: %d" % ("etiquetadas" if a.aplicar else "por etiquetar", cambiadas))
+        return
+    if a.accion == "validar":
+        malas = [(json.load(open(p, encoding="utf-8")), p) for p in _articulos(a.data)]
+        malas = [(d["id"], tx.faltan(d)) for d, p in malas if tx.faltan(d)]
+        for i, f in malas:
+            print("%s: falta %s" % (i, ", ".join(f)))
+        print("etiquetas comunes: %s" % ("todo en orden" if not malas else "%d piezas sin etiquetas completas" % len(malas)))
+        sys.exit(1 if malas else 0)
     cambiadas = 0
     for p in _articulos(a.data):
         d = json.load(open(p, encoding="utf-8"))

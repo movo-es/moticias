@@ -214,5 +214,11 @@
  ],
  "title": "El Defensor de las víctimas de accidentes de transporte colectivo entra en vigor el 14 de noviembre",
  "why": "Concentra en un órgano de alto rango la coordinación de la asistencia a las víctimas que hoy reparten varias normas sectoriales y oficinas creadas caso por caso, como las abiertas tras el accidente de Urda, y define a efectos administrativos quién es víctima en todos los modos de competencia estatal.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "varios",
+ "modos": [],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-14",
+ "importancia": 4
 }

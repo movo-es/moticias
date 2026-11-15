@@ -201,5 +201,13 @@
  ],
  "title": "Transportes fija el 72 % en la alta velocidad para la huelga de Semaf del 10 y el 12 de noviembre",
  "why": "Es la primera de tres jornadas seguidas de servicio reducido en el ferrocarril, con el corredor andaluz cortado y una oferta alternativa que el propio Ministerio cifra en torno al 3 % de lo necesario. El 72 % en alta velocidad repite el porcentaje que la Audiencia Nacional anuló para Ouigo, y la huelga del 17 alcanza ya a todos los operadores de viajeros y a cinco de mercancías.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-11-16",
+ "importancia": 4
 }

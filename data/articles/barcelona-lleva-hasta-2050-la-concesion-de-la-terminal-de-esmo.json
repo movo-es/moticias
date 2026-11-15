@@ -192,5 +192,14 @@
  ],
  "title": "Barcelona lleva hasta 2050 la concesión de la terminal de cruceros C y fija 2 euros por pasajero desde 2028",
  "why": "Fija hasta 2050 las condiciones económicas de una de las terminales que quedarán en Barcelona tras la reducción pactada con el Ayuntamiento, con una tasa por pasajero que se multiplica por más de veinte desde 2028, y documenta en el BOE un proyecto que hasta ahora solo constaba por la prensa.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "mar",
+ "modos": [
+  "puertos",
+  "pasaje-ferris"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2028-01-01",
+ "importancia": 3
 }

@@ -1,0 +1,5 @@
+- [x] Entrevista (6 preguntas) y decisiones en el vertical
+- [x] `src/taxonomia.py`: etiquetas, validar, pieza ampliada; 95 piezas etiquetadas
+- [x] Firma por importancia; índice del buscador; tarea diaria; documentación
+- [ ] Guardar las correcciones de importancia y enseñárselas al agente → cambio `cola-del-editor`
+- [ ] Etiquetas pulsables y orden con filtros en moticias.com → cambio `menu-y-voz-del-editor`

@@ -44,6 +44,9 @@ def entrada(a, base):
         "pat": bool(a.get("menciones")) or bool(a.get("sponsored_by")),
         # tipo de contenido (editorial · noticia · nota_de_prensa · patrocinado) y la marca que ve el lector
         "tc": T.tipo(a, "articles"), "mc": T.marca(a, "articles"), "dir": T.es_del_director(a),
+        # etiquetas comunes (15-11-2026): medio, modos, importancia, fecha del hecho, fecha límite y si caduca (orden del lector)
+        "md": a.get("medio"), "mo": a.get("modos") or [], "im": a.get("importancia"), "fh": a.get("event_date"),
+        "fl": a.get("fecha_limite"), "nc": Taxonomia.no_caduca(a),
         # texto plano de búsqueda: cabecera + etiquetas + actores + resumen (sin tildes, minúsculas) — lo que el JS compara
         "x": plano(" ".join([str(a.get(k) or "") for k in ("kicker", "title", "subtitle", "summary", "relevance_for")] + list(a.get("tags") or [])
                             + ([a["actors"]] if isinstance(a.get("actors"), str) else list(a.get("actors") or [])))),

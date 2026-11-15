@@ -168,5 +168,13 @@
  ],
  "title": "Transportes licita por 611,9 millones seis concesiones de áreas de servicio con recarga ultrarrápida",
  "why": "Convierte la recarga ultrarrápida en el objeto de una concesión de carreteras del Estado, y no en una obligación añadida a la venta de combustible, con un valor estimado de 611,9 millones de euros y plazos de hasta 25 años. El diseño premia sobre todo el canon y obliga a repartir los seis lotes entre seis adjudicatarios distintos.",
- "tipo_contenido": "noticia"
+ "tipo_contenido": "noticia",
+ "medio": "tierra",
+ "modos": [
+  "carretera"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2027-01-21",
+ "importancia": 4
 }

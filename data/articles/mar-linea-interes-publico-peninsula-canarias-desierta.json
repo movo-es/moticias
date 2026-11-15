@@ -228,5 +228,13 @@
   "estado"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "mar",
+ "modos": [
+  "pasaje-ferris"
+ ],
+ "importancia_agente": 4,
+ "fiabilidad": "primaria",
+ "fecha_limite": "2026-12-01",
+ "importancia": 4
 }

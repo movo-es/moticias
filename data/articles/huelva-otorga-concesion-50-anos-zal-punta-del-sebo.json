@@ -154,5 +154,13 @@
   "andalucia"
  ],
  "tipo_contenido": "noticia",
- "status": "publicado"
+ "status": "publicado",
+ "medio": "mar",
+ "modos": [
+  "carga-maritima",
+  "puertos"
+ ],
+ "importancia_agente": 3,
+ "fiabilidad": "primaria",
+ "importancia": 3
 }
