@@ -39,6 +39,17 @@
     ".mtx-fab li.t{padding:6px 12px 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#888}.mtx-fab li a.r{color:#a12b2b}";
   d.head.appendChild(css);
 
+  // ---------- 0 bis. Favicon ----------
+  // El favicon de MOTICIAS (decisión de Rainer, 15-11-2026; fuente: ghost/marca/). El tema, sin versionar, declara su propio
+  // favicon.svg y la clave de integración no puede cambiar el icono del sitio en Ghost: aquí se retiran los que haya y se
+  // pone el nuestro. Lo definitivo es subirlo en Ghost (Settings → Design & branding → Publication icon) y al tema.
+  (function () {
+    var ICONO = "https://storage.ghost.io/c/09/7e/097ec773-4043-4062-afef-953ef8d3b4ed/content/images/2026/11/favicon-512.png", APPLE = "https://storage.ghost.io/c/09/7e/097ec773-4043-4062-afef-953ef8d3b4ed/content/images/2026/11/apple-touch-icon-180.png";
+    [].forEach.call(d.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]'), function (l) { l.parentNode.removeChild(l); });
+    var i = d.createElement("link"); i.rel = "icon"; i.type = "image/png"; i.sizes = "512x512"; i.href = ICONO; d.head.appendChild(i);
+    var t = d.createElement("link"); t.rel = "apple-touch-icon"; t.sizes = "180x180"; t.href = APPLE; d.head.appendChild(t);
+  })();
+
   // ---------- 0. La marca no se traduce ----------
   // Los traductores automáticos del navegador tienden a convertir «MOTICIAS» en «noticias»/«news»: la marca se marca como no
   // traducible donde aparece como marca (cabecera, logo, pie).
