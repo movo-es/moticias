@@ -45,6 +45,13 @@ cd ~ && bash ~/Copias/MOTICIAS/.programa/copia.sh --forzar
 cd ~ && bash ~/Copias/MOTICIAS/.programa/restaurar-prueba.sh
 ```
 
+## Restaurar desde el gestor (editor y editor jefe; cambio `restaurar-copia`, 15-11-2026)
+
+Para el día a día no hace falta el Mac. Gestor → pestaña **Restaurar**:
+
+- **Piezas y publicidad.** Busca el documento, elige una versión anterior, mira qué cambia y pulsa «Restaurar esta versión». Se escribe una versión nueva (nada se borra), la pieza se republica con su estado de hoy, el director recibe un correo y aparece el botón «Deshacer». El editor no puede restaurar piezas firmadas por el director, piezas que no estén publicadas hoy, versiones que no llegaron a publicarse ni productos: eso lo hace el editor jefe.
+- **CRM y prensa.** Supabase guarda cada noche (03:40) una copia de la base privada durante 14 días (esquema `copia`, migración 011). Elige qué y de qué día, compara con hoy y recupera la ficha que falta o los campos que cambiaron. Nunca borra una ficha de hoy y nunca quita un «No contactar». El editor recupera CRM y base de prensa; el editor jefe, además, contratos, seguimiento de la publicidad y encargos. El equipo no se recupera desde aquí.
+
 ## Restaurar de verdad (si algo se pierde)
 
 Solo con una sesión de Claude Code o con ayuda técnica; nunca se borra nada en producción para restaurar: se restaura en limpio y se compara.
