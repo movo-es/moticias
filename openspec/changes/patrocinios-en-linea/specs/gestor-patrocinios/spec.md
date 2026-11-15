@@ -19,6 +19,6 @@ Cada cambio lee el fichero fresco de GitHub (`GITHUB_TOKEN`, permiso de contenid
 - CUANDO se publica o añade una caja y la pieza ya tiene `max_por_pieza` cajas o una exclusiva
 - ENTONCES no se guarda nada y el gestor pide retirar otra antes.
 
-#### Escenario: análisis del director
+#### Escenario: análisis del editor jefe
 - CUANDO se intenta añadir una caja a una pieza `kind: analisis`
 - ENTONCES se rechaza.

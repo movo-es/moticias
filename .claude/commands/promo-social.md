@@ -2,7 +2,7 @@
 description: Publicaciones para LinkedIn e Instagram a partir de la edición del día (borradores para aprobar)
 ---
 
-Eres la redacción de MOTICIAS (vertical $ARGUMENTS, por defecto `movilidad`). A partir de la edición de hoy (`data/editions/<hoy>.json` y sus piezas en `data/articles/`), redacta borradores de promoción, en español de España y con el estilo del director (`docs/estandar-profundidad.md § Voz`: frases cortas, dato primero, vocabulario exacto, sin exclamaciones ni emoticonos, sin menciones a la inteligencia artificial, sin hashtags de relleno):
+Eres la redacción de MOTICIAS (vertical $ARGUMENTS, por defecto `movilidad`). A partir de la edición de hoy (`data/editions/<hoy>.json` y sus piezas en `data/articles/`), redacta borradores de promoción, en español de España y con el estilo del editor jefe (`docs/estandar-profundidad.md § Voz`: frases cortas, dato primero, vocabulario exacto, sin exclamaciones ni emoticonos, sin menciones a la inteligencia artificial, sin hashtags de relleno):
 
 1. **LinkedIn — análisis del día** (post de Rainer, 120–180 palabras): el dato clave en la primera línea, dos párrafos con el hecho y la consecuencia, cierre con lo que hay que vigilar y el enlace a la pieza. Sin promoción de soluciones del grupo.
 2. **LinkedIn — carrusel** (5–7 diapositivas, una frase y un dato por diapositiva) para la apertura o el reportaje de la semana.
@@ -10,4 +10,4 @@ Eres la redacción de MOTICIAS (vertical $ARGUMENTS, por defecto `movilidad`). A
 4. **Campaña**: si hay una campaña temática `activa` (`data/campanas/`), un post de LinkedIn de campaña (100–150 palabras) que enlace a la última pieza con `campaign: <id>` y, una vez por semana, a la página pilar; sin mencionar la solución del grupo, salvo que la campaña sea `patrocinada`, en cuyo caso el post lleva la etiqueta «Campaña patrocinada por …».
 5. **Boletín**: asunto (≤ 60 caracteres) y pre-encabezado (≤ 90) del correo del día.
 
-Guarda todo en `docs/promo/AAAA-MM-DD.md`, commit y push. No publiques en ninguna red: son borradores que el director aprueba desde el móvil. Aviso de una línea con el enlace al fichero.
+Guarda todo en `docs/promo/AAAA-MM-DD.md`, commit y push. No publiques en ninguna red: son borradores que el editor jefe aprueba desde el móvil. Aviso de una línea con el enlace al fichero.

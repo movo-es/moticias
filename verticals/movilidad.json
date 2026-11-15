@@ -13,7 +13,7 @@
  "timezone": "Europe/Madrid",
  "editor": {
   "name": "Rainer Uphoff",
-  "role": "Director de MOTICIAS",
+  "role": "Editor jefe de MOTICIAS",
   "interests_note": "Rainer Uphoff es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado."
  },
  "schedule": {
@@ -182,10 +182,10 @@
   "default_author": "G. Jordan",
   "default_author_role": "Redactor responsable",
   "director": "Rainer Uphoff",
-  "director_role": "Director de MOTICIAS",
+  "director_role": "Editor jefe de MOTICIAS",
   "approval": {
    "routine": "ninguna (publicación directa)",
-   "critical": "director, antes de publicar",
+   "critical": "editor jefe, antes de publicar",
    "quick_fix": "botón editar/retirar en el visor del editor"
   },
   "routine_requires": "al menos una fuente oficial, o dos fuentes profesionales de confianza (docs/fuentes.md) que coincidan",
@@ -195,11 +195,11 @@
    "puede tener implicaciones legales fuertes (litigios abiertos, datos personales, secretos comerciales, difamación)",
    "toca a empresas del grupo, socios o clientes (Movenbus, MUFMI, MOVO, Moveme, Avionline, Amarantia, socios de la línea de planes de movilidad)",
    "corrige o contradice una pieza anterior de MOTICIAS",
-   "análisis y reportajes que firma el director (cupo en `firma_director`)"
+   "análisis y reportajes que firma el editor jefe (cupo en `firma_director`)"
   ],
   "firma_director": {
    "decidido": "2026-11-09",
-   "regla": "El nombre del director firma como mucho el 10 % de las piezas de los últimos 30 días (objetivo 7 %), y solo las importantes. Todo lo demás, incluidas las piezas críticas que esperan su aprobación, lo firma la redacción. Firmar no es aprobar: la aprobación no cambia.",
+   "regla": "El nombre del editor jefe firma como mucho el 10 % de las piezas de los últimos 30 días (objetivo 7 %), y solo las importantes. Todo lo demás, incluidas las piezas críticas que esperan su aprobación, lo firma la redacción. Firmar no es aprobar: la aprobación no cambia.",
    "max_pct": 10,
    "objetivo_pct": 7,
    "ventana_dias": 30,
@@ -215,7 +215,7 @@
    ],
    "herramienta": "src/firma.py (informe · decidir)"
   },
-  "interests_note_redaccion": "El director de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado.",
+  "interests_note_redaccion": "El editor jefe de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado.",
   "ghost_autores": {
    "Rainer Uphoff": "rainer",
    "Rainer": "rainer",
@@ -242,7 +242,7 @@
    "patrocinado": "Lo que anuncia un servicio: cajas dentro del texto, cajas por niveles (data/ads/) y piezas con sponsored_by; etiqueta siempre visible y rel=\"sponsored\"; nunca en un análisis ni en piezas que traten del grupo"
   },
   "marcas": {
-   "analisis_director": "Análisis del director",
+   "analisis_director": "Análisis",
    "analisis": "Análisis",
    "reportaje": "Reportaje",
    "noticia": "Noticia",
@@ -326,8 +326,8 @@
   "rules": [
    "La mención va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos, con la etiqueta discreta pero siempre visible (art. 20 LSSI).",
    "Cada producto decide en el gestor si entra solo (modo automatico, con umbral de puntuación), si espera aprobación (revision), si solo se pone a mano (manual) o si no se menciona (apagado); y si es exclusiva (ninguna otra caja en esa pieza) o compartida (hasta max_por_pieza cajas).",
-   "Los análisis del director y las piezas que tratan del grupo no llevan cajas.",
-   "Cada mención publicada se comunica al director por correo con enlace al gestor de patrocinios; retirar = estado retirada, nunca borrar.",
+   "Los análisis del editor jefe y las piezas que tratan del grupo no llevan cajas.",
+   "Cada mención publicada se comunica al editor jefe por correo con enlace al gestor de patrocinios; retirar = estado retirada, nunca borrar.",
    "La caja no cambia el texto, la firma ni los criterios de aprobación de la pieza."
   ],
   "gestor_url": "https://app.moticias.com/gestor/"
@@ -682,7 +682,10 @@
      "análisis",
      "opinión",
      "director",
-     "análisis del director"
+     "análisis del editor jefe",
+     "editor jefe",
+     "análisis del director",
+     "Rainer Uphoff"
     ]
    }
   ],
@@ -2109,7 +2112,7 @@
  "restauracion": {
   "decidido": "2026-11-15",
   "cambio": "restaurar-copia",
-  "regla": "Restauran el editor y el editor jefe desde la pestaña «Restaurar» del gestor. Nunca encima: se enseña qué cambia, se restaura con registro (commit nuevo o gestor_registro), se avisa al director y se puede deshacer. Las piezas firmadas por el director solo las restaura él. El editor restaura el contenido conservando el estado de hoy (no publica nada que no lo estuviera).",
+  "regla": "Restauran el editor y el editor jefe desde la pestaña «Restaurar» del gestor. Nunca encima: se enseña qué cambia, se restaura con registro (commit nuevo o gestor_registro), se avisa al editor jefe y se puede deshacer. Las piezas firmadas por el editor jefe solo las restaura él. El editor restaura el contenido conservando el estado de hoy (no publica nada que no lo estuviera).",
   "contenido": {
    "data/articles/": "Piezas",
    "data/ads/": "Publicidad",
@@ -2157,7 +2160,7 @@
   "dias_copia_interna": 14
  },
  "avisos": {
-  "nota": "Remitentes de los avisos internos al director (restauración, copias, secciones, menciones), por orden. Brevo rechaza redaccion@moticias.com mientras moticias.com no esté autenticado (comprobado el 15-11-2026 en su registro de envíos: el rechazo llega después del envío, así que no hay reserva automática). Cuando moticias.com esté autenticado en Brevo, poner primero «redaccion@moticias.com».",
+  "nota": "Remitentes de los avisos internos al editor jefe (restauración, copias, secciones, menciones), por orden. Brevo rechaza redaccion@moticias.com mientras moticias.com no esté autenticado (comprobado el 15-11-2026 en su registro de envíos: el rechazo llega después del envío, así que no hay reserva automática). Cuando moticias.com esté autenticado en Brevo, poner primero «redaccion@moticias.com».",
   "nombre": "MOTICIAS",
   "remitentes": [
    "ruphoff@avionline.es"

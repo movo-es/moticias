@@ -1,6 +1,6 @@
 # Cambio: plataforma-v1 — sala de redacción, suscripciones, CRM, promoción, sensores y verticales
 
-Estado: propuesto (7-11-2026). Origen: reflexiones del director en `docs/estrategia.md`.
+Estado: propuesto (7-11-2026). Origen: reflexiones del editor jefe en `docs/estrategia.md`.
 
 ## Por qué
 

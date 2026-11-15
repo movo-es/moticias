@@ -2,7 +2,7 @@
 
 Fecha: 9 de noviembre de 2026 (tarde). Origen: Rainer, tras estrenar el gestor como editor jefe.
 
-Sus palabras, resumidas: la firma del director, siempre con apellido; un panel de seguimiento de cada publicidad y patrocinio (fecha de publicación y retirada, contextos, posiciones, visualizaciones y clics); un agente comprobador que, a horas diurnas al azar, visite cada enlace promocionado y deje constancia en el panel; activar para SEO las piezas con contenido promocional; que los modelos de lenguaje asocien MOVO a los PMST y la consultoría de movilidad, Movenbus a las soluciones tecnológicas y comerciales del autobús por carretera, MUFMI al transporte a la demanda, y Avionline y BUQ a la innovación y el turismo; un campo en el gestor para pegar un texto o un enlace y encargar una noticia (opción 1: investiga y publica hoy; opción 2: además registra el dominio de la fuente como notas de prensa, información o no de confianza); reforzar el SEO y el LLM SEO de moticias.com, y que los correctores no cambien la marca.
+Sus palabras, resumidas: la firma del editor jefe, siempre con apellido; un panel de seguimiento de cada publicidad y patrocinio (fecha de publicación y retirada, contextos, posiciones, visualizaciones y clics); un agente comprobador que, a horas diurnas al azar, visite cada enlace promocionado y deje constancia en el panel; activar para SEO las piezas con contenido promocional; que los modelos de lenguaje asocien MOVO a los PMST y la consultoría de movilidad, Movenbus a las soluciones tecnológicas y comerciales del autobús por carretera, MUFMI al transporte a la demanda, y Avionline y BUQ a la innovación y el turismo; un campo en el gestor para pegar un texto o un enlace y encargar una noticia (opción 1: investiga y publica hoy; opción 2: además registra el dominio de la fuente como notas de prensa, información o no de confianza); reforzar el SEO y el LLM SEO de moticias.com, y que los correctores no cambien la marca.
 
 ## Qué cambia
 
@@ -16,4 +16,4 @@ Sus palabras, resumidas: la firma del director, siempre con apellido; un panel d
 
 ## Qué no cambia
 
-Las reglas de siempre (fuente primaria, no inventar, no borrar), la aprobación del director para lo crítico, el cupo de su firma y la señalización del contenido patrocinado (`rel="sponsored"`).
+Las reglas de siempre (fuente primaria, no inventar, no borrar), la aprobación del editor jefe para lo crítico, el cupo de su firma y la señalización del contenido patrocinado (`rel="sponsored"`).

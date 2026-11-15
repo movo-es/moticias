@@ -1,7 +1,7 @@
 {
  "accent": "#7a1f2b",
  "author": "Rainer",
- "author_role": "Director de MOTICIAS",
+ "author_role": "Editor jefe de MOTICIAS",
  "contact_email": "",
  "contact_text": "",
  "contact_title": "",
@@ -16,7 +16,7 @@
  "created_at": "2026-11-04T18:00:00+01:00",
  "cta_text": "",
  "cta_url": "",
- "description": "Las piezas de fondo de MOTICIAS y las notas propias de su director.",
+ "description": "Retirado el 15-11-2026: los análisis y reportajes están en las secciones «Análisis» y «Reportaje».",
  "feed_limit": 9,
  "feed_title": "Análisis y reportajes",
  "filters": {
@@ -41,14 +41,14 @@
   "posts": true
  },
  "name": "Cuaderno del director",
- "notes": "",
+ "notes": "Retirado el 15-11-2026 (cambio terminologia-editor, decisión de Rainer): «Cuaderno del director» desaparece; sus piezas siguen en «Análisis» y «Reportaje». Nunca existió en moticias.com; solo en el portal espejo. No se borra.",
  "order": 1,
  "pinned_id": null,
  "posts_title": "Entradas",
  "slug": "cuaderno-del-director",
- "status": "publicado",
+ "status": "borrador",
  "tagline": "Regulación, concesiones y el transporte de viajeros entendido como sistema",
  "type": "blog",
- "updated_at": "2026-11-04T18:00:00+01:00",
- "visibility": "publico"
+ "updated_at": "2026-11-15T23:59:00+01:00",
+ "visibility": "oculto"
 }

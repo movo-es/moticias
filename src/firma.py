@@ -1,13 +1,13 @@
-"""MOTICIAS · Firma del director: cupo y criterio (decisión de Rainer, 9-11-2026).
+"""MOTICIAS · Firma del editor jefe: cupo y criterio (decisión de Rainer, 9-11-2026).
 
 «Pon máximo a un 10 % mi nombre, más bien menos, y solo los importantes.»
 
-- El nombre del director firma como mucho el `max_pct` (10 %) de las piezas de los últimos `ventana_dias` (30) días, y la
+- El nombre del editor jefe firma como mucho el `max_pct` (10 %) de las piezas de los últimos `ventana_dias` (30) días, y la
   rutina apunta al `objetivo_pct` (7 %). Cuentan las publicadas y las que esperan su aprobación (`pendiente`).
 - Solo firman con su nombre las piezas importantes: análisis o reportajes con `relevance` ALTA que además cumplan uno de los
-  `motivos_importante` del vertical (o que el director marque a mano con `firma_director: true`).
+  `motivos_importante` del vertical (o que el editor jefe marque a mano con `firma_director: true`).
 - Lo demás —noticias, reportajes, análisis corrientes y piezas críticas— lo firma la redacción («G. Jordan, Redactor
-  responsable»). Firmar y aprobar son cosas distintas: una pieza crítica sigue esperando la aprobación del director
+  responsable»). Firmar y aprobar son cosas distintas: una pieza crítica sigue esperando la aprobación del editor jefe
   (`status: pendiente`, `risk: critica`) aunque la firme la redacción.
 
 Uso:
@@ -24,7 +24,7 @@ def config(vertical):
     c = dict({"max_pct": 10, "objetivo_pct": 7, "ventana_dias": 30, "tipos": ["analisis", "reportaje"]}, **(ed.get("firma_director") or {}))
     c["director"] = ed.get("director", "Rainer Uphoff")  # siempre con apellido (Rainer, 9-11-2026)
     c["director_antes"] = set(ed.get("director_firma_antigua") or [])
-    c["director_role"] = ed.get("director_role", "Director de MOTICIAS")
+    c["director_role"] = ed.get("director_role", "Editor jefe de MOTICIAS")
     c["redaccion"] = ed.get("default_author", "G. Jordan")
     c["redaccion_role"] = ed.get("default_author_role", "Redactor responsable")
     return c
@@ -62,9 +62,9 @@ def cupo(arts, dia, c, excluir=None):
 def importante(a, c):
     """(bool, motivo). Solo análisis o reportajes de relevancia ALTA con un motivo de importancia, o la marca manual."""
     if a.get("firma_director") is True:
-        return True, "marcada por el director"
+        return True, "marcada por el editor jefe"
     if a.get("firma_director") is False:
-        return False, "el director pidió firma de la redacción"
+        return False, "el editor jefe pidió firma de la redacción"
     if a.get("kind") not in c["tipos"]:
         return False, "las %ss las firma la redacción" % (a.get("kind") or "pieza")
     if str(a.get("relevance") or "").upper() != "ALTA":
@@ -88,7 +88,7 @@ def decidir(a, arts, c, dia=None):
 
 
 def aplicar(a, d):
-    """Escribe la firma decidida. Si pasa a la redacción, quita la nota de intereses personal del director y la sustituye
+    """Escribe la firma decidida. Si pasa a la redacción, quita la nota de intereses personal del editor jefe y la sustituye
     por la del medio (la relación con Movenbus se sigue declarando en toda pieza que toque su mercado)."""
     a["author"], a["author_role"] = d["author"], d["author_role"]
     a["firma_motivo"] = d["motivo"]
@@ -97,8 +97,8 @@ def aplicar(a, d):
     return a
 
 
-# La relación con Movenbus se declara sin el nombre del director cuando la pieza la firma la redacción.
-NOTA_REDACCION = ("El director de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre "
+# La relación con Movenbus se declara sin el nombre del editor jefe cuando la pieza la firma la redacción.
+NOTA_REDACCION = ("El editor jefe de MOTICIAS es cofundador de Movenbus, operador de transporte de viajeros. MOTICIAS no cubre "
                   "operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado.")
 
 
@@ -115,7 +115,7 @@ def main():
     c, arts = config(vertical), cargar()
     if args.cmd == "informe":
         q = cupo(arts, args.fecha, c)
-        print("Firma del director, %s → %s: %s de %s piezas (%s %%). Tope %s %%, objetivo %s %%. Puede firmar %s más (objetivo) o %s (tope)."
+        print("Firma del editor jefe, %s → %s: %s de %s piezas (%s %%). Tope %s %%, objetivo %s %%. Puede firmar %s más (objetivo) o %s (tope)."
               % (q["desde"], q["hasta"], q["director"], q["total"], q["pct"], q["max"], q["objetivo"], q["libres_objetivo"], q["libres_max"]))
         return 0 if q["pct"] <= c["max_pct"] else 1
     a = arts.get(args.id)

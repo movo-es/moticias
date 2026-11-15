@@ -13,7 +13,7 @@
       al menos a medias, y un clic cuando se pulsa su enlace (POST /api/gestor?a=evento). No cuenta las visitas del editor jefe
       ni de navegadores automatizados.
    4. Tipo de contenido (cambio tipos-de-contenido, 15-11-2026): en los listados, una marca pequeña junto a cada titular
-      («Análisis del director», «Análisis», «Reportaje», «Noticia», «Nota de prensa · Comunicado de …»), leída de
+      («Análisis», «Reportaje», «Noticia», «Nota de prensa · Comunicado de …»), leída de
       app.moticias.com/buscador/tipos.json (lo genera src/export_search_index.py). Dentro de cada pieza la marca ya va
       en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
    6. Pinta las páginas de sección con sus piezas (la plantilla del tema salía vacía).

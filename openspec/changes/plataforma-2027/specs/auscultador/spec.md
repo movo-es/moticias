@@ -17,7 +17,7 @@ Por entidad, línea base móvil de 30 días (volumen diario, sentimiento medio).
 `alerts` (entity_id, nivel: vigilar | atención | crisis, estado: nueva | vista | confirmada | descartada | en-accion, evidencias, abierta_en, cerrada_en, por). Confirmar, descartar y «abrir PLUS» son acciones de una persona en el panel `app.moticias.com/amarantia`.
 
 ## ADDED Requisito: aviso a la redacción
-Las alertas de nivel atención o crisis sobre entidades del sector (vigiladas o no) van a `work/sensores/candidatas.md` y al aviso del director como «posible noticia grande».
+Las alertas de nivel atención o crisis sobre entidades del sector (vigiladas o no) van a `work/sensores/candidatas.md` y al aviso del editor jefe como «posible noticia grande».
 
 ## ADDED Requisito: datos de cliente y reservado
 Cada cliente ve solo sus entidades (RLS). La información reservada no entra en este módulo.

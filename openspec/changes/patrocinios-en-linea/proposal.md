@@ -19,7 +19,7 @@ Sus palabras: «gestionar la inclusión o no, automática con umbral de puntuaci
 
 ## Qué no cambia
 
-La caja no cambia el texto, la firma ni la aprobación de la pieza. Los análisis del director y las piezas que tratan del grupo no llevan cajas. Retirar es `estado: retirada`, nunca borrar. Los huecos de publicidad fuera del texto (`data/ads/`) siguen como estaban; el gestor solo permite activarlos y pausarlos.
+La caja no cambia el texto, la firma ni la aprobación de la pieza. Los análisis del editor jefe y las piezas que tratan del grupo no llevan cajas. Retirar es `estado: retirada`, nunca borrar. Los huecos de publicidad fuera del texto (`data/ads/`) siguen como estaban; el gestor solo permite activarlos y pausarlos.
 
 ## Riesgo editorial y cómo se cubre
 

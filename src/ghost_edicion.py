@@ -78,7 +78,7 @@ def carga(carpeta):
 
 def publicadas_en_ghost(vertical):
     """Slugs de los posts publicados, leídos de la Content API pública de Ghost (clave pública en verticals/*.json → ghost).
-    Sirve para enlazar en el mapa solo piezas que existen en la web (las del director sin aprobar son borradores).
+    Sirve para enlazar en el mapa solo piezas que existen en la web (las del editor jefe sin aprobar son borradores).
     Si no se puede leer, devuelve None y se usa la regla de `status`."""
     g = vertical.get("ghost") or {}
     if not g.get("content_key"):

@@ -368,7 +368,7 @@ function pintarEditor() {
       <details><summary>Guía rápida y dato clave</summary>${["key_fact", "actors", "relevance_for", "why", "next"].map(campoEd).join("")}</details></div>
       <div><div class="card"><h2>Vista previa</h2><div class="prev" id="prev"></div></div>
       <div class="card"><h2>Firma</h2>
-        <div class="seg" id="firma"><button data-f="redaccion" class="${fi.actual==="redaccion"?"on":""}">${E(fi.redaccion)}<br><small>redacción</small></button><button data-f="director" class="${fi.actual==="director"?"on":""}">${E(fi.director)}<br><small>director</small></button></div>
+        <div class="seg" id="firma"><button data-f="redaccion" class="${fi.actual==="redaccion"?"on":""}">${E(fi.redaccion)}<br><small>redacción</small></button><button data-f="director" class="${fi.actual==="director"?"on":""}">${E(fi.director)}<br><small>editor jefe</small></button></div>
         <p class="mute">Tu nombre: ${q.director} de ${q.total} piezas en 30 días (${String(q.pct).replace(".", ",")} %), tope ${q.max} %. ${fi.importante ? "Esta pieza cuenta como importante: " + E(fi.motivo) + "." : "Esta pieza no es de las importantes (" + E(fi.motivo) + ")."}</p></div>
       <div class="card"><h2>Publicar</h2>
         <label class="chk"><input type="checkbox" id="escorr"> <span>Es la corrección de un dato: se añade una nota «Corrección» al final de la pieza, con la fecha.</span></label>
@@ -784,7 +784,7 @@ function nuevoMedio() {
 }
 const TEXTOS_ENVIO = {
   invitacion_suscripcion: ["MOTICIAS: información profesional de transporte y movilidad, gratis para periodistas", "Le escribo porque cubre transporte y movilidad. MOTICIAS publica cada mañana laborable reportajes con fuente primaria sobre regulación, concesiones, licitaciones y operadores de tierra, mar y aire, con los plazos del BOE y de los boletines autonómicos.\n\nPara su trabajo puede suscribirse gratis y recibir la edición diaria. Si alguna pieza le resulta útil, puede citarla con enlace."],
-  mensaje_editor: ["", "\n\nRainer Uphoff\nDirector de MOTICIAS"], mensaje_redaccion: ["", "\n\nRedacción de MOTICIAS"]};
+  mensaje_editor: ["", "\n\nRainer Uphoff\nEditor jefe de MOTICIAS"], mensaje_redaccion: ["", "\n\nRedacción de MOTICIAS"]};
 function nuevoEnvio() {
   const C = PRE.cfg;
   app.innerHTML = `<p><button class="b2" id="volver">← Prensa</button></p><div class="card"><h1>Nuevo envío</h1>
@@ -868,10 +868,10 @@ const PERF_TXT = {superadmin:"Todo. Solo él publica: edita, retira y reenfoca p
 const ESTP = {activa:["pub","Activa"], invitada:["pro","Invitada"], suspendida:["ret","Suspendida"]};
 // ---------- Restaurar (cambio restaurar-copia, 15-11-2026) ----------
 // Contenido: versiones de un documento (historial del repositorio) → ver qué cambia → restaurar (versión nueva) → deshacer.
-// Base privada: copia interna de cada noche (14 días) → qué falta o cambió → recuperar. Nunca se borra nada; avisa al director.
+// Base privada: copia interna de cada noche (14 días) → qué falta o cambió → recuperar. Nunca se borra nada; avisa al editor jefe.
 const fechaCorta = s => s ? String(s).slice(0, 16).replace("T", " ") : "";
 async function verRestaurar() {
-  app.innerHTML = `<div class="card"><h1>Restaurar</h1><p class="mute">Devuelve una pieza, una caja de publicidad o una edición a una versión anterior, o recupera fichas del CRM y de la base de prensa desde la copia de cada noche. Nunca se borra nada: se escribe una versión nueva, el director recibe un aviso y se puede deshacer.</p>
+  app.innerHTML = `<div class="card"><h1>Restaurar</h1><p class="mute">Devuelve una pieza, una caja de publicidad o una edición a una versión anterior, o recupera fichas del CRM y de la base de prensa desde la copia de cada noche. Nunca se borra nada: se escribe una versión nueva, el editor jefe recibe un aviso y se puede deshacer.</p>
     <div class="tabs" id="rt"><button data-t="c" class="on">Piezas y publicidad</button><button data-t="b">CRM y prensa</button></div><div id="rbody"></div></div>`;
   $("#rt").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; $("#rt").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); b.dataset.t === "c" ? restContenido() : restBase(); };
   const r = params().get("ruta");
@@ -901,13 +901,13 @@ async function restVersiones(ruta) {
     const v = $("#rv"); v.innerHTML = `<div class="vacio">Comparando…</div>`; v.scrollIntoView({behavior: "smooth"});
     let x; try { x = await api("version", null, {ruta, sha: b.dataset.s}); } catch (e) { v.innerHTML = `<p class="warn">${E(e.message)}</p>`; return; }
     v.innerHTML = `<div class="card"><h2>Qué cambia si restauras esta versión</h2>${x.diferencias.length ? x.diferencias.map(f => `<div class="cand" style="display:block"><b>${E(f.campo)}</b><div class="mute">Hoy: ${E(f.ahora ?? "—")}</div><div>Volvería a: ${E(f.antes ?? "—")}</div></div>`).join("") : `<p class="mute">Es igual que la de hoy.</p>`}
-      ${x.restaurable ? `<label>Motivo (queda en el historial y en el aviso al director)</label><input id="rmot" placeholder="Ej.: se cambió el titular por error"><p><button class="b" id="rgo" style="width:100%">Restaurar esta versión</button></p>` : `<p class="warn">${E(x.motivo)}</p>`}</div>`;
+      ${x.restaurable ? `<label>Motivo (queda en el historial y en el aviso al editor jefe)</label><input id="rmot" placeholder="Ej.: se cambió el titular por error"><p><button class="b" id="rgo" style="width:100%">Restaurar esta versión</button></p>` : `<p class="warn">${E(x.motivo)}</p>`}</div>`;
     const go = $("#rgo"); if (!go) return;
     go.onclick = async () => {
       go.disabled = true;
       try {
         const r = await api("restaurar_version", {ruta, sha: x.sha, motivo: $("#rmot").value});
-        v.innerHTML = `<div class="okbox">Restaurado${r.web ? (r.web.ok ? " y publicado en la web" : " · la web se pondrá al día en la próxima publicación") : ""}. Se ha avisado al director.</div>${r.deshacer && r.deshacer.sha ? `<p><button class="b2" id="rdes" style="width:100%">Deshacer</button></p>` : ""}`;
+        v.innerHTML = `<div class="okbox">Restaurado${r.web ? (r.web.ok ? " y publicado en la web" : " · la web se pondrá al día en la próxima publicación") : ""}. Se ha avisado al editor jefe.</div>${r.deshacer && r.deshacer.sha ? `<p><button class="b2" id="rdes" style="width:100%">Deshacer</button></p>` : ""}`;
         const des = $("#rdes"); if (des) des.onclick = async () => { des.disabled = true; try { await api("restaurar_version", {ruta, sha: r.deshacer.sha, motivo: "deshacer la restauración anterior"}); aviso("Deshecho"); restVersiones(ruta); } catch (e) { aviso(e.message, true); des.disabled = false; } };
       } catch (e) { aviso(e.message, true); go.disabled = false; }
     };

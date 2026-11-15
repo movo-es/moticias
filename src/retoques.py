@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MOTICIAS · Retoques del director (`data/retoques/`): encargos de retoque a una pieza publicada, pedidos desde el gestor.
+"""MOTICIAS · Retoques del editor jefe (`data/retoques/`): encargos de retoque a una pieza publicada, pedidos desde el gestor.
 
   python3 -I src/retoques.py pendientes                      lista (JSON) los retoques pendientes, con la pieza cargada
   python3 -I src/retoques.py crear --pieza <id> --instruccion "…" [--por editor]
@@ -8,7 +8,7 @@
 
 Un retoque es una instrucción editorial de Rainer (o de un editor) sobre una pieza ya publicada: un enfoque, un titular, una
 referencia que falta («Iberia incluye Granada en su operación especial a Andalucía tras el accidente del AVE»). La atiende la
-rutina `/retoques` (tarea programada «MOTICIAS · retoques del director», cada hora en horario laboral) con el método de
+rutina `/retoques` (tarea programada «MOTICIAS · retoques del editor jefe», cada hora en horario laboral) con el método de
 siempre: lo que se pide se verifica en fuente primaria antes de escribirlo; si no hay fuente, el retoque queda `sin_fuentes`
 con el motivo y no se publica nada. Nunca se borra un retoque: cancelar es `estado: cancelado`.
 

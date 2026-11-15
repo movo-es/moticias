@@ -41,7 +41,7 @@ def puede_contenido(perfil, ruta, actual, antigua, v):
     if any(ruta.startswith(p) for p in cfg(v).get("solo_superadmin_contenido", [])):
         return False, "los productos solo los restaura el editor jefe"
     if es_del_director(actual, v) or es_del_director(antigua, v):
-        return False, "las piezas que firma el director solo las restaura él"
+        return False, "las piezas que firma el editor jefe solo las restaura él"
     if ruta.startswith("data/articles/"):
         if (actual or {}).get("status") != "publicado":
             return False, "la pieza no está publicada hoy: la restaura el editor jefe"

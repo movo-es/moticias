@@ -11,7 +11,7 @@ La campaña es un objeto distinto de la campaña publicitaria (`campaigns`, prod
 Cada campaña vive en `data/campanas/<id>.json` (fuente de verdad) y su estado y métricas en Supabase (`campanas_tematicas`). Campos obligatorios: `id`, `vertical_id`, `name`, `claim` (una frase para lectores), `topic` (tema), `keywords` (para barridos y sensores), `hook` (`{kind: plazo|licitacion|evento|norma|temporada, text, date, source_url, date_verified}`), `start`, `end`, `status` (`prevista` | `activa` | `cerrada`), `goal` (frase: a quién y para qué), `segment_id`, `solution` (`MUFMI` | `MOVENBUS` | `MOVO` | `PLANES` | id de anunciante | `ninguna`), `monetization` (`sin-publicidad` | `patrocinada` | `banner` | `mixta`), `sponsor` (`grupo` | id de anunciante | `null`), `editorial_plan` (piezas previstas: pilar, reportajes, datos propios, radar, entrevistas, cada una con `kind`, `title`, `week`, `status`), `cadence` (`min_pieces_per_week`, `weight` 1–3 para el barrido), `channels` (`web`, `boletin`, `linkedin`, `instagram`, `edicion-a-medida`), `creatives` (banners y bloques patrocinados por hueco, con etiqueta visible), `cta` (`{label, url, utm_campaign}`), `kpis` (objetivos numéricos: piezas, lecturas, descargas, altas, leads por solución, conversiones), `owner` (editor responsable), `review` (notas de cierre).
 
 #### Escenario: alta de la campaña piloto
-- CUANDO el director crea `data/campanas/movilidad-al-trabajo-pmst.json` con `status: activa`, `solution: MOVO`, `monetization: sin-publicidad` y `sponsor: grupo`
+- CUANDO el editor jefe crea `data/campanas/movilidad-al-trabajo-pmst.json` con `status: activa`, `solution: MOVO`, `monetization: sin-publicidad` y `sponsor: grupo`
 - ENTONCES desde la siguiente edición el barrido da peso al tema, la portada muestra el bloque de campaña con sus piezas, el hueco lateral de esas piezas muestra la ficha de MOVO etiquetada «Servicio de MOVO», y el asesor semanal informa del avance frente a los `kpis`.
 
 ## ADDED Requisito: la campaña orienta la selección, no el tratamiento
@@ -53,4 +53,4 @@ Quien lee, descarga o pulsa el `cta` de una campaña genera eventos con `campana
 
 ## ADDED Requisito: ciclo de vida
 
-`prevista` (planificada, no visible) → `activa` (en `start`, o cuando el director la active) → `cerrada` (en `end` o tras el `hook`): el bloque desaparece de portada, las piezas quedan agrupadas en una página pilar permanente («Todo sobre los PMST»), el informe de cierre va a `docs/campanas/<id>-cierre.md` con resultados frente a `kpis` y lo aprendido. Nunca se borra una campaña.
+`prevista` (planificada, no visible) → `activa` (en `start`, o cuando el editor jefe la active) → `cerrada` (en `end` o tras el `hook`): el bloque desaparece de portada, las piezas quedan agrupadas en una página pilar permanente («Todo sobre los PMST»), el informe de cierre va a `docs/campanas/<id>-cierre.md` con resultados frente a `kpis` y lo aprendido. Nunca se borra una campaña.

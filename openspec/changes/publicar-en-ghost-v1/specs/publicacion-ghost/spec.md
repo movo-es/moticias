@@ -11,10 +11,10 @@ Cada pieza de `data/articles/<id>.json` con `status` distinto de `borrador` se p
 - ENTONCES la siguiente publicación actualiza el post (no crea otro), conserva `published_at` original y el HTML muestra la nota de corrección al final.
 
 ## ADDED Requisito: el estado lo dicta la regla editorial
-`estado_de_publicacion(pieza, vertical)` devuelve `published` para las piezas rutinarias (firma «G. Jordan, Redactor responsable») y `draft` para las de firma del director, las críticas para la reputación o con implicaciones legales y las marcadas `status: pendiente`, según `verticals/<vertical>.json → editorial`. Ninguna bandera global cambia esto; Rainer publica los borradores desde la app de Ghost.
+`estado_de_publicacion(pieza, vertical)` devuelve `published` para las piezas rutinarias (firma «G. Jordan, Redactor responsable») y `draft` para las de firma del editor jefe, las críticas para la reputación o con implicaciones legales y las marcadas `status: pendiente`, según `verticals/<vertical>.json → editorial`. Ninguna bandera global cambia esto; Rainer publica los borradores desde la app de Ghost.
 
 #### Escenario: análisis del día
-- CUANDO la rutina cierra la edición con un `kind: analisis` firmado por el director
+- CUANDO la rutina cierra la edición con un `kind: analisis` firmado por el editor jefe
 - ENTONCES el post entra en Ghost como `draft` y el aviso de cierre dice «1 en borrador».
 
 ## ADDED Requisito: reconciliación sin borrados

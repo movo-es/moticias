@@ -5,15 +5,15 @@ Spec viva desde el 15-11-2026 (cambio `restaurar-copia`, aprobado por Rainer ese
 ## Requisitos
 
 ### Quién
-- Restauran el editor y el editor jefe, desde la pestaña «Restaurar» del gestor, en el móvil y sin el Mac. Las piezas firmadas por el director solo las restaura el editor jefe.
+- Restauran el editor y el editor jefe, desde la pestaña «Restaurar» del gestor, en el móvil y sin el Mac. Las piezas firmadas por el editor jefe solo las restaura el editor jefe.
 
 ### Nunca encima
-- Toda restauración enseña antes qué cambia, deja registro (commit nuevo o línea en `gestor_registro`), avisa al director y se puede deshacer. Nunca borra nada ni reescribe la historia.
+- Toda restauración enseña antes qué cambia, deja registro (commit nuevo o línea en `gestor_registro`), avisa al editor jefe y se puede deshacer. Nunca borra nada ni reescribe la historia.
 
 #### Escenario: pieza devuelta a una versión anterior
 - DADA una pieza publicada cuyo titular se cambió por error
 - CUANDO un editor elige la versión de ayer y pulsa «Restaurar esta versión»
-- ENTONCES se escribe un commit nuevo con esa versión, la pieza lleva `revised_at` y una línea en `revisiones`, se republica en Ghost con su estado y el director recibe el aviso con «Deshacer»
+- ENTONCES se escribe un commit nuevo con esa versión, la pieza lleva `revised_at` y una línea en `revisiones`, se republica en Ghost con su estado y el editor jefe recibe el aviso con «Deshacer»
 
 ### Contenido
 - Se restauran documentos de `data/` (piezas, anuncios, productos, ediciones, plazos, boletines) a cualquier versión de su historial que ya estuviera publicada; antes de publicarse pasa las validaciones de tipo de contenido y de tres ejes.

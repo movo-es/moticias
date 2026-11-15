@@ -8,10 +8,10 @@ Lista cerrada de campos (`src/redaccion.py → CAMPOS`). Cada edición deja `rev
 
 #### Escenario: cifra nueva
 - CUANDO el texto a publicar contiene una cifra o fecha que no está en la pieza ni en sus fuentes
-- ENTONCES el servidor contesta 409 con la lista y solo publica si el director confirma expresamente que responde de ellas.
+- ENTONCES el servidor contesta 409 con la lista y solo publica si el editor jefe confirma expresamente que responde de ellas.
 
 ## ADDED Requisito: otro enfoque con IA
-La IA (AI Gateway, `MODELO_IA`, por defecto `anthropic/claude-opus-5.5`) devuelve una propuesta que no se guarda. El director la ve junto al original, la pasa al editor y publica con «Publicar cambios». No puede añadir hechos; las cifras nuevas se marcan.
+La IA (AI Gateway, `MODELO_IA`, por defecto `anthropic/claude-opus-5.5`) devuelve una propuesta que no se guarda. El editor jefe la ve junto al original, la pasa al editor y publica con «Publicar cambios». No puede añadir hechos; las cifras nuevas se marcan.
 
 ## ADDED Requisito: retirar
 «Borrar» es retirar: `status: retirada` y borrador en Ghost; la pieza se conserva y se puede restaurar. Nunca se borra.

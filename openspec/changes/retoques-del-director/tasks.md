@@ -2,6 +2,6 @@
 - [x] `api/gestor.py`: `retoques`, `retoque` (crear, cancelar); `detalle()` devuelve los retoques de la pieza; `vercel.json` incluye `data/retoques`
 - [x] `app/public/gestor/index.html`: caja «Pedir un toque a la redacción» e historial
 - [x] `.claude/commands/retoques.md`
-- [x] Tarea programada «MOTICIAS · retoques del director» (laborables 8–21, cada hora)
+- [x] Tarea programada «MOTICIAS · retoques del editor jefe» (laborables 8–21, cada hora)
 - [ ] Variables `GHOST_URL` y `GHOST_ADMIN_KEY` en la tarea (las pone Rainer)
 - [ ] Primer retoque real atendido de principio a fin; archivar el cambio

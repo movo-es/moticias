@@ -20,11 +20,11 @@ Frases cortas, vocabulario institucional exacto, juicio firme y no partidista, i
 En `body_md` solo URL `https://…`; las piezas anteriores se citan por título y fecha, sin enlace interno.
 
 ## Requisito: análisis
-`kind: analisis`, firma según `src/firma.py decidir` («Rainer Uphoff, Director de MOTICIAS» solo si es importante y queda cupo; si no, «G. Jordan, Redactor responsable»), `author_note` con la declaración de intereses (sin nombre si firma la redacción), `scope` del ámbito de rotación; añade `{date, scope}` a `settings/site.recent_scopes` (últimos 30).
+`kind: analisis`, firma según `src/firma.py decidir` («Rainer Uphoff, Editor jefe de MOTICIAS» solo si es importante y queda cupo; si no, «G. Jordan, Redactor responsable»), `author_note` con la declaración de intereses (sin nombre si firma la redacción), `scope` del ámbito de rotación; añade `{date, scope}` a `settings/site.recent_scopes` (últimos 30).
 
 ## Requisito: firma y aprobación
-Toda pieza lleva `author`, `author_role`, `risk` (`rutinaria` | `critica`) y `review_note`. Rutinaria (una fuente oficial, o dos profesionales de confianza coincidentes): firma «G. Jordan, Redactor responsable», publicación directa. Crítica (criterios de `verticals/<id>.json` → `editorial.critical_criteria`) o análisis del director: firma «Rainer Uphoff, Director de MOTICIAS», `status: pendiente`, aviso al director con el motivo; solo él la publica. Ante la duda, crítica.
+Toda pieza lleva `author`, `author_role`, `risk` (`rutinaria` | `critica`) y `review_note`. Rutinaria (una fuente oficial, o dos profesionales de confianza coincidentes): firma «G. Jordan, Redactor responsable», publicación directa. Crítica (criterios de `verticals/<id>.json` → `editorial.critical_criteria`) o análisis del editor jefe: firma «Rainer Uphoff, Editor jefe de MOTICIAS», `status: pendiente`, aviso al editor jefe con el motivo; solo él la publica. Ante la duda, crítica.
 
 #### Escenario: pieza que atribuye responsabilidad a una empresa con nombre
 - CUANDO una pieza afirma que una empresa o persona con nombre incumplió, causó o es responsable de algo
-- ENTONCES se guarda como `critica` y `pendiente`, firmada por el director, y no se muestra a los lectores hasta que él la publique.
+- ENTONCES se guarda como `critica` y `pendiente`, firmada por el editor jefe, y no se muestra a los lectores hasta que él la publique.

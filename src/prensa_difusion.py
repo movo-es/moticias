@@ -113,7 +113,7 @@ def planificar(nid, plan=None, aviso=True):
 
 
 def avisar(n, ped, eid, ndest, punt, lineas):
-    """Correo a quien puede aprobar: el director y, si la nota es de un cliente, la oficina. Sin aprobación no sale nada."""
+    """Correo a quien puede aprobar: el editor jefe y, si la nota es de un cliente, la oficina. Sin aprobación no sale nada."""
     import bd as BD
     import prensa as PR
     para = {V["prensa"]["aviso_director"]}

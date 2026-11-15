@@ -2,7 +2,7 @@
 
 **Estado y fuente de verdad.** `data/articles/<id>.json` manda; el post de Ghost es su proyección. La clave de unión es `slug == id`. Un campo `ghost` dentro del JSON de la pieza guarda `post_id`, `url`, `status`, `updated_at` y `html_hash` para no reenviar lo que no cambió (lo escribe la rutina y se versiona con la pieza).
 
-**Estado al publicar.** Lo decide una función única, `estado_de_publicacion(pieza, vertical)` en `src/ghost_publish.py`, leyendo `verticals/movilidad.json → editorial` (reglas de firma y aprobación): `published` para las rutinarias; `draft` para las de firma del director, las críticas para la reputación o con implicaciones legales, y las que tienen `status: pendiente`. La bandera `--status` deja de existir salvo `--forzar-borrador` para emergencias.
+**Estado al publicar.** Lo decide una función única, `estado_de_publicacion(pieza, vertical)` en `src/ghost_publish.py`, leyendo `verticals/movilidad.json → editorial` (reglas de firma y aprobación): `published` para las rutinarias; `draft` para las de firma del editor jefe, las críticas para la reputación o con implicaciones legales, y las que tienen `status: pendiente`. La bandera `--status` deja de existir salvo `--forzar-borrador` para emergencias.
 
 **Reconciliación.** `--reconciliar` lista los posts de Ghost (`GET /posts/?limit=all&fields=id,slug,status,updated_at`), compara con `data/articles/` y: crea los que faltan con su `published_at` original, actualiza los que cambiaron (`html_hash` distinto), no borra nunca (una pieza retirada se pasa a `draft` y se anota), y escribe un informe `work/ghost-reconciliacion-<fecha>.md` que la rutina resume en el aviso.
 

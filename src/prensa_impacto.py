@@ -12,7 +12,7 @@ El agente (/prensa-impacto) busca y lee; este script decide y cuenta:
   python3 -I src/prensa_impacto.py añadir <id> cand1.json [...] --metodo websearch|rss|alerta|manual
         (cada candidato: {"url","titulo","fecha","texto"}; texto = el cuerpo leído de la página)
   python3 -I src/prensa_impacto.py revisar <id> <impacto> --aceptar|--rechazar [--tono positivo|neutro|negativo] --por "Rainer"
-  python3 -I src/prensa_impacto.py metrica <id> --nombre "Impresiones LinkedIn (perfil del director)" --valor 1234 --fuente "LinkedIn, 12-11-2026"
+  python3 -I src/prensa_impacto.py metrica <id> --nombre "Impresiones LinkedIn (perfil del editor jefe)" --valor 1234 --fuente "LinkedIn, 12-11-2026"
   python3 -I src/prensa_impacto.py informe <id> [--hasta AAAA-MM-DD]  # HTML en work/ y enlace firmado para el cliente
 Datos en la base privada: coberturas verificadas en prensa_coberturas; candidatos por revisar en prensa_notas.informe.
 """

@@ -2,17 +2,17 @@
 
 > **Nota (15-11-2026, cambio `tipos-de-contenido`).** Este documento recoge lo que se decidió en su momento y no se reescribe. Desde el 15-11-2026, lo que anuncia servicios del grupo se llama siempre «Contenido patrocinado · servicio del grupo» (tipo de anuncio `grupo`, ficheros `data/ads/grupo-*.json`); los términos anteriores que aparecen abajo quedan sustituidos. Ver `openspec/specs/tipos-de-contenido/spec.md`.
 
-Decisión de Rainer (8-11-2026, tarde): cuando MOTICIAS publica algo que una solución del grupo resuelve —MUFMI en transporte a la demanda, MOVO en PMST, Movenbus como agregador de autobús discrecional (ejemplo: la pieza de los 14 lotes de Renfe)— la pieza incluye una referencia, sin parecer publicidad; el director recibe por correo un resumen con enlace directo para editar cada mención; existe un gestor de productos propios con la descripción del contexto que da entrada a cada uno. Esta spec concilia esa decisión con el cortafuegos editorial: la referencia existe, pero está señalizada, fuera del texto y bajo control del director.
+Decisión de Rainer (8-11-2026, tarde): cuando MOTICIAS publica algo que una solución del grupo resuelve —MUFMI en transporte a la demanda, MOVO en PMST, Movenbus como agregador de autobús discrecional (ejemplo: la pieza de los 14 lotes de Renfe)— la pieza incluye una referencia, sin parecer publicidad; el editor jefe recibe por correo un resumen con enlace directo para editar cada mención; existe un gestor de productos propios con la descripción del contexto que da entrada a cada uno. Esta spec concilia esa decisión con el cortafuegos editorial: la referencia existe, pero está señalizada, fuera del texto y bajo control del editor jefe.
 
 ## ADDED Requisito: gestor de productos propios
-Cada producto o servicio del grupo vive en `data/productos/<id>.json` con nombre, URL, titular, `status`, `one_liner`, `contexto` (prosa: cuándo sí y cuándo no), `disparadores` (subsectores, secciones, palabras clave, frases), `excluir`, `umbral`, `max_por_semana`, `textos.corto`, `textos.cta` y `utm_campaign`. Lo edita el director (o la sala de redacción cuando exista) sin tocar código. Nunca se borra un producto: se pasa a `retirado`.
+Cada producto o servicio del grupo vive en `data/productos/<id>.json` con nombre, URL, titular, `status`, `one_liner`, `contexto` (prosa: cuándo sí y cuándo no), `disparadores` (subsectores, secciones, palabras clave, frases), `excluir`, `umbral`, `max_por_semana`, `textos.corto`, `textos.cta` y `utm_campaign`. Lo edita el editor jefe (o la sala de redacción cuando exista) sin tocar código. Nunca se borra un producto: se pasa a `retirado`.
 
 #### Escenario: producto sin URL o en borrador
 - CUANDO un producto tiene `status` distinto de `activo` o no tiene `url`
 - ENTONCES no se propone ninguna mención suya, aunque la pieza encaje.
 
 ## ADDED Requisito: la mención va al pie, señalizada, una por pieza
-La mención se pinta como bloque «Nota de la casa» después de «Para saber más» y antes de la trazabilidad, con el texto corto, el enlace con UTM y la declaración («MOTICIAS pertenece al mismo grupo empresarial que este servicio. La mención no es publicidad pagada y no ha intervenido en la selección ni en la redacción de la pieza.»). El cuerpo de la pieza, el titular, el resumen y las fuentes no se tocan. Una pieza lleva una mención como mucho. Los análisis del director y las piezas que ya tratan del grupo (`excluir`) no llevan ninguna. La mención no cambia la firma ni los criterios de aprobación.
+La mención se pinta como bloque «Nota de la casa» después de «Para saber más» y antes de la trazabilidad, con el texto corto, el enlace con UTM y la declaración («MOTICIAS pertenece al mismo grupo empresarial que este servicio. La mención no es publicidad pagada y no ha intervenido en la selección ni en la redacción de la pieza.»). El cuerpo de la pieza, el titular, el resumen y las fuentes no se tocan. Una pieza lleva una mención como mucho. Los análisis del editor jefe y las piezas que ya tratan del grupo (`excluir`) no llevan ninguna. La mención no cambia la firma ni los criterios de aprobación.
 
 #### Escenario: pieza que trata del problema
 - CUANDO la cabecera de una pieza (título, subtítulo, resumen, antetítulo) contiene una frase disparadora o dos palabras clave de un producto activo y la puntuación total supera su `umbral`
@@ -24,13 +24,13 @@ La mención se pinta como bloque «Nota de la casa» después de «Para saber m�
 
 #### Escenario: tope semanal
 - CUANDO el producto ya tiene `max_por_semana` menciones publicadas en los últimos siete días
-- ENTONCES la mención se guarda como `propuesta` (no se pinta) y aparece en el informe para que el director decida.
+- ENTONCES la mención se guarda como `propuesta` (no se pinta) y aparece en el informe para que el editor jefe decida.
 
-## ADDED Requisito: el director recibe cada mención con enlace de edición
+## ADDED Requisito: el editor jefe recibe cada mención con enlace de edición
 Tras cada edición (paso 7 quinquies de la rutina) y tras cada pieza bajo demanda, si hubo menciones (publicadas o propuestas), se envía a `ruphoff@avionline.es` un correo con, por mención: título y URL de la pieza, producto, texto, motivo y dos enlaces de edición: el fichero de la pieza en GitHub (`edit/main/data/articles/<id>.json`, que es la fuente de verdad: cambiar `texto` o poner `estado: retirada`) y el editor del post en Ghost (`/ghost/#/editor/post/<post_id>` cuando la pieza tiene `ghost.post_id`). Sin menciones no se envía nada. El remitente es `redaccion@moticias.com` por Brevo (`BREVO_API_KEY`); si falta la clave, el informe queda en `work/menciones/<fecha>.html` y el aviso lo dice.
 
-#### Escenario: el director retira una mención
-- CUANDO el director pone `estado: retirada` en la mención (desde el enlace de GitHub) o borra el bloque en el editor de Ghost
+#### Escenario: el editor jefe retira una mención
+- CUANDO el editor jefe pone `estado: retirada` en la mención (desde el enlace de GitHub) o borra el bloque en el editor de Ghost
 - ENTONCES la siguiente publicación respeta su decisión: el bloque desaparece, la mención queda en el JSON con su historia y la reconciliación de Ghost no vuelve a escribirla (el post editado a mano tiene `html_hash` distinto y se anota en el informe de reconciliación).
 
 ## ADDED Requisito: medición

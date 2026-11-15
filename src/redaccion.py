@@ -8,9 +8,9 @@ borrar o dar otro enfoque con la IA, que vería antes de volver a publicar. Impo
   dato, añade además la nota al final (`correcciones`), como manda la regla de siempre.
 - «Borrar» es RETIRAR: la pieza deja de verse (borrador en Ghost, `status: retirada`) y se conserva entera; se puede
   restaurar. Nunca se borra una pieza.
-- La IA propone y no publica: devuelve una versión con otro enfoque que el director ve a la vez que la original y
+- La IA propone y no publica: devuelve una versión con otro enfoque que el editor jefe ve a la vez que la original y
   publica o descarta. No puede añadir cifras ni fechas: lo que traiga y no esté en la pieza ni en sus fuentes se marca,
-  y publicar con cifras nuevas exige que el director lo confirme expresamente.
+  y publicar con cifras nuevas exige que el editor jefe lo confirme expresamente.
 """
 import datetime, json, os, re, urllib.error, urllib.request
 
@@ -127,7 +127,7 @@ def _mensaje_usuario(a, enfoque, instruccion):
     pieza = {k: a.get(k) or "" for k in CAMPOS}
     pedido = ENFOQUES.get(enfoque, "")
     if instruccion:
-        pedido = (pedido + " " if pedido else "") + "Indicación del director: " + instruccion.strip()[:1500]
+        pedido = (pedido + " " if pedido else "") + "Indicación del editor jefe: " + instruccion.strip()[:1500]
     return ("PEDIDO: %s\n\nPIEZA ACTUAL (JSON):\n%s\n\nCIFRAS CLAVE:\n%s\n\nCRONOLOGÍA:\n%s\n\nFUENTES:\n%s" % (
         pedido or "Dale otro enfoque más útil para decisores.", json.dumps(pieza, ensure_ascii=False, indent=1),
         json.dumps(a.get("key_data") or [], ensure_ascii=False), json.dumps(a.get("timeline") or [], ensure_ascii=False),

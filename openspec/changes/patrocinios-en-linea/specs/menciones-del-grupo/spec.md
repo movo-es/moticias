@@ -24,5 +24,5 @@ Cada producto tiene `modo` (`automatico` · `revision` · `manual` · `apagado`)
 - CUANDO un producto en `revision` supera el umbral en una pieza
 - ENTONCES la mención queda `propuesta`, no se pinta y aparece en «Pendientes» del gestor y en el correo.
 
-## MODIFIED Requisito: el director recibe cada mención con enlace al gestor
+## MODIFIED Requisito: el editor jefe recibe cada mención con enlace al gestor
 El correo diario de menciones lleva un botón «Abrir el gestor de patrocinios» y, por mención, «Gestionar» (`<gestor_url>?pieza=<id>`); GitHub y Ghost quedan como enlaces de respaldo.

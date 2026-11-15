@@ -12,7 +12,7 @@ www.moticias.com **ya está publicado** en Ghost(Pro) 6.75 con un tema propio (`
 2. El tema propio que se ve hoy **vale como base y se pule**: trazabilidad visible, huecos señalizados, páginas legales, medida a 390 px. No se rehace.
 3. La Admin API key existe; va como variable de entorno `GHOST_ADMIN_KEY` (y `GHOST_URL=https://www.moticias.com`) de la tarea programada y de Vercel, nunca en el repositorio ni en el chat.
 4. Legales: se publican ya los borradores de `docs/legal/` con los datos de Avionline S.L. tomados de `movo-es/movo` (`lib/legal.js`); revisión profesional después, no antes. Buzones por crear en Hostinger: `redaccion@moticias.com` y `prensa@moticias.com` (o alias de `ruphoff@avionline.es`).
-5. Las 12 piezas pendientes se reconcilian con sus fechas originales: las rutinarias publicadas (firma «G. Jordan, Redactor responsable»); las de firma del director o críticas, en borrador para que Rainer las publique desde el móvil.
+5. Las 12 piezas pendientes se reconcilian con sus fechas originales: las rutinarias publicadas (firma «G. Jordan, Redactor responsable»); las de firma del editor jefe o críticas, en borrador para que Rainer las publique desde el móvil.
 6. El portal-artefacto queda de espejo un mes (hasta el 8-12-2026) y después solo la hemeroteca.
 7. `ghost/llms.txt` y `ghost/robots.txt` del repositorio pasan a ser **texto de referencia**: Ghost 6 los genera; lo que se ajusta es la descripción del sitio y de las secciones en Ghost (Settings → General y la descripción de cada etiqueta), que es lo que `llms.txt` lee.
 

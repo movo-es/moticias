@@ -1,13 +1,13 @@
 # Cambio: fin de semana, barrido a demanda y arranque sin fallos
 
-Decisiones de Rainer del 9 de noviembre de 2026 (tarde), tras una mañana en que la edición nº 4 se cerró en el portal pero no llegó a GitHub ni a moticias.com. La regla de firma del director (cupo del 10 %) va en el cambio `editor-jefe-y-crm`; aquí solo la identidad de los commits.
+Decisiones de Rainer del 9 de noviembre de 2026 (tarde), tras una mañana en que la edición nº 4 se cerró en el portal pero no llegó a GitHub ni a moticias.com. La regla de firma del editor jefe (cupo del 10 %) va en el cambio `editor-jefe-y-crm`; aquí solo la identidad de los commits.
 
 ## Por qué
 
 - «No debe haber ningún fallo ningún día.» La rutina dependía de una herramienta (`add_repo`) que unas sesiones tienen y otras no; sin ella, el proxy rechaza el `git push` y el trabajo se pierde al cerrarse la sesión. Tampoco había claves de Ghost en el entorno de la tarea.
 - «Los sábados y domingos haz batidas solo para grandes noticias, interrupciones de servicio, catástrofes, etc., que se merezcan una edición extra. El resto se guarda para el lunes.»
 - «En el panel del editor jefe, además de las demás herramientas, debo tener un botón para "Iniciar barrido de noticias ahora", por si veo que ha pasado algo gordo que aún no está.»
-- Los commits de la redacción salían con el correo del director; firma la redacción: `G. Jordan <redaccion@moticias.com>`.
+- Los commits de la redacción salían con el correo del editor jefe; firma la redacción: `G. Jordan <redaccion@moticias.com>`.
 
 ## Qué cambia
 

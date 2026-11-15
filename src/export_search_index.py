@@ -6,8 +6,8 @@
 Genera un único JSON que el tema de Ghost (y la maqueta) cargan una vez: taxonomía (nombres y alias de modos, temas y territorios,
 vecinos), grupos de sinónimos y una entrada compacta por pieza publicada (sin cuerpo: cabecera, resumen corto, ejes, fecha, foto, URL).
 Con 74 piezas pesa ~210 KB sin comprimir (≈ 50 KB con gzip); con 500, ~1,4 MB (≈ 350 KB). Cuando pase de 2 MB se partirá por años.
-Cada entrada lleva su tipo de contenido (`tc`) y su marca (`mc`), y `dir: true` si la firma el director (el módulo y el
-botón «Análisis del director» filtran por eso, no por el tema). Junto al índice se escribe `tipos.json` (id → [tipo, marca],
+Cada entrada lleva su tipo de contenido (`tc`) y su marca (`mc`), y `dir: true` si la firma el editor jefe (el módulo y el
+dato interno: desde el 15-11-2026 no hay módulo ni botón «Análisis del director»). Junto al índice se escribe `tipos.json` (id → [tipo, marca],
 unos pocos KB), que `app/public/sitio/m.js` usa para poner la marca junto a cada titular en los listados de moticias.com.
 Se regenera en cada edición diaria (paso 7 ter) y se sirve desde Vercel en https://app.moticias.com/buscador/index.json con CORS
 para www.moticias.com (vercel.json); el tema de Ghost lo carga una vez por visita y busca en el navegador.

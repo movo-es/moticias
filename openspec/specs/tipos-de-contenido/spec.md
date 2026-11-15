@@ -22,13 +22,13 @@ Spec viva desde el 15-11-2026 (cambio `tipos-de-contenido`, aprobado por Rainer 
 
 ### Contenido editorial
 - Es `editorial` toda pieza con `kind` `analisis` o `reportaje`, con firma.
-- La marca es «Análisis del director» solo si `author` es la firma del director (`editorial.director`); con cualquier otra firma es «Análisis». Los reportajes llevan «Reportaje».
-- El módulo de portada y el botón «Análisis del director» muestran únicamente análisis firmados por el director.
+- La marca de un análisis es siempre «Análisis», con el autor que lo firme a la vista (cambio `terminologia-editor`, 15-11-2026: desaparece «Análisis del director» como marca, módulo y botón). Los reportajes llevan «Reportaje».
+- No hay módulo ni botón propios de los análisis del editor jefe; la etiqueta interna `#analisis-director` se conserva solo como dato.
 
 #### Escenario: análisis de la redacción
 - DADO un análisis firmado «G. Jordan»
 - CUANDO se publica en Ghost y aparece en un listado
-- ENTONCES su marca es «Análisis» y no aparece en el módulo «Análisis del director»
+- ENTONCES su marca es «Análisis» y no aparece en el módulo «Análisis»
 
 ### Noticias
 - Es `noticia` toda pieza con `kind: noticia` sin `sponsored_by`. Marca: «Noticia».

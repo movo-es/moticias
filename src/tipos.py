@@ -3,7 +3,7 @@
 
 Cuatro tipos, siempre distinguibles para el lector, en los datos y en Ghost:
 
-  editorial       análisis y reportajes con firma   «Análisis del director» (solo si firma el director) · «Análisis» · «Reportaje»
+  editorial       análisis y reportajes con firma   «Análisis» (firme quien firme; se ve el autor) · «Reportaje»
   noticia         noticias                            «Noticia»
   nota_de_prensa  comunicado de un emisor externo     «Nota de prensa · Comunicado de <emisor>»
   patrocinado     lo que anuncia un servicio          «Contenido patrocinado» (grupo) · «Contenido patrocinado · <cliente>» · «Publicidad»
@@ -153,8 +153,8 @@ def marca_mencion(v=None):
 
 
 def etiquetas_ghost(doc, coleccion="articles", v=None):
-    """Etiquetas internas de Ghost (las que empiezan por #) por tipo; el análisis firmado por el director lleva además la suya,
-    para que el módulo y el botón «Análisis del director» filtren por firma y no por tema."""
+    """Etiquetas internas de Ghost (las que empiezan por #) por tipo; el análisis firmado por el editor jefe lleva además la suya,
+    solo como dato interno (cambio terminologia-editor, 15-11-2026: ya no hay módulo ni botón propios)."""
     c = cfg(v)
     t = tipo(doc, coleccion)
     out = [c["etiquetas_ghost"][t]] if t in (c.get("etiquetas_ghost") or {}) else []

@@ -1,0 +1,6 @@
+- [x] Sustituir «director» por «editor jefe» en textos visibles, correos, comandos y documentación (sin tocar cargos de terceros)
+- [x] «Análisis del director» → «Análisis» (vertical, `src/tipos.py`, specs, maqueta)
+- [x] Datos de piezas: `author_role` y notas de intereses
+- [x] Ghost: etiqueta y página «Análisis», página «Cómo trabajamos» (borrador), 9 piezas republicadas
+- [x] «Cuaderno del director»: comprobado que no existe en moticias.com; retirado en el portal espejo sin borrar
+- [x] Índice del buscador y `tipos.json` regenerados

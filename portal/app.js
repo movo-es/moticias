@@ -1064,7 +1064,7 @@
       <label>Estado<select name="status"><option value="publicado" ${a.status !== "borrador" ? "selected" : ""}>Publicado</option><option value="borrador" ${a.status === "borrador" ? "selected" : ""}>Borrador</option></select></label>
       <label>Destacar en portada<select name="featured"><option value="0" ${!a.featured ? "selected" : ""}>No</option><option value="1" ${a.featured === 1 ? "selected" : ""}>1 · Apertura</option><option value="2" ${a.featured === 2 ? "selected" : ""}>2 · Secundaria</option></select></label>
       <label>Autor<input type="text" name="author" value="${v("author")}" placeholder="Rainer"></label>
-      <label>Cargo o firma<input type="text" name="author_role" value="${v("author_role")}" placeholder="Director de MOTICIAS"></label>
+      <label>Cargo o firma<input type="text" name="author_role" value="${v("author_role")}" placeholder="Editor jefe de MOTICIAS"></label>
       <label>Contenido patrocinado por (vacío = editorial)<input type="text" name="sponsored_by" value="${v("sponsored_by")}" placeholder="Nombre del patrocinador"></label>
       <label>Web del patrocinador<input type="url" name="sponsor_url" value="${v("sponsor_url")}" placeholder="https://…"></label>
       <label class="full">Nota del autor (declaración de intereses)<input type="text" name="author_note" value="${v("author_note")}"></label>
@@ -1150,7 +1150,7 @@
     const c = $("#admin-content");
     const on = (sel, ev, fn) => { const el = $(sel, c); if (el) el.addEventListener(ev, fn); };
     on("#new-article", "click", () => { S.editing = { kind: "noticia", section: "tierra", status: "publicado", relevance: "MEDIA", author: "Redacción" }; renderAdmin(); });
-    on("#new-analysis", "click", () => { S.editing = { kind: "analisis", section: "regulacion", status: "publicado", relevance: "ALTA", author: "Rainer", author_role: "Director de MOTICIAS", kicker: "Análisis" }; renderAdmin(); });
+    on("#new-analysis", "click", () => { S.editing = { kind: "analisis", section: "regulacion", status: "publicado", relevance: "ALTA", author: "Rainer", author_role: "Editor jefe de MOTICIAS", kicker: "Análisis" }; renderAdmin(); });
     on("#f-q", "input", (e) => { S.adminFilter.q = e.target.value; renderAdmin(); $("#f-q", c).focus(); const el = $("#f-q", c); el.setSelectionRange(el.value.length, el.value.length); });
     on("#f-section", "change", (e) => { S.adminFilter.section = e.target.value; renderAdmin(); });
     on("#f-status", "change", (e) => { S.adminFilter.status = e.target.value; renderAdmin(); });
@@ -1245,7 +1245,7 @@
     const posts = b.id ? blogPosts(b.id, true) : [];
     return `<div class="toolbar"><button type="button" class="btn secondary" id="back-blogs">← Volver a blogs</button><span style="font-weight:600">${isNew ? "Nuevo blog o edición" : "Editar blog"}</span>${b.id ? `<button type="button" class="btn small secondary" data-bl-post="${esc(b.id)}">+ Nueva entrada</button>` : ""}</div>
     <form id="form-blog" class="form-grid">
-      <label class="full">Nombre<input type="text" name="name" value="${v("name")}" required placeholder="Cuaderno del director"></label>
+      <label class="full">Nombre<input type="text" name="name" value="${v("name")}" required placeholder="Cuaderno del editor jefe"></label>
       <label>Dirección (slug)<input type="text" name="slug" value="${v("slug")}" placeholder="se genera desde el nombre" ${b.id ? "readonly" : ""}></label>
       <label>Tipo<select name="type">${Object.keys(BLOG_TYPES).map((k) => `<option value="${k}" ${b.type === k ? "selected" : ""}>${BLOG_TYPES[k]}</option>`).join("")}</select></label>
       <label>Estado<select name="status"><option value="publicado" ${b.status !== "borrador" ? "selected" : ""}>Publicado</option><option value="borrador" ${b.status === "borrador" ? "selected" : ""}>Borrador</option></select></label>

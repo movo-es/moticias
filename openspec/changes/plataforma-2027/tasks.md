@@ -18,7 +18,7 @@ Este cambio es el mapa; no se aplica entero. Cada fila es un cambio hijo (`opens
 - [x] Respuestas de Rainer (8-11, tarde): sector = movilidad + transporte + logística; «conocimiento» tiene código en `movo-es/movo` (se extiende); hay interés de un cliente de Amarantia (auscultador adelantado a enero); canales = Brevo (correo, SMS, WhatsApp), voz después; el repositorio sigue público por decisión suya; la rama se fundió en main (#1).
 
 ## Semana 46 (10–16 nov 2026)
-- [ ] `menciones-del-grupo-v1` (sin entrevista; dentro de la semana de Ghost): paso 7 quinquies en la rutina, `BREVO_API_KEY` y remitente `redaccion@moticias.com` verificado en Brevo, republicar las 6 piezas con mención, primer correo real al director. Verificación: el correo llega con enlaces que abren el fichero y el editor.
+- [ ] `menciones-del-grupo-v1` (sin entrevista; dentro de la semana de Ghost): paso 7 quinquies en la rutina, `BREVO_API_KEY` y remitente `redaccion@moticias.com` verificado en Brevo, republicar las 6 piezas con mención, primer correo real al editor jefe. Verificación: el correo llega con enlaces que abren el fichero y el editor.
 - [ ] `publicar-en-ghost-v1` (entrevista 1 hecha el 8-11; `openspec/changes/publicar-en-ghost-v1/tasks.md`): tema versionado, 12 piezas reconciliadas en borrador, legales publicadas, alta con consentimientos, paso 7 quater en la rutina.
 
 ## Semana 47

@@ -43,7 +43,7 @@ Los coeficientes son hipótesis de método, declaradas al cliente en cada inform
 
 ## 5. Métricas medidas
 
-Las de MOTICIAS se miden, no se estiman: envíos, entregas, aperturas, clics, respuestas, rebotes y bajas de la difusión (estados de Brevo en `prensa_destinatarios`); impresiones de las publicaciones en LinkedIn (las anota el director con su fuente y fecha); clics al enlace del cliente (parámetros UTM, si el cliente nos da acceso a su analítica o nos pasa la cifra).
+Las de MOTICIAS se miden, no se estiman: envíos, entregas, aperturas, clics, respuestas, rebotes y bajas de la difusión (estados de Brevo en `prensa_destinatarios`); impresiones de las publicaciones en LinkedIn (las anota el editor jefe con su fuente y fecha); clics al enlace del cliente (parámetros UTM, si el cliente nos da acceso a su analítica o nos pasa la cifra).
 
 ## 6. Lo que no hacemos
 

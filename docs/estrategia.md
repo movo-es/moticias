@@ -2,7 +2,7 @@
 
 Respuesta corta: MOTICIAS vende contenido curado de calidad —por el que un profesional pagaría algo y una gran empresa bastante— para construir credibilidad; esa credibilidad es la puerta por la que entran leads cualificados y por la que las soluciones del grupo (o las de terceros que paguen) se presentan de forma discreta y eficaz. La misma máquina, con otra configuración, sirve a un segundo vertical de turismo («viajar en grupo»), y sus agentes buscadores son a la vez los sensores de Amarantia.
 
-Reflexiones del director, 7-11-2026. Este documento es la referencia estratégica; lo operativo está en `docs/manual-operativo.md` y lo técnico en `docs/arquitectura.md` y `openspec/`.
+Reflexiones del editor jefe, 7-11-2026. Este documento es la referencia estratégica; lo operativo está en `docs/manual-operativo.md` y lo técnico en `docs/arquitectura.md` y `openspec/`.
 
 ## 1. El modelo
 

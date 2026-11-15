@@ -13,7 +13,7 @@ Reglas (CLAUDE.md y openspec/changes/patrocinios-en-linea/, decisión de Rainer 
 va en una caja «Contenido patrocinado» en medio del texto de la pieza, separada de los párrafos y con su etiqueta; cada
 producto decide en el gestor si entra solo (`modo: automatico`, con su `umbral`), si espera aprobación (`revision`) o si
 solo se pone a mano (`manual`), y si es `exclusiva` (ninguna otra caja en esa pieza) o `compartida` (hasta
-`max_por_pieza` cajas); los análisis del director y las piezas que ya tratan del grupo no llevan ninguna; el director
+`max_por_pieza` cajas); los análisis del editor jefe y las piezas que ya tratan del grupo no llevan ninguna; el editor jefe
 recibe el resumen con un enlace al gestor de patrocinios (app.moticias.com/gestor/) para publicar, editar o retirar
 cada mención; retirar = `estado: retirada` (nunca se borra).
 """
@@ -134,7 +134,7 @@ def puntuar(a, prod):
     if prod.get("status") != "activo" or not prod.get("url"):
         return None, "producto no activo o sin url"
     if a.get("kind") == "analisis":
-        return None, "análisis del director: sin menciones"
+        return None, "análisis del editor jefe: sin menciones"
     cab = texto_cabecera(a)
     for ex in prod.get("excluir") or []:
         if plano(ex) in cab:

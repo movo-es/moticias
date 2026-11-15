@@ -16,15 +16,15 @@ Qué hace con cada pieza de data/articles/<id>.json:
   Si la pieza lleva menciones publicadas, cada una va en una caja «Contenido patrocinado» en medio del cuerpo
   (src/menciones.py: cajas_html + insertar_en_medio; data/productos/; gestor en app.moticias.com/gestor/).
 - Tipo de contenido (src/tipos.py): la pieza sin `tipo_contenido`, o con uno que no cuadra, NO se sube. Lleva la etiqueta
-  interna #tipo-editorial o #tipo-noticia (y #analisis-director si es un análisis firmado por el director) y su marca visible
-  («Análisis del director», «Análisis», «Reportaje», «Noticia») al principio del cuerpo, para que no dependa del tema.
+  interna #tipo-editorial o #tipo-noticia (y #analisis-director si es un análisis firmado por el editor jefe) y su marca visible
+  («Análisis», «Reportaje», «Noticia») al principio del cuerpo, para que no dependa del tema.
 - Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
   territorios `t-<id>` con slug fijo; etiquetas libres que no repitan un eje), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
 - Crea o actualiza el post por slug (busca antes con GET /posts/slug/<slug>/) y guarda el resultado en
   work/ghost/<id>.json (id de Ghost, url, updated_at) para la sala de redacción.
-- Estado en Ghost: una pieza con `status` `pendiente` o `borrador` en data/ (firma del director sin aprobar) va SIEMPRE
+- Estado en Ghost: una pieza con `status` `pendiente` o `borrador` en data/ (firma del editor jefe sin aprobar) va SIEMPRE
   como borrador, aunque se pida --status published; solo las `publicado` se publican.
 - Portada: la pieza con `featured: 1` se marca destacada en Ghost (es la apertura que pinta el tema) y la de `featured: 2`
   lleva la etiqueta interna #segunda; al publicar una edición (--date) se quita el destacado a las piezas de días anteriores.
@@ -203,7 +203,7 @@ def build_html(a, vertical):
     parts.append('<p class="trazabilidad"><small>%s</small></p>' % " · ".join(inline(t) for t in traz))
     if a.get("author_note"):
         nota, edt = a["author_note"], vertical.get("editorial") or {}
-        # El nombre del director solo aparece en lo que él firma (cupo de firma, 9-11-2026).
+        # El nombre del editor jefe solo aparece en lo que él firma (cupo de firma, 9-11-2026).
         firmas_director = {edt.get("director")} | set(edt.get("director_firma_antigua") or [])
         if (a.get("author") or "") not in firmas_director and edt.get("director") and edt["director"].split()[0] in nota:
             nota = edt.get("interests_note_redaccion") or nota
@@ -334,7 +334,7 @@ def etiquetas_pieza(a, tx):
 
 
 def estado_ghost(a, pedido):
-    """Estado con el que va la pieza a Ghost. Las piezas del director sin aprobar (`pendiente`) y los borradores nunca se
+    """Estado con el que va la pieza a Ghost. Las piezas del editor jefe sin aprobar (`pendiente`) y los borradores nunca se
     publican por mucho que se pida --status published: quedan en borrador hasta que Rainer pulse «Publicar»."""
     return "draft" if a.get("status") in ("pendiente", "borrador", "retirada") else pedido
 
@@ -398,7 +398,7 @@ _AUTORES = {}
 
 def autor_ghost(a, vertical, base_url, token):
     """Id del usuario de Ghost que firma la pieza (`editorial.ghost_autores`: firma → slug). Sin esto Ghost deja la firma
-    que tuviera el post o la del dueño de la integración, y el nombre del director acababa en piezas de la redacción."""
+    que tuviera el post o la del dueño de la integración, y el nombre del editor jefe acababa en piezas de la redacción."""
     if not token:
         return None
     slug = ((vertical.get("editorial") or {}).get("ghost_autores") or {}).get(a.get("author") or "Redacción")
@@ -419,7 +419,7 @@ def build_post(a, vertical, base_url, token=None):
         tags.insert(0, {"name": "#segunda"})  # la segunda de la portada, para el tema
     if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
-    tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el director, #analisis-director
+    tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-director
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}

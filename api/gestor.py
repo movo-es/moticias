@@ -20,7 +20,7 @@ Variables de entorno (en Vercel, nunca en el repositorio):
                             (claude.ai/code/routines → la tarea → Edit → Trigger → API); sin él, el botón de barrido avisa
   RUTINA_BARRIDO_ID         opcional: id de esa tarea (por defecto verticals/<v>.json → rutinas.barrido)
 
-Retoques del director (data/retoques/, src/retoques.py): encargos con investigación que atiende la rutina /retoques.
+Retoques del editor jefe (data/retoques/, src/retoques.py): encargos con investigación que atiende la rutina /retoques.
 
 Permisos (src/equipo.py): solo el superadministrador (editor jefe) publica —edita, retira y reenfoca piezas, publica cajas,
 activa publicidad, cambia productos y equipo—; los demás proponen y trabajan en el CRM. Todo se comprueba aquí, en el
@@ -34,7 +34,7 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
 import equipo as EQ  # noqa: E402
-import retoques as RT  # noqa: E402  (retoques del director: data/retoques/README.md)
+import retoques as RT  # noqa: E402  (retoques del editor jefe: data/retoques/README.md)
 import bd as BD  # noqa: E402
 import redaccion as R  # noqa: E402
 import firma as F  # noqa: E402
@@ -216,7 +216,7 @@ def detalle(pid):
     return r
 
 
-# ---------- retoques del director ----------
+# ---------- retoques del editor jefe ----------
 def retoques_de(pid=None):
     """Retoques (frescos de GitHub si hay token; si no, los del despliegue), los más recientes primero."""
     out = []
@@ -283,7 +283,7 @@ def accion_mencion(rol, d, publica=True):
         return 400, {"error": "posición no válida"}
     if acc == "anadir":
         if a.get("kind") == "analisis":
-            return 400, {"error": "los análisis del director no llevan contenido patrocinado"}
+            return 400, {"error": "los análisis del editor jefe no llevan contenido patrocinado"}
         prod = next((p for p in productos() if p.get("id") == prod_id), None)
         if not prod or not prod.get("url"):
             return 400, {"error": "producto sin url o inexistente"}
@@ -684,7 +684,7 @@ def accion_redaccion(ses, d, cabeceras):
             R.restaurar(a, quien)
             estado = "draft" if a.get("status") in ("pendiente", "borrador") else "published"
             mensaje = "Redacción: %s restaura %s" % (quien, pid)
-        elif acc == "publicar":  # el visto bueno del director a una pieza pendiente
+        elif acc == "publicar":  # el visto bueno del editor jefe a una pieza pendiente
             if a.get("status") not in ("pendiente", "borrador"):
                 return 400, {"error": "la pieza no está pendiente"}
             a["status"] = "publicado"
@@ -1253,7 +1253,7 @@ def html_esc(t):
 # ---------- restauración (cambio restaurar-copia, «sí» de Rainer del 15-11-2026; migración 011, src/restaurar.py) ----------
 # Contenido: versiones de un documento de data/ desde el historial del repositorio; restaurar escribe una versión nueva.
 # Base privada: copia interna nocturna en el esquema `copia` (14 días); se recuperan filas o campos, nunca se borra nada.
-# Cada restauración avisa al director por correo y queda en gestor_registro.
+# Cada restauración avisa al editor jefe por correo y queda en gestor_registro.
 def _gh_fichero(ruta, ref):
     st, r = gh("GET", "contents/%s?ref=%s" % (urllib.parse.quote(ruta), ref))
     if st != 200 or "content" not in r:
@@ -1389,7 +1389,7 @@ def copia_recuperar(ses, d):
 # Las páginas de sección se pintan con el índice del buscador (app/public/buscador/index.json). Las tareas programadas no
 # pueden subirlo por el buzón (solo contenido), así que el servidor lo rehace desde data/ en cada pasada del cron
 # ghost_al_dia y lo sube a main si cambió. En las pasadas en que el índice ya está al día, comprueba que cada sección
-# enseña lo que cabe esperar (src/secciones.py) y, si no, avisa al director por correo (una vez al día como mucho).
+# enseña lo que cabe esperar (src/secciones.py) y, si no, avisa al editor jefe por correo (una vez al día como mucho).
 def indice_al_dia():
     import export_search_index as X
     if not os.environ.get("GITHUB_TOKEN"):
@@ -1927,7 +1927,7 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "dominio":
             return self._enviar(*accion_dominio(ses, d))
-        if a == "probar_aviso":  # diagnóstico: manda un correo de prueba al director y enseña lo que contesta Brevo
+        if a == "probar_aviso":  # diagnóstico: manda un correo de prueba al editor jefe y enseña lo que contesta Brevo
             if "equipo" not in per:
                 return self._enviar(403, {"error": "solo el editor jefe"})
             v = vertical()

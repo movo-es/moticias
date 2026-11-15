@@ -6,7 +6,7 @@ Versión 1.0 · [fecha de publicación]
 
 **Objeto.** Información general del sector (noticias, análisis, referencia regulatoria, licitaciones y plazos), una sala de prensa en la que se publican comunicados de empresas y organismos tal como los remiten, ediciones a medida para organizaciones, y servicios de datos y de conocimiento para suscriptores. Las condiciones de cada servicio de pago se indican en su página de contratación.
 
-**Independencia y declaración de intereses.** El director es cofundador de Movenbus y participa en MUFMI y MOVO, empresas del mismo grupo. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado. La promoción de soluciones del grupo o de terceros aparece siempre señalizada y fuera del texto editorial. Los comunicados de la sala de prensa se marcan como «Comunicado de empresa · no es contenido editorial» y, cuando proceden del grupo, como «Empresa del grupo editor».
+**Independencia y declaración de intereses.** El editor jefe es cofundador de Movenbus y participa en MUFMI y MOVO, empresas del mismo grupo. MOTICIAS no cubre operaciones propias de Movenbus y declara esta relación en toda pieza que toque su mercado. La promoción de soluciones del grupo o de terceros aparece siempre señalizada y fuera del texto editorial. Los comunicados de la sala de prensa se marcan como «Comunicado de empresa · no es contenido editorial» y, cuando proceden del grupo, como «Empresa del grupo editor».
 
 **Publicidad.** La publicidad y los patrocinios se identifican como tales (artículo 20 de la Ley 34/2002, LSSI). Nunca aparecen sobre la apertura ni dentro del texto de las piezas.
 
