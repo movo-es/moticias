@@ -1,0 +1,188 @@
+{
+ "actors": "La Sala de Supervisión Regulatoria de la CNMC, que aprobó la resolución el 29 de octubre; los gestores de las redes de distribución eléctrica, obligados a adaptar sus plataformas; los titulares de puntos de recarga y de instalaciones de autoconsumo, solicitantes; el Consejo Consultivo de Electricidad, consultado en el trámite de audiencia.",
+ "amount": null,
+ "author": "G. Jordan",
+ "author_note": null,
+ "author_role": "Redactor responsable",
+ "authority": "Comisión Nacional de los Mercados y la Competencia",
+ "body_md": "Las distribuidoras eléctricas tendrán que gestionar en una plataforma web, de la solicitud a la firma del contrato, cada expediente de conexión a la red de un punto de recarga de vehículo eléctrico. Lo impone la [Resolución de 3 de noviembre de 2026 de la Comisión Nacional de los Mercados y la Competencia](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23892), publicada en el BOE del sábado 14, que surte efecto desde el día siguiente y da a los gestores de la red diez meses para cumplirla. Cada paso del expediente tendrá responsable, documentos exigidos, fecha prevista y fecha real a la vista del solicitante.\n\n## Los hechos\n\nLa Sala de Supervisión Regulatoria de la CNMC aprobó el texto en su sesión del 29 de octubre. La resolución, de veinte páginas en el BOE, fija el contenido mínimo de las plataformas que el [Real Decreto 1183/2020](https://www.boe.es/buscar/act.php?id=BOE-A-2020-17278) ya obligaba a tener a los gestores de las redes de transporte y distribución para tramitar las solicitudes de acceso y conexión. Se aplica a dos tipos de instalación: la infraestructura de recarga de vehículo eléctrico y el autoconsumo.\n\nEl ámbito es amplio. Entran los expedientes que necesitan permiso de acceso y conexión; los que, sin necesitarlo, exigen nuevas acometidas, refuerzos de la red u otra intervención del distribuidor sobre la instalación, y los que el solicitante decida abrir en la plataforma de forma voluntaria. Están obligados los gestores de la red de distribución y los titulares de las instalaciones o sus representantes.\n\n## El marco legal\n\nLa resolución desarrolla dos circulares de la propia CNMC. La [Circular 1/2024, de 27 de septiembre](https://www.boe.es/buscar/act.php?id=BOE-A-2024-20760), regula el acceso y la conexión de las instalaciones de demanda y dedica sus artículos 13 a 17 a las plataformas web: el artículo 14 encarga a la CNMC fijar por resolución, previo trámite de audiencia, el contenido mínimo para la recarga de vehículos, y el 15 enumera las fases del expediente. La [Circular 1/2021, de 20 de enero](https://www.boe.es/buscar/act.php?id=BOE-A-2021-904), hace lo mismo para el autoconsumo en su artículo 12 bis. La Circular 1/2024 se apoya en el artículo 33.11 de la [Ley 24/2013, del Sector Eléctrico](https://www.boe.es/buscar/act.php?id=BOE-A-2013-13645).\n\nEl procedimiento fue el ordinario. La CNMC envió la propuesta al Consejo Consultivo de Electricidad el 12 de diciembre de 2025 y la publicó ese mismo día en su web para alegaciones durante veinte días hábiles. La resolución agota la vía administrativa por el artículo 36.2 de la [Ley 3/2013, de creación de la CNMC](https://www.boe.es/buscar/act.php?id=BOE-A-2013-5940): no cabe reposición y sí recurso ante la Sala de lo Contencioso-Administrativo de la Audiencia Nacional en dos meses. La supervisión del cumplimiento corresponde a la CNMC por el artículo 7 de la misma ley.\n\n## Lo que exige\n\n**El expediente.** Un cuestionario con los datos básicos del solicitante y de la instalación abre el expediente de forma automática. La fecha de apertura, la de presentación de la solicitud y, si procede, la de admisión a trámite del permiso tienen que verse desde cualquier sección de la plataforma.\n\n**Las fases.** La resolución ordena el recorrido en cinco fases —solicitud de permiso o indicación de instalación exenta, información de la fase de ejecución, legalización, verificaciones del distribuidor y notificaciones operacionales— y añade una sexta de actuaciones previas a la contratación. La última actuación es la confirmación, por las dos partes, de que no queda nada pendiente para firmar el contrato de acceso de terceros a la red.\n\n**Cada paso.** Toda actuación indicará quién es el responsable —el distribuidor o el solicitante—, qué documentación debe aportar, la fecha prevista y los plazos aplicables según la normativa, la fecha real y sus dependencias de otras actuaciones. Si la fecha prevista cambia, la original seguirá visible con el motivo del cambio. Es la pieza central del texto: el retraso queda registrado y tiene autor.\n\n**Los papeles.** No se pedirá al solicitante más documentación de la estrictamente necesaria, ni el mismo documento dos veces aunque sirva para actuaciones distintas. La plataforma admitirá archivos grandes sin fraccionarlos y el acceso simultáneo de varios usuarios a un mismo expediente, y podrá incorporar la firma electrónica.\n\n**El canal.** Cada fase tendrá un canal de comunicación en texto libre con el distribuidor, que deberá responder con información clara y precisa. Consultas y respuestas quedarán registradas con fecha y hora y podrán descargarse; el canal seguirá abierto al menos treinta días tras el cierre. Habrá además preguntas frecuentes, quejas e incidencias y un repositorio de documentos.\n\n**El cierre.** El distribuidor cerrará el expediente, entre otras causas, por la firma del contrato de acceso, el desistimiento del solicitante, la no admisión a trámite del permiso o la falta de aceptación en plazo de la propuesta previa.\n\n## Qué cambia para el transporte\n\nPara la electrificación de flotas —cocheras de autobús urbano e interurbano, bases de taxi y de flotas de alquiler, estaciones de recarga en carretera— la conexión a la red es el trámite crítico: sin ella no hay recarga. MOTICIAS contó el 11 de noviembre la licitación de seis concesiones de áreas de servicio con recarga ultrarrápida en «Transportes licita por 611,9 millones seis concesiones de áreas de servicio con recarga ultrarrápida»; esos concesionarios, como cualquier operador que electrifique su cochera, tramitarán por estas plataformas.\n\nLa resolución no acorta ningún plazo legal. Lo que cambia es la trazabilidad: quién tiene el expediente parado, desde cuándo y por qué. Para un operador que planifica la llegada de autobuses eléctricos contra una fecha de conexión, una fecha prevista que no puede borrarse vale tanto como un plazo nuevo. El texto mejora la transparencia, no la capacidad de la red.\n\n## El calendario\n\n- 30 de diciembre de 2020: el BOE publica el Real Decreto 1183/2020.\n- 22 de enero de 2021: el BOE publica la Circular 1/2021.\n- 11 de octubre de 2024: el BOE publica la Circular 1/2024.\n- 12 de diciembre de 2025: trámite de audiencia e información pública.\n- 29 de octubre de 2026: aprobación en la Sala de Supervisión Regulatoria.\n- 14 de noviembre de 2026: publicación en el BOE.\n- 15 de noviembre de 2026: la resolución surte efecto.\n- Mediados de septiembre de 2027: vencen los diez meses para adaptar las plataformas.\n\n## Lo que hay que vigilar\n\nSi alguna distribuidora recurre ante la Audiencia Nacional en los dos meses que abre la publicación. Si las plataformas llegan a tiempo, con la CNMC como supervisora. Y si la visibilidad de las fechas reduce de verdad los tiempos de conexión de las cocheras, algo que solo dirán los primeros expedientes tramitados con las plataformas ya adaptadas.\n",
+ "campaign": null,
+ "date": "2026-11-16",
+ "deadline": "2027-09",
+ "doc_ref": "BOE-A-2026-23892",
+ "event_date": "2026-11-14",
+ "featured": 0,
+ "fiabilidad": "primaria",
+ "firma_motivo": "las noticias las firma la redacción",
+ "geo": null,
+ "id": "la-cnmc-da-diez-meses-a-las-distribuidoras-para-tramitar-uq28",
+ "image": {
+  "alt": "Edificio de varias plantas envuelto en una celosía de lamas de color óxido tras unos árboles",
+  "credit": "Enric",
+  "license": "CC BY-SA 4.0",
+  "orig_src": "img/cnmc-sede-barcelona.jpg",
+  "source": "https://commons.wikimedia.org/wiki/File:080_Edifici_CNMC,_c._Bol%C3%ADvia,_56_(Barcelona),_des_del_c._Badajoz.jpg",
+  "src": "img/cnmc-sede-barcelona.jpg"
+ },
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Norma",
+   "source": "BOE",
+   "value": "Resolución de la CNMC de 3-11-2026 (BOE-A-2026-23892, BOE 14-11-2026, 20 páginas)"
+  },
+  {
+   "label": "Aprobación",
+   "source": "BOE-A-2026-23892",
+   "value": "Sala de Supervisión Regulatoria, sesión de 29-10-2026"
+  },
+  {
+   "label": "Efecto",
+   "source": "BOE-A-2026-23892, resuelve segundo",
+   "value": "Desde el 15-11-2026, día siguiente a su publicación"
+  },
+  {
+   "label": "Plazo de adaptación",
+   "source": "BOE-A-2026-23892, resuelve segundo",
+   "value": "10 meses para los gestores de la red de distribución"
+  },
+  {
+   "label": "Fases del expediente",
+   "source": "BOE-A-2026-23892, anexo, apartado noveno",
+   "value": "5 fases más una de actuaciones previas a la contratación"
+  },
+  {
+   "label": "Canal de comunicación",
+   "source": "BOE-A-2026-23892, anexo, apartado sexto",
+   "value": "Abierto al menos 30 días tras el cierre del expediente"
+  },
+  {
+   "label": "Audiencia e información pública",
+   "source": "BOE-A-2026-23892, antecedente cuarto",
+   "value": "Desde el 12-12-2025, veinte días hábiles"
+  }
+ ],
+ "key_fact": "10 meses para adaptar las plataformas desde el 15-11-2026 (Resolución de la CNMC de 3-11-2026, BOE-A-2026-23892)",
+ "kicker": "Regulación · Recarga eléctrica",
+ "kind": "noticia",
+ "medio": "varios",
+ "modo": "transversal",
+ "modos": [],
+ "next": "Diez meses desde el 15 de noviembre para adaptar las plataformas, hasta mediados de septiembre de 2027; dos meses desde la publicación para recurrir ante la Audiencia Nacional; supervisión de la CNMC por el artículo 7 de la Ley 3/2013.",
+ "published_at": "2026-11-16T07:24:00+01:00",
+ "published_time": "07:24",
+ "reg_kind": "resolución",
+ "relevance": "MEDIA",
+ "relevance_for": "Operadores de autobús urbano e interurbano que electrifican cocheras; flotas de taxi, VTC y alquiler; concesionarios de áreas de servicio y estaciones de recarga en carretera; ayuntamientos y consorcios que licitan flota eléctrica; instaladores e ingenierías de recarga.",
+ "review_note": "Rutinaria: se apoya en la resolución publicada en el BOE del 14-11-2026, leída entera en esta sesión por la API de datos abiertos, y en las normas que cita, comprobadas en el BOE; no atribuye conducta a personas ni empresas.",
+ "risk": "rutinaria",
+ "section": "regulacion",
+ "sources": [
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-14",
+   "title": "Resolución de 3 de noviembre de 2026, de la Comisión Nacional de los Mercados y la Competencia, por la que se establecen las condiciones de contenido mínimo de las plataformas web para facilitar la gestión íntegra de los expedientes de acceso a la red de distribución eléctrica para infraestructuras de recarga de vehículo eléctrico e instalaciones de autoconsumo",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23892"
+  },
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2024-10-11",
+   "title": "Circular 1/2024, de 27 de septiembre, de la CNMC, sobre el acceso y la conexión a las redes de las instalaciones de demanda de energía eléctrica",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2024-20760"
+  },
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2021-01-22",
+   "title": "Circular 1/2021, de 20 de enero, de la CNMC, sobre el acceso y la conexión a las redes de las instalaciones de producción de energía eléctrica",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2021-904"
+  },
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2020-12-30",
+   "title": "Real Decreto 1183/2020, de 29 de diciembre, de acceso y conexión a las redes de transporte y distribución de energía eléctrica",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2020-17278"
+  },
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2013-12-27",
+   "title": "Ley 24/2013, de 26 de diciembre, del Sector Eléctrico (texto consolidado)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2013-13645"
+  },
+  {
+   "accessed": "2026-11-16",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2013-06-05",
+   "title": "Ley 3/2013, de 4 de junio, de creación de la Comisión Nacional de los Mercados y la Competencia (texto consolidado)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2013-5940"
+  }
+ ],
+ "status": "publicado",
+ "submodo": "transversal",
+ "subsector": "transversal",
+ "subtitle": "La resolución, en el BOE del sábado, obliga a enseñar en cada expediente quién debe actuar, con qué documentos y en qué plazo, y a dejar visible la fecha prevista original cuando se retrasa",
+ "summary": "La Comisión Nacional de los Mercados y la Competencia fija, en una resolución de 3 de noviembre publicada en el BOE del 14, el contenido mínimo de las plataformas web con las que las distribuidoras eléctricas deben gestionar de principio a fin los expedientes de conexión a la red de los puntos de recarga de vehículo eléctrico y del autoconsumo. Cada actuación tendrá responsable, documentación, fecha prevista y fecha real. Surte efecto el 15 de noviembre y las distribuidoras tienen diez meses para adaptarse.",
+ "tags": [
+  "CNMC",
+  "recarga eléctrica",
+  "electrificación de flotas",
+  "redes de distribución",
+  "autoconsumo"
+ ],
+ "taxonomia_manual": false,
+ "temas": [
+  "regulacion",
+  "infraestructuras"
+ ],
+ "territorios": [
+  "estado"
+ ],
+ "timeline": [
+  {
+   "date": "2020-12-30",
+   "text": "El BOE publica el Real Decreto 1183/2020 de acceso y conexión, que obliga a tener plataformas web"
+  },
+  {
+   "date": "2021-01-22",
+   "text": "El BOE publica la Circular 1/2021 de la CNMC"
+  },
+  {
+   "date": "2024-10-11",
+   "text": "El BOE publica la Circular 1/2024 de la CNMC, que encarga fijar el contenido mínimo de las plataformas"
+  },
+  {
+   "date": "2025-12-12",
+   "text": "Trámite de audiencia ante el Consejo Consultivo de Electricidad e información pública"
+  },
+  {
+   "date": "2026-10-29",
+   "text": "La Sala de Supervisión Regulatoria aprueba la resolución"
+  },
+  {
+   "date": "2026-11-14",
+   "text": "Publicación en el BOE"
+  },
+  {
+   "date": "2026-11-15",
+   "text": "La resolución surte efecto"
+  },
+  {
+   "date": "2027-09",
+   "text": "Vencen los diez meses para adaptar las plataformas"
+  }
+ ],
+ "tipo_contenido": "noticia",
+ "title": "La CNMC da diez meses a las distribuidoras para tramitar en línea la conexión de los puntos de recarga",
+ "why": "La conexión a la red es el trámite que decide cuándo puede recargar una flota eléctrica. La resolución no acorta los plazos legales, pero obliga a registrar cada paso con responsable y fechas, de modo que un retraso queda documentado y tiene autor, y fija un procedimiento único de la solicitud a la firma del contrato de acceso."
+}

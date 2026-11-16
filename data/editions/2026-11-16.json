@@ -1,0 +1,146 @@
+{
+ "analysis_id": "la-seguridad-no-cabe-en-los-servicios-minimos-qnt3",
+ "boe_range": [
+  "2026-11-15",
+  "2026-11-16"
+ ],
+ "boe_series": {
+  "2026-10-31": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  }
+ },
+ "closed_at": "07:34",
+ "date": "2026-11-16",
+ "document": {
+  "date": "2026-11-12",
+  "kicker": "Huelgas · Ferrocarril",
+  "ref": "Resolución SSMM Grupo Renfe, 12-11-2026",
+  "source": "Ministerio de Transportes y Movilidad Sostenible",
+  "summary": "Qué es: la resolución que fija los trenes que deben circular en la huelga de 24 horas del martes 17.\nQuién convoca: Semaf y el Comité General del Grupo Renfe (CCOO, UGT, SFF-CGT, SF-I y Alferro).\nLas cifras: 75 % de Cercanías en punta y 50 % el resto; 72 % de la alta velocidad (177 de 246 trenes); 65 % de la media distancia (444 de 682); 26 % de las mercancías (53 de 205).\nLa base legal: artículo 10 del Real Decreto-ley 17/1977 y artículos 4.1 y 47.2 de la Ley 38/2015.\nQué mirar: los 4.123 trabajadores designados (30,48 %) y la ausencia, a primera hora, de resoluciones para Adif, Iryo, Ouigo y el paro del 23.",
+  "title": "Resolución de 12 de noviembre de 2026 de la Secretaría de Estado de Transportes y Movilidad Sostenible: servicios mínimos del Grupo Renfe en la huelga del 17 de noviembre",
+  "url": "https://cdn.transportes.gob.es/portal-web-transportes/transporte-terrestre/servicios-minimos/20261117-resolucion-ssmm_renfe_vi-1.pdf"
+ },
+ "lead_id": "huelga-ferroviaria-del-17-n-transportes-fija-el-75-de-6erd",
+ "note_metodologica": "Edición nº 10 de MOTICIAS, cerrada a las 07:34 (CET) del lunes 16 de noviembre de 2026. Fuentes primarias usadas: la resolución de 12 de noviembre de la Secretaría de Estado de Transportes y Movilidad Sostenible sobre los servicios mínimos del Grupo Renfe en la huelga del 17, la nota de Renfe y la página de resoluciones de servicios mínimos ferroviarios del Ministerio; la ficha de la CIAF sobre el accidente de Urda; la Resolución de la CNMC de 3 de noviembre de 2026 (BOE del 14) y las normas que cita; la Constitución, el Real Decreto-ley 17/1977, la Ley 38/2015 y la Ley 50/1997, en el BOE. Periodo barrido en el BOE: del 15 al 16 de noviembre (el domingo 15 no hay BOE; el número 285 del 16 estuvo disponible a las 07:31), más la revisión de los números 282 a 284. La búsqueda de noticias, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se han comprobado en la fuente abierta en esta sesión. Excepciones del día: tres piezas (dos noticias y un análisis), dos menos que el mínimo de cinco, porque la sesión, con los agentes de lectura web del barrido (363.516 tokens, cifra leída), superó el tope de 450.000 tokens y se cerró con lo verificado. Quedan en la cola del editor, por falta de fuente primaria accesible: el descarrilamiento de un mercancías en Zarzalejo que corta la línea Madrid-Ávila desde el domingo, la petición de Anetra a Renfe sobre su licitación de transporte alternativo por carretera, el contrato de autobús urbano de Murcia y la terminal que pide MSC en Valencia. Los datos de tráfico de Aena de octubre de 2026 no estaban publicados al cierre. El análisis sigue la rotación (Regulación y gobernanza). MOTICIAS no cubre operaciones propias de Movenbus, empresa de la que es cofundador el editor jefe.",
+ "number": 10,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-23892",
+   "text": "CNMC: diez meses para que las distribuidoras tramiten en línea la conexión de los puntos de recarga",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23892"
+  },
+  {
+   "ref": "BOE-B-2026-37646",
+   "text": "A-49 en Huelva: 11,51 M€ para rehabilitar el firme entre los kilómetros 116,2 y 132,9",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37646"
+  },
+  {
+   "ref": "BOE-B-2026-37643",
+   "text": "A-4 Despeñaperros-Bailén: 1,88 M€ en seguridad vial",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37643"
+  },
+  {
+   "ref": "BOE-B-2026-37642",
+   "text": "N-126 con la AP-68 en Haro: 1,71 M€ para mejorar la intersección",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37642"
+  },
+  {
+   "ref": "BOE-B-2026-37644",
+   "text": "N-322 en La Yedra (Baeza): 2,69 M€ para la travesía",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37644"
+  },
+  {
+   "ref": "BOE-B-2026-37645",
+   "text": "Castellón: señalización, balizamiento invernal y lechos de frenado en la N-340, la N-232 y la N-238",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37645"
+  },
+  {
+   "ref": "BOE-B-2026-37647",
+   "text": "Túnel de l'Olleria (A-7): reparación formalizada por 1,03 M€",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37647"
+  },
+  {
+   "ref": "BOE-B-2026-37676",
+   "text": "Santa Cruz de La Palma: licencia del servicio de amarre y desamarre de buques",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37676"
+  },
+  {
+   "ref": "BOE-A-2026-23835",
+   "text": "Real Decreto 1000/2026: Inmaculada Gutiérrez Carrizo, presidenta de Renfe-Operadora",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23835"
+  },
+  {
+   "ref": "BOE-A-2026-23834",
+   "text": "Real Decreto 999/2026: Joaquim Hortalà, presidente de Adif",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23834"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

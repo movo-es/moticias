@@ -4,27 +4,49 @@
   "resumen": "El Ministerio de Transportes ha fijado, según CLM24, unos servicios mínimos del 75 % en Cercanías en hora punta y del 50 % el resto del día, del 72 % en alta velocidad y larga distancia, del 65 % en media distancia y del 26 % en mercancías para la huelga de 24 horas de los comités generales de empresa de Renfe y Adif y de Semaf del martes 17 de noviembre. Falta la resolución o la nota oficial del Ministerio, que no se localizó en la batida y es imprescindible para publicar las cifras.",
   "event_date": "2026-11-14",
   "fuentes": [
-   {"outlet": "CLM24", "url": "https://www.clm24.es/economia/huelga-trenes-martes-transportes-fija-75-minimos/20261114133051485615.html", "published": "2026-11-14T13:30:00+01:00"}
+   {
+    "outlet": "CLM24",
+    "url": "https://www.clm24.es/economia/huelga-trenes-martes-transportes-fija-75-minimos/20261114133051485615.html",
+    "published": "2026-11-14T13:30:00+01:00"
+   }
   ],
-  "encontrado_en": "batida del sábado 14-11-2026, 17:26"
+  "encontrado_en": "batida del sábado 14-11-2026, 17:26",
+  "usado_en": "huelga-ferroviaria-del-17-n-transportes-fija-el-75-de-6erd"
  },
  {
   "titulo": "Los sindicatos ferroviarios mantienen la huelga del 17 tras los relevos en Renfe y Adif; Semaf para de nuevo el 23",
   "resumen": "Según EFE, los comités generales de empresa de Renfe y Adif y Semaf mantienen la huelga del martes 17 y la concentración del lunes 16 pese a los nombramientos de Inmaculada Gutiérrez Carrizo y Joaquim Hortalà, porque en la última reunión con Transportes «no se cerraron asuntos esenciales». Semaf anuncia otro paro el lunes 23 de noviembre que alcanza a Renfe, Iryo, Ouigo y varias operadoras de mercancías.",
   "event_date": "2026-11-14",
   "fuentes": [
-   {"outlet": "Infobae / EFE", "url": "https://www.infobae.com/espana/agencias/2026/11/14/los-ferroviarios-mantienen-la-huelga-a-la-espera-de-medidas-y-tras-cambios-en-renfe-y-adif/", "published": "2026-11-14T10:31:00+01:00"},
-   {"outlet": "Deia", "url": "https://www.deia.eus/economia/2026/11/14/ferroviarios-mantienen-huelga-17-noviembre-11755978.html", "published": "2026-11-14"}
+   {
+    "outlet": "Infobae / EFE",
+    "url": "https://www.infobae.com/espana/agencias/2026/11/14/los-ferroviarios-mantienen-la-huelga-a-la-espera-de-medidas-y-tras-cambios-en-renfe-y-adif/",
+    "published": "2026-11-14T10:31:00+01:00"
+   },
+   {
+    "outlet": "Deia",
+    "url": "https://www.deia.eus/economia/2026/11/14/ferroviarios-mantienen-huelga-17-noviembre-11755978.html",
+    "published": "2026-11-14"
+   }
   ],
-  "encontrado_en": "batida del sábado 14-11-2026, 17:26"
+  "encontrado_en": "batida del sábado 14-11-2026, 17:26",
+  "usado_en": "huelga-ferroviaria-del-17-n-transportes-fija-el-75-de-6erd"
  },
  {
   "titulo": "El parón del control aéreo de Estados Unidos cancela cuatro vuelos transatlánticos en Barajas y El Prat",
   "resumen": "La FAA suspendió durante casi cinco horas los vuelos en todo Estados Unidos el viernes 13 por un fallo de comunicación en sus centros de control en ruta, con más de 4.000 cancelaciones según Infobae. En España se cancelaron cuatro vuelos en Madrid-Barajas y Barcelona-El Prat y los aeropuertos recuperaron la normalidad el sábado; falta una nota oficial de Aena.",
   "event_date": "2026-11-13",
   "fuentes": [
-   {"outlet": "Infobae", "url": "https://www.infobae.com/espana/2026/11/14/algunos-vuelos-cancelados-y-retrasos-pero-normalidad-en-los-aeropuertos-de-espana-tras-el-fallo-aereo-en-estados-unidos/", "published": "2026-11-14T09:52:00+01:00"},
-   {"outlet": "El Ideal Gallego", "url": "https://www.elidealgallego.com/actualidad/sociedad/2026-11-14/cuatro-vuelos-cancelados-en-madrid-y-barcelona-por-el-paron-aereo-en-eeuu-890934.html", "published": "2026-11-14"}
+   {
+    "outlet": "Infobae",
+    "url": "https://www.infobae.com/espana/2026/11/14/algunos-vuelos-cancelados-y-retrasos-pero-normalidad-en-los-aeropuertos-de-espana-tras-el-fallo-aereo-en-estados-unidos/",
+    "published": "2026-11-14T09:52:00+01:00"
+   },
+   {
+    "outlet": "El Ideal Gallego",
+    "url": "https://www.elidealgallego.com/actualidad/sociedad/2026-11-14/cuatro-vuelos-cancelados-en-madrid-y-barcelona-por-el-paron-aereo-en-eeuu-890934.html",
+    "published": "2026-11-14"
+   }
   ],
   "encontrado_en": "batida del sábado 14-11-2026, 17:26"
  },
@@ -33,8 +55,16 @@
   "resumen": "Rodalies de Catalunya registró retrasos en toda su red la mañana del sábado 14 por una incidencia operativa no detallada, con trenes fuera de horario, según Europa Press. Renfe prevé normalizar el servicio de forma progresiva desde el domingo tras el acuerdo del viernes con los maquinistas para que no inicien turnos en Sants.",
   "event_date": "2026-11-14",
   "fuentes": [
-   {"outlet": "Última Hora / Europa Press", "url": "https://www.ultimahora.es/noticias/comunidades/2026/11/14/2749807/rodalies-registra-retrasos-lineas-este-sabado-por-incidencia-operativa.html", "published": "2026-11-14T10:43:00+01:00"},
-   {"outlet": "Metrópoli Abierta", "url": "https://metropoliabierta.elespanol.com/movilidad/20261114/nueva-manana-retrasos-rodalies-incidencia-operativa-circulacion-horario/1003742812083_0.html", "published": "2026-11-14"}
+   {
+    "outlet": "Última Hora / Europa Press",
+    "url": "https://www.ultimahora.es/noticias/comunidades/2026/11/14/2749807/rodalies-registra-retrasos-lineas-este-sabado-por-incidencia-operativa.html",
+    "published": "2026-11-14T10:43:00+01:00"
+   },
+   {
+    "outlet": "Metrópoli Abierta",
+    "url": "https://metropoliabierta.elespanol.com/movilidad/20261114/nueva-manana-retrasos-rodalies-incidencia-operativa-circulacion-horario/1003742812083_0.html",
+    "published": "2026-11-14"
+   }
   ],
   "encontrado_en": "batida del sábado 14-11-2026, 17:26"
  }
