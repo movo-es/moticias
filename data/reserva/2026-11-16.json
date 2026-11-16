@@ -1,0 +1,33 @@
+[
+ {
+  "titulo": "Huelga ferroviaria del 17: Ouigo suprimirá 10 de sus 27 trenes e Iryo prevé operar el 70 % de los suyos",
+  "resumen": "Según Libertad Digital, Ouigo suprimirá 10 de sus 27 trenes del martes 17 e Iryo prevé operar el 70 % de sus trenes «en línea con los servicios mínimos», según fuentes de la compañía a EFE; la huelga afecta también a operadoras de mercancías (Transfesa, Continental Rail, Tracción Rail, Captrain y Medway). Falta la confirmación en la web o la nota de cada operadora para publicar las cifras.",
+  "event_date": "2026-11-17",
+  "fuentes": [
+   {
+    "outlet": "Libertad Digital (Libre Mercado)",
+    "url": "https://www.libertaddigital.com/libremercado/2026-11-16/huelga-de-trenes-este-17-de-noviembre-horarios-y-servicios-minimos-de-renfe-ouigo-e-iryo-7491970/",
+    "published": "2026-11-16T10:56:26+01:00"
+   }
+  ],
+  "encontrado_en": "barrido a demanda del gestor, lunes 16-11-2026, 11:15 (pista «tren»)"
+ },
+ {
+  "titulo": "Zarzalejo: Adif apunta a un desprendimiento de tierras por las lluvias como primera hipótesis del descarrilamiento del mercancías de Captrain",
+  "resumen": "Según Noticias de Logística y Transporte (16-11), la locomotora de un tren de Captrain descarriló la madrugada del domingo 15 entre Zarzalejo y Robledo de Chavela; la primera hipótesis de Adif es un desprendimiento de tierras por las lluvias, el maquinista sufrió heridas leves y hubo autobuses entre El Escorial y Robledo de Chavela. No consta el estado de la línea el 16-11 ni previsión de reapertura; las causas, en investigación.",
+  "event_date": "2026-11-15",
+  "fuentes": [
+   {
+    "outlet": "Noticias de Logística y Transporte",
+    "url": "https://noticiaslogisticaytransporte.com/transporte/16/11/2026/un-desprendimiento-de-tierras-hace-descarrilar-un-tren-de-mercancias-de-captrain-en-madrid/194514.html",
+    "published": "2026-11-16T09:11:27+00:00"
+   },
+   {
+    "outlet": "elDiario.es (EFE)",
+    "url": "https://www.eldiario.es/castilla-y-leon/descarrilamiento-tren-mercancias-corta-linea-media-distancia-conecta-madrid-avila_1_13665298.html",
+    "published": "2026-11-15T11:49:07+01:00"
+   }
+  ],
+  "encontrado_en": "barrido a demanda del gestor, lunes 16-11-2026, 11:15 (pista «tren»)"
+ }
+]
