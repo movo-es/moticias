@@ -7,6 +7,11 @@
  "fuentes": [
   {
    "fecha": "2026-11-16",
+   "nota": "web del organizador: «December 16–17, 2026 · Feria de Valencia – Events Center»",
+   "url": "https://europeandroneoperatorsummit.com/"
+  },
+  {
+   "fecha": "2026-11-16",
    "nota": "calendario AFE: fechas y ciudad",
    "url": "https://www.afe.es/es/eventos/fecha/2026/12"
   }
@@ -18,17 +23,25 @@
  "id": "2026-12-16-edos-2026",
  "inicio": "2026-12-16",
  "modalidad": "presencial",
- "nota": "Web oficial por localizar; fechas y ciudad según el calendario de la Asociación de Ferias Españolas.",
+ "nota": "Fechas y sede según la web del organizador.",
  "organizadores": [
-  "EDOS"
+  "MLC Consulting"
  ],
  "origen": "redaccion",
  "publico": "profesional",
  "resumen": "Cumbre europea de operadores de drones: congreso plenario, exposición comercial, talleres y clases magistrales sobre emergencias, seguridad, agricultura y logística. Cierra con un plan de acción de diez puntos.",
- "sede": "sede sin publicar",
+ "revised_at": "2026-11-16",
+ "revisiones": [
+  {
+   "fecha": "2026-11-16",
+   "que": "sede: de «sede sin publicar» a «Feria Valencia (Events Center)»; enlace oficial e inscripción: de la página de la AFE a europeandroneoperatorsummit.com; organizador: MLC Consulting (ficha de la AFE)"
+  }
+ ],
+ "sede": "Feria Valencia (Events Center)",
  "tema": "aereo",
  "territorio": "comunidad-valenciana",
  "titulo": "EDOS 2026 · European Drone Operator Summit",
  "titulo_corto": "EDOS 2026",
- "url_inscripcion": "https://www.afe.es/es/eventos/fecha/2026/12"
+ "url_inscripcion": "https://europeandroneoperatorsummit.com/",
+ "url_oficial": "https://europeandroneoperatorsummit.com/"
 }

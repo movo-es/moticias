@@ -1,0 +1,34 @@
+{
+ "ciudad": "Madrid",
+ "estado": "propuesto",
+ "fin": "2026-12-03",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "nota de la CNMC: 3 de diciembre de 2026, en su sede de Madrid, inscripción y emisión en directo",
+   "url": "https://www.cnmc.es/gl/node/423123"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2026-12-03-jornada-cnmc-sobre-recarga-electrica",
+ "inicio": "2026-12-03",
+ "modalidad": "híbrida",
+ "nota": "Desde las 11:00 (apertura institucional); clausura a las 12:20. Sin precio publicado.",
+ "organizadores": [
+  "Comisión Nacional de los Mercados y la Competencia (CNMC)"
+ ],
+ "origen": "barrido",
+ "publico": "profesional",
+ "resumen": "Jornada de la CNMC sobre la competencia en el mercado de la recarga de vehículos eléctricos y su papel en la transición energética. Presencial en su sede de Madrid y en directo por YouTube.",
+ "sede": "Sede de la CNMC en Madrid",
+ "tema": "energia",
+ "territorio": "madrid",
+ "titulo": "Infraestructura de recarga para vehículos eléctricos: competencia para acelerar la transición energética",
+ "titulo_corto": "Jornada CNMC sobre recarga eléctrica",
+ "url_inscripcion": "https://www.cnmc.es/gl/node/423123",
+ "url_oficial": "https://www.cnmc.es/gl/node/423123"
+}

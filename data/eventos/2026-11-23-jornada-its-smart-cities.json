@@ -1,0 +1,39 @@
+{
+ "ciudad": "Madrid",
+ "estado": "propuesto",
+ "fin": "2026-11-23",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "programa de ITS España: 23 de noviembre de 2026, Instituto de la Ingeniería de España, Madrid",
+   "url": "https://itsspain.com/wp-content/uploads/2026/11/Programa.-Jornada-ITS-Smart-Cities.-v.10.pdf"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "portada de ITS España con la inscripción",
+   "url": "https://itsspain.com/"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2026-11-23-jornada-its-smart-cities",
+ "inicio": "2026-11-23",
+ "modalidad": "presencial",
+ "nota": "Fecha y sede según el programa publicado por ITS España; precio sin publicar en el programa.",
+ "organizadores": [
+  "ITS España"
+ ],
+ "origen": "barrido",
+ "publico": "profesional",
+ "resumen": "Jornada presencial del Comité ITS & Smart Cities de ITS España sobre sistemas inteligentes de transporte en la gestión de la movilidad urbana, con participación del Ayuntamiento de Madrid y del Consorcio Regional de Transportes.",
+ "sede": "Instituto de la Ingeniería de España",
+ "tema": "movilidad",
+ "territorio": "madrid",
+ "titulo": "Jornada ITS & Smart Cities",
+ "titulo_corto": "Jornada ITS & Smart Cities",
+ "url_inscripcion": "https://itsspain.com/",
+ "url_oficial": "https://itsspain.com/"
+}

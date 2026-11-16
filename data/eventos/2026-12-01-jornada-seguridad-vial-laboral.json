@@ -1,0 +1,36 @@
+{
+ "ciudad": "Zaragoza",
+ "estado": "propuesto",
+ "fin": "2026-12-01",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "Mobility City: 01 de diciembre de 2026, gratuita, aforo 120",
+   "url": "https://www.mobilitycity.es/explora/actividades/jornada-seguridad-vial-laboral-el-coste-de-la-inaccion/"
+  }
+ ],
+ "geo": {
+  "lat": 41.65,
+  "lon": -0.88
+ },
+ "id": "2026-12-01-jornada-seguridad-vial-laboral",
+ "inicio": "2026-12-01",
+ "modalidad": "presencial",
+ "nota": "De 9:15 a 14:00. La página no precisa la sala.",
+ "organizadores": [
+  "Jefatura Provincial de Tráfico de Zaragoza",
+  "Mobility City",
+  "Fundación Ibercaja"
+ ],
+ "origen": "barrido",
+ "precio": "Gratuita (aforo de 120 plazas)",
+ "publico": "profesional",
+ "resumen": "Jornada sobre los accidentes de tráfico laborales para empresas, servicios de prevención y trabajadores: inversión en prevención, planes de movilidad segura y sostenible al trabajo, factores psicológicos en la conducción y prevención de alcohol y drogas.",
+ "sede": "sede sin publicar",
+ "tema": "carreteras",
+ "territorio": "aragon",
+ "titulo": "Jornada Seguridad Vial Laboral. El coste de la inacción",
+ "titulo_corto": "Jornada Seguridad Vial Laboral",
+ "url_inscripcion": "https://www.mobilitycity.es/explora/actividades/jornada-seguridad-vial-laboral-el-coste-de-la-inaccion/"
+}

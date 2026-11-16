@@ -6,6 +6,11 @@
  "fuentes": [
   {
    "fecha": "2026-11-16",
+   "nota": "programa de ITS España: 01 de diciembre de 2026, EMT Madrid",
+   "url": "https://itsspain.com/wp-content/uploads/2026/11/Programa-Jornada-Transporte-Publico-01.12.26.-EMT-Madrid-v.03.pdf"
+  },
+  {
+   "fecha": "2026-11-16",
    "nota": "edición de 2026: 29-01-2026, Madrid",
    "url": "https://www.gmv.com/en/communication/events/public-transport-conference"
   }
@@ -17,13 +22,20 @@
  "id": "2027-01-jornada-its-en-el-transporte-publico",
  "mes_previsto": "2027-01",
  "modalidad": "presencial",
- "nota": "Fecha de 2027 sin anunciar.",
+ "nota": "Fecha de 2027 sin anunciar. ITS España anuncia ya la jornada siguiente para el 1 de diciembre de 2026 en EMT Madrid (propuesta 2026-12-01-jornada-its-en-el-transporte-publico): si es esta misma cita, el editor jefe decide si retira esta ficha.",
  "organizadores": [
   "ITS España"
  ],
  "origen": "redaccion",
  "publico": "profesional",
  "resumen": "Jornada anual de ITS España sobre sistemas inteligentes en el transporte público. La de 2026 fue el 29 de enero en Madrid.",
+ "revised_at": "2026-11-16",
+ "revisiones": [
+  {
+   "fecha": "2026-11-16",
+   "que": "el organizador publica la Jornada ITS en el Transporte Público el 01-12-2026 (EMT Madrid); alta como propuesta aparte porque el id de esta ficha es de enero de 2027"
+  }
+ ],
  "sede": "sede por anunciar",
  "tema": "autobus",
  "territorio": "madrid",

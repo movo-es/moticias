@@ -1,12 +1,12 @@
 {
  "ciudad": "Las Palmas de Gran Canaria",
- "comprobado_at": "2026-11-15",
+ "comprobado_at": "2026-11-16",
  "estado": "publicado",
  "fin": "2026-11-18",
  "formato": "Congreso",
  "fuentes": [
   {
-   "fecha": "2026-11-15",
+   "fecha": "2026-11-16",
    "nota": "web del congreso",
    "url": "https://1congresocanariocarreteras.aecarretera.com"
   }
@@ -18,7 +18,7 @@
  "id": "2026-11-17-congreso-canario-de-carreteras",
  "inicio": "2026-11-17",
  "modalidad": "presencial",
- "nota": "Inscripción previa obligatoria. Comprobado el 15-11; el 16-11 la web del congreso no devolvía contenido.",
+ "nota": "Inscripción previa obligatoria. Fecha y sede confirmadas en la web del congreso el 16-11.",
  "organizadores": [
   "Gobierno de Canarias",
   "Asociación Española de la Carretera"

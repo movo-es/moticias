@@ -1,0 +1,36 @@
+{
+ "ciudad": "Zaragoza",
+ "estado": "propuesto",
+ "fin": "2026-12-04",
+ "formato": "Encuentro",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "Mobility City: 04 de diciembre de 2026, ETOPIA, gratuita",
+   "url": "https://www.mobilitycity.es/explora/actividades/demo-day-mobility-innovation-program-zaragoza/"
+  }
+ ],
+ "geo": {
+  "lat": 41.65,
+  "lon": -0.88
+ },
+ "id": "2026-12-04-demo-day-mobility-innovation-program",
+ "inicio": "2026-12-04",
+ "modalidad": "presencial",
+ "nota": "De 10:00 a 14:00. La misma página menciona también la mañana del 3 de diciembre; manda la fecha de la ficha (4 de diciembre).",
+ "organizadores": [
+  "Mobility City",
+  "Fundación Ibercaja",
+  "Ayuntamiento de Zaragoza"
+ ],
+ "origen": "barrido",
+ "precio": "Gratuita (aforo de 100 plazas)",
+ "publico": "profesional",
+ "resumen": "Cierre del Mobility Innovation Program: doce startups finalistas de movilidad presentan ante inversores, corporaciones y agentes del ecosistema, con demostraciones de pruebas de concepto de innovación abierta y networking.",
+ "sede": "ETOPIA, Centro de Emprendimiento, Innovación y Tecnología",
+ "tema": "movilidad",
+ "territorio": "aragon",
+ "titulo": "Demo Day Mobility Innovation Program",
+ "titulo_corto": "Demo Day Mobility Innovation Program",
+ "url_inscripcion": "https://www.mobilitycity.es/explora/actividades/demo-day-mobility-innovation-program-zaragoza/"
+}

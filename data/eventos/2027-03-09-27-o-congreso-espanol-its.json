@@ -1,0 +1,38 @@
+{
+ "ciudad": "Madrid",
+ "estado": "propuesto",
+ "fin": "2027-03-11",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "llamada a comunicaciones: 09 al 11 de marzo de 2027, Instituto de la Ingeniería de España, Madrid",
+   "url": "https://itsspain.com/wp-content/uploads/2026/11/Llamada-a-Participar.-27-CEITS_v.01.pdf"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "portada de ITS España",
+   "url": "https://itsspain.com/"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2027-03-09-27-o-congreso-espanol-its",
+ "inicio": "2027-03-09",
+ "modalidad": "presencial",
+ "nota": "Fechas y sede según la llamada a comunicaciones de ITS España; inscripción y precios sin publicar.",
+ "organizadores": [
+  "ITS España"
+ ],
+ "origen": "barrido",
+ "publico": "profesional",
+ "resumen": "Congreso anual de ITS España: infraestructura, movilidad autónoma y conectada, tráfico interurbano, smart cities, transporte público, datos e inteligencia artificial en la gestión de la movilidad. Llamada a comunicaciones abierta hasta el 30 de diciembre de 2026.",
+ "sede": "Instituto de la Ingeniería de España",
+ "tema": "movilidad",
+ "territorio": "madrid",
+ "titulo": "27.º Congreso Español sobre Sistemas Inteligentes de Transporte (CEITS27)",
+ "titulo_corto": "27.º Congreso Español ITS",
+ "url_oficial": "https://itsspain.com/"
+}

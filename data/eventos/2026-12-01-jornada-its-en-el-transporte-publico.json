@@ -1,0 +1,40 @@
+{
+ "ciudad": "Madrid",
+ "estado": "propuesto",
+ "fin": "2026-12-01",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "programa de ITS España: 01 de diciembre de 2026, EMT Madrid, 9:00-14:30, precios",
+   "url": "https://itsspain.com/wp-content/uploads/2026/11/Programa-Jornada-Transporte-Publico-01.12.26.-EMT-Madrid-v.03.pdf"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "portada de ITS España con la inscripción",
+   "url": "https://itsspain.com/"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2026-12-01-jornada-its-en-el-transporte-publico",
+ "inicio": "2026-12-01",
+ "modalidad": "presencial",
+ "nota": "De 9:00 a 14:30. Fecha, sede y precios según el programa publicado por ITS España.",
+ "organizadores": [
+  "ITS España"
+ ],
+ "origen": "barrido",
+ "precio": "Operadores y autoridades de transporte público, gratis; socios de ITS España, 130 € + IVA; no socios, 150 € + IVA",
+ "publico": "profesional",
+ "resumen": "Jornada de ITS España sobre sistemas inteligentes en el transporte público, con sesiones de ticketing, sistemas de información al viajero y uso de datos para la gestión del servicio.",
+ "sede": "EMT Madrid, calle del Cerro de la Plata (Retiro)",
+ "tema": "autobus",
+ "territorio": "madrid",
+ "titulo": "Jornada ITS en el Transporte Público",
+ "titulo_corto": "Jornada ITS en el Transporte Público",
+ "url_inscripcion": "https://itsspain.com/",
+ "url_oficial": "https://itsspain.com/"
+}
