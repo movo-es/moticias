@@ -1,0 +1,6 @@
+- [x] `api/gestor.py`: fecha con segundos en «Publicar ahora»; `subidas_fallidas`, `reintentar_subidas`; ruta de cron `web_reintentos`; `sin_web` en la tarjeta
+- [x] `vercel.json`: cron `web_reintentos` (7, 27 y 47 de cada hora)
+- [x] `app/public/gestor/index.html`: «Aprobada, pero no ha llegado a la web» y «Subir a la web ahora»; aviso claro al aprobar
+- [x] `tests/test_voz.py`: cuatro pruebas nuevas (12 en total)
+- [x] `CLAUDE.md` y spec viva
+- [ ] Comprobar en moticias.com que la columna del 16-11 ha llegado

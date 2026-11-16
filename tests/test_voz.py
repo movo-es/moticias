@@ -69,6 +69,45 @@ class VozDesdeElPanel(unittest.TestCase):
         self.assertEqual((a["status"], a["voz"]["salida"]), ("publicado", "ahora"))
         self.assertEqual(self.subidas[-1][1], "published")
 
+    def test_publicar_ahora_manda_la_fecha_con_segundos(self):
+        # 16-11-2026: Ghost rechazó «2026-11-16T14:41+00:00» y la columna quedó «publicada» sin estar en la web.
+        a = self._aprobar("ahora")
+        self.assertRegex(a["published_at"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+-]\d\d:\d\d$")
+
+    def _registro(self, filas):
+        GS.BD.configurada = lambda: True
+        GS.BD.leer = lambda tabla, **k: [dict(f) for f in filas]
+
+    def test_una_subida_que_fallo_se_sabe_y_se_reintenta(self):
+        pieza = GS.voz_nueva_pieza({"title": "El autobús de empresa no es un lujo", "body_md": TEXTO}, "prueba")
+        pieza["status"] = "publicado"
+        self._registro([{"objeto": pieza["id"], "accion": "redaccion_publicar", "detalle": {"ghost": False, "commit": "abc"}, "at": "2026-11-16T14:41:46+00:00"}])
+        self.assertEqual(list(GS.subidas_fallidas()), [pieza["id"]])
+        GS.leer = lambda ruta, repo=None: (copy.deepcopy(pieza), "sha1")
+        apuntes = []
+        GS.BD.registrar = lambda quien, accion, objeto=None, detalle=None: apuntes.append((accion, objeto, detalle))
+        r = GS.reintentar_subidas()
+        self.assertTrue(r["ok"])
+        self.assertEqual(self.subidas[-1][:2], (pieza["id"], "published"))
+        self.assertEqual(apuntes[-1][0], "web_reintento")
+        self.assertTrue(apuntes[-1][2]["ghost"])
+
+    def test_si_despues_se_subio_ya_no_cuenta_como_fallida(self):
+        self._registro([{"objeto": "x-abcd", "accion": "redaccion_publicar", "detalle": {"ghost": False}, "at": "2026-11-16T14:41:46+00:00"},
+                        {"objeto": "x-abcd", "accion": "republicar", "detalle": {"ghost": True}, "at": "2026-11-16T20:10:00+00:00"},
+                        {"objeto": "y-abcd", "accion": "redaccion_publicar", "detalle": {"ghost": True}, "at": "2026-11-16T14:58:08+00:00"}])
+        self.assertEqual(GS.subidas_fallidas(), {})
+
+    def test_no_reintenta_sin_fin_ni_lo_retirado(self):
+        fallo = {"objeto": "x-abcd", "accion": "web_reintento", "detalle": {"ghost": False, "detalle": "Ghost: 422"}, "at": "2026-11-16T15:00:00+00:00"}
+        self._registro([fallo] * GS.REINTENTOS_MAX)
+        self.assertEqual(GS.subidas_fallidas()["x-abcd"]["intentos"], GS.REINTENTOS_MAX)
+        self.assertEqual(GS.reintentar_subidas()["reintentadas"], [])
+        self._registro([fallo])
+        GS.leer = lambda ruta, repo=None: ({"id": "x-abcd", "status": "retirada"}, "sha1")
+        self.assertEqual(GS.reintentar_subidas()["reintentadas"], [])
+        self.assertFalse(self.subidas)
+
     def test_aprobar_sin_elegir_sale_el_lunes_a_las_ocho(self):
         a = self._aprobar(None)
         cuando = datetime.datetime.fromisoformat(a["published_at"])

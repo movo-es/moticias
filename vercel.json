@@ -105,6 +105,10 @@
   {
    "path": "/api/gestor?a=seo_bateria",
    "schedule": "10 6-9 * * 0"
+  },
+  {
+   "path": "/api/gestor?a=web_reintentos",
+   "schedule": "7,27,47 * * * *"
   }
  ],
  "rewrites": [

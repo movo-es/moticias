@@ -275,7 +275,7 @@ function qPinta(){
 function qFechaLarga(iso){ try { return new Date(iso).toLocaleString("es-ES", {weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit", timeZone:"Europe/Madrid"}); } catch (e) { return iso; } }
 function qVoz(){
   const V = Q.voz; if (!V) return "";
-  const P = V.propuestas || [], EN = V.encargos || [], PU = V.publicadas || [];
+  const P = V.propuestas || [], EN = V.encargos || [], PU = V.publicadas || [], SW = V.sin_web || {};
   return `<div class="card" style="border-color:#f26b1d"><h2>La voz del editor</h2>
     <p class="mute">Tu columna de opinión. Nada se publica sin que apruebes el texto y la imagen; al aprobar eliges si sale ahora o el ${E(qFechaLarga(V.lunes))}.</p>
     <p><button class="b" id="voz-nueva" style="width:100%">+ Nueva columna</button></p>
@@ -290,7 +290,10 @@ function qVoz(){
     ${EN.map(e => `<div class="paso" style="display:block;padding:10px 0"><div class="q-t">${E(e.tema)}</div>
       <div class="mute" style="font-size:12px">${e.estado === "sin_fuentes" ? "La redacción no encontró fuente primaria: " + E(e.resultado || "") : e.estado === "en_curso" ? "La redacción la está escribiendo" : "Encargada a la redacción: llega en su próxima pasada (laborables, cada hora de 8 a 21)"}</div></div>`).join("")}
     ${!P.length && !EN.length ? `<p class="mute">No hay ninguna columna pendiente. Los sábados a las 8:00 la redacción te propone dos o tres.</p>` : ""}
-    ${PU.length ? `<p class="mute" style="margin:10px 0 0">Publicadas: ${PU.map(x => `<a href="${E(x.url)}" target="_blank" rel="noopener">${E(x.title)}</a>`).join(" · ")} · <a href="${E(V.pagina)}" target="_blank" rel="noopener">ver la sección</a></p>` : ""}</div>`;
+    ${PU.filter(x => SW[x.id]).map(x => `<div class="paso" style="display:block;padding:10px 0"><div class="q-t">${E(x.title)}</div>
+      <div class="mute" style="font-size:12px;color:#b3261e">Aprobada, pero no ha llegado a la web${SW[x.id].error ? ": " + E(SW[x.id].error) : ""}. El gestor lo reintenta solo cada 20 minutos.</div>
+      <div class="q-acc" style="padding:8px 0 0"><button class="b" data-voz-subir="${E(x.id)}">Subir a la web ahora</button></div></div>`).join("")}
+    ${PU.some(x => !SW[x.id]) ? `<p class="mute" style="margin:10px 0 0">Publicadas: ${PU.filter(x => !SW[x.id]).map(x => `<a href="${E(x.url)}" target="_blank" rel="noopener">${E(x.title)}</a>`).join(" · ")} · <a href="${E(V.pagina)}" target="_blank" rel="noopener">ver la sección</a></p>` : ""}</div>`;
 }
 function qVozNueva(modo){
   const V = Q.voz || {}, pal = V.palabras || [700, 1100];
@@ -323,6 +326,11 @@ function qVozNueva(modo){
 function qVozEnganchar(){
   const nv = $("#voz-nueva"); if (nv) nv.onclick = () => qVozNueva("encargar");
   if (nv && params().get("voz") === "nueva" && !qVozEnganchar.abierta) { qVozEnganchar.abierta = true; qVozNueva("encargar"); }  // enlace directo: ?vista=cola&voz=nueva
+  document.querySelectorAll("[data-voz-subir]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { const d = await api("republicar", {id: b.dataset.vozSubir}); aviso(d.ok ? "Ya está en moticias.com" : "No se pudo subir: " + d.detalle, !d.ok); verCola(); }
+    catch (e) { b.disabled = false; aviso(e.message, true); }
+  });
   document.querySelectorAll("[data-voz-ok]").forEach(b => b.onclick = () => {
     const p = Q.voz.propuestas.find(x => x.id === b.dataset.vozOk);
     const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Sale firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
@@ -339,7 +347,7 @@ function qVozEnganchar(){
       const cuando = c.querySelector('input[name="v-c"]:checked').value;
       ev.target.disabled = true;
       try { const r = await api("redaccion", {id: p.id, accion: "publicar", texto_ok: true, imagen_ok: true, cuando});
-        aviso(cuando === "ahora" ? (r.ghost && r.ghost.ok ? "Publicada en moticias.com" : "Aprobada. " + ((r.ghost || {}).detalle || "")) : "Aprobada: sale el " + qFechaLarga(Q.voz.lunes), cuando === "ahora" && !(r.ghost && r.ghost.ok)); qCerrar(); verCola(); }
+        aviso(cuando === "ahora" ? (r.ghost && r.ghost.ok ? "Publicada en moticias.com" : "Aprobada, pero NO ha llegado a la web: " + ((r.ghost || {}).detalle || "") + ". El gestor lo reintenta solo.") : "Aprobada: sale el " + qFechaLarga(Q.voz.lunes), cuando === "ahora" && !(r.ghost && r.ghost.ok)); qCerrar(); verCola(); }
       catch (e) { ev.target.disabled = false; aviso(e.message, true); }
     };
   });
