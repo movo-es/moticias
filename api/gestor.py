@@ -1036,6 +1036,54 @@ def _subir(a, v, estado=None):
     return True, res.get("url") or "actualizada en Ghost"
 
 
+ACCIONES_SUBIDA = ("redaccion_publicar", "republicar", "web_reintento")
+REINTENTOS_MAX = 12  # reintentos automáticos por pieza; después solo a mano, con el error a la vista
+
+
+def subidas_fallidas(dias=7):
+    """Piezas aprobadas en el gestor cuya última subida a Ghost falló (gestor_registro). Así el gestor no dice «publicada»
+    de algo que no está en la web y el cron `web_reintentos` lo repite solo (cambio subidas-que-no-llegan, 16-11-2026).
+    Devuelve {id: {"error", "desde", "intentos"}}."""
+    if not BD.configurada():
+        return {}
+    desde = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=dias)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        filas = BD.leer("gestor_registro", select="objeto,accion,detalle,at", accion="in.(%s)" % ",".join(ACCIONES_SUBIDA),
+                        at="gte." + desde, order="at.asc", limit="1000")
+    except BD.ErrorBD:
+        return {}
+    ult, auto, primero = {}, {}, {}
+    for f in filas:
+        pid, det = f.get("objeto"), f.get("detalle") or {}
+        if not pid or "ghost" not in det:
+            continue
+        if det["ghost"]:
+            auto.pop(pid, None), primero.pop(pid, None)
+        else:
+            primero.setdefault(pid, f.get("at"))
+            if f.get("accion") == "web_reintento":
+                auto[pid] = auto.get(pid, 0) + 1
+        ult[pid] = det
+    return {pid: {"error": str(det.get("error") or det.get("detalle") or "")[:300], "desde": primero.get(pid), "intentos": auto.get(pid, 0)}
+            for pid, det in ult.items() if det["ghost"] is False}
+
+
+def reintentar_subidas(max_n=4):
+    """Vuelve a subir a Ghost lo aprobado que no llegó. Solo piezas que siguen `publicado`; cada intento queda en el registro."""
+    hechas = []
+    for pid, f in subidas_fallidas().items():
+        if len(hechas) >= max_n or f["intentos"] >= REINTENTOS_MAX:
+            continue
+        ruta = _ruta_pieza(pid)
+        a, _ = leer(ruta) if ruta else (None, None)
+        if not a or a.get("status") != "publicado":
+            continue
+        ok, det = _subir(a, vertical(), "published")
+        BD.registrar("gestor (reintento automático)", "web_reintento", pid, {"ghost": ok, "detalle": str(det)[:500]})
+        hechas.append({"id": pid, "ok": ok, "detalle": str(det)[:200]})
+    return {"ok": all(h["ok"] for h in hechas), "reintentadas": hechas}
+
+
 def accion_redaccion(ses, d, cabeceras):
     acc, pid = d.get("accion"), d.get("id")
     ruta = _ruta_pieza(pid)
@@ -1085,7 +1133,8 @@ def accion_redaccion(ses, d, cabeceras):
                     return 400, {"error": "aprueba expresamente el texto y la imagen"}
                 # Sale el lunes a las 08:00 salvo que el editor jefe elija «Publicar ahora» (voz-desde-el-panel, 16-11-2026).
                 if d.get("cuando") == "ahora":
-                    a["published_at"], a["date"] = R.ahora(), _hoy_madrid()
+                    a["published_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+                    a["date"] = _hoy_madrid()
                 else:
                     a["published_at"] = proximo_lunes_8()
                     a["date"] = a["published_at"][:10]
@@ -2488,6 +2537,11 @@ class handler(BaseHTTPRequestHandler):
             except Exception as e:  # la comprobación nunca hace fallar la publicación
                 r["secciones_error"] = str(e)[:300]
             return self._enviar(200, r)
+        if a == "web_reintentos":  # Vercel Cron (cada 20 min, todos los días): vuelve a subir a Ghost lo aprobado que no llegó
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            return self._enviar(200, reintentar_subidas())
         if a == "copias_vigilar":  # Vercel Cron (diario): ¿hay copia reciente del Mac? Si no, correo a Rainer
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
@@ -2635,6 +2689,7 @@ class handler(BaseHTTPRequestHandler):
                 if "redaccion" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe aprueba «La voz del editor»"})
                 return self._enviar(200, {"propuestas": voz_propuestas(), "lunes": proximo_lunes_8(), "publicadas": voz_publicadas(),
+                                          "sin_web": subidas_fallidas(),
                                           "encargos": voz_encargos(), "palabras": _voz_cfg().get("palabras") or [700, 1100],
                                           "pagina": "https://%s%s" % (vertical().get("domain", "www.moticias.com"), _voz_cfg().get("pagina") or "/la-voz-del-editor/")})
             if a == "agenda":  # pestaña «Agenda»: cola, publicados, por confirmar y retirados (todos los perfiles la ven; publica el editor jefe)
