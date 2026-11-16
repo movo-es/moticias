@@ -18,3 +18,6 @@ La IA (AI Gateway, `MODELO_IA`, por defecto `anthropic/claude-opus-5.5`) devuelv
 
 ## ADDED Requisito: solo el editor jefe
 Editar, IA, retirar, restaurar, aprobar, retoques, publicar cajas, activar publicidad, productos y equipo: permiso `redaccion`/`piezas`/`publicidad`/`productos`/`equipo`, que solo tiene `superadmin`. Los demás perfiles reciben 403 del servidor.
+
+## ADDED Requisito: leer la pieza antes de aprobarla
+En el gestor, la ficha de cada pieza enseña la pieza entera como la leerá el lector: antetítulo, titular, subtítulo, firma, foto con crédito, dato clave, cifras clave con su fuente, texto (con las cajas de contenido patrocinado marcadas), «Qué viene ahora», cronología, fuentes enlazadas con medio y fecha y nota de intereses (decisión de Rainer, 16-11-2026). Si la pieza espera aprobación, aparece abierta, con el motivo (`review_note`) arriba y los botones Aprobar y publicar · Editar · Otro enfoque con IA · Retirar repetidos al final; si ya está publicada, plegada. Una pieza pendiente está en borrador en Ghost, así que la ficha no ofrece «Ver en moticias.com».

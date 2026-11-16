@@ -42,6 +42,21 @@ label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
 .seg button.on{background:var(--ink);color:#fff}
 .vista{font-family:Georgia,serif;font-size:15px;line-height:1.55;max-height:60vh;overflow:auto;border-top:1px solid var(--line);margin-top:10px;padding-top:6px}
 .vista aside{outline:2px dashed var(--acc);outline-offset:3px}
+.pieza>summary{cursor:pointer}
+.leer{font-family:Georgia,serif;font-size:17px;line-height:1.6;max-width:680px;margin:12px auto 0}
+.leer h1{font-size:26px;line-height:1.2;margin:4px 0 8px}
+.leer h3{font-family:system-ui,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin:22px 0 8px}
+.leer .kicker{font-family:system-ui,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--acc);margin:0}
+.leer .sub{font-size:19px;color:var(--mute);margin:0 0 8px}
+.leer figure{margin:12px 0}.leer img{width:100%;height:auto;border-radius:6px}.leer figcaption{font-size:13px;color:var(--mute)}
+.leer .clave{border-left:3px solid var(--acc);padding-left:12px;font-weight:bold}
+.leer .datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.leer .dato{border:1px solid var(--line);border-radius:6px;padding:8px;font-family:system-ui,sans-serif;font-size:14px;display:flex;flex-direction:column;gap:2px}
+.leer .dato small{color:var(--mute);font-size:12px}
+.leer .vista{max-height:none;overflow:visible;font-size:17px;border-top:0}
+.leer .crono,.leer .fuentes{font-size:15px;padding-left:20px}.leer .crono li,.leer .fuentes li{margin-bottom:6px}
+.leer .fuentes .mute{display:block;font-family:system-ui,sans-serif;font-size:12px}
+.leer .nota{font-size:14px;color:var(--mute);border-top:1px solid var(--line);padding-top:10px;margin-top:20px}
 #aviso{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:9;background:#111;color:#fff;border-radius:10px;padding:12px 14px;font-size:14px;display:none}
 #aviso.err{background:var(--bad)}
 .vacio{text-align:center;color:var(--mute);padding:30px 10px}
@@ -537,6 +552,34 @@ function cajaJefe(p) {
   ${ret ? `<button class="b2" data-ed="restaurar">Restaurar</button>` : `<button class="b2 bad" data-ed="retirar">Retirar</button>`}</div>
   <p class="mute" style="margin-bottom:0">Editar y la IA te enseñan el resultado antes de publicar. Retirar la quita de la web sin borrarla.</p></div>`;
 }
+// La pieza entera, como la leerá el lector: abierta si espera aprobación, plegada si ya está publicada.
+function cajaTexto(p) {
+  const pend = p.status === "pendiente";
+  const fecha = f => E(String(f || "").split("-").reverse().join("-"));
+  const datos = (p.key_data || []).map(d => `<div class="dato"><b>${E(d.value)}</b><span>${E(d.label)}</span>${d.source ? `<small>${E(d.source)}</small>` : ""}</div>`).join("");
+  const crono = (p.timeline || []).map(t => `<li><b>${fecha(t.date)}</b> ${E(t.text)}</li>`).join("");
+  const fuentes = (p.sources || []).map(f => `<li>${f.url ? `<a href="${E(f.url)}" target="_blank" rel="noopener">${E(f.title || f.url)}</a>` : E(f.title || "")}
+    <span class="mute">${E(f.outlet || "")}${f.published ? " · " + fecha(f.published) : ""}${f.kind ? " · " + E(f.kind) : ""}</span></li>`).join("");
+  const porque = pend && p.review_note ? `<div class="warn"><b>Por qué espera tu aprobación.</b> ${E(p.review_note)}</div>` : "";
+  const acciones = pend && jefe() ? `<div class="row" style="margin-top:14px"><button class="b" data-ed="publicar">Aprobar y publicar</button><button class="b2" data-ed="editar">Editar</button><button class="b2" data-ed="ia">Otro enfoque con IA</button><button class="b2 bad" data-ed="retirar">Retirar</button></div>` : "";
+  return `<details class="card pieza" ${pend ? "open" : ""}><summary><b>${pend ? "La pieza entera, para decidir" : "Ver la pieza entera"}</b> <span class="mute">${(p.sources || []).length} fuentes</span></summary>
+  ${porque}
+  <article class="leer">
+    ${p.kicker ? `<p class="kicker">${E(p.kicker)}</p>` : ""}
+    <h1>${E(p.title)}</h1>
+    ${p.subtitle ? `<p class="sub">${E(p.subtitle)}</p>` : ""}
+    <p class="mute">${E(p.author || "")}${p.author_role ? ", " + E(p.author_role) : ""} · ${fecha(p.date)}${p.revised_at ? " · revisada " + E(String(p.revised_at).slice(0, 10)) : ""}</p>
+    ${p.foto ? `<figure><img src="${E(p.foto.url)}" alt="${E(p.foto.alt)}" loading="lazy"><figcaption>${E(p.foto.alt)}${p.foto.credito ? " · Foto: " + E(p.foto.credito) : ""}</figcaption></figure>` : ""}
+    ${p.key_fact ? `<p class="clave">${E(p.key_fact)}</p>` : ""}
+    ${datos ? `<h3>Cifras clave</h3><div class="datos">${datos}</div>` : ""}
+    <div class="vista">${p.vista || ""}</div>
+    ${p.next ? `<h3>Qué viene ahora</h3><p>${E(p.next)}</p>` : ""}
+    ${crono ? `<h3>Cronología</h3><ul class="crono">${crono}</ul>` : ""}
+    ${fuentes ? `<h3>Fuentes</h3><ol class="fuentes">${fuentes}</ol>` : ""}
+    ${p.author_note ? `<p class="nota">${E(p.author_note)}</p>` : ""}
+  </article>
+  ${acciones}</details>`;
+}
 function pintarPieza(p, desdeCorreo) {
   const act = p.menciones.filter(m => m.estado !== "retirada"), ret = p.menciones.filter(m => m.estado === "retirada");
   const usados = new Set(act.map(m => m.producto));
@@ -545,8 +588,9 @@ function pintarPieza(p, desdeCorreo) {
   const vuelta = volverAlSitio();
   app.innerHTML = `<p class="row"><button class="b2" id="volver">← ${desdeCorreo ? "Todas las piezas" : "Volver"}</button>${vuelta ? `<a class="b2" href="${E(vuelta)}">Volver a moticias.com</a>` : ""}</p>
   <div class="card"><span class="mute">${E(p.date)} · ${E(p.section || "")} · ${E(p.author || "")}</span><h1>${E(p.title)}</h1>
-  <a href="${E(p.url)}" target="_blank" rel="noopener" class="mute">Ver en moticias.com ↗</a></div>
+  ${p.status === "pendiente" ? `<span class="mute">Aún no está en moticias.com (borrador): la pieza entera está aquí debajo.</span>` : `<a href="${E(p.url)}" target="_blank" rel="noopener" class="mute">Ver en moticias.com ↗</a>`}</div>
   ${cajaJefe(p)}
+  ${cajaTexto(p)}
   ${!pub && prop ? `<div class="card mute">Puedes proponer cajas de contenido patrocinado: quedan pendientes hasta que el editor jefe las publique.</div>` : ""}
   ${p.kind === "analisis" ? `<div class="card"><b>Análisis</b><p class="mute">Los análisis no llevan contenido patrocinado.</p></div>` : ""}
   ${act.map(m => cajaMencion(m, pub)).join("")}
@@ -561,7 +605,6 @@ function pintarPieza(p, desdeCorreo) {
   <textarea id="rt-tx" placeholder="Ej.: Iberia incluye Granada en su operación especial a Andalucía tras el accidente del AVE — titular y párrafo con la fuente."></textarea>
   <p class="row"><button class="b" id="rt-env">Pedir a la redacción</button></p>
   ${(p.retoques || []).map(r => cajaRetoque(r)).join("")}</div>` : ""}
-  <details class="card"><summary>Ver cómo queda en el texto</summary><div class="vista">${p.vista || ""}</div></details>
   ${pub ? `<p><button class="b2" id="repub" style="width:100%">Volver a subir a la web</button></p>
   <p class="mute">Cada cambio se sube solo a la web. Este botón solo hace falta si un cambio quedó marcado «Falta en la web».</p>` : ""}`;
   $("#volver").onclick = () => { history.replaceState(null, "", location.pathname); ir("piezas"); };

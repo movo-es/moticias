@@ -220,7 +220,30 @@ def detalle(pid):
     r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
     r["url"] = "https://%s/%s/" % (v.get("domain", "www.moticias.com"), a["id"])
     r["retoques"] = retoques_de(pid)
+    # La pieza entera, para leerla en el gestor antes de aprobarla (una pendiente está en borrador:
+    # «Ver en moticias.com» no la enseña).
+    for k in ("kicker", "subtitle", "key_fact", "key_data", "timeline", "sources", "author_note", "author_role",
+              "review_note", "risk", "relevance", "importancia", "firma_motivo", "why", "next", "revised_at"):
+        if a.get(k) not in (None, "", []):
+            r[k] = a[k]
+    r["foto"] = foto_publica(a.get("image"))
     return r
+
+
+def foto_publica(im):
+    """URL pública de la foto de la pieza (la de Ghost si ya se subió) con su crédito, o None."""
+    im = im or {}
+    src = im.get("src") or ""
+    url = src if src.startswith("http") else None
+    if not url and src:
+        try:
+            url = json.load(open(os.path.join(ROOT, "portal", "img", "ghost-urls.json"), encoding="utf-8")).get(os.path.basename(src))
+        except Exception:
+            url = None
+    if not url:
+        return None
+    return {"url": url, "alt": im.get("alt") or "", "credito": " · ".join(x for x in (im.get("credit"), im.get("license")) if x),
+            "fuente": im.get("source") or ""}
 
 
 # ---------- retoques del editor jefe ----------
