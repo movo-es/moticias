@@ -104,3 +104,11 @@ Respuesta corta: `moticias.com/agenda/` reúne las ferias, congresos y jornadas 
 - **Mantenimiento**: barrido de los lunes a las 09:41 (`/agenda-barrido`, `docs/tarea-agenda-barrido.md`); el cron `comprobar` visita cada día laborable los enlaces de inscripción y marca los caídos; el cron `ghost_al_dia` rehace la agenda cuando cambian los eventos o el día; lo terminado pasa a `pasado` y queda en el archivo. Calendario: `app.moticias.com/feed/agenda.ics`.
 - **Eventos destacados de pago**: más adelante (decisión 6). Si llegan: «Contenido patrocinado · <cliente>», `rel="sponsored"` y sin alterar el orden editorial.
 
+## La voz del editor (16-11-2026, cambio `voz-desde-el-panel`)
+- Dónde: pestaña «Cola» del gestor, arriba, solo para el editor jefe. Enlace directo que abre ya el formulario: `https://app.moticias.com/gestor/?vista=cola&voz=nueva`.
+- «+ Nueva columna» tiene dos caminos:
+  - **Encargar el borrador**: tema, enfoque y, si se quiere, enlaces o notas. La redacción horaria (laborables de 8 a 21) lo documenta, lo escribe con el estilo del editor jefe, busca una imagen y lo deja en la misma tarjeta.
+  - **Escribirla yo**: título, subtítulo y texto. Queda pendiente y se abre en el editor de siempre, con vista previa.
+- Ninguno de los dos publica. «Aprobar» pide marcar el texto y la imagen y elegir «Publicar ahora» o «Programar para el lunes a las 08:00».
+- La tarjeta enseña también lo encargado que aún no ha llegado, las columnas ya publicadas y el enlace a `/la-voz-del-editor/`.
+- La imagen candidata se ve en la tarjeta aunque todavía no esté en Ghost; se sube a Ghost al aprobar.

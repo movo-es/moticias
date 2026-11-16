@@ -133,8 +133,8 @@ def puntuar(a, prod):
     subtítulo, resumen, antetítulo) y hace falta, en la cabecera, al menos una frase disparadora o dos palabras clave."""
     if prod.get("status") != "activo" or not prod.get("url"):
         return None, "producto no activo o sin url"
-    if a.get("kind") == "analisis":
-        return None, "análisis del editor jefe: sin menciones"
+    if a.get("kind") in ("analisis", "opinion"):  # tampoco en «La voz del editor» (16-11-2026)
+        return None, "análisis u opinión del editor jefe: sin menciones"
     cab = texto_cabecera(a)
     for ex in prod.get("excluir") or []:
         if plano(ex) in cab:

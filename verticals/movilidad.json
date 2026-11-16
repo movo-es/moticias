@@ -2690,11 +2690,11 @@
  "voz_del_editor": {
   "decidido": "2026-11-16",
   "cambio": "menu-y-voz-del-editor",
-  "regla": "Temas espinosos con el enfoque y el estilo del editor jefe, firmados «Rainer Uphoff» y marcados como opinión («Opinión · La voz del editor»). Los sábados a las 08:00 (Europe/Madrid) una tarea en la nube propone dos o tres temas según lo más debatido de la semana, cada uno con enfoque, borrador e imagen candidata con crédito y licencia. Texto e imagen necesitan siempre su aprobación (aprobar, editar o pedir otra versión); sin aprobación no se publica nada. Lo aprobado sale el lunes siguiente a las 08:00, programado en Ghost.",
+  "regla": "Temas espinosos con el enfoque y el estilo del editor jefe, firmados «Rainer Uphoff» y marcados como opinión («Opinión · La voz del editor»). Los sábados a las 08:00 (Europe/Madrid) una tarea en la nube propone dos o tres temas según lo más debatido de la semana, cada uno con enfoque, borrador e imagen candidata con crédito y licencia. Texto e imagen necesitan siempre su aprobación (aprobar, editar o pedir otra versión); sin aprobación no se publica nada. Lo aprobado sale el lunes siguiente a las 08:00, programado en Ghost, o en el momento si el editor jefe elige «Publicar ahora».",
   "kind": "opinion",
   "tipo_contenido": "editorial",
   "autor": "Rainer Uphoff",
-  "publicar": "lunes 08:00 Europe/Madrid",
+  "publicar": "lunes 08:00 Europe/Madrid, o ahora si el editor jefe lo elige al aprobar",
   "propuestas_por_semana": [
    2,
    3
@@ -2707,7 +2707,15 @@
   "cupo_firma": "No cuenta en el cupo del 10 % de la firma del editor jefe: es su columna y se señala como opinión.",
   "ghost_etiqueta": "la-voz-del-editor",
   "pagina": "/la-voz-del-editor/",
-  "tarea": "docs/tarea-voz-del-editor.md (comando /voz-del-editor)"
+  "tarea": "docs/tarea-voz-del-editor.md (comando /voz-del-editor)",
+  "desde_el_gestor": {
+   "decidido": "2026-11-16",
+   "cambio": "voz-desde-el-panel",
+   "enlace": "https://app.moticias.com/gestor/?vista=cola&voz=nueva",
+   "encargar": "El editor jefe da el tema y su enfoque; la redacción horaria (/noticias-gestor) prepara una propuesta con fuentes primarias e imagen candidata. El encargo empieza por «LA VOZ DEL EDITOR · columna de opinión».",
+   "escribir": "El editor jefe escribe la columna en el gestor; queda pendiente de su aprobación, como las demás.",
+   "intereses": "Si la columna toca el mercado de una empresa del grupo, la nota de intereses lo declara con su nombre y la pieza no lleva cajas de contenido patrocinado."
+  }
  },
  "seo": {
   "decidido": "2026-11-16",
