@@ -1,6 +1,6 @@
 # Tareas · editor-jefe-y-crm
 
-- [x] `src/firma.py` (informe · decidir), `editorial.firma_director`, nota de intereses sin nombre, autor de Ghost por firma; rutina diaria (paso FIRMA y análisis del día).
+- [x] `src/firma.py` (informe · decidir), `editorial.firma_editor_jefe`, nota de intereses sin nombre, autor de Ghost por firma; rutina diaria (paso FIRMA y análisis del día).
 - [x] `src/redaccion.py`: editar, corrección, retirar/restaurar, aprobar, otro enfoque con IA con control de cifras nuevas.
 - [x] `api/gestor.py`: permisos por perfil en el servidor; `redaccion`, `firma`, `anuncio` (crear, niveles, propuestas), `publicidad` (pública), `crm_*`, `crm`, `miembros`, `miembro`; equipo en la base; marca `moticias_jefe` y `yo` con CORS para www.moticias.com.
 - [x] Gestor (`app/public/gestor/index.html`): editor con vista previa, IA con original y propuesta, retirar, firma con cupo; publicidad con niveles y vista previa; CRM (hoy, tipos, buscador, ficha, personas, estado, pasos, contratos, historial, archivo); suscriptores por categoría; equipo.

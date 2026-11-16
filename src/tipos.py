@@ -37,13 +37,13 @@ def cfg(v=None):
     return (v or vertical()).get("tipos_de_contenido") or {}
 
 
-def firmas_director(v=None):
+def firmas_editor_jefe(v=None):
     e = (v or vertical()).get("editorial") or {}
-    return {x for x in [e.get("director")] + list(e.get("director_firma_antigua") or []) if x}
+    return {x for x in [e.get("editor_jefe")] + list(e.get("editor_jefe_firma_antigua") or []) if x}
 
 
-def es_del_director(a, v=None):
-    return (a.get("author") or "") in firmas_director(v)
+def es_del_editor_jefe(a, v=None):
+    return (a.get("author") or "") in firmas_editor_jefe(v)
 
 
 def _cliente(sp):
@@ -99,7 +99,7 @@ def marca(doc, coleccion="articles", v=None):
             return m["reportaje"]
         if doc.get("kind") == "opinion":  # «La voz del editor» (16-11-2026): siempre señalada como opinión
             return m.get("opinion", "Opinión · La voz del editor")
-        return m["analisis_director"] if es_del_director(doc, v) else m["analisis"]
+        return m["analisis"]  # una sola marca, firme quien firme (cambio terminologia-editor, 15-11-2026)
     if t == "noticia":
         return m["noticia"]
     if t == "nota_de_prensa":
@@ -160,8 +160,8 @@ def etiquetas_ghost(doc, coleccion="articles", v=None):
     c = cfg(v)
     t = tipo(doc, coleccion)
     out = [c["etiquetas_ghost"][t]] if t in (c.get("etiquetas_ghost") or {}) else []
-    if t == "editorial" and doc.get("kind") == "analisis" and es_del_director(doc, v) and c.get("etiqueta_analisis_director"):
-        out.append(c["etiqueta_analisis_director"])
+    if t == "editorial" and doc.get("kind") == "analisis" and es_del_editor_jefe(doc, v) and c.get("etiqueta_analisis_editor_jefe"):
+        out.append(c["etiqueta_analisis_editor_jefe"])
     return out
 
 

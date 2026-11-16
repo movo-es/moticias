@@ -116,7 +116,7 @@ def avisar(n, ped, eid, ndest, punt, lineas):
     """Correo a quien puede aprobar: el editor jefe y, si la nota es de un cliente, la oficina. Sin aprobación no sale nada."""
     import bd as BD
     import prensa as PR
-    para = {V["prensa"]["aviso_director"]}
+    para = {V["prensa"]["aviso_editor_jefe"]}
     if ped.get("cuenta_id") and not ped.get("grupo"):
         for x in BD.leer("equipo", select="email,datos", limit="200"):
             if (x.get("datos") or {}).get("perfil") in ("oficina", "superadmin") and (x.get("datos") or {}).get("estado") != "suspendida":

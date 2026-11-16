@@ -596,7 +596,7 @@ def formulario_publico(d, ua, ip):
                                                                                               cuerpo, para, M.remitentes_avisos(v))
     if not ok:  # si no llega al anunciante, llega al editor jefe para que lo reenvíe
         M.enviar_correo("MOTICIAS · Formulario sin entregar (%s)" % a["id"], cuerpo + "<p><b>No se pudo entregar al anunciante:</b> %s</p>" % html_escape(det),
-                        [v["prensa"]["aviso_director"]], M.remitentes_avisos(v))
+                        [v["prensa"]["aviso_editor_jefe"]], M.remitentes_avisos(v))
     try:
         BD.actualizar("pub_formularios", {"id": "eq.%s" % r["id"]}, {"entregado": ok, "entregado_at": datetime.datetime.now(datetime.timezone.utc).isoformat() if ok else None,
                                                                    "error_entrega": None if ok else det[:300]})
@@ -787,23 +787,23 @@ def ficha_redaccion(pid):
             "revised_at": a.get("revised_at"), "revisiones": (a.get("revisiones") or [])[-8:], "correcciones": a.get("correcciones") or [],
             "fuentes": [{"medio": x.get("outlet"), "titulo": x.get("title"), "url": x.get("url")} for x in a.get("sources") or []],
             "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()},
-            "firma": {"actual": "director" if F.es_del_director(a, c) else "redaccion", "director": c["director"], "redaccion": c["redaccion"],
+            "firma": {"actual": "editor_jefe" if F.es_del_editor_jefe(a, c) else "redaccion", "editor_jefe": c["editor_jefe"], "redaccion": c["redaccion"],
                       "importante": imp, "motivo": mot, "propuesta": dec["firma"], "cupo": dec["cupo"]}}
 
 
 def _aplicar_firma(a, quiere, v):
     """Firma pedida por el editor jefe para esta pieza. El tope del 10 % no se salta ni a mano."""
     c = F.config(v)
-    if quiere == "director":
+    if quiere == "editor_jefe":
         q = F.cupo(F.cargar(ROOT), a.get("date") or _hoy(), c, excluir=a["id"])
-        if not F.es_del_director(a, c) and q["libres_max"] <= 0:
+        if not F.es_del_editor_jefe(a, c) and q["libres_max"] <= 0:
             raise ValueError("tu firma ya está en el %s %% de las piezas de los últimos %s días (tope %s %%): firma la redacción" % (q["pct"], c["ventana_dias"], c["max_pct"]))
-        a["firma_director"] = True
-        a["author"], a["author_role"] = c["director"], c["director_role"]
+        a["firma_editor_jefe"] = True
+        a["author"], a["author_role"] = c["editor_jefe"], c["editor_jefe_role"]
         if a.get("author_note"):
             a["author_note"] = (v.get("editor") or {}).get("interests_note") or a["author_note"]
     elif quiere == "redaccion":
-        a["firma_director"] = False
+        a["firma_editor_jefe"] = False
         a["author"], a["author_role"] = c["redaccion"], c["redaccion_role"]
         if a.get("author_note"):
             a["author_note"] = (v.get("editorial") or {}).get("interests_note_redaccion") or F.NOTA_REDACCION
@@ -901,7 +901,7 @@ def accion_redaccion(ses, d, cabeceras):
             if nuevas and not d.get("confirmo_cifras"):
                 return 409, {"error": "hay cifras o fechas que no están en la pieza ni en sus fuentes", "cifras": nuevas}
             hechos = R.aplicar_edicion(a, cambios, quien, origen=d.get("origen") or "manual", correccion=d.get("correccion"))
-            if d.get("firma") in ("director", "redaccion"):
+            if d.get("firma") in ("editor_jefe", "redaccion"):
                 antes = a.get("author")
                 _aplicar_firma(a, d["firma"], v)
                 if a.get("author") != antes:
@@ -946,8 +946,8 @@ def informe_firma():
     arts = F.cargar(ROOT)
     q = F.cupo(arts, _hoy(), c)
     suyas = sorted([{"id": a["id"], "title": a.get("title"), "date": a.get("date"), "status": a.get("status")} for a in arts.values()
-                    if F.es_del_director(a, c) and q["desde"] <= (a.get("date") or "") <= q["hasta"]], key=lambda x: x["date"], reverse=True)
-    return {"cupo": q, "piezas": suyas, "regla": ((v.get("editorial") or {}).get("firma_director") or {}).get("regla")}
+                    if F.es_del_editor_jefe(a, c) and q["desde"] <= (a.get("date") or "") <= q["hasta"]], key=lambda x: x["date"], reverse=True)
+    return {"cupo": q, "piezas": suyas, "regla": ((v.get("editorial") or {}).get("firma_editor_jefe") or {}).get("regla")}
 
 
 # ---------- CRM (base privada; módulo de MOVO) ----------

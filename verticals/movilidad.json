@@ -181,8 +181,8 @@
  "editorial": {
   "default_author": "G. Jordan",
   "default_author_role": "Redactor responsable",
-  "director": "Rainer Uphoff",
-  "director_role": "Editor jefe de MOTICIAS",
+  "editor_jefe": "Rainer Uphoff",
+  "editor_jefe_role": "Editor jefe de MOTICIAS",
   "approval": {
    "routine": "ninguna (publicación directa)",
    "critical": "editor jefe, antes de publicar",
@@ -195,9 +195,9 @@
    "puede tener implicaciones legales fuertes (litigios abiertos, datos personales, secretos comerciales, difamación)",
    "toca a empresas del grupo, socios o clientes (Movenbus, MUFMI, MOVO, Moveme, Avionline, Amarantia, socios de la línea de planes de movilidad)",
    "corrige o contradice una pieza anterior de MOTICIAS",
-   "análisis y reportajes que firma el editor jefe (cupo en `firma_director`)"
+   "análisis y reportajes que firma el editor jefe (cupo en `firma_editor_jefe`)"
   ],
-  "firma_director": {
+  "firma_editor_jefe": {
    "decidido": "2026-11-09",
    "regla": "El nombre del editor jefe firma como mucho el 10 % de las piezas de los últimos 30 días (objetivo 7 %), y solo las importantes. Todo lo demás, incluidas las piezas críticas que esperan su aprobación, lo firma la redacción. Firmar no es aprobar: la aprobación no cambia.",
    "max_pct": 10,
@@ -222,7 +222,7 @@
    "G. Jordan": "g",
    "Redacción": "g"
   },
-  "director_firma_antigua": [
+  "editor_jefe_firma_antigua": [
    "Rainer"
   ],
   "commits": {
@@ -242,7 +242,6 @@
    "patrocinado": "Lo que anuncia un servicio: cajas dentro del texto, cajas por niveles (data/ads/) y piezas con sponsored_by; etiqueta siempre visible y rel=\"sponsored\"; nunca en un análisis ni en piezas que traten del grupo"
   },
   "marcas": {
-   "analisis_director": "Análisis",
    "analisis": "Análisis",
    "reportaje": "Reportaje",
    "noticia": "Noticia",
@@ -259,7 +258,7 @@
    "nota_de_prensa": "#tipo-nota-de-prensa",
    "patrocinado": "#tipo-patrocinado"
   },
-  "etiqueta_analisis_director": "#analisis-director",
+  "etiqueta_analisis_editor_jefe": "#analisis-editor-jefe",
   "portada": [
    "editorial",
    "noticia"
@@ -2284,7 +2283,7 @@
   "remitente": {
    "nota": "El remitente real es el de src/prensa.py (PRENSA_REMITENTE en Vercel); prensa@moticias.com recibe las notas."
   },
-  "aviso_director": "ruphoff@avionline.es",
+  "aviso_editor_jefe": "ruphoff@avionline.es",
   "ghost": {
    "tag_publica": "notas-de-prensa",
    "tag_interna": "#comunicado",

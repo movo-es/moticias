@@ -1,4 +1,4 @@
-# Cambio: retoques-del-director
+# Cambio: retoques-del-editor-jefe
 
 Fecha: 9 de noviembre de 2026. Origen: Rainer pide poder entrar a una noticia desde su gestor «y pedir que la IA le dé un determinado toque, titular o referencia a algo que me parece importante», con el ejemplo «Iberia incluye Granada en su operación especial a Andalucía tras el accidente del AVE». Decisiones suyas: el resultado se publica directo y se le avisa (no espera aprobación); vale con que tarde menos de una hora y sin claves nuevas.
 

@@ -43,7 +43,7 @@ def entrada(a, base):
         "img": img.get("src"), "gi": gi, "alt": img.get("alt"), "sec": a.get("section"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),
         "pat": bool(a.get("menciones")) or bool(a.get("sponsored_by")),
         # tipo de contenido (editorial · noticia · nota_de_prensa · patrocinado) y la marca que ve el lector
-        "tc": T.tipo(a, "articles"), "mc": T.marca(a, "articles"), "dir": T.es_del_director(a),
+        "tc": T.tipo(a, "articles"), "mc": T.marca(a, "articles"), "dir": T.es_del_editor_jefe(a),
         # etiquetas comunes (15-11-2026): medio, modos, importancia, fecha del hecho, fecha límite y si caduca (orden del lector)
         "md": a.get("medio"), "mo": a.get("modos") or [], "im": a.get("importancia"), "fh": a.get("event_date"),
         "fl": a.get("fecha_limite"), "nc": Taxonomia.no_caduca(a),

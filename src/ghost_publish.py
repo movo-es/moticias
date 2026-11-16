@@ -16,7 +16,7 @@ Qué hace con cada pieza de data/articles/<id>.json:
   Si la pieza lleva menciones publicadas, cada una va en una caja «Contenido patrocinado» en medio del cuerpo
   (src/menciones.py: cajas_html + insertar_en_medio; data/productos/; gestor en app.moticias.com/gestor/).
 - Tipo de contenido (src/tipos.py): la pieza sin `tipo_contenido`, o con uno que no cuadra, NO se sube. Lleva la etiqueta
-  interna #tipo-editorial o #tipo-noticia (y #analisis-director si es un análisis firmado por el editor jefe) y su marca visible
+  interna #tipo-editorial o #tipo-noticia (y #analisis-editor-jefe si es un análisis firmado por el editor jefe) y su marca visible
   («Análisis», «Reportaje», «Noticia») al principio del cuerpo, para que no dependa del tema.
 - Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
   territorios `t-<id>` con slug fijo; etiquetas libres que no repitan un eje), autor por defecto,
@@ -208,8 +208,8 @@ def build_html(a, vertical):
     if a.get("author_note"):
         nota, edt = a["author_note"], vertical.get("editorial") or {}
         # El nombre del editor jefe solo aparece en lo que él firma (cupo de firma, 9-11-2026).
-        firmas_director = {edt.get("director")} | set(edt.get("director_firma_antigua") or [])
-        if (a.get("author") or "") not in firmas_director and edt.get("director") and edt["director"].split()[0] in nota:
+        firmas_editor_jefe = {edt.get("editor_jefe")} | set(edt.get("editor_jefe_firma_antigua") or [])
+        if (a.get("author") or "") not in firmas_editor_jefe and edt.get("editor_jefe") and edt["editor_jefe"].split()[0] in nota:
             nota = edt.get("interests_note_redaccion") or nota
         parts.append('<p class="intereses"><small>%s</small></p>' % inline(nota))
     ed = vertical.get("editor", {})
@@ -451,7 +451,7 @@ def build_post(a, vertical, base_url, token=None):
         tags.insert(0, {"name": "#segunda"})  # la segunda de la portada, para el tema
     if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
-    tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-director
+    tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-editor-jefe
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("seo_title") or a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("seo_description") or a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}

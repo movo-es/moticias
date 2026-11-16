@@ -5,7 +5,7 @@
 - El nombre del editor jefe firma como mucho el `max_pct` (10 %) de las piezas de los últimos `ventana_dias` (30) días, y la
   rutina apunta al `objetivo_pct` (7 %). Cuentan las publicadas y las que esperan su aprobación (`pendiente`).
 - Solo firman con su nombre las piezas importantes: análisis o reportajes con `relevance` ALTA que además cumplan uno de los
-  `motivos_importante` del vertical (o que el editor jefe marque a mano con `firma_director: true`).
+  `motivos_importante` del vertical (o que el editor jefe marque a mano con `firma_editor_jefe: true`).
 - Lo demás —noticias, reportajes, análisis corrientes y piezas críticas— lo firma la redacción («G. Jordan, Redactor
   responsable»). Firmar y aprobar son cosas distintas: una pieza crítica sigue esperando la aprobación del editor jefe
   (`status: pendiente`, `risk: critica`) aunque la firme la redacción.
@@ -21,11 +21,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def config(vertical):
     ed = vertical.get("editorial") or {}
-    c = dict({"max_pct": 10, "objetivo_pct": 7, "ventana_dias": 30, "tipos": ["analisis", "reportaje"]}, **(ed.get("firma_director") or {}))
+    c = dict({"max_pct": 10, "objetivo_pct": 7, "ventana_dias": 30, "tipos": ["analisis", "reportaje"]}, **(ed.get("firma_editor_jefe") or {}))
     c["importancia_minima"] = ((vertical.get("taxonomia") or {}).get("importancia") or {}).get("firma_minima", 4)
-    c["director"] = ed.get("director", "Rainer Uphoff")  # siempre con apellido (Rainer, 9-11-2026)
-    c["director_antes"] = set(ed.get("director_firma_antigua") or [])
-    c["director_role"] = ed.get("director_role", "Editor jefe de MOTICIAS")
+    c["editor_jefe"] = ed.get("editor_jefe", "Rainer Uphoff")  # siempre con apellido (Rainer, 9-11-2026)
+    c["editor_jefe_antes"] = set(ed.get("editor_jefe_firma_antigua") or [])
+    c["editor_jefe_role"] = ed.get("editor_jefe_role", "Editor jefe de MOTICIAS")
     c["redaccion"] = ed.get("default_author", "G. Jordan")
     c["redaccion_role"] = ed.get("default_author_role", "Redactor responsable")
     return c
@@ -45,27 +45,27 @@ def cuenta(a):
     return a.get("status") in (None, "publicado", "pendiente") and a.get("kind") != "opinion"
 
 
-def es_del_director(a, c):
-    return (a.get("author") or "") == c["director"] or (a.get("author") or "") in c.get("director_antes", set())
+def es_del_editor_jefe(a, c):
+    return (a.get("author") or "") == c["editor_jefe"] or (a.get("author") or "") in c.get("editor_jefe_antes", set())
 
 
 def cupo(arts, dia, c, excluir=None):
-    """{total, director, pct, max, objetivo, libres_max, libres_objetivo} para la ventana que acaba en `dia`."""
+    """{total, editor_jefe, pct, max, objetivo, libres_max, libres_objetivo} para la ventana que acaba en `dia`."""
     desde = (datetime.date.fromisoformat(dia) - datetime.timedelta(days=int(c["ventana_dias"]) - 1)).isoformat()
     ventana = [a for a in arts.values() if cuenta(a) and desde <= (a.get("date") or "") <= dia and a.get("id") != excluir]
     tot = len(ventana)
-    dire = sum(1 for a in ventana if es_del_director(a, c))
+    dire = sum(1 for a in ventana if es_del_editor_jefe(a, c))
     # Cuántas más podría firmar contando la nueva pieza: (dire + n) / (tot + 1) <= pct.
     libres = lambda pct: max(0, math.floor((tot + 1) * pct / 100.0) - dire)  # noqa: E731
-    return {"desde": desde, "hasta": dia, "total": tot, "director": dire, "pct": round(100.0 * dire / tot, 1) if tot else 0.0,
+    return {"desde": desde, "hasta": dia, "total": tot, "editor_jefe": dire, "pct": round(100.0 * dire / tot, 1) if tot else 0.0,
             "max": c["max_pct"], "objetivo": c["objetivo_pct"], "libres_max": libres(c["max_pct"]), "libres_objetivo": libres(c["objetivo_pct"])}
 
 
 def importante(a, c):
     """(bool, motivo). Solo análisis o reportajes de relevancia ALTA con un motivo de importancia, o la marca manual."""
-    if a.get("firma_director") is True:
+    if a.get("firma_editor_jefe") is True:
         return True, "marcada por el editor jefe"
-    if a.get("firma_director") is False:
+    if a.get("firma_editor_jefe") is False:
         return False, "el editor jefe pidió firma de la redacción"
     if a.get("kind") not in c["tipos"]:
         return False, "las %ss las firma la redacción" % (a.get("kind") or "pieza")
@@ -82,14 +82,14 @@ def importante(a, c):
 
 
 def decidir(a, arts, c, dia=None):
-    """Devuelve {author, author_role, firma: director|redaccion, motivo, cupo}. No cambia la aprobación."""
+    """Devuelve {author, author_role, firma: editor_jefe|redaccion, motivo, cupo}. No cambia la aprobación."""
     dia = dia or a.get("date") or datetime.date.today().isoformat()
     q = cupo(arts, dia, c, excluir=a.get("id"))
     imp, mot = importante(a, c)
-    if imp and (q["libres_objetivo"] > 0 or (a.get("firma_director") is True and q["libres_max"] > 0)):
-        return {"author": c["director"], "author_role": c["director_role"], "firma": "director", "motivo": mot, "cupo": q}
+    if imp and (q["libres_objetivo"] > 0 or (a.get("firma_editor_jefe") is True and q["libres_max"] > 0)):
+        return {"author": c["editor_jefe"], "author_role": c["editor_jefe_role"], "firma": "editor_jefe", "motivo": mot, "cupo": q}
     if imp:
-        mot = "importante, pero el cupo está lleno (%s de %s piezas en %s días, tope %s %%)" % (q["director"], q["total"], c["ventana_dias"], c["max_pct"])
+        mot = "importante, pero el cupo está lleno (%s de %s piezas en %s días, tope %s %%)" % (q["editor_jefe"], q["total"], c["ventana_dias"], c["max_pct"])
     return {"author": c["redaccion"], "author_role": c["redaccion_role"], "firma": "redaccion", "motivo": mot, "cupo": q}
 
 
@@ -122,7 +122,7 @@ def main():
     if args.cmd == "informe":
         q = cupo(arts, args.fecha, c)
         print("Firma del editor jefe, %s → %s: %s de %s piezas (%s %%). Tope %s %%, objetivo %s %%. Puede firmar %s más (objetivo) o %s (tope)."
-              % (q["desde"], q["hasta"], q["director"], q["total"], q["pct"], q["max"], q["objetivo"], q["libres_objetivo"], q["libres_max"]))
+              % (q["desde"], q["hasta"], q["editor_jefe"], q["total"], q["pct"], q["max"], q["objetivo"], q["libres_objetivo"], q["libres_max"]))
         return 0 if q["pct"] <= c["max_pct"] else 1
     a = arts.get(args.id)
     if not a:

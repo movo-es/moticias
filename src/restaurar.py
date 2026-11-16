@@ -28,8 +28,8 @@ def ruta_valida(ruta, v):
     return bool(RUTA_OK.match(ruta or "")) and ".." not in ruta and any(ruta.startswith(p) for p in cfg(v).get("contenido", {}))
 
 
-def es_del_director(doc, v):
-    return bool(doc) and (doc.get("author") or "") in T.firmas_director(v)
+def es_del_editor_jefe(doc, v):
+    return bool(doc) and (doc.get("author") or "") in T.firmas_editor_jefe(v)
 
 
 def puede_contenido(perfil, ruta, actual, antigua, v):
@@ -40,7 +40,7 @@ def puede_contenido(perfil, ruta, actual, antigua, v):
         return True, ""
     if any(ruta.startswith(p) for p in cfg(v).get("solo_superadmin_contenido", [])):
         return False, "los productos solo los restaura el editor jefe"
-    if es_del_director(actual, v) or es_del_director(antigua, v):
+    if es_del_editor_jefe(actual, v) or es_del_editor_jefe(antigua, v):
         return False, "las piezas que firma el editor jefe solo las restaura él"
     if ruta.startswith("data/articles/"):
         if (actual or {}).get("status") != "publicado":

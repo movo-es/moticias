@@ -18,7 +18,7 @@ PASOS.
 4 bis. Si hubo edición extra, comprueba las secciones como en el paso 7 septies de `docs/tarea-edicion-diaria.md` (`python3 -I src/secciones.py comprobar --navegador`).
 5. Avisa solo si hay edición extra, si algo falló o si el barrido lo pidió el gestor; en ese caso, siempre: «Barrido a demanda HH:MM: …», con lo encontrado o «sin novedades que no estén publicadas». Una batida programada sin novedades termina con una línea y sin notificación.
 
-FIRMA. La de `src/firma.py` y `verticals/movilidad.json → editorial.firma_director` (decisión de Rainer, 9-11-2026): por defecto firma la redacción («G. Jordan», `author_role: "Redactor responsable"`); el nombre del editor jefe solo si `python3 -I src/firma.py decidir --id <pieza>` lo da, dentro de su cupo (como mucho el 10 % de las piezas de 30 días). Firmar no es aprobar: las críticas (`editorial.critical_criteria`) van en `status: "pendiente"` aunque las firme la redacción.
+FIRMA. La de `src/firma.py` y `verticals/movilidad.json → editorial.firma_editor_jefe` (decisión de Rainer, 9-11-2026): por defecto firma la redacción («G. Jordan», `author_role: "Redactor responsable"`); el nombre del editor jefe solo si `python3 -I src/firma.py decidir --id <pieza>` lo da, dentro de su cupo (como mucho el 10 % de las piezas de 30 días). Firmar no es aprobar: las críticas (`editorial.critical_criteria`) van en `status: "pendiente"` aunque las firme la redacción.
 
 TIPO DE CONTENIDO (cambio `tipos-de-contenido`, 15-11-2026). Toda pieza de la edición extra lleva `tipo_contenido` (`noticia`, o `editorial` si es un análisis o un reportaje) y pasa `python3 -I src/tipos.py validar` antes de guardarse; un comunicado de empresa nunca es una pieza: va a la sala de prensa (`/prensa-buzon`).
 

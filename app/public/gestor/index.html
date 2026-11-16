@@ -479,7 +479,7 @@ function cajaFirma() {
   const f = cache.firma; if (!f || !jefe()) return "";
   const q = f.cupo, ok = q.pct <= q.max;
   return `<div class="card ${ok ? "" : "jefe"}"><div class="row" style="justify-content:space-between"><b>Tu firma</b><span class="chip ${ok ? "pub" : "ret"}">${String(q.pct).replace(".", ",")} % · tope ${q.max} %</span></div>
-  <p class="mute">${q.director} de ${q.total} piezas en los últimos 30 días llevan tu nombre. Puedes firmar ${q.libres_objetivo} más sin pasar del objetivo (${q.objetivo} %). Solo las importantes; lo demás lo firma la redacción.</p></div>`;
+  <p class="mute">${q.editor_jefe} de ${q.total} piezas en los últimos 30 días llevan tu nombre. Puedes firmar ${q.libres_objetivo} más sin pasar del objetivo (${q.objetivo} %). Solo las importantes; lo demás lo firma la redacción.</p></div>`;
 }
 function pintarPiezas() {
   const ps = cache.piezas || [];
@@ -665,8 +665,8 @@ function pintarEditor() {
       <details><summary>Guía rápida y dato clave</summary>${["key_fact", "actors", "relevance_for", "why", "next"].map(campoEd).join("")}</details></div>
       <div><div class="card"><h2>Vista previa</h2><div class="prev" id="prev"></div></div>
       <div class="card"><h2>Firma</h2>
-        <div class="seg" id="firma"><button data-f="redaccion" class="${fi.actual==="redaccion"?"on":""}">${E(fi.redaccion)}<br><small>redacción</small></button><button data-f="director" class="${fi.actual==="director"?"on":""}">${E(fi.director)}<br><small>editor jefe</small></button></div>
-        <p class="mute">Tu nombre: ${q.director} de ${q.total} piezas en 30 días (${String(q.pct).replace(".", ",")} %), tope ${q.max} %. ${fi.importante ? "Esta pieza cuenta como importante: " + E(fi.motivo) + "." : "Esta pieza no es de las importantes (" + E(fi.motivo) + ")."}</p></div>
+        <div class="seg" id="firma"><button data-f="redaccion" class="${fi.actual==="redaccion"?"on":""}">${E(fi.redaccion)}<br><small>redacción</small></button><button data-f="editor_jefe" class="${fi.actual==="editor_jefe"?"on":""}">${E(fi.editor_jefe)}<br><small>editor jefe</small></button></div>
+        <p class="mute">Tu nombre: ${q.editor_jefe} de ${q.total} piezas en 30 días (${String(q.pct).replace(".", ",")} %), tope ${q.max} %. ${fi.importante ? "Esta pieza cuenta como importante: " + E(fi.motivo) + "." : "Esta pieza no es de las importantes (" + E(fi.motivo) + ")."}</p></div>
       <div class="card"><h2>Publicar</h2>
         <label class="chk"><input type="checkbox" id="escorr"> <span>Es la corrección de un dato: se añade una nota «Corrección» al final de la pieza, con la fecha.</span></label>
         <div id="corrbox" hidden><label>Texto de la nota</label><input id="corr" placeholder="Ej.: El importe es de 12,5 millones, no de 15 como se publicó."></div>

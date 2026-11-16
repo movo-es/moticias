@@ -161,7 +161,7 @@ def enviar(d):
         correo([email], "Confirme el envío de su nota a MOTICIAS",
                "<p>Hemos recibido «%s».</p><p>Para que podamos publicarla, confirme que la envía usted: <a href=\"%s\">confirmar el envío</a>.</p>"
                "<p>Plan elegido: %s. Le escribiremos en cuanto esté publicada.</p><p>MOTICIAS · Sala de prensa</p>" % (html.escape(nota["titulo"]), enlace, html.escape(plan)))
-    correo([V["prensa"]["aviso_director"]], "Sala de prensa: nueva nota (%s, %d/100)" % (plan, an["puntuacion"]),
+    correo([V["prensa"]["aviso_editor_jefe"]], "Sala de prensa: nueva nota (%s, %d/100)" % (plan, an["puntuacion"]),
            "<p>%s · %s</p><p>%s</p><p>Emisor %s (%s). Ficha en el CRM del gestor.</p>" % (html.escape(nota["organizacion"]), html.escape(nota["titulo"]), html.escape(an["veredicto"]),
                                                                "con dominio corporativo" if corporativo else "SIN dominio corporativo: espera confirmación", html.escape(email)))
     return 200, {"ok": True, "id": nid, "verificacion": "dominio" if corporativo else "correo",
