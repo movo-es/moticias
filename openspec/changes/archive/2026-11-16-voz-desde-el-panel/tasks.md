@@ -1,0 +1,8 @@
+- [x] `api/gestor.py`: `accion_voz` (crear · encargar), `voz_nueva_pieza`, `voz_publicadas`, `voz_encargos`, aprobar con `cuando: ahora|lunes`, foto de la tarjeta desde el repositorio
+- [x] `app/public/gestor/index.html`: tarjeta siempre visible, hoja «Nueva columna» con los dos caminos, aprobación con las dos salidas, enlace directo `?vista=cola&voz=nueva` (probado en pantalla de móvil con datos simulados)
+- [x] `src/menciones.py`: sin cajas en `kind: opinion`; `src/ghost_publish.py`: foto desde el repositorio y disco de solo lectura
+- [x] `/noticias-gestor` y `docs/tarea-voz-del-editor.md`: columna por encargo
+- [x] `CLAUDE.md`, `docs/gestores-portal.md`, `verticals/movilidad.json → voz_del_editor.desde_el_gestor`, spec viva
+- [x] `tests/test_voz.py` (8 pruebas sin red); `tipos.py validar` y `taxonomia.py validar` en orden
+- [x] Primera columna escrita y pendiente, con imagen candidata (CC BY 2.0) y crédito
+- [ ] Rainer: aprobarla en el gestor

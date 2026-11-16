@@ -373,5 +373,19 @@
   "width": 1024,
   "height": 576,
   "openverse_id": "86fe3656-6601-4cb5-a837-26901e994d5d"
+ },
+ "poligono-industrial-congost-iii": {
+  "query": "polígono industrial",
+  "title": "Polígono Industrial Congost III",
+  "creator": "horrapics",
+  "creator_url": "https://www.flickr.com/photos/84096608@N00",
+  "license": "BY",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "source": "https://www.flickr.com/photos/84096608@N00/5036148012",
+  "provider": "flickr",
+  "width": 1024,
+  "height": 768,
+  "openverse_id": "20aa3f84-dae5-48d1-928f-d0ea33ee418f"
  }
 }

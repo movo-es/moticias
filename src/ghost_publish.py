@@ -400,6 +400,30 @@ def subir_imagen(ruta, base_url, token):
     return ((res.get("images") or [{}])[0]).get("url")
 
 
+def _foto_del_repositorio(nombre):
+    """Baja `portal/img/<nombre>` del repositorio (API de GitHub; con GITHUB_TOKEN si lo hay) a un fichero temporal y
+    devuelve su ruta, o None. Para los despliegues que no llevan `portal/` (el gestor en Vercel)."""
+    if not re.fullmatch(r"[A-Za-z0-9._-]{3,120}\.(?:jpe?g|png|webp)", nombre or ""):
+        return None
+    repo, rama, tok = os.environ.get("GITHUB_REPO", "movo-es/moticias"), os.environ.get("GITHUB_BRANCH", "main"), os.environ.get("GITHUB_TOKEN")
+    cab = {"Accept": "application/vnd.github.raw", "User-Agent": UA, "X-GitHub-Api-Version": "2022-11-28"}
+    if tok:
+        cab["Authorization"] = "Bearer " + tok
+    req = urllib.request.Request("https://api.github.com/repos/%s/contents/portal/img/%s?ref=%s" % (repo, urllib.request.quote(nombre), rama), headers=cab)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            datos = r.read()
+    except (urllib.error.URLError, OSError):
+        return None
+    if len(datos) < 1000:
+        return None
+    import tempfile
+    ruta = os.path.join(tempfile.gettempdir(), nombre)
+    with open(ruta, "wb") as fh:
+        fh.write(datos)
+    return ruta
+
+
 def imagen_ghost(a, base_url, token):
     """URL pública de la foto de la pieza en Ghost: la propia si ya es http; si es `img/<nombre>`, la que ya se subió
     (portal/img/ghost-urls.json) o, con token, la sube ahora desde portal/img/ y la anota. Sin foto: None."""
@@ -414,14 +438,21 @@ def imagen_ghost(a, base_url, token):
     if urls.get(nombre):
         return urls[nombre]
     ruta = os.path.join(ROOT, "portal", "img", nombre)
-    if not token or not os.path.exists(ruta):
+    if not token:
         return None
+    if not os.path.exists(ruta):
+        ruta = _foto_del_repositorio(nombre)  # el gestor en Vercel no lleva portal/: la baja del repositorio (16-11-2026)
+        if not ruta:
+            return None
     url = subir_imagen(ruta, base_url, token)
     if url:
         urls[nombre] = url
-        with open(URLS_FOTOS, "w", encoding="utf-8") as fh:
-            json.dump(urls, fh, ensure_ascii=False, indent=1, sort_keys=True)
-            fh.write("\n")
+        try:
+            with open(URLS_FOTOS, "w", encoding="utf-8") as fh:
+                json.dump(urls, fh, ensure_ascii=False, indent=1, sort_keys=True)
+                fh.write("\n")
+        except OSError:
+            pass  # en Vercel el disco es de solo lectura: la foto ya está en Ghost y la pieza se publica igual (16-11-2026)
     return url
 
 

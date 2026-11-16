@@ -853,6 +853,13 @@ def proximo_lunes_8():
     return datetime.datetime(dia.year, dia.month, dia.day, 8, 0, tzinfo=datetime.timezone(datetime.timedelta(hours=desfase(dia)))).isoformat()
 
 
+def _hoy_madrid():
+    """La fecha de hoy en Madrid (el servidor va en UTC: entre las 00:00 y la 01:00 o las 02:00 aún sería «ayer»)."""
+    utc = datetime.datetime.now(datetime.timezone.utc)
+    ult = lambda m: max(datetime.date(utc.year, m, x) for x in range(25, 32) if datetime.date(utc.year, m, x).weekday() == 6)  # noqa: E731
+    return (utc + datetime.timedelta(hours=2 if ult(3) <= utc.date() < ult(10) else 1)).date().isoformat()
+
+
 def voz_propuestas():
     """Las propuestas de «La voz del editor» pendientes de aprobación (kind opinion), con lo que hace falta para decidir."""
     out = []
@@ -868,6 +875,7 @@ def voz_propuestas():
         img = a.get("image") or {}
         out.append({"id": a["id"], "title": a.get("title"), "subtitle": a.get("subtitle"), "enfoque": (a.get("voz") or {}).get("enfoque") or a.get("summary"),
                     "palabras": len((a.get("body_md") or "").split()), "status": a.get("status"), "published_at": a.get("published_at"),
+                    "fuentes": len(a.get("sources") or []),
                     "semana": (a.get("voz") or {}).get("semana"), "image": {"src": img.get("src"), "credit": img.get("credit"), "license": img.get("license"),
                     "source_url": img.get("source_url") or img.get("url"), "alt": img.get("alt")} if img else None,
                     "ghost": FOTOS_GHOST_URL(img.get("src"))})
@@ -875,15 +883,144 @@ def voz_propuestas():
 
 
 def FOTOS_GHOST_URL(src):
+    """URL para enseñar la foto en el gestor: la de Ghost si ya se subió; si no, la del repositorio (es público), para que
+    una imagen candidata se pueda ver y aprobar antes de que exista en Ghost."""
     if not src:
         return None
     if str(src).startswith("http"):
         return src
+    if not str(src).startswith("img/"):
+        return None
     try:
         m = json.load(open(os.path.join(ROOT, "portal", "img", "ghost-urls.json"), encoding="utf-8"))
-        return m.get(str(src)[4:]) if str(src).startswith("img/") else None
     except (OSError, ValueError):
-        return None
+        m = {}
+    return m.get(str(src)[4:]) or "https://raw.githubusercontent.com/%s/%s/portal/%s" % (REPO, BRANCH, urllib.parse.quote(str(src)))
+
+
+def voz_publicadas(n=5):
+    """Las últimas columnas de «La voz del editor» ya publicadas, para verlas y abrirlas desde el gestor."""
+    out, ahora, v = [], datetime.datetime.now().astimezone().isoformat(), vertical()
+    for f in glob.glob(os.path.join(ROOT, "data", "articles", "*.json")):
+        try:
+            a = json.load(open(f, encoding="utf-8"))
+        except ValueError:
+            continue
+        if a.get("kind") == "opinion" and a.get("status") == "publicado" and (a.get("published_at") or "") <= ahora:
+            out.append({"id": a["id"], "title": a.get("title"), "date": a.get("date"), "url": _url_pieza(a, v)})
+    return sorted(out, key=lambda x: x["date"] or "", reverse=True)[:n]
+
+
+VOZ_MARCA = "LA VOZ DEL EDITOR · columna de opinión"  # así empieza el texto del encargo; /noticias-gestor lo reconoce
+
+
+def _voz_cfg():
+    return vertical().get("voz_del_editor") or {}
+
+
+def _semana(dia=None):
+    y, w, _ = (dia or datetime.date.today()).isocalendar()
+    return "%d-W%02d" % (y, w)
+
+
+OFICIALES = ("boe.es", "gob.es", "europa.eu", "congreso.es", "senado.es", "cnmc.es", "airef.es", "ine.es", "poderjudicial.es", "tribunalconstitucional.es")
+
+
+def _dominio_oficial(dom):
+    """Boletines, ministerios, Cortes, reguladores e instituciones europeas: cuentan como fuente oficial en una columna."""
+    return bool(dom) and any(dom == o or dom.endswith("." + o) for o in OFICIALES)
+
+
+def voz_nueva_pieza(d, quien, v=None):
+    """Columna escrita por el editor jefe en el gestor → pieza `kind: opinion` pendiente de su propia aprobación (texto e
+    imagen, como las del sábado). No publica nada. Devuelve la pieza o lanza ValueError con lo que falta."""
+    v = v or vertical()
+    cfg = v.get("voz_del_editor") or {}
+    titulo, texto = str(d.get("title") or "").strip(), str(d.get("body_md") or "").strip()
+    sub, enfoque = str(d.get("subtitle") or "").strip(), str(d.get("enfoque") or "").strip()
+    if len(titulo) < 8:
+        raise ValueError("ponle un título a la columna")
+    if len(texto.split()) < 120:
+        raise ValueError("el texto es muy corto para una columna (menos de 120 palabras): si solo tienes la idea, usa «Encargar el borrador»")
+    primer = next((p.strip() for p in texto.split("\n\n") if p.strip() and not p.lstrip().startswith(("#", ">"))), texto)
+    primer = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", primer).replace("**", "")
+    resumen = primer if len(primer) <= 320 else primer[:320].rsplit(" ", 1)[0] + "…"
+    enlaces = sorted(set(re.findall(r"\]\((https?://[^)\s]+)\)", texto)))
+    hoy = _hoy()
+    a = {"id": "%s-%s" % (_slug(titulo, 60), "".join(secrets.choice("abcdefghijkmnpqrstuvwxyz23456789") for _ in range(4))),
+         "kind": cfg.get("kind", "opinion"), "tipo_contenido": cfg.get("tipo_contenido", "editorial"), "section": "analisis", "status": "pendiente",
+         "author": cfg.get("autor", "Rainer Uphoff"), "author_role": (v.get("editor") or {}).get("role") or "Editor jefe de MOTICIAS",
+         "author_note": (v.get("editor") or {}).get("interests_note"),
+         "date": hoy, "event_date": hoy, "featured": 0, "kicker": "La voz del editor", "title": titulo, "subtitle": sub, "summary": resumen,
+         "body_md": texto, "image": None, "relevance": "ALTA", "importancia": 4,
+         "sources": [{"kind": "oficial" if _dominio_oficial(_dominio(u)) else "medios", "outlet": _dominio(u) or "enlace", "title": u, "url": u,
+                      "published": None, "accessed": hoy} for u in enlaces],
+         "voz": {"semana": _semana(), "enfoque": enfoque or sub or resumen, "origen": "escrita por el editor jefe en el gestor"},
+         "revisiones": [{"en": R.ahora(), "por": quien, "accion": "columna escrita en el gestor; pendiente de aprobación"}]}
+    tx = TX.Taxonomia(VERTICAL)
+    a.update(tx.clasificar(a))
+    a.update(tx.etiquetas(a))
+    a["importancia"] = 4
+    if tx.faltan(a):  # una columna puede no nombrar ningún modo: va a «varios medios», ámbito estatal, tema análisis
+        a["medio"], a["modos"] = (a.get("medio") if a.get("medio") in tx.medios else "varios"), a.get("modos") or []
+        if not a["modos"]:
+            a["medio"] = "varios"
+        a["temas"], a["territorios"] = a.get("temas") or ["analisis"], a.get("territorios") or ["estado"]
+    T.comprobar(a, "articles", v)
+    return a
+
+
+def accion_voz(ses, d):
+    """«La voz del editor» desde el gestor (cambio voz-desde-el-panel, 16-11-2026). `crear`: el editor jefe escribe la columna
+    y queda pendiente de su aprobación. `encargar`: da el tema y su enfoque y la redacción horaria prepara el borrador
+    (docs/tarea-voz-del-editor.md), que vuelve aquí como propuesta. Ninguna de las dos publica."""
+    acc, quien = d.get("accion"), ses["nombre"]
+    if acc == "crear":
+        if not os.environ.get("GITHUB_TOKEN"):
+            return 503, {"error": "el gestor no puede escribir: falta GITHUB_TOKEN en Vercel"}
+        try:
+            a = voz_nueva_pieza(d, quien)
+        except ValueError as e:
+            return 400, {"error": str(e)}
+        ok, det = escribir(_ruta_pieza(a["id"]), a, None, "La voz del editor: %s escribe «%s»" % (quien, a["title"][:60]))
+        if not ok:
+            return 502, {"error": det}
+        BD.registrar(quien, "voz_crear", a["id"], {"commit": det, "palabras": len(a["body_md"].split())})
+        return 200, {"ok": True, "id": a["id"], "commit": det, "sin_fuentes": not a["sources"],
+                     "aviso": "Guardada como pendiente. Léela, añade una imagen si quieres y apruébala para publicarla."}
+    if acc == "encargar":
+        tema, enfoque, enlaces = str(d.get("tema") or "").strip(), str(d.get("enfoque") or "").strip(), str(d.get("enlaces") or "").strip()
+        if len(tema) < 8:
+            return 400, {"error": "di de qué va la columna"}
+        if len(enfoque) < 15:
+            return 400, {"error": "escribe tu enfoque: qué defiendes y por qué (una o dos frases bastan)"}
+        texto = "%s\nTema: %s\nEnfoque del editor jefe: %s%s" % (VOZ_MARCA, tema, enfoque, "\nEnlaces y notas: " + enlaces if enlaces else "")
+        m = re.search(r"https?://[^\s<>\"']+", enlaces)
+        try:
+            fila = BD.insertar("encargos_gestor", {"texto": texto[:20000], "enlace": (m.group(0).rstrip(".,);")[:600] if m else None), "dominio": None,
+                                                   "clase_fuente": None, "pedido_por": quien, "perfil": ses["perfil"], "publicacion": "revision"})[0]
+        except BD.ErrorBD as e:
+            return 502, {"error": str(e)}
+        BD.registrar(quien, "voz_encargar", str(fila["id"]), {"tema": tema[:120]})
+        return 200, {"ok": True, "id": fila["id"],
+                     "aviso": "Encargada. La redacción prepara el borrador en su próxima pasada (laborables, cada hora de 8 a 21) y lo deja aquí, pendiente de tu aprobación."}
+    return 400, {"error": "acción desconocida"}
+
+
+def voz_encargos():
+    """Columnas encargadas a la redacción que aún no han vuelto como propuesta."""
+    if not BD.configurada():
+        return []
+    try:
+        filas = BD.leer("encargos_gestor", select="id,texto,estado,resultado,creado_at", estado="in.(pendiente,en_curso,sin_fuentes)",
+                        texto="like.%s*" % VOZ_MARCA, order="creado_at.desc", limit="6")
+    except BD.ErrorBD:
+        return []
+    out = []
+    for f in filas:
+        m = re.search(r"Tema: (.*)", f.get("texto") or "")
+        out.append({"id": f["id"], "tema": (m.group(1) if m else "")[:160], "estado": f.get("estado"), "resultado": f.get("resultado"), "creado_at": f.get("creado_at")})
+    return out
 
 
 def _subir(a, v, estado=None):
@@ -943,12 +1080,16 @@ def accion_redaccion(ses, d, cabeceras):
         elif acc == "publicar":  # el visto bueno del editor jefe a una pieza pendiente
             if a.get("status") not in ("pendiente", "borrador"):
                 return 400, {"error": "la pieza no está pendiente"}
-            if a.get("kind") == "opinion":  # «La voz del editor»: texto e imagen aprobados expresamente; sale el lunes a las 08:00
+            if a.get("kind") == "opinion":  # «La voz del editor»: texto e imagen aprobados expresamente
                 if not (d.get("texto_ok") and (d.get("imagen_ok") or not a.get("image"))):
                     return 400, {"error": "aprueba expresamente el texto y la imagen"}
-                a["published_at"] = proximo_lunes_8()
-                a["date"] = a["published_at"][:10]
-                a.setdefault("voz", {})["aprobada"] = R.ahora()
+                # Sale el lunes a las 08:00 salvo que el editor jefe elija «Publicar ahora» (voz-desde-el-panel, 16-11-2026).
+                if d.get("cuando") == "ahora":
+                    a["published_at"], a["date"] = R.ahora(), _hoy_madrid()
+                else:
+                    a["published_at"] = proximo_lunes_8()
+                    a["date"] = a["published_at"][:10]
+                a.setdefault("voz", {}).update({"aprobada": R.ahora(), "salida": "ahora" if d.get("cuando") == "ahora" else "lunes"})
             a["status"] = "publicado"
             a.setdefault("revisiones", []).append({"en": R.ahora(), "por": quien, "accion": "aprobar y publicar"})
             estado, mensaje = "published", "Redacción: %s aprueba y publica %s" % (quien, pid)
@@ -2493,7 +2634,9 @@ class handler(BaseHTTPRequestHandler):
             if a == "voz":
                 if "redaccion" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe aprueba «La voz del editor»"})
-                return self._enviar(200, {"propuestas": voz_propuestas(), "lunes": proximo_lunes_8()})
+                return self._enviar(200, {"propuestas": voz_propuestas(), "lunes": proximo_lunes_8(), "publicadas": voz_publicadas(),
+                                          "encargos": voz_encargos(), "palabras": _voz_cfg().get("palabras") or [700, 1100],
+                                          "pagina": "https://%s%s" % (vertical().get("domain", "www.moticias.com"), _voz_cfg().get("pagina") or "/la-voz-del-editor/")})
             if a == "agenda":  # pestaña «Agenda»: cola, publicados, por confirmar y retirados (todos los perfiles la ven; publica el editor jefe)
                 if "proponer" not in per and "piezas" not in per:
                     return self._enviar(403, {"error": "tu perfil no ve la agenda"})
@@ -2631,6 +2774,10 @@ class handler(BaseHTTPRequestHandler):
             ids = [p["id"] for p in piezas(60) if pendiente_web(p)]
             res = [dict(republicar_y_marcar(i), id=i) for i in ids[:15]]
             return self._enviar(200, {"ok": all(r["ok"] for r in res), "piezas": res, "quedan": max(0, len(ids) - 15)})
+        if a == "voz":  # escribir o encargar una columna de «La voz del editor»: solo el editor jefe
+            if "redaccion" not in per:
+                return self._enviar(403, {"error": "solo el editor jefe escribe o encarga «La voz del editor»"})
+            return self._enviar(*accion_voz(ses, d))
         if a == "redaccion":
             if "redaccion" not in per:
                 return self._enviar(403, {"error": "solo el editor jefe edita, retira o reenfoca piezas"})

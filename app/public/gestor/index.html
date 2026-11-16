@@ -270,33 +270,77 @@ function qPinta(){
   qVozEnganchar();
   qBloque(xs);
 }
-// «La voz del editor» (cambio menu-y-voz-del-editor, 16-11-2026): las propuestas del sábado, para aprobar texto e imagen.
+// «La voz del editor» (cambios menu-y-voz-del-editor y voz-desde-el-panel, 16-11-2026): la tarjeta está siempre arriba de la cola
+// del editor jefe. Desde ella escribe una columna o encarga el borrador a la redacción, y aprueba texto e imagen para ahora o para el lunes.
 function qFechaLarga(iso){ try { return new Date(iso).toLocaleString("es-ES", {weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit", timeZone:"Europe/Madrid"}); } catch (e) { return iso; } }
 function qVoz(){
-  const V = Q.voz; if (!V || !(V.propuestas || []).length) return "";
-  return `<div class="card" style="border-color:#f26b1d"><h2>La voz del editor · propuestas</h2>
-    <p class="mute">Texto e imagen necesitan tu aprobación. Lo que apruebes sale el ${E(qFechaLarga(V.lunes))}. Sin aprobación no se publica nada.</p>
-    ${V.propuestas.map(p => `<div class="paso" style="display:block;padding:12px 0">
+  const V = Q.voz; if (!V) return "";
+  const P = V.propuestas || [], EN = V.encargos || [], PU = V.publicadas || [];
+  return `<div class="card" style="border-color:#f26b1d"><h2>La voz del editor</h2>
+    <p class="mute">Tu columna de opinión. Nada se publica sin que apruebes el texto y la imagen; al aprobar eliges si sale ahora o el ${E(qFechaLarga(V.lunes))}.</p>
+    <p><button class="b" id="voz-nueva" style="width:100%">+ Nueva columna</button></p>
+    ${P.map(p => `<div class="paso" style="display:block;padding:12px 0">
       ${p.ghost ? `<img src="${E(p.ghost)}" alt="${E((p.image || {}).alt || "")}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin:0 0 6px">` : ""}
       ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="mute" style="font-size:12px">Sin imagen</div>`}
       <div class="q-t">${E(p.title)}</div>${p.enfoque ? `<div class="mute">Enfoque: ${E(p.enfoque)}</div>` : ""}
-      <div class="mute" style="font-size:12px">${p.palabras} palabras · ${p.status === "publicado" ? "Aprobada: sale el " + E(qFechaLarga(p.published_at)) : "Pendiente de tu aprobación"}</div>
+      <div class="mute" style="font-size:12px">${p.palabras} palabras · ${p.fuentes} ${p.fuentes === 1 ? "fuente" : "fuentes"} · ${p.status === "publicado" ? "Aprobada: sale el " + E(qFechaLarga(p.published_at)) : "Pendiente de tu aprobación"}</div>
       <div class="q-acc" style="padding:8px 0 0">${p.status === "publicado" ? `<a class="b2" href="?pieza=${encodeURIComponent(p.id)}">Ver</a>` :
         `<button class="b" data-voz-ok="${E(p.id)}">Aprobar</button><a class="b2" href="?pieza=${encodeURIComponent(p.id)}&accion=editar">Leer y editar</a><button class="b2" data-voz-otra="${E(p.id)}">Pedir otra versión</button>`}</div>
-    </div>`).join("")}</div>`;
+    </div>`).join("")}
+    ${EN.map(e => `<div class="paso" style="display:block;padding:10px 0"><div class="q-t">${E(e.tema)}</div>
+      <div class="mute" style="font-size:12px">${e.estado === "sin_fuentes" ? "La redacción no encontró fuente primaria: " + E(e.resultado || "") : e.estado === "en_curso" ? "La redacción la está escribiendo" : "Encargada a la redacción: llega en su próxima pasada (laborables, cada hora de 8 a 21)"}</div></div>`).join("")}
+    ${!P.length && !EN.length ? `<p class="mute">No hay ninguna columna pendiente. Los sábados a las 8:00 la redacción te propone dos o tres.</p>` : ""}
+    ${PU.length ? `<p class="mute" style="margin:10px 0 0">Publicadas: ${PU.map(x => `<a href="${E(x.url)}" target="_blank" rel="noopener">${E(x.title)}</a>`).join(" · ")} · <a href="${E(V.pagina)}" target="_blank" rel="noopener">ver la sección</a></p>` : ""}</div>`;
+}
+function qVozNueva(modo){
+  const V = Q.voz || {}, pal = V.palabras || [700, 1100];
+  const c = qHoja(`<h2>Nueva columna · La voz del editor</h2>
+    <div class="tabs" id="vn-tabs"><button data-m="encargar" class="${modo === "encargar" ? "on" : ""}">Encargar el borrador</button><button data-m="crear" class="${modo === "crear" ? "on" : ""}">Escribirla yo</button></div>
+    ${modo === "encargar" ? `<p class="mute">Di el tema y qué defiendes. La redacción lo documenta con fuentes primarias, escribe el borrador en tu estilo (${pal[0]}–${pal[1]} palabras), busca una imagen y te lo deja aquí para aprobar. No publica nada.</p>
+      <label for="vn-tema">Tema</label><input id="vn-tema" placeholder="Ej.: los planes de movilidad al trabajo y las pymes">
+      <label for="vn-enf">Tu enfoque</label><textarea id="vn-enf" style="min-height:110px" placeholder="Qué defiendes y por qué. Ej.: la ley mide por centro de trabajo y deja fuera a las pymes; la solución es el plan de polígono"></textarea>
+      <label for="vn-enl">Enlaces o notas (opcional)</label><textarea id="vn-enl" style="min-height:64px" placeholder="Un enlace, un dato que quieras que salga, a quién contestas"></textarea>`
+    : `<p class="mute">Pega o escribe el texto. Queda pendiente: después puedes leerlo con vista previa, corregirlo y aprobarlo. Los enlaces se escriben así: [texto](https://…). Los títulos de sección, con ## delante.</p>
+      <label for="vn-tit">Título</label><input id="vn-tit" placeholder="Afirmativo, con la tesis">
+      <label for="vn-sub">Subtítulo (opcional)</label><input id="vn-sub">
+      <label for="vn-txt">Texto · <span id="vn-pal">0 palabras</span></label><textarea id="vn-txt" style="min-height:320px"></textarea>`}
+    <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">${modo === "encargar" ? "Encargar" : "Guardar como pendiente"}</button></div>`);
+  c.querySelector("#q-no").onclick = qCerrar;
+  c.querySelectorAll("#vn-tabs button").forEach(b => b.onclick = () => { if (b.dataset.m !== modo) { qCerrar(); qVozNueva(b.dataset.m); } });
+  const tx = c.querySelector("#vn-txt"); if (tx) tx.oninput = () => { c.querySelector("#vn-pal").textContent = palabras(tx.value) + " palabras"; };
+  c.querySelector("#q-si").onclick = async ev => {
+    const val = id => { const x = c.querySelector(id); return x ? x.value.trim() : ""; };
+    const cuerpo = modo === "encargar" ? {accion: "encargar", tema: val("#vn-tema"), enfoque: val("#vn-enf"), enlaces: val("#vn-enl")}
+      : {accion: "crear", title: val("#vn-tit"), subtitle: val("#vn-sub"), body_md: val("#vn-txt")};
+    ev.target.disabled = true;
+    try {
+      const r = await api("voz", cuerpo); qCerrar();
+      if (r.id && modo === "crear") { aviso(r.aviso); location.href = "?pieza=" + encodeURIComponent(r.id) + "&accion=editar"; return; }
+      aviso(r.aviso); verCola();
+    } catch (e) { ev.target.disabled = false; aviso(e.message, true); }
+  };
 }
 function qVozEnganchar(){
+  const nv = $("#voz-nueva"); if (nv) nv.onclick = () => qVozNueva("encargar");
+  if (nv && params().get("voz") === "nueva" && !qVozEnganchar.abierta) { qVozEnganchar.abierta = true; qVozNueva("encargar"); }  // enlace directo: ?vista=cola&voz=nueva
   document.querySelectorAll("[data-voz-ok]").forEach(b => b.onclick = () => {
     const p = Q.voz.propuestas.find(x => x.id === b.dataset.vozOk);
-    const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Saldrá el ${E(qFechaLarga(Q.voz.lunes))}, firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
+    const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Sale firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
+      ${p.fuentes ? "" : `<p class="mute" style="color:#b3261e">Esta columna no enlaza ninguna fuente. Si cita cifras, fechas o declaraciones, añade antes los enlaces en «Leer y editar».</p>`}
       <label class="chk"><input type="checkbox" id="v-t"> He leído el texto y lo apruebo</label>
       ${p.image ? `<label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>` : ""}
-      <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Aprobar y programar</button></div>`);
+      <label class="chk"><input type="radio" name="v-c" value="ahora"> Publicar ahora</label>
+      <label class="chk"><input type="radio" name="v-c" value="lunes" checked> Programar para el ${E(qFechaLarga(Q.voz.lunes))}</label>
+      <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Aprobar</button></div>`);
     c.querySelector("#q-no").onclick = qCerrar;
-    c.querySelector("#q-si").onclick = async () => {
+    c.querySelector("#q-si").onclick = async ev => {
       const t = c.querySelector("#v-t").checked, i = p.image ? c.querySelector("#v-i").checked : true;
       if (!t || !i) return aviso("Marca el texto y la imagen para aprobar", true);
-      try { await api("redaccion", {id: p.id, accion: "publicar", texto_ok: true, imagen_ok: true}); aviso("Aprobada: sale el " + qFechaLarga(Q.voz.lunes)); qCerrar(); verCola(); } catch (e) { aviso(e.message, true); }
+      const cuando = c.querySelector('input[name="v-c"]:checked').value;
+      ev.target.disabled = true;
+      try { const r = await api("redaccion", {id: p.id, accion: "publicar", texto_ok: true, imagen_ok: true, cuando});
+        aviso(cuando === "ahora" ? (r.ghost && r.ghost.ok ? "Publicada en moticias.com" : "Aprobada. " + ((r.ghost || {}).detalle || "")) : "Aprobada: sale el " + qFechaLarga(Q.voz.lunes), cuando === "ahora" && !(r.ghost && r.ghost.ok)); qCerrar(); verCola(); }
+      catch (e) { ev.target.disabled = false; aviso(e.message, true); }
     };
   });
   document.querySelectorAll("[data-voz-otra]").forEach(b => b.onclick = () => {
