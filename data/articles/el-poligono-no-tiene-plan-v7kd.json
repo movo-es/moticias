@@ -65,6 +65,7 @@
  "modo": "transversal",
  "modos": [],
  "next": "El 5 de diciembre de 2026 vence el plazo del artículo 26. Siguen pendientes la orden de bases de las subvenciones de la disposición adicional vigesimoséptima y los criterios del artículo 25 para los grandes centros de actividad.",
+ "published_at": "2026-11-16T14:41+00:00",
  "relevance": "ALTA",
  "relevance_for": "Direcciones de empresas con centros obligados y responsables de sus planes; pymes de polígonos y parques empresariales; entidades de gestión de polígonos; direcciones generales de transporte y consorcios; sindicatos y asesores laborales.",
  "revisiones": [
@@ -72,6 +73,11 @@
    "accion": "borrador de «La voz del editor» por encargo del editor jefe; pendiente de su aprobación",
    "en": "2026-11-16T12:55+01:00",
    "por": "redacción"
+  },
+  {
+   "accion": "aprobar y publicar",
+   "en": "2026-11-16T14:41+00:00",
+   "por": "Rainer Uphoff"
   }
  ],
  "scope": "Movilidad al trabajo",
@@ -118,7 +124,7 @@
    "url": "https://www.mites.gob.es/estadisticas/eat/eat26_07/ATR_07_2026_Resumen.pdf"
   }
  ],
- "status": "pendiente",
+ "status": "publicado",
  "submodo": "transversal",
  "subsector": "transversal",
  "subtitle": "La ley obliga al centro de más de 200 personas y deja fuera a la pyme de al lado, que comparte con él la rotonda y la falta de autobús. El plan de movilidad al trabajo no cabe en una sola empresa",
@@ -141,10 +147,12 @@
  "tipo_contenido": "editorial",
  "title": "El polígono no tiene plan",
  "voz": {
+  "aprobada": "2026-11-16T14:41+00:00",
   "enfoque": "La ley mide la obligación por centro de trabajo y deja fuera a las pymes; la movilidad al trabajo solo se resuelve por polígono, con el plan de grandes centros de actividad que la propia ley prevé.",
   "origen": "encargo del editor jefe (16-11-2026)",
   "por_que_ahora": "El plazo del artículo 26 vence el 5 de diciembre de 2026 y el debate de estas semanas se centra en los centros obligados (https://www.economistjurist.es/articulos-juridicos-destacados/se-acerca-el-5-de-diciembre-y-se-masca-la-tragedia-con-los-planes-de-movilidad-sostenible-al-trabajo-pmst/, 8-11-2026), no en las empresas pequeñas que comparten accesos con ellos.",
   "propuesta": 1,
+  "salida": "ahora",
   "semana": "2026-W47"
  },
  "why": "La obligación de diciembre se mide por centro de trabajo y deja fuera a las empresas pequeñas que comparten accesos con las obligadas. La ley tiene una figura para tratar el polígono como unidad, el plan de grandes centros de actividad, pero depende de criterios ministeriales sin fecha."
