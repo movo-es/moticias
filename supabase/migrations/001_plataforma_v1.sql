@@ -1,3 +1,4 @@
+-- ESTADO (15-11-2026): BORRADOR NO APLICADO en Supabase moticias y fuera del historial de migraciones. No aplicar entero: cada cambio hijo toma de aquí solo lo que no exista ya en el CRM de la 003 (crm_cuentas, crm_personas) ni en la sala de prensa (005–007: medios, prensa_notas…).
 -- MOTICIAS · migración 001 · plataforma-v1 (borrador del 7-11-2026; se aplica en la fase 2 del cambio plataforma-v1)
 -- Qué: tablas de la sala de redacción, suscriptores/CRM, leads, publicidad, señales compartidas y asesor, todas multi-vertical.
 -- Por qué: ver openspec/changes/plataforma-v1/design.md. Nada específico de MOTICIAS: el vertical es un dato.

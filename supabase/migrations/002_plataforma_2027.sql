@@ -1,3 +1,4 @@
+-- ESTADO (15-11-2026): BORRADOR NO APLICADO en Supabase moticias y fuera del historial de migraciones. No aplicar entero: cada cambio hijo toma de aquí solo lo que no exista ya en el CRM de la 003 (crm_cuentas, crm_personas) ni en la sala de prensa (005–007: medios, prensa_notas…).
 -- MOTICIAS · migración 002 · plataforma-2027 (borrador del 8-11-2026; cada cambio hijo aplica solo su parte)
 -- Qué: sala de prensa, datasets de segundo nivel, cargos «Quién decide», motor de envíos, auscultador y PLUS.
 -- El esquema `conocimiento` (pgvector) va en la migración 003 del cambio conocimiento-v1, porque es compartido con MOVO.
