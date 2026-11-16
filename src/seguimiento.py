@@ -11,10 +11,11 @@ constatación en el panel».
 - Cada caja tiene un identificador: el de su fichero en data/ads/ («grupo-movo-pmst»; hasta el 15-11-2026 llevaban otro prefijo y la migración 009 trasladó su historia) o, para las cajas de contenido
   patrocinado del texto, «caja:<producto>».
 - El comprobador visita cada enlace activo con su UTM (`utm_medium=comprobacion`, para que se pueda filtrar en la
-  analítica del destino) y apunta el resultado. Lo lanza el cron de Vercel cada hora de 8 a 20 (laborables) y decide al
-  azar si toca; cada enlace se comprueba al menos una vez al día laborable. Sus visitas no son clics de lectores, no
+  analítica del destino) y apunta el resultado. Lo lanza el cron de Vercel cada hora y decide al azar si toca. Sus visitas no son clics de lectores, no
   cuentan en el panel y no mejoran el SEO de nadie (Google no ve una visita de servidor): sirven para saber que el
-  destino funciona.
+  destino funciona. Desde el 16-11-2026 (cambio `comprobador-diario`) corre todos los días, de 9 a 21 h de Madrid, con
+  una comprobación por enlace y día a hora al azar, historial descargable para el anunciante y correo si falla dos
+  veces seguidas.
 """
 import datetime, glob, json, os, random, re, time, urllib.error, urllib.parse, urllib.request
 
@@ -147,17 +148,53 @@ def comprobados_hoy():
     return {f["anuncio"] for f in filas}
 
 
+def hora_madrid():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.datetime.now(ZoneInfo("Europe/Madrid"))
+    except Exception:  # noqa: BLE001 — sin la base de zonas, invierno (UTC+1)
+        return datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=1)))
+
+
+def _avisar_si_falla_dos_veces(anuncio, nombre):
+    """Cambio comprobador-diario (16-11-2026): si un enlace falla dos comprobaciones seguidas, correo al editor jefe
+    (una sola vez por racha: solo cuando la anterior a esas dos funcionaba o no existía)."""
+    try:
+        ult = BD.leer("pub_comprobaciones", select="ok,error,at,url_final", anuncio="eq." + anuncio, order="at.desc", limit="3")
+    except BD.ErrorBD:
+        return False
+    if len(ult) < 2 or ult[0]["ok"] or ult[1]["ok"] or (len(ult) == 3 and not ult[2]["ok"]):
+        return False
+    try:
+        import menciones as M
+        v = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
+        para = (v.get("productos") or {}).get("email") or []
+        if not para:
+            return False
+        ok, _ = M.enviar_correo("MOTICIAS · El enlace de «%s» falla dos veces seguidas" % nombre[:80],
+                                "<p>El comprobador ha visitado dos veces seguidas el enlace de <b>%s</b> y no responde: %s.</p>"
+                                "<p>Revísalo en el gestor: <a href=\"https://app.moticias.com/gestor/?vista=anuncios\">Publicidad → Seguimiento</a>.</p>" % (
+                                    nombre, ult[0].get("error") or "sin respuesta"), para, M.remitentes_avisos(v))
+        return ok
+    except Exception:  # noqa: BLE001 — el aviso nunca tumba el comprobador
+        return False
+
+
 def comprobar(origen="agente", azar=True, solo=None, tope_s=200):
-    """Comprueba los enlaces. Con `azar`, cada enlace tiene una probabilidad de tocarle en esta pasada (más alta por la
-    tarde si aún no se comprobó hoy), en orden aleatorio y con pausas cortas. Devuelve la lista de resultados."""
-    hora = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=1))).hour  # Madrid (invierno); el azar no necesita precisión
+    """Comprueba los enlaces. Desde el 16-11-2026 (cambio `comprobador-diario`) corre todos los días, de 9 a 21 h de
+    Madrid, y cada enlace se comprueba al menos una vez al día a una hora al azar: en cada pasada tiene una probabilidad
+    de tocarle (más alta por la tarde si aún no se comprobó hoy, y segura en la última pasada). Sus visitas no son clics
+    de lectores ni mejoran el SEO de nadie: sirven para demostrar en el panel que el destino funciona."""
+    hora = hora_madrid().hour
     ya = comprobados_hoy() if azar else set()
     objs = [o for o in objetivos() if not solo or o["anuncio"] == solo]
     random.shuffle(objs)
     out, t0 = [], time.time()
     for o in objs:
         if azar:
-            p = 0.9 if (o["anuncio"] not in ya and hora >= 18) else (0.25 if o["anuncio"] not in ya else 0.08)
+            if o["anuncio"] in ya:
+                continue  # una vez al día basta
+            p = 1.0 if hora >= 20 else (0.9 if hora >= 18 else 0.25)
             if random.random() > p:
                 continue
         if time.time() - t0 > tope_s:
@@ -168,12 +205,25 @@ def comprobar(origen="agente", azar=True, solo=None, tope_s=200):
                 "error": err, "origen": origen}
         try:
             BD.insertar("pub_comprobaciones", fila)
+            if not ok:
+                _avisar_si_falla_dos_veces(o["anuncio"], o["nombre"])
         except BD.ErrorBD:
             pass
         out.append(dict(fila, nombre=o["nombre"]))
         if azar:
             time.sleep(random.uniform(1, 6))
     return out
+
+
+def comprobaciones_csv(anuncio, dias=30):
+    """Historial auditable de un enlace para el anunciante: fecha y hora (Madrid), resultado, estado HTTP, tiempo y destino."""
+    desde = (datetime.date.today() - datetime.timedelta(days=dias - 1)).isoformat()
+    filas = BD.leer("pub_comprobaciones", select="at,ok,estado,ms,url_final,error,origen", anuncio="eq." + anuncio, at="gte." + desde, order="at.asc", limit="5000")
+    q = lambda x: '"%s"' % str("" if x is None else x).replace('"', '""')
+    lineas = ["fecha_hora,resultado,estado_http,ms,destino,error,origen"]
+    for f in filas:
+        lineas.append(",".join(q(x) for x in (f["at"], "funciona" if f["ok"] else "no funciona", f.get("estado"), f.get("ms"), f.get("url_final"), f.get("error"), f.get("origen"))))
+    return "\r\n".join(lineas) + "\r\n"
 
 
 # ---------- panel ----------
@@ -218,6 +268,7 @@ def panel(dias=30):
             y = x[k].setdefault(kk, [0, 0])
             y[0] += f["impresiones"]
             y[1] += f["clics"]
+    hoy_ = hoy()
     ult = {}
     for c in comps:
         ult.setdefault(c["anuncio"], [])
@@ -241,4 +292,5 @@ def panel(dias=30):
     amp = panel_ampliado(dias)
     for c in cajas:
         c["ampliado"] = amp.get(c["id"])
+        c["comprobado_hoy"] = next((x for x in c["comprobaciones"] if str(x.get("at") or "")[:10] == hoy_), None)
     return {"desde": desde, "dias": dias, "cajas": cajas}

@@ -281,7 +281,9 @@ def construir(evs, v, dia=None, rutas_ok=False):
     titulo = c["textos"]["titulo"]
     desc = "%d ferias, congresos y jornadas de transportes, movilidad y turismo en %d ciudades de España hasta el %s, comprobados en la web de cada organizador." % (
         len(vis), len({e["ciudad"] for e in vis}), fecha_larga(hasta))
-    return {"title": titulo, "slug": c["ghost"]["slug"], "html": "\n".join(h), "custom_excerpt": desc[:300],
+    # El tema pone el extracto bajo el título: una línea que complementa la respuesta directa, sin repetir sus cifras.
+    return {"title": titulo, "slug": c["ghost"]["slug"], "html": "\n".join(h),
+            "custom_excerpt": "Mapa, filtros por mes, ciudad y tema, ficha de cada cita y calendario para tu agenda. Actualizada cada semana.",
             "meta_title": titulo, "meta_description": desc[:300], "codeinjection_head": ld(grafo),
             "_resumen": {"citas": len(vis), "ciudades": len({e["ciudad"] for e in vis}), "meses": n_mes, "temas": {k: n for k, n in n_tema.items() if n},
                          "lugares": {l["ciudad"]: {"citas": len(l["evs"]), "mixto": len(l["temas"]) > 1} for l in lug}, "sin_citas": sin}}

@@ -88,7 +88,7 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 
 ## Seguimiento, comprobador, empresas del grupo y nueva noticia (9 de noviembre de 2026, cambio `seguimiento-y-seo`)
 - **Publicidad → Seguimiento**: por caja (y por producto del grupo, con sus cajas «Contenido patrocinado»), estado, publicada y retirada, posiciones, páginas donde se vio, vistas, clics y CTR en 7, 30 o 90 días; últimas comprobaciones del enlace y «Comprobar ahora». Vistas = la caja se vio al menos a medias; no cuentan robots, el comprobador ni el editor jefe.
-- **Comprobador**: cron de Vercel, laborables cada hora de 8 a 20, con azar; cada enlace activo se comprueba al menos una vez al día laborable.
+- **Comprobador**: cron de Vercel, todos los días cada hora de 9 a 21 (Madrid), con azar; cada enlace activo se comprueba una vez al día a hora al azar (cambio `comprobador-diario`, 16-11-2026). El panel enseña «Comprobado hoy a las HH:MM · funciona / no funciona», el historial de 30 días se descarga en CSV para el anunciante y, si un enlace falla dos veces seguidas, llega un correo al editor jefe. Sus visitas no cuentan como clics ni mejoran el SEO de nadie: la cifra que ve el anunciante es solo de lectores.
 - **Nueva noticia** (editor y editor jefe): pegar texto o enlace; 1) investiga y publica hoy; 2) además registra el dominio de la fuente (notas de prensa, información, no de confianza). Lo pedido por el editor o con fuente no de confianza queda para la aprobación del editor jefe. Lo atiende la rutina horaria de retoques (`/noticias-gestor`).
 - **Empresas del grupo**: `/empresas-del-grupo/` (`src/ghost_grupo.py`), con la especialidad de cada marca y las piezas donde aparece su caja.
 

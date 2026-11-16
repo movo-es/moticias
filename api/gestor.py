@@ -2423,6 +2423,21 @@ class handler(BaseHTTPRequestHandler):
                 if "equipo" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe ve las copias de seguridad"})
                 return self._enviar(200, copias_resumen())
+            if a == "comprobaciones_csv":  # historial auditable de un enlace (cambio comprobador-diario)
+                if "publicidad" not in per and "contratos" not in per:
+                    return self._enviar(403, {"error": "tu perfil no ve el seguimiento de la publicidad"})
+                if not S.ID_OK.match(q.get("anuncio", "")) or not BD.configurada():
+                    return self._enviar(400, {"error": "¿qué caja?"})
+                csv = S.comprobaciones_csv(q["anuncio"], int(q.get("dias") or 30))
+                b = csv.encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/csv; charset=utf-8")
+                self.send_header("Content-Disposition", 'attachment; filename="comprobaciones-%s.csv"' % re.sub(r"[^a-z0-9-]", "-", q["anuncio"]))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(b)))
+                self.end_headers()
+                self.wfile.write(b)
+                return
             if a == "seguimiento":
                 if "publicidad" not in per and "contratos" not in per:
                     return self._enviar(403, {"error": "tu perfil no ve el seguimiento de la publicidad"})
