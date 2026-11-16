@@ -35,6 +35,7 @@ import menciones as M  # noqa: E402
 import ghost_publish as G  # noqa: E402
 import equipo as EQ  # noqa: E402
 import cola as CO  # noqa: E402  (cola del editor: cambio cola-del-editor)
+import seo as SEO  # noqa: E402  (panel SEO y asistentes de IA: cambio panel-seo-llm)
 import taxonomia as TX  # noqa: E402
 import retoques as RT  # noqa: E402  (retoques del editor jefe: data/retoques/README.md)
 import bd as BD  # noqa: E402
@@ -1919,6 +1920,139 @@ def cola_accion(ses, d):
     return 200, {"ok": True, "hechos": hechos, "avisos": avisos}
 
 
+# ---------- panel SEO y asistentes de IA (cambio panel-seo-llm, 16-11-2026; migración 014, src/seo.py) ----------
+def seo_panel():
+    v = vertical()
+    cfg = v.get("seo") or {}
+    out = {"propuestas": SEO.propuestas(n=60), "asesor": SEO.asesor_ultimo(), "modelos": cfg.get("modelos") or [],
+           "preguntas": cfg.get("preguntas") or [], "marcas": [{"id": m["id"], "nombre": m["nombre"]} for m in cfg.get("marcas") or []],
+           "search_console": {"conectado": bool(os.environ.get("GSC_CLIENT_EMAIL") and os.environ.get("GSC_PRIVATE_KEY")),
+                              "pasos": (cfg.get("search_console") or {}).get("pasos") or []},
+           "rondas": [], "cambios": []}
+    if BD.configurada():
+        try:
+            filas = BD.leer("seo_llm", select="ronda,modelo,pregunta_n,pregunta,cita_moticias,marcas,error,citas", order="ronda.desc", limit="400")
+            rondas = sorted({f["ronda"] for f in filas}, reverse=True)[:2]
+            for r in rondas:
+                fs = [f for f in filas if f["ronda"] == r]
+                out["rondas"].append({"ronda": r, "resumen": SEO.resumen(fs), "detalle": fs if r == rondas[0] else None})
+            out["cambios"] = BD.leer("seo_cambios", select="id,pieza,tipo,antes,despues,estado,quien,creado_at", order="creado_at.desc", limit="40")
+        except BD.ErrorBD as e:
+            out["error_bd"] = str(e)
+    return out
+
+
+def _seo_aplicar(ses, pid, tipo, valor, antes=None, nota=None):
+    """Escribe el campo SEO en la pieza (commit), la republica en Ghost y lo registra para poder deshacerlo."""
+    ruta = _ruta_pieza(pid)
+    a, sha = leer(ruta)
+    if not a:
+        return 404, {"error": "pieza no encontrada"}
+    previo = a.get(tipo)
+    if valor in (None, "", []):
+        a.pop(tipo, None)
+    else:
+        a[tipo] = valor
+    ok, det = escribir(ruta, a, sha, "SEO: %s de %s (%s)" % (tipo, pid, ses["nombre"]))
+    if not ok:
+        return 502, {"error": det}
+    g_ok, g = _subir(a, vertical())
+    fila = None
+    try:
+        fila = BD.insertar("seo_cambios", {"pieza": pid, "tipo": tipo, "antes": previo if antes is None else antes, "despues": valor, "estado": "aplicado",
+                                           "quien": ses["nombre"], "nota": nota})[0]
+    except BD.ErrorBD:
+        pass
+    return 200, {"ok": True, "cambio": fila, "valor": valor, "ghost": {"ok": g_ok, "detalle": g}}
+
+
+def seo_accion(ses, d, cab):
+    op = d.get("op")
+    if op == "ia":  # «Hazlo con IA» para un título, una descripción o las relacionadas: se aplica directo y se puede deshacer
+        pid, tipo = str(d.get("pieza") or ""), d.get("tipo")
+        if tipo not in ("seo_title", "seo_description", "relacionadas"):
+            return 400, {"error": "esa propuesta toca el texto: se hace con vista previa desde el editor de la pieza"}
+        a, _ = leer(_ruta_pieza(pid))
+        if not a:
+            return 404, {"error": "pieza no encontrada"}
+        if tipo == "relacionadas":
+            valor = SEO.relacionadas(pid)
+            if not valor:
+                return 409, {"error": "no encuentro piezas relacionadas de verdad (comparten poco): mejor no forzarlo"}
+        else:
+            clave = SEO._clave(cab)
+            if not clave:
+                return 503, {"error": "la IA no está disponible en el gestor (falta la clave de la pasarela)"}
+            try:
+                valor = SEO.proponer_ia(a, tipo, clave)
+            except ValueError as e:
+                return 409, {"error": str(e)}
+            except (urllib.error.URLError, urllib.error.HTTPError) as e:
+                return 502, {"error": "la IA no contestó: %s" % e}
+        return _seo_aplicar(ses, pid, tipo, valor, nota="Hazlo con IA")
+    if op in ("deshacer", "editar"):
+        try:
+            c = BD.leer("seo_cambios", select="id,pieza,tipo,antes,despues,estado", id="eq.%s" % int(d.get("id") or 0))[0]
+        except (BD.ErrorBD, IndexError, ValueError):
+            return 404, {"error": "cambio no encontrado"}
+        if op == "deshacer":
+            st, r = _seo_aplicar(ses, c["pieza"], c["tipo"], c.get("antes"), antes=c.get("despues"), nota="deshace el cambio %s" % c["id"])
+            if st == 200:
+                BD.actualizar("seo_cambios", {"id": "eq.%s" % c["id"]}, {"estado": "deshecho", "cambiado_at": datetime.datetime.now(datetime.timezone.utc).isoformat()})
+            return st, r
+        valor = d.get("valor")
+        lim = ((vertical().get("seo") or {}).get("limites") or {}).get(c["tipo"])
+        if c["tipo"] in ("seo_title", "seo_description"):
+            valor = " ".join(str(valor or "").split())
+            if not valor or (lim and len(valor) > lim):
+                return 400, {"error": "tiene que tener entre 1 y %s caracteres" % lim}
+        return _seo_aplicar(ses, c["pieza"], c["tipo"], valor, nota="editado a mano")
+    if op == "bateria":  # un modelo por llamada (cada llamada cabe en el tiempo de una función)
+        return seo_bateria(d.get("modelo"), SEO._clave(cab))
+    return 400, {"error": "acción desconocida"}
+
+
+def seo_bateria(modelo=None, clave=None):
+    """Pasa la batería de preguntas a un modelo (o al siguiente que falte en la ronda de esta semana) y la guarda en seo_llm."""
+    if not BD.configurada():
+        return 503, {"error": "la base privada no está conectada"}
+    clave = clave or SEO._clave()
+    if not clave:
+        return 503, {"error": "falta la clave de la pasarela de IA"}
+    cfg = vertical().get("seo") or {}
+    hoy = datetime.date.today()
+    ronda = (hoy - datetime.timedelta(days=(hoy.weekday() + 1) % 7)).isoformat()  # la ronda es la del domingo de la semana
+    modelos = cfg.get("modelos") or []
+    if not modelo:
+        hechos = {f["modelo"] for f in BD.leer("seo_llm", select="modelo", ronda="eq." + ronda, limit="500")}
+        pend = [m for m in modelos if m["id"] not in hechos]
+        if not pend:
+            return 200, {"ok": True, "ronda": ronda, "nada": "la ronda de esta semana ya está completa"}
+        m = pend[0]
+    else:  # a mano («Pasar la batería ahora»): la ronda es la de hoy y no se repite un modelo ya preguntado hoy
+        m = next((x for x in modelos if x["id"] == modelo), None)
+        if not m:
+            return 400, {"error": "modelo desconocido"}
+        ronda = hoy.isoformat()
+        if BD.leer("seo_llm", select="id", ronda="eq." + ronda, modelo="eq." + m["id"], limit="1"):
+            return 200, {"ok": True, "ronda": ronda, "nada": "%s ya se preguntó hoy" % m["nombre"]}
+    from concurrent.futures import ThreadPoolExecutor
+    pregs = cfg.get("preguntas") or []
+    def una(iq):
+        filas = []
+        SEO.bateria(clave, ronda, [m], [iq[1]], guardar=filas.append)
+        f = filas[0]
+        f["pregunta_n"] = iq[0]
+        return f
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        filas = list(ex.map(una, list(enumerate(pregs, 1))))
+    try:
+        BD.insertar("seo_llm", filas)
+    except BD.ErrorBD as e:
+        return 502, {"error": str(e)}
+    return 200, {"ok": True, "ronda": ronda, "modelo": m["id"], "resumen": SEO.resumen(filas)}
+
+
 # ---------- buzón del repositorio (14-11-2026; migración 008, src/buzon.py) ----------
 # Las tareas programadas que no pueden hacer push dejan en Supabase (tabla repo_buzon) los ficheros que cambian. Este
 # cron los sube a `main` con GITHUB_TOKEN: un commit por lote, en orden de llegada, y se para en el primer lote que no
@@ -2096,6 +2230,12 @@ class handler(BaseHTTPRequestHandler):
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
             return self._enviar(200, copias_vigilar())
+        if a == "seo_bateria":  # Vercel Cron (domingos, cuatro pasadas): un modelo de la batería de asistentes por pasada
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            st, r = seo_bateria(None, SEO._clave(self._cab()))
+            return self._enviar(st, r)
         if a == "aplicar_buzon":  # Vercel Cron (cada 10 min): sube a main lo que las tareas dejaron en el buzón (migración 008)
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
@@ -2209,6 +2349,10 @@ class handler(BaseHTTPRequestHandler):
                 return self._enviar(200, {"encargos": filas, "dominios": _dominios()[0]["dominios"], "clases": CLASES_FUENTE})
             if a == "cola":
                 return self._enviar(*cola_listar(ses, q.get("pestana") or "cola"))
+            if a == "seo":
+                if "equipo" not in per:
+                    return self._enviar(403, {"error": "el panel SEO es del editor jefe"})
+                return self._enviar(200, seo_panel())
             if a == "voz":
                 if "redaccion" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe aprueba «La voz del editor»"})
@@ -2369,6 +2513,10 @@ class handler(BaseHTTPRequestHandler):
             return self._enviar(*accion_encargo(ses, d))
         if a == "cola":
             return self._enviar(*cola_accion(ses, d))
+        if a == "seo":
+            if "equipo" not in ses["permisos"]:
+                return self._enviar(403, {"error": "el panel SEO es del editor jefe"})
+            return self._enviar(*seo_accion(ses, d, self._cab()))
         if a == "anuncio_imagen":
             return self._enviar(*subir_imagen_anuncio(ses, d))
         if a == "dominio":

@@ -195,6 +195,10 @@ def build_html(a, vertical):
             '<li>[%s] %s — <a href="%s" rel="noopener">%s</a> (publicado %s; consultado %s)</li>' % (
                 "Fuente oficial" if s.get("kind") == "oficial" else "Medios", inline(s.get("outlet", "")), html.escape(s.get("url", ""), quote=True),
                 inline(s.get("title", "")), fmt_date(s.get("published")), fmt_date(s.get("accessed"))) for s in a["sources"]) + "</ul>")
+    if a.get("relacionadas"):  # enlaces internos (panel SEO, 16-11-2026): bloque aparte, el texto de la pieza no se toca
+        rel = [r for r in a["relacionadas"] if isinstance(r, dict) and r.get("id") and r.get("titulo")][:4]
+        if rel:
+            parts.append("<h2>Relacionadas en MOTICIAS</h2><ul>" + "".join('<li><a href="/%s/">%s</a></li>' % (html.escape(r["id"], quote=True), inline(r["titulo"])) for r in rel) + "</ul>")
     for c in a.get("correcciones") or []:  # regla de siempre: la corrección se dice al final, con su fecha
         parts.append('<p class="correccion"><small><strong>Corrección (%s).</strong> %s</small></p>' % (fmt_date(c.get("en")), inline(c.get("texto", ""))))
     traz = ["Hechos: %s" % fmt_date(a.get("event_date")), "Redacción: %s" % (a.get("published_at") or "")]
@@ -449,8 +453,8 @@ def build_post(a, vertical, base_url, token=None):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
     tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-director
     post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
-            "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("title"), "featured": a.get("featured") == 1,
-            "meta_description": (a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
+            "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("seo_title") or a.get("title"), "featured": a.get("featured") == 1,
+            "meta_description": (a.get("seo_description") or a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
     autor = autor_ghost(a, vertical, base_url, token)
     if autor:
         post["authors"] = [{"id": autor}]

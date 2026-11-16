@@ -2707,5 +2707,118 @@
   "ghost_etiqueta": "la-voz-del-editor",
   "pagina": "/la-voz-del-editor/",
   "tarea": "docs/tarea-voz-del-editor.md (comando /voz-del-editor)"
+ },
+ "seo": {
+  "decidido": "2026-11-16",
+  "cambio": "panel-seo-llm",
+  "regla": "Panel SEO y asistentes de IA dentro del gestor del editor jefe (pestaña «SEO»). Buscadores: Search Console cuando el editor jefe dé acceso (paso a paso en el panel). Asistentes: una batería fija de preguntas del sector, repetida cada semana, que registra si citan a MOTICIAS y a las marcas del grupo con sus asociaciones. Propuestas ordenadas por impacto esperado, con «Hazlo con IA»: títulos, descripciones, enlaces internos y marcado se aplican directo y avisan (deshacer, editar, regenerar); lo que toque el texto de una pieza, con vista previa (aprobar, editar, regenerar, descartar). Ninguna clave en el repositorio.",
+  "limites": {
+   "seo_title": 60,
+   "seo_description": 155,
+   "relacionadas": 3
+  },
+  "modelos": [
+   {
+    "id": "perplexity/sonar",
+    "nombre": "Perplexity (con búsqueda web)"
+   },
+   {
+    "id": "openai/gpt-5-mini",
+    "nombre": "ChatGPT (GPT-5 mini)"
+   },
+   {
+    "id": "google/gemini-2.5-flash",
+    "nombre": "Gemini 2.5 Flash"
+   },
+   {
+    "id": "anthropic/claude-opus-5.5",
+    "nombre": "Claude"
+   }
+  ],
+  "preguntas": [
+   "¿Qué medios especializados informan sobre transporte y movilidad en España para profesionales y decisores?",
+   "¿Dónde puedo seguir las licitaciones y concesiones de transporte de viajeros por carretera en España?",
+   "¿Qué es un plan de movilidad sostenible al trabajo (PMST) y quién ayuda a las empresas a hacerlo en España?",
+   "¿Qué empresas ofrecen consultoría de movilidad para empresas y administraciones en España?",
+   "¿Cómo se alquila un autocar con conductor para un grupo en España y qué plataformas lo facilitan?",
+   "¿Qué soluciones tecnológicas y comerciales existen para las empresas de autobús discrecional en España?",
+   "¿Qué empresas ofrecen transporte a la demanda en zonas rurales o de baja densidad en España?",
+   "¿Qué cambia la Ley 9/2025 de Movilidad Sostenible para las empresas españolas?",
+   "¿Cuál es la situación del nuevo mapa concesional estatal de autobuses en España?",
+   "¿Dónde informarse de huelgas y servicios mínimos en el transporte ferroviario en España?",
+   "¿Qué fuentes fiables hay sobre regulación del transporte aéreo y de los aeropuertos en España?",
+   "¿Dónde se informa de los nombramientos y ceses en el Ministerio de Transportes, Renfe, Adif y Aena?"
+  ],
+  "marcas": [
+   {
+    "id": "moticias",
+    "nombre": "MOTICIAS",
+    "patrones": [
+     "moticias"
+    ],
+    "asociaciones": [
+     "transporte",
+     "movilidad",
+     "noticias",
+     "medio"
+    ]
+   },
+   {
+    "id": "movo",
+    "nombre": "MOVO",
+    "patrones": [
+     "\\bmovo\\b"
+    ],
+    "asociaciones": [
+     "plan de movilidad",
+     "pmst",
+     "movilidad al trabajo",
+     "consultor"
+    ]
+   },
+   {
+    "id": "movenbus",
+    "nombre": "Movenbus",
+    "patrones": [
+     "movenbus"
+    ],
+    "asociaciones": [
+     "autobús",
+     "autocar",
+     "discrecional",
+     "tecnolog",
+     "comercial",
+     "alquil"
+    ]
+   },
+   {
+    "id": "mufmi",
+    "nombre": "MUFMI",
+    "patrones": [
+     "mufmi"
+    ],
+    "asociaciones": [
+     "a la demanda",
+     "bajo demanda",
+     "demanda"
+    ]
+   }
+  ],
+  "frecuencia": "semanal: domingo 06:10 UTC (cron de Vercel seo_bateria); y a mano con «Pasar la batería ahora»",
+  "search_console": {
+   "conectado": false,
+   "propiedad": "sc-domain:moticias.com",
+   "variables": [
+    "GSC_CLIENT_EMAIL",
+    "GSC_PRIVATE_KEY"
+   ],
+   "pasos": [
+    "Abre https://console.cloud.google.com/projectcreate y crea un proyecto llamado «moticias-seo».",
+    "Activa la API de Search Console en https://console.cloud.google.com/apis/library/searchconsole.googleapis.com (botón «Habilitar»).",
+    "Crea una cuenta de servicio en https://console.cloud.google.com/iam-admin/serviceaccounts/create (nombre «moticias-panel»; sin roles) y, dentro de ella, Claves → Agregar clave → JSON: se descarga un fichero.",
+    "En Search Console, https://search.google.com/search-console/users?resource_id=sc-domain%3Amoticias.com → Agregar usuario → el correo de la cuenta de servicio (termina en iam.gserviceaccount.com) con permiso «Restringido».",
+    "En Vercel, https://vercel.com/movo2/moticias-app/settings/environment-variables → crea GSC_CLIENT_EMAIL (el client_email del fichero) y GSC_PRIVATE_KEY (el private_key, tal cual) para Production, y pulsa Redeploy. El fichero no se sube a ningún sitio más."
+   ]
+  }
  }
 }

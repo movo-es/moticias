@@ -101,6 +101,7 @@ body.q-con-bloque{padding-bottom:80px}
   <button data-v="productos">Productos</button>
   <button data-v="equipo" hidden>Equipo</button>
   <button data-v="restaurar" hidden>Restaurar</button>
+  <button data-v="seo" hidden>SEO</button>
 </nav>
 <main id="app"><div class="vacio">Cargando…</div></main>
 <div id="aviso"></div>
@@ -170,6 +171,7 @@ async function arrancar() {
   $("#nav").querySelector('[data-v="suscriptores"]').hidden = !puede("suscriptores");
   $("#nav").querySelector('[data-v="equipo"]').hidden = !puede("equipo");
   $("#nav").querySelector('[data-v="restaurar"]').hidden = !puede("restaurar");
+  $("#nav").querySelector('[data-v="seo"]').hidden = !puede("equipo");
   $("#nav").querySelector('[data-v="crm"]').hidden = !puede("crm");
   $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
   $("#nav").querySelector('[data-v="prensa"]').hidden = !puede("crm");
@@ -186,7 +188,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; const qb = $("#q-bloque"); if (qb) qb.remove(); document.body.classList.remove("q-con-bloque"); document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({cola:verCola, piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; const qb = $("#q-bloque"); if (qb) qb.remove(); document.body.classList.remove("q-con-bloque"); document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({cola:verCola, seo:verSeo, piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -420,6 +422,50 @@ function qBloque(xs){
     + (p !== "papelera" && p !== "publicados" ? `<button class="b2 bad" data-b="papelera" ${dis}>Borrar</button>` : "");
   b.querySelector("#q-todo").onclick = () => { if (n && n === xs.length) Q.sel.clear(); else xs.forEach(t => Q.sel.add(t.id)); qPinta(); };
   b.querySelectorAll("[data-b]").forEach(k => k.onclick = () => qAccion(k.dataset.b, sel));
+}
+
+
+// ---------- Panel SEO y asistentes de IA (cambio panel-seo-llm, 16-11-2026) ----------
+const SEO_TIPO = {seo_title: "Título para buscadores", seo_description: "Descripción para buscadores", relacionadas: "Piezas relacionadas (enlaces internos)", marcado: "Marcado de datos", texto: "Texto de la pieza"};
+async function verSeo(){
+  app.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando el panel SEO…</div>`;
+  let d; try { d = await api("seo"); } catch (e) { app.innerHTML = `<div class="card"><h1>SEO</h1><p class="mute">${E(e.message)}</p></div>`; return; }
+  const R = (d.rondas || [])[0], R0 = (d.rondas || [])[1], nombres = Object.fromEntries((d.modelos || []).map(m => [m.id, m.nombre]));
+  const celda = (x, k) => { const m = ((x || {}).marcas || {})[k] || {}; return `${m.mencion || 0}<small class="mute"> / ${m.asociada || 0} bien</small>`; };
+  const tabla = R ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums">
+    <tr><th style="text-align:left">Asistente</th><th>Citan moticias.com</th>${d.marcas.filter(m => m.id !== "moticias").map(m => `<th>${E(m.nombre)}</th>`).join("")}</tr>
+    ${Object.entries(R.resumen).map(([mid, x]) => `<tr style="border-top:1px solid var(--line)"><td>${E(nombres[mid] || mid)}${x.errores ? ` <small class="mute">(${x.errores} sin respuesta)</small>` : ""}</td>
+      <td style="text-align:center"><b>${x.cita_moticias}</b><small class="mute"> de ${x.preguntas}</small>${R0 && R0.resumen[mid] ? ` <small class="mute">(antes ${R0.resumen[mid].cita_moticias})</small>` : ""}</td>
+      ${d.marcas.filter(m => m.id !== "moticias").map(m => `<td style="text-align:center">${celda(x, m.id)}</td>`).join("")}</tr>`).join("")}</table></div>
+    <p class="mute">Ronda del ${E(R.ronda)}. En las marcas: cuántas respuestas la nombran / cuántas la asocian con lo suyo (MOVO con PMST y consultoría de movilidad; Movenbus con el autobús por carretera; MUFMI con el transporte a la demanda).</p>
+    <details><summary>Ver las ${(R.detalle || []).length} respuestas</summary>${(R.detalle || []).map(f => `<div class="paso" style="display:block"><b>${E(nombres[f.modelo] || f.modelo)}</b> · ${E(f.pregunta)}<br>
+      <span class="mute">${f.error ? "Sin respuesta: " + E(f.error) : (f.cita_moticias ? "✓ cita moticias.com" : "✗ no cita moticias.com") + " · " + Object.entries(f.marcas || {}).filter(([k, m]) => m.mencion).map(([k, m]) => k + (m.asociada ? " ✓" : " ?")).join(", ")}</span></div>`).join("")}</details>`
+    : `<p class="mute">Todavía no hay ninguna ronda. Pasa la batería ahora o espera al domingo (se pasa sola cada semana).</p>`;
+  app.innerHTML = `<div class="card"><h1>SEO y asistentes de IA</h1><p class="mute">Cómo nos encuentran los buscadores y los asistentes de IA, y qué arreglar primero. Los títulos, descripciones y enlaces internos se aplican al momento y se pueden deshacer; lo que toque el texto de una pieza pasa por la vista previa del editor.</p></div>
+    <div class="card"><h2>Asistentes de IA</h2><p class="mute">Las mismas ${d.preguntas.length} preguntas del sector, cada semana, a ${d.modelos.length} asistentes.</p>${tabla}
+      <p><button class="b2" id="seo-bat">Pasar la batería ahora</button> <span class="mute" id="seo-bat-est"></span></p></div>
+    <div class="card"><h2>Buscadores (Google)</h2>${d.search_console.conectado ? `<p class="okbox">Search Console conectado.</p>` :
+      `<p class="warn">Search Console todavía no está conectado. Sin él no puedo darte impresiones, clics ni posiciones en Google. Son cinco pasos, una sola vez:</p><ol>${d.search_console.pasos.map(p => `<li style="margin:6px 0">${E(p).replace(/(https:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')}</li>`).join("")}</ol>`}</div>
+    <div class="card"><h2>Propuestas por impacto</h2><p class="mute">Impacto = importancia de la pieza × peso del problema × frescura (lo que no caduca pesa siempre).</p>
+      ${d.propuestas.slice(0, 40).map((p, i) => `<div class="paso" style="display:block" id="sp-${i}"><div class="row" style="justify-content:space-between"><b>${E(SEO_TIPO[p.tipo] || p.tipo)}</b><span class="chip">impacto ${p.impacto}</span></div>
+        <div class="mute">${E(p.titulo)}</div><div style="font-size:14px">${E(p.problema)}</div>${p.actual ? `<div class="mute" style="font-size:13px">Ahora: «${E(p.actual)}»</div>` : ""}
+        <p style="margin:6px 0 0"><button class="b2" data-ia="${i}">Hazlo con IA</button></p></div>`).join("")}</div>
+    <div class="card"><h2>Cambios aplicados</h2>${(d.cambios || []).length ? d.cambios.map(c => `<div class="paso" style="display:block"><b>${E(SEO_TIPO[c.tipo] || c.tipo)}</b> · ${E(c.pieza)} <span class="chip ${c.estado === "aplicado" ? "pub" : ""}">${E(c.estado)}</span>
+        <div class="mute" style="font-size:13px">Antes: ${E(typeof c.antes === "string" ? c.antes : JSON.stringify(c.antes || "—")).slice(0, 220)}<br>Ahora: ${E(typeof c.despues === "string" ? c.despues : (c.despues || []).map(x => x.titulo).join(" · ")).slice(0, 260)}</div>
+        ${c.estado === "aplicado" ? `<p class="row" style="margin:6px 0 0"><button class="b2" data-des="${c.id}">Deshacer</button>${typeof c.despues === "string" ? `<button class="b2" data-edi="${c.id}">Editar</button>` : ""}<button class="b2" data-reg="${E(c.pieza)}|${E(c.tipo)}">Regenerar</button></p>` : ""}</div>`).join("") : `<p class="mute">Todavía ninguno.</p>`}</div>
+    ${d.asesor ? `<div class="card"><h2>Lo que dijo el asesor (${E(d.asesor.fecha)})</h2><p class="mute">Las propuestas del asesor de los lunes que tocan el texto se hacen desde el editor de cada pieza, con vista previa.</p>
+      <details><summary>Leer</summary><pre style="white-space:pre-wrap;font-size:13px">${E(d.asesor.extracto)}</pre></details><p><a href="https://github.com/movo-es/moticias/blob/main/${E(d.asesor.fichero)}" target="_blank" rel="noopener">Informe completo</a></p></div>` : ""}`;
+  app.querySelectorAll("[data-ia]").forEach(b => b.onclick = async () => { const p = d.propuestas[+b.dataset.ia]; b.disabled = true; b.innerHTML = `<span class="spin"></span>Haciendo…`;
+    try { const r = await api("seo", {op: "ia", pieza: p.pieza, tipo: p.tipo}); aviso("Aplicado" + (r.ghost && r.ghost.ok ? " y publicado en moticias.com" : "") + ". Puedes deshacerlo abajo."); verSeo(); }
+    catch (e) { aviso(e.message, true); b.disabled = false; b.textContent = "Hazlo con IA"; } });
+  app.querySelectorAll("[data-des]").forEach(b => b.onclick = async () => { b.disabled = true; try { await api("seo", {op: "deshacer", id: +b.dataset.des}); aviso("Deshecho"); verSeo(); } catch (e) { aviso(e.message, true); b.disabled = false; } });
+  app.querySelectorAll("[data-reg]").forEach(b => b.onclick = async () => { const [pieza, tipo] = b.dataset.reg.split("|"); b.disabled = true; try { await api("seo", {op: "ia", pieza, tipo}); aviso("Regenerado"); verSeo(); } catch (e) { aviso(e.message, true); b.disabled = false; } });
+  app.querySelectorAll("[data-edi]").forEach(b => b.onclick = () => { const c = d.cambios.find(x => x.id === +b.dataset.edi); const box = b.closest(".paso");
+    box.insertAdjacentHTML("beforeend", `<label>Texto</label><input id="ed-${c.id}" value="${E(c.despues)}"><p><button class="b" id="ok-${c.id}">Guardar</button></p>`);
+    $("#ok-" + c.id).onclick = async () => { try { await api("seo", {op: "editar", id: c.id, valor: $("#ed-" + c.id).value}); aviso("Guardado y publicado"); verSeo(); } catch (e) { aviso(e.message, true); } }; });
+  $("#seo-bat").onclick = async () => { const b = $("#seo-bat"), est = $("#seo-bat-est"); b.disabled = true;
+    for (const m of d.modelos) { est.textContent = "Preguntando a " + m.nombre + "…"; try { await api("seo", {op: "bateria", modelo: m.id}); } catch (e) { aviso(m.nombre + ": " + e.message, true); } }
+    est.textContent = ""; aviso("Batería pasada"); verSeo(); };
 }
 
 // ---------- Piezas ----------

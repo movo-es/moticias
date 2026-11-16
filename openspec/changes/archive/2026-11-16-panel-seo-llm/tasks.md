@@ -1,0 +1,7 @@
+- [x] Vertical `seo` (preguntas, modelos, marcas, límites, pasos de Search Console)
+- [x] Migración 014 (`seo_llm`, `seo_cambios`) aplicada
+- [x] `src/seo.py` (propuestas, relacionadas, IA con control de cifras, batería y análisis de marcas)
+- [x] `ghost_publish.py`: `seo_title`, `seo_description` y bloque «Relacionadas en MOTICIAS»
+- [x] API y pestaña «SEO» del gestor; cron semanal
+- [ ] Rainer: conectar Search Console (cinco pasos en el panel)
+- [ ] Primera ronda de la batería (botón «Pasar la batería ahora» o el domingo 22-11)
