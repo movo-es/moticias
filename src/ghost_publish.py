@@ -553,6 +553,7 @@ def upsert(post, status, base_url, token):
     if status == "published" and post.get("published_at"):
         try:
             cuando = datetime.datetime.fromisoformat(str(post["published_at"]).replace("Z", "+00:00"))
+            post = dict(post, published_at=cuando.isoformat(timespec="seconds"))  # fecha completa, con segundos
             if cuando.tzinfo and cuando > datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=2):
                 status = "scheduled"
         except ValueError:
@@ -602,6 +603,8 @@ def republicar(a, vertical, base_url, admin_key):
     token = ghost_token(admin_key)
     st, found = api("GET", "%s/ghost/api/admin/posts/slug/%s/?fields=id,status" % (admin_base(base_url), a["id"]), token)
     if st == 404:
+        if a.get("status") == "publicado":  # aprobada pero no llegó a Ghost (16-11-2026): se crea ahora, publicada
+            return publicar_con_estado(a, vertical, base_url, admin_key, "published")
         return None, "la pieza aún no está en Ghost (la subirá la rutina)"
     if st != 200 or not found.get("posts"):
         return None, "Ghost respondió %s: %s" % (st, ((found.get("errors") or [{}])[0].get("message") or "")[:200])

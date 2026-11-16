@@ -1101,7 +1101,7 @@ def accion_redaccion(ses, d, cabeceras):
     if not ok:
         return 502, {"error": det}
     g_ok, g = _subir(a, v, estado)
-    BD.registrar(quien, "redaccion_" + acc, pid, {"commit": det, "ghost": g_ok})
+    BD.registrar(quien, "redaccion_" + acc, pid, dict({"commit": det, "ghost": g_ok}, **({} if g_ok else {"error": str(g)[:500]})))
     return 200, {"ok": True, "commit": det, "ghost": {"ok": g_ok, "detalle": g}, "pieza": ficha_redaccion(pid)}
 
 
@@ -2769,7 +2769,9 @@ class handler(BaseHTTPRequestHandler):
         if a in ("republicar", "republicar_pendientes") and "piezas" not in per:
             return self._enviar(403, {"error": "solo el editor jefe sube cambios a la web"})
         if a == "republicar":
-            return self._enviar(200, republicar_y_marcar(d.get("id")))
+            r = republicar_y_marcar(d.get("id"))
+            BD.registrar(ses["nombre"], "republicar", d.get("id"), {"ghost": r["ok"], "detalle": str(r["detalle"])[:500]})
+            return self._enviar(200, r)
         if a == "republicar_pendientes":
             ids = [p["id"] for p in piezas(60) if pendiente_web(p)]
             res = [dict(republicar_y_marcar(i), id=i) for i in ids[:15]]
