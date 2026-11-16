@@ -44,6 +44,7 @@ import firma as F  # noqa: E402
 import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
 import tipos as T  # noqa: E402
+import agenda_gestor as AG  # noqa: E402  (agenda de eventos: openspec agenda-de-eventos)
 import restaurar as RS  # noqa: E402  (restauración desde el gestor; openspec restaurar-copia)  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
@@ -1013,6 +1014,11 @@ def crm_ficha(cid, permisos):
          "estados": BD.leer("crm_estados", select="*", cuenta_id="eq." + cid, order="id.desc", limit="30"),
          "actividades": BD.leer("crm_actividades", select="*", cuenta_id="eq." + cid, order="at.desc", limit="60"),
          "pasos": BD.leer("crm_pasos", select="*", cuenta_id="eq." + cid, order="hecho_at.desc.nullsfirst,fecha.asc", limit="40")}
+    try:  # agenda-de-eventos (migración 015): contactos con nivel y fuente, y eventos que organiza
+        r["contactos"] = BD.leer("crm_contactos", select="*", cuenta_id="eq." + cid, archivado_at="is.null", order="nivel.asc")
+        r["eventos"] = BD.leer("agenda_organizadores", select="evento_id,persona_id", cuenta_id="eq." + cid, order="evento_id.asc")
+    except BD.ErrorBD:
+        r["contactos"], r["eventos"] = [], []
     if "contratos" in permisos:
         r["contratos"] = BD.leer("crm_contratos", select="*", cuenta_id="eq." + cid, order="creado_at.desc")
     return r
@@ -2053,6 +2059,77 @@ def seo_bateria(modelo=None, clave=None):
     return 200, {"ok": True, "ronda": ronda, "modelo": m["id"], "resumen": SEO.resumen(filas)}
 
 
+# ---------- agenda de eventos (cambio agenda-de-eventos, 16-11-2026; src/agenda_gestor.py, src/ghost_agenda.py) ----------
+def _eventos_actuales(cambiados=None):
+    """Eventos del despliegue, con los recién cambiados desde el gestor encima (aún no están en este despliegue)."""
+    import eventos as EV
+    evs = {e["id"]: EV.limpio(e) for e in EV.cargar()}
+    for e in cambiados or []:
+        evs[e["id"]] = e
+    return list(evs.values())
+
+
+def agenda_republicar(cambiados):
+    """Tras publicar, retirar o cambiar eventos en el gestor: rehace moticias.com/agenda/ (y sus fichas) al momento."""
+    import ghost_agenda as GA
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key:
+        return {"ok": False, "detalle": "faltan las claves de Ghost; la pondrá al día el cron ghost_al_dia"}
+    try:
+        r = GA.publicar(_eventos_actuales(cambiados), vertical(), url, key)
+        return {"ok": all(x in (200, 201) for x in r["paginas"].values()), "detalle": r}
+    except Exception as e:  # noqa: BLE001
+        return {"ok": False, "detalle": str(e)[:300]}
+
+
+def agenda_al_dia():
+    """Cron ghost_al_dia: si los eventos del despliegue o el día cambiaron desde la última vez, rehace la agenda en Ghost.
+    La huella va en la propia página (data-huella), así que no hace falta guardar nada más."""
+    import eventos as EV
+    import ghost_agenda as GA
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key:
+        return {"ok": False, "error": "faltan GHOST_URL o GHOST_ADMIN_KEY"}
+    evs = _eventos_actuales()
+    huella = GA.huella(evs)
+    base, tok = G.admin_base(url.rstrip("/")), G.ghost_token(key)
+    st, r = G.api("GET", base + "/ghost/api/admin/pages/slug/agenda/?formats=html&fields=id,html", tok)
+    actual = ((r or {}).get("pages") or [{}])[0].get("html", "") if st == 200 else ""
+    rutas = GA.rutas_activas(url, key)
+    if ('data-huella="%s"' % huella) in actual and ('data-rutas="%d"' % rutas) in actual:
+        return {"ok": True, "al_dia": True}
+    res = GA.publicar(evs, vertical(), url, key)
+    return {"ok": all(x in (200, 201) for x in res["paginas"].values()), "publicado": res}
+
+
+def inicio(ses):
+    """Pantalla «Inicio»: el bloque «Agenda» completo y, de las demás áreas, las cifras que el gestor ya calcula."""
+    per = ses["permisos"]
+    out = {"agenda": AG.panel(), "areas": {}}
+    a = out["areas"]
+    try:
+        ps = piezas(14)
+        a["piezas_pendientes"] = sum(1 for p in ps if p.get("status") == "pendiente")
+        a["cajas_propuestas"] = sum(1 for p in ps for m in p.get("menciones") or [] if m.get("estado") == "propuesta")
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        a["retoques_abiertos"] = sum(1 for r in RT.cargar_todos() if r.get("estado") in ("pendiente", "en_curso"))
+    except Exception:  # noqa: BLE001
+        pass
+    if BD.configurada():
+        for k, f in (("cola_nuevos", lambda: len(BD.leer("cola_temas", select="id", estado="in.(nuevo,propuesto)", limit="500"))),
+                     ("pasos_hoy", lambda: len(BD.leer("crm_pasos", select="id", hecho_at="is.null", fecha="lte." + datetime.date.today().isoformat(), limit="500")) if "crm" in per else None),
+                     ("publicidad_caidos", lambda: len({x["anuncio"] for x in BD.leer("pub_comprobaciones", select="anuncio,ok", at="gte." + (datetime.date.today() - datetime.timedelta(days=1)).isoformat(), ok="eq.false", limit="500")}))):
+            try:
+                val = f()
+                if val is not None:
+                    a[k] = val
+            except BD.ErrorBD:
+                pass
+    return out
+
+
 # ---------- buzón del repositorio (14-11-2026; migración 008, src/buzon.py) ----------
 # Las tareas programadas que no pueden hacer push dejan en Supabase (tabla repo_buzon) los ficheros que cambian. Este
 # cron los sube a `main` con GITHUB_TOKEN: un commit por lote, en orden de llegada, y se para en el primer lote que no
@@ -2212,12 +2289,23 @@ class handler(BaseHTTPRequestHandler):
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "no autorizado"})
             r = S.comprobar(origen="agente", azar=True)
-            return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]]})
+            ag = []
+            if datetime.date.today().weekday() < 5 and BD.configurada():  # agenda: enlaces de inscripción, cada día laborable
+                try:
+                    ag = AG.comprobar_enlaces(origen="agente", azar=True)
+                except Exception:  # noqa: BLE001 — la agenda nunca tumba el comprobador de la publicidad
+                    ag = []
+            return self._enviar(200, {"comprobados": len(r), "fallos": [x["anuncio"] for x in r if not x["ok"]],
+                                      "agenda": {"comprobados": len(ag), "caidos": [x["evento_id"] for x in ag if not x["ok"]]}})
         if a == "ghost_al_dia":  # Vercel Cron (todos los días, cada 15 min de 7 a 20; desde el 14-11 también fines de semana, por las ediciones extra): publica en moticias.com la edición que falte
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
             r = ghost_al_dia()
+            try:
+                r["agenda"] = agenda_al_dia()
+            except Exception as e:  # noqa: BLE001
+                r["agenda"] = {"ok": False, "error": str(e)[:300]}
             try:
                 r["indice"] = indice_al_dia()
                 if not r["indice"].get("cambiado") and not r.get("publicadas"):  # índice servido ya al día: comprobar secciones
@@ -2357,6 +2445,26 @@ class handler(BaseHTTPRequestHandler):
                 if "redaccion" not in per:
                     return self._enviar(403, {"error": "solo el editor jefe aprueba «La voz del editor»"})
                 return self._enviar(200, {"propuestas": voz_propuestas(), "lunes": proximo_lunes_8()})
+            if a == "agenda":  # pestaña «Agenda»: cola, publicados, por confirmar y retirados (todos los perfiles la ven; publica el editor jefe)
+                if "proponer" not in per and "piezas" not in per:
+                    return self._enviar(403, {"error": "tu perfil no ve la agenda"})
+                v = vertical()
+                return self._enviar(200, dict(AG.estado_de_cola(), cfg={k: v["agenda"][k] for k in ("temas", "formatos", "modalidades", "publicos", "estados")},
+                                              territorios=[{"id": t["id"], "nombre": t["nombre"]} for t in v["taxonomia"]["territorios"] if t.get("tipo") == "ccaa"],
+                                              jefe="piezas" in per, bd=BD.configurada()))
+            if a == "agenda_organizadores":
+                if "crm" not in per:
+                    return self._enviar(403, {"error": "tu perfil no entra en el CRM"})
+                if not BD.configurada():
+                    return self._enviar(503, {"error": "la base privada no está conectada"})
+                return self._enviar(200, AG.organizadores())
+            if a == "agenda_envio":
+                if not BD.configurada() or "proponer" not in per and "piezas" not in per:
+                    return self._enviar(403, {"error": "sin acceso"})
+                r = BD.leer("agenda_envios", select="*", id="eq." + q.get("id", "")[:40], limit="1")
+                return self._enviar(200 if r else 404, r[0] if r else {"error": "no encontrado"})
+            if a == "inicio":  # pantalla «Inicio» del gestor: actividad de todas las áreas (decisión 2 de agenda-de-eventos)
+                return self._enviar(200, inicio(ses))
             if a == "retoques":
                 return self._enviar(200, {"retoques": retoques_de(q.get("pieza") or None)})
             if a == "productos":
@@ -2511,6 +2619,9 @@ class handler(BaseHTTPRequestHandler):
             if not BD.configurada():
                 return self._enviar(503, {"error": "la base privada no está conectada"})
             return self._enviar(*accion_encargo(ses, d))
+        if a == "agenda":
+            return self._enviar(*AG.accion(ses, d, {"leer": leer, "escribir": escribir, "republicar": agenda_republicar,
+                                                    "correo": lambda para, asunto, cuerpo: M.enviar_correo(asunto, cuerpo, para, M.remitentes_avisos(vertical()))[0]}))
         if a == "cola":
             return self._enviar(*cola_accion(ses, d))
         if a == "seo":

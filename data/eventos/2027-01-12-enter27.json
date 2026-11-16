@@ -1,0 +1,46 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2027-01-16",
+ "formato": "Conferencia",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas",
+   "url": "https://ifitt.net/enter-conference/enter27/destination-madrid/"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "sede",
+   "url": "https://ifitt.net/enter-conference/enter27/venue/"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "registro y tarifas",
+   "url": "https://ifitt.net/enter-conference/enter27/registration/"
+  }
+ ],
+ "geo": {
+  "lat": 40.54,
+  "lon": -3.69
+ },
+ "id": "2027-01-12-enter27",
+ "inicio": "2027-01-12",
+ "modalidad": "presencial",
+ "nota": "Tarifa anticipada hasta el 1-12-2026.",
+ "organizadores": [
+  "IFITT"
+ ],
+ "origen": "redaccion",
+ "precio": "No socios, 695 € (tarifa anticipada hasta el 1 de diciembre)",
+ "publico": "profesional",
+ "resumen": "Conferencia internacional sobre tecnología y turismo, la semana anterior a FITUR: intercambio académico y profesional sobre turismo digital.",
+ "sede": "Facultad de Economía y Empresa, Universidad Autónoma de Madrid (Cantoblanco)",
+ "tema": "turismo",
+ "territorio": "madrid",
+ "titulo": "ENTER27 eTourism Conference",
+ "titulo_corto": "ENTER27",
+ "url_inscripcion": "https://ifitt.net/enter-conference/enter27/registration/",
+ "url_oficial": "https://ifitt.net/enter-conference/enter27/destination-madrid/"
+}

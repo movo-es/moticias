@@ -1,0 +1,32 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "fecha_por_confirmar",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "edición de 2026: 29-01-2026, Madrid",
+   "url": "https://www.gmv.com/en/communication/events/public-transport-conference"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2027-01-jornada-its-en-el-transporte-publico",
+ "mes_previsto": "2027-01",
+ "modalidad": "presencial",
+ "nota": "Fecha de 2027 sin anunciar.",
+ "organizadores": [
+  "ITS España"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Jornada anual de ITS España sobre sistemas inteligentes en el transporte público. La de 2026 fue el 29 de enero en Madrid.",
+ "sede": "sede por anunciar",
+ "tema": "autobus",
+ "territorio": "madrid",
+ "titulo": "Jornada ITS en el Transporte Público 2027",
+ "titulo_corto": "Jornada ITS en el Transporte Público"
+}

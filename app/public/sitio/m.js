@@ -492,4 +492,15 @@
       [].forEach.call(nav.querySelectorAll(".nav-regulacion, .nav-licitaciones"), function (a) { a.remove(); });
     }).catch(function () {});
   })();
+  // ---------- 8. Agenda (cambio agenda-de-eventos, 16-11-2026) ----------
+  // «Agenda» en el menú principal, antes de Análisis; y en las páginas de la agenda, sus filtros y su formulario.
+  (function () {
+    var nav = d.querySelector("header.masthead nav.nav");
+    if (nav && !nav.querySelector(".mtx-agenda")) {
+      var a = d.createElement("a"); a.href = "/agenda/"; a.className = "mtx-agenda nav-agenda"; a.textContent = "Agenda";
+      if (location.pathname.indexOf("/agenda") === 0) a.setAttribute("aria-current", "page");
+      nav.insertBefore(a, nav.querySelector(".nav-analisis"));
+    }
+    if (d.querySelector(".m-agenda")) { var s = d.createElement("script"); s.src = API + "/sitio/agenda.js"; s.defer = true; d.body.appendChild(s); }
+  })();
 })();

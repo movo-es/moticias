@@ -1,0 +1,35 @@
+{
+ "ciudad": "Valencia",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-12-10",
+ "formato": "Encuentro",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fecha, hora, sede, precio",
+   "url": "https://eventos.avia.com.es/events/miv-2026-encuentro-de-innovacion-y-movilidad-sostenible/"
+  }
+ ],
+ "geo": {
+  "lat": 39.47,
+  "lon": -0.38
+ },
+ "id": "2026-12-10-miv-2026",
+ "inicio": "2026-12-10",
+ "modalidad": "presencial",
+ "nota": "De 16:00 a 18:00 (programa provisional). Inscripción hasta el 4 de diciembre.",
+ "organizadores": [
+  "AVIA, clúster de automoción y movilidad de la Comunitat Valenciana"
+ ],
+ "origen": "redaccion",
+ "precio": "Gratis para asociados; no asociados, 25 € + IVA",
+ "publico": "profesional",
+ "resumen": "Encuentro de innovación y movilidad sostenible del clúster valenciano de automoción y movilidad, para compartir experiencias y conocer las últimas tendencias del sector.",
+ "sede": "La Harinera",
+ "tema": "movilidad",
+ "territorio": "comunidad-valenciana",
+ "titulo": "MIV 2026 · Mobility Innovation Valencia",
+ "titulo_corto": "MIV 2026",
+ "url_inscripcion": "https://eventos.avia.com.es/events/miv-2026-encuentro-de-innovacion-y-movilidad-sostenible/"
+}

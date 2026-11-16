@@ -1,0 +1,32 @@
+{
+ "ciudad": "Zaragoza",
+ "comprobado_at": "2026-11-16",
+ "estado": "fecha_por_confirmar",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "anuncio de febrero de 2027",
+   "url": "https://www.interempresas.net/Naves/601528-Aragon-Plataforma-logistica-celebrara-febrero-2027-congreso-Zaragoza-mostrar-potencial.html"
+  }
+ ],
+ "geo": {
+  "lat": 41.67,
+  "lon": -0.91
+ },
+ "id": "2027-02-congreso-internacional-de-logistica-de-aragon",
+ "mes_previsto": "2027-02",
+ "modalidad": "presencial",
+ "nota": "Anunciado para febrero de 2027; día, programa e inscripción sin publicar.",
+ "organizadores": [
+  "Gobierno de Aragón"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Congreso internacional de logística que prepara el Gobierno de Aragón para febrero de 2027 en Zaragoza, con carácter bienal.",
+ "sede": "Torre del Agua (prevista)",
+ "tema": "logistica",
+ "territorio": "aragon",
+ "titulo": "I Congreso Internacional de Logística de Aragón",
+ "titulo_corto": "Congreso Internacional de Logística de Aragón"
+}

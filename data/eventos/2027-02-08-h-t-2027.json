@@ -1,0 +1,39 @@
+{
+ "ciudad": "Málaga",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2027-02-10",
+ "formato": "Feria profesional",
+ "fuentes": [
+  {
+   "fecha": "2026-11-15",
+   "nota": "web del salón",
+   "url": "https://hyt.fycma.com"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "calendario AFE: fechas y ciudad",
+   "url": "https://www.afe.es/es/eventos/fecha/2027/02"
+  }
+ ],
+ "geo": {
+  "lat": 36.69,
+  "lon": -4.45
+ },
+ "id": "2027-02-08-h-t-2027",
+ "inicio": "2027-02-08",
+ "modalidad": "presencial",
+ "nota": "Web oficial del salón.",
+ "organizadores": [
+  "FYCMA, Ayuntamiento de Málaga"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Cita anual de la hostelería, la hotelería y el turismo en el sur, con más superficie expositiva y mayor proyección internacional. La edición de 2026 reunió a más de 600 empresas.",
+ "sede": "FYCMA, Palacio de Ferias y Congresos",
+ "tema": "turismo",
+ "territorio": "andalucia",
+ "titulo": "H&T 2027 · Salón de Innovación en Hostelería",
+ "titulo_corto": "H&T 2027",
+ "url_inscripcion": "https://hyt.fycma.com"
+}

@@ -1,0 +1,24 @@
+## MOTICIAS · rutas de Ghost (Settings → Labs → Routes → Upload routes YAML).
+## Cambio agenda-de-eventos (16-11-2026): las fichas de la agenda son entradas con la etiqueta interna #agenda y viven
+## en /agenda/<evento>/; «Subir mi evento» se sirve en /agenda/subir-mi-evento/. La portada, el RSS y las secciones no
+## las enseñan (el filtro de la colección principal las excluye). La agenda misma es la página de slug «agenda».
+## Partimos del fichero que tenía Ghost el 16-11-2026 (solo la colección principal y las taxonomías); no se quita nada.
+
+routes:
+  /agenda/subir-mi-evento/:
+    data: page.agenda-subir-mi-evento
+    template: page
+
+collections:
+  /agenda/fichas/:
+    permalink: /agenda/{slug}/
+    filter: tag:hash-agenda
+    template: index
+  /:
+    permalink: /{slug}/
+    template: index
+    filter: tag:-hash-agenda
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

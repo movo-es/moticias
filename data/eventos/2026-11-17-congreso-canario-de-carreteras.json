@@ -1,0 +1,36 @@
+{
+ "ciudad": "Las Palmas de Gran Canaria",
+ "comprobado_at": "2026-11-15",
+ "estado": "publicado",
+ "fin": "2026-11-18",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-15",
+   "nota": "web del congreso",
+   "url": "https://1congresocanariocarreteras.aecarretera.com"
+  }
+ ],
+ "geo": {
+  "lat": 28.13,
+  "lon": -15.43
+ },
+ "id": "2026-11-17-congreso-canario-de-carreteras",
+ "inicio": "2026-11-17",
+ "modalidad": "presencial",
+ "nota": "Inscripción previa obligatoria. Comprobado el 15-11; el 16-11 la web del congreso no devolvía contenido.",
+ "organizadores": [
+  "Gobierno de Canarias",
+  "Asociación Española de la Carretera"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Primer congreso viario de Canarias, con el lema «Carreteras para un futuro más eficiente». Cinco sesiones: ecoingeniería, conservación, obras singulares en un territorio fragmentado y movilidad urbana.",
+ "sede": "Palacio de Congresos de Canarias – Auditorio Alfredo Kraus",
+ "tema": "carreteras",
+ "territorio": "canarias",
+ "titulo": "I Congreso Canario de Carreteras",
+ "titulo_corto": "Congreso Canario de Carreteras",
+ "url_inscripcion": "https://1congresocanariocarreteras.aecarretera.com",
+ "url_oficial": "https://1congresocanariocarreteras.aecarretera.com"
+}

@@ -1,0 +1,40 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-12-03",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas, sede e inscripción",
+   "url": "https://www.conama.org/"
+  },
+  {
+   "fecha": "2026-11-15",
+   "nota": "redirige a conama.org",
+   "url": "http://www.conama2026.org"
+  }
+ ],
+ "geo": {
+  "lat": 40.46,
+  "lon": -3.62
+ },
+ "id": "2026-11-30-conama-2026",
+ "inicio": "2026-11-30",
+ "modalidad": "presencial",
+ "nota": "Inscripciones abiertas.",
+ "organizadores": [
+  "Fundación Conama"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "18.ª edición, con el lema «Hacer»: más de 100 sesiones y unas 7.000 personas previstas. El futuro de la movilidad está en el programa y un comité técnico trabaja sobre la implantación de la Ley de Movilidad Sostenible.",
+ "sede": "Centro de Convenciones Norte (IFEMA MADRID)",
+ "tema": "movilidad",
+ "territorio": "madrid",
+ "titulo": "CONAMA 2026 · Congreso Nacional del Medio Ambiente",
+ "titulo_corto": "CONAMA 2026",
+ "url_inscripcion": "https://www.conama.org/",
+ "url_oficial": "https://www.conama.org/"
+}

@@ -31,3 +31,12 @@ El mensaje dice qué fichero no encajaba: casi siempre, alguien cambió en `main
 ## Copia de seguridad en el Mac (cambio `copia-de-seguridad-mac`, 15-11-2026)
 
 Es un respaldo: nada de lo anterior depende de ella. Instalación y comprobación en `docs/copia-de-seguridad.md`. Una sola vez, además: el espejo privado del repositorio (crear `movo-es/moticias-respaldo` vacío y privado, un token con permiso de escritura solo en él y guardarlo como secreto `ESPEJO_TOKEN` de Actions en `movo-es/moticias`). Comprobación: gestor → Equipo → «Copias de seguridad», y en GitHub, Actions → «espejo» en verde.
+
+## Agenda de eventos (cambio `agenda-de-eventos`, 16-11-2026)
+
+1. **Migración 015 en Supabase** (`supabase/migrations/015_agenda_eventos.sql`): tablas de la agenda y el tipo de actividad «Evento en la agenda». Se puede aplicar dos veces sin daño.
+2. **Rutas de Ghost, una sola vez** (la API no deja subirlas con la clave de integración): Ghost → Settings → Labs → Routes → «Upload routes YAML» con el fichero `ghost/routes.yaml`. Después, el cron `ghost_al_dia` lo detecta solo y publica las fichas en `moticias.com/agenda/<evento>/` y el formulario en `moticias.com/agenda/subir-mi-evento/`.
+3. **Tarea «MOTICIAS · agenda de eventos (barrido de los lunes)»** (lunes 09:41): necesita el conector de Supabase para escribir contactos y usar el buzón; si la pantalla de tareas lo permite, añádelo. Sin él, la tarea hace lo que no depende de la base y lo dice en su aviso.
+
+Comprobación: `https://www.moticias.com/agenda/` enseña la agenda; `https://app.moticias.com/feed/agenda.ics` descarga el calendario; en el gestor, «Inicio» enseña el bloque «Agenda».
+

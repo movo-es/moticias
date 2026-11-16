@@ -1,0 +1,36 @@
+{
+ "ciudad": "Barcelona",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-11-19",
+ "formato": "Feria profesional",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "entradas, fechas y recinto",
+   "url": "https://www.ibtmworld.com/en-gb/select-tickets.html"
+  }
+ ],
+ "geo": {
+  "lat": 41.35,
+  "lon": 2.13
+ },
+ "id": "2026-11-17-ibtm-world",
+ "inicio": "2026-11-17",
+ "modalidad": "presencial",
+ "nota": "Registro profesional abierto. De 08:45 a 18:00 (el 19, hasta las 17:00).",
+ "organizadores": [
+  "RX"
+ ],
+ "origen": "redaccion",
+ "precio": "Visitante profesional, 100 € + IVA",
+ "publico": "profesional",
+ "resumen": "Feria mundial de reuniones, incentivos, congresos y eventos, con agenda de citas concertadas. Lema de este año: «The Age of Disruption», con zona ampliada de tecnología para eventos.",
+ "sede": "Fira Gran Via (L'Hospitalet de Llobregat)",
+ "tema": "turismo",
+ "territorio": "cataluna",
+ "titulo": "IBTM World 2026",
+ "titulo_corto": "IBTM World",
+ "url_inscripcion": "https://www.ibtmworld.com/en-gb/select-tickets.html",
+ "url_oficial": "https://www.ibtmworld.com"
+}

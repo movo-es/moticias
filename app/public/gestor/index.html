@@ -91,9 +91,11 @@ body.q-con-bloque{padding-bottom:80px}
 <body>
 <header><b>MOTICIAS · Gestor</b><small id="quien"></small><button id="salir" hidden style="margin-left:8px;background:none;border:1px solid #555;color:#ddd;border-radius:14px;padding:4px 10px;font-size:12px">Salir</button></header>
 <nav id="nav" hidden>
+  <button data-v="inicio">Inicio</button>
   <button data-v="cola" hidden>Cola</button>
   <button data-v="piezas" class="on">Piezas</button>
   <button data-v="noticia" hidden>Nueva noticia</button>
+  <button data-v="agenda" hidden>Agenda</button>
   <button data-v="anuncios">Publicidad</button>
   <button data-v="crm" hidden>CRM</button>
   <button data-v="prensa" hidden>Prensa</button>
@@ -176,7 +178,10 @@ async function arrancar() {
   $("#nav").querySelector('[data-v="noticia"]').hidden = !(yo === "superadmin" || yo === "editor");
   $("#nav").querySelector('[data-v="prensa"]').hidden = !puede("crm");
   $("#nav").querySelector('[data-v="cola"]').hidden = !["superadmin", "editor", "comercial"].includes(yo);
+  $("#nav").querySelector('[data-v="agenda"]').hidden = !(puede("proponer") || puede("piezas"));
   if (["superadmin", "editor"].includes(yo) && !params().get("vista")) vista = "cola";  // la cola es la portada del gestor para quien redacta
+  if (params().get("evento") && (puede("proponer") || puede("piezas"))) { vista = "agenda"; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === "agenda")); return agAbrirEvento(params().get("evento"), params().get("accion")); }  // ✎ de una cita en moticias.com/agenda/
+  if (params().get("agenda_envio")) { vista = "agenda"; document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === "agenda")); return agAbrirEnvio(params().get("agenda_envio")); }  // enlace del aviso «evento propuesto»
   const p = params().get("pieza"), acc = params().get("accion");
   if (p && jefe() && ["editar", "ia", "retirar"].includes(acc)) return abrirEditor(p, acc);
   if (p) return abrirPieza(p, true);
@@ -188,7 +193,7 @@ async function arrancar() {
 }
 $("#salir").onclick = async () => { try { await api("salir", {}); } catch (e) {} yo = null; login("Sesión cerrada. En moticias.com ya no verás las herramientas del editor jefe."); };
 $("#nav").onclick = ev => { const b = ev.target.closest("button"); if (b) { history.replaceState(null, "", location.pathname); ir(b.dataset.v); } };
-function ir(v) { vista = v; app.className = ""; const qb = $("#q-bloque"); if (qb) qb.remove(); document.body.classList.remove("q-con-bloque"); document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({cola:verCola, seo:verSeo, piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
+function ir(v) { vista = v; app.className = ""; const qb = $("#q-bloque"); if (qb) qb.remove(); document.body.classList.remove("q-con-bloque"); document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v)); ({inicio:verInicio, agenda:verAgenda, cola:verCola, seo:verSeo, piezas:verPiezas, noticia:verNoticia, productos:verProductos, anuncios:verAnuncios, seguimiento:verSeguimiento, crm:verCrm, prensa:verPrensa, suscriptores:verSuscriptores, equipo:verEquipo, restaurar:verRestaurar})[v](); scrollTo(0,0); }
 
 function avisoConfig() {
   const e = window._est || {}; const f = [];
@@ -980,7 +985,7 @@ async function fichaCrm(id) {
     <label>Siguiente paso</label><input id="a-que" placeholder="Qué"><input type="date" id="a-fec" style="margin-top:6px">
     <p><button class="b" id="a-ok" style="width:100%">Guardar</button></p></div>`}
   <div class="card"><h2>Pasos</h2>${f.pasos.length ? f.pasos.map(p => `<div class="paso"><div><span class="${p.hecho_at ? "" : fechaClase(p.fecha)}">${E(p.fecha)}</span> · ${E(p.que)}<br><span class="mute">${E(p.responsable || "")}${p.hecho_at ? " · hecho por " + E(p.hecho_por) : ""}</span></div>${p.hecho_at ? `<span class="chip pub">Hecho</span>` : `<button class="b2" data-hecho="${p.id}">Hecho</button>`}</div>`).join("") : `<p class="mute">Ninguno.</p>`}</div>
-  <div class="card"><h2>Personas</h2>${f.personas.map(p => `<div class="paso"><div><b>${E(p.nombre || "—")}</b>${p.cargo ? " · " + E(p.cargo) : ""}<br><span class="mute">${E(PER[p.perfil] || p.perfil)}${p.correo ? " · " + E(p.correo) : ""}${p.telefono ? " · " + E(p.telefono) : ""}${p.ghost_member_id ? " · suscriptor" : ""}${p.no_contactar_at ? " · <b>no contactar</b>" : ""}</span></div>${p.no_contactar_at ? "" : `<button class="b2 bad" data-noc="${p.id}">No contactar</button>`}</div>`).join("") || `<p class="mute">Nadie todavía.</p>`}
+  ${contactosHtml(f)}<div class="card"><h2>Personas</h2>${f.personas.map(p => `<div class="paso"><div><b>${E(p.nombre || "—")}</b>${p.cargo ? " · " + E(p.cargo) : ""}<br><span class="mute">${E(PER[p.perfil] || p.perfil)}${p.correo ? " · " + E(p.correo) : ""}${p.telefono ? " · " + E(p.telefono) : ""}${p.ghost_member_id ? " · suscriptor" : ""}${p.no_contactar_at ? " · <b>no contactar</b>" : ""}</span></div>${p.no_contactar_at ? "" : `<button class="b2 bad" data-noc="${p.id}">No contactar</button>`}</div>`).join("") || `<p class="mute">Nadie todavía.</p>`}
     <details><summary>Añadir persona</summary><label>Nombre</label><input id="p-nom"><label>Cargo</label><input id="p-car"><label>Perfil</label><select id="p-per">${Object.entries(PER).map(([k, t]) => `<option value="${k}">${E(t)}</option>`).join("")}</select>
     <label>Correo</label><input id="p-cor" type="email"><label>Teléfono</label><input id="p-tel"><label>LinkedIn</label><input id="p-li">
     <label>Permiso para escribirle (cómo lo dio; vacío si no lo dio)</label><input id="p-perm" placeholder="Ej.: lo pidió por teléfono el 9-11">
@@ -1435,6 +1440,248 @@ async function verNoticia() {
   app.querySelectorAll("[data-dom]").forEach(s => s.onchange = () => dom(s.dataset.dom, s.value));
   app.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => dom(b.dataset.conf, b.dataset.cl));
 }
+// ---------- Agenda de eventos e «Inicio» (cambio agenda-de-eventos, 16-11-2026) ----------
+// Pestaña «Agenda»: cola «Por revisar» (lo que suben organizadores y encuentra el barrido), publicados con filtros,
+// por confirmar, retirados, «Organizadores y responsables» y alta manual. Publicar, retirar y restaurar: solo el editor
+// jefe (el servidor responde 403 a los demás). «Inicio»: el bloque «Agenda» y las cifras de las demás áreas.
+const AG = {pest: "cola", sel: new Set(), d: null, f: {tema: "", mes: "", ter: ""}};
+const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const agFecha = e => !e.inicio ? (e.mes_previsto ? MESES[+e.mes_previsto.slice(5) - 1] + " " + e.mes_previsto.slice(0, 4) + " (por confirmar)" : "sin fecha")
+  : e.fin && e.fin !== e.inicio ? `${e.inicio.slice(8)}/${e.inicio.slice(5, 7)} – ${e.fin.slice(8)}/${e.fin.slice(5, 7)}/${e.fin.slice(0, 4)}` : `${e.inicio.slice(8)}/${e.inicio.slice(5, 7)}/${e.inicio.slice(0, 4)}`;
+const agTema = id => ((AG.d && AG.d.cfg.temas) || []).find(t => t.id === id) || {nombre: id, color: "#ccc"};
+const agChipTema = id => { const t = agTema(id); return `<span class="chip" style="background:#fff;border:1px solid var(--line)"><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${E(t.color)};border:1px solid #999;margin-right:4px"></i>${E(t.nombre)}</span>`; };
+const AGEST = {propuesto: ["pro", "Por revisar"], publicado: ["pub", "Publicado"], fecha_por_confirmar: ["pro", "Fecha por confirmar"], aplazado: ["pro", "Aplazado"], cancelado: ["ret", "Cancelado"], retirado: ["ret", "Retirado"], pasado: ["", "Pasado"]};
+const agEst = e => { const x = AGEST[e] || ["", e]; return `<span class="chip ${x[0]}">${E(x[1])}</span>`; };
+
+async function verAgenda(pest) {
+  if (pest) AG.pest = pest;
+  AG.sel.clear();
+  app.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando la agenda…</div>`;
+  try { AG.d = await api("agenda"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  pintarAgenda();
+}
+
+function pintarAgenda() {
+  const d = AG.d, J = d.jefe, nCola = d.envios.length + d.propuestos.length;
+  const tabs = [["cola", `Por revisar · ${nCola}`], ["publicados", `Publicados · ${d.publicados.length}`], ["confirmar", `Por confirmar · ${d.por_confirmar.length}`],
+    ["retirados", `Retirados · ${d.retirados.length}`]].concat(puede("crm") ? [["organizadores", "Organizadores y responsables"]] : []).concat([["nuevo", "+ Nuevo evento"]]);
+  app.innerHTML = `<div class="card"><h1>Agenda</h1><p class="mute">Ferias, congresos y jornadas de moticias.com/agenda/. ${J ? "Tú publicas, retiras y restauras." : "Tú propones; publica el editor jefe."} Nada se borra: retirar deja el evento guardado.</p>
+    <div class="row"><a class="b2" href="https://www.moticias.com/agenda/" target="_blank" rel="noopener">Ver la agenda ↗</a></div></div>
+    <div class="tabs" id="ag-tabs">${tabs.map(([k, t]) => `<button data-p="${k}" class="${AG.pest === k ? "on" : ""}">${E(t)}</button>`).join("")}</div><div id="ag-cuerpo"></div>`;
+  $("#ag-tabs").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; AG.pest = b.dataset.p; AG.sel.clear(); pintarAgenda(); };
+  const c = $("#ag-cuerpo");
+  ({cola: agCola, publicados: agPublicados, confirmar: agConfirmar, retirados: agRetirados, organizadores: agOrganizadores, nuevo: () => agEditor(null)})[AG.pest](c);
+  agBloque();
+}
+
+function agTarjeta(e, botones) {
+  const err = (e.errores || []).length ? `<div class="warn">Le falta para publicarse: ${E(e.errores.join("; "))}</div>` : "";
+  const dup = (e.duplicados || []).length ? `<div class="warn">¿Duplicado? ${e.duplicados.map(x => E(x.titulo + " (" + (x.inicio || "") + ", " + (x.ciudad || "") + ", " + x.estado + ")")).join(" · ")}</div>` : "";
+  const caido = e.caido ? `<span class="chip ret">Enlace caído</span>` : "";
+  return `<div class="q-it" data-id="${E(e.id)}"><div class="q-cab"><input type="checkbox" data-sel="${E(e.id)}" ${AG.sel.has(e.id) ? "checked" : ""} aria-label="Seleccionar">
+    <div class="q-cu"><div class="q-l1">${agEst(e.estado)} ${agChipTema(e.tema)} <span>${E(agFecha(e))}</span> ${caido}</div>
+    <div class="q-t">${E(e.titulo)}</div><div class="mute"><b>${E(e.ciudad)}</b>${e.sede ? " · " + E(e.sede) : ""} · ${E((e.organizadores || []).join(" y "))}</div>
+    <details><summary>Ficha</summary><div class="prev"><p>${E(e.resumen)}</p><p class="mute">${E(e.formato)} · ${E(e.modalidad || "")} · ${e.publico === "general" ? "Abierta al público" : "Profesional"}${e.precio ? " · " + E(e.precio) : ""}</p>
+      ${e.nota ? `<p class="mute">${E(e.nota)}</p>` : ""}<p>${e.url_inscripcion ? `<a href="${E(e.url_inscripcion)}" target="_blank" rel="noopener">Inscripción ↗</a>` : "sin enlace"}</p>
+      <p class="mute">Fuentes: ${(e.fuentes || []).map(f => `<a href="${E(f.url)}" target="_blank" rel="noopener">${E(f.url.replace(/^https?:\/\/(www\.)?/, "").split("/")[0])}</a> (${E(f.fecha)})`).join(" · ")}${e.comprobado_at ? " · última comprobación " + E(e.comprobado_at) : ""}</p></div></details>
+    ${err}${dup}</div></div><div class="q-acc">${botones}</div></div>`;
+}
+const agBtn = (acc, txt, id, cls) => `<button class="b2 ${cls || ""}" data-acc="${acc}" data-id="${E(id)}">${E(txt)}</button>`;
+
+function agCola(c) {
+  const d = AG.d, J = d.jefe;
+  const envios = d.envios.map(x => `<div class="q-it"><div class="q-cab"><div class="q-cu"><div class="q-l1"><span class="chip pro">Organizador · ${E(x.estado === "datos_pedidos" ? "datos pedidos" : x.estado === "en_revision" ? "en revisión" : "recibido")}</span> ${agChipTema(x.evento.tema)} <span>${E(x.evento.inicio)}</span></div>
+    <div class="q-t">${E(x.evento.titulo)}</div><div class="mute"><b>${E(x.evento.ciudad)}</b> · ${E(x.entidad.nombre)}${x.entidad.web ? ` · <a href="${E(x.entidad.web)}" target="_blank" rel="noopener">web ↗</a>` : ""} · recibido ${E(x.creado_at.slice(0, 10))}</div>
+    <p class="mute">${E(x.evento.resumen)}</p><p><a href="${E(x.evento.url_inscripcion)}" target="_blank" rel="noopener">Inscripción ↗</a></p>
+    ${x.duplicados.length ? `<div class="warn">¿Duplicado? ${x.duplicados.map(y => E(y.titulo + " (" + y.estado + ")")).join(" · ")}</div>` : ""}</div></div>
+    <div class="q-acc">${x.evento_id ? `<span class="mute">En la cola como ${E(x.evento_id)}</span>` : `<button class="b2" data-env="convertir" data-id="${x.id}">Pasar a revisión</button>`}<button class="b2" data-env="pedir_datos" data-id="${x.id}">Pedir datos</button><button class="b2 bad" data-env="descartar_envio" data-id="${x.id}">Descartar</button></div></div>`).join("");
+  const props = d.propuestos.map(e => agTarjeta(e, (J ? agBtn("publicar", "Publicar", e.id) : "") + agBtn("editar", "Editar", e.id) + agBtn("comprobar_enlace", "Comprobar enlace", e.id) +
+    agBtn("fecha_por_confirmar", "Fecha por confirmar", e.id) + (J ? agBtn("retirar", "Retirar", e.id, "bad") : ""))).join("");
+  c.innerHTML = (envios ? `<h2>Enviados por organizadores</h2>${envios}` : "") + (props ? `<h2>Por revisar</h2>${props}` : "") || `<div class="vacio">Nada por revisar.</div>`;
+  agEnlaces(c);
+}
+
+function agPublicados(c) {
+  const d = AG.d, J = d.jefe, f = AG.f;
+  const meses = [...new Set(d.publicados.filter(e => e.inicio).map(e => e.inicio.slice(0, 7)))].sort();
+  const lista = d.publicados.filter(e => (!f.tema || e.tema === f.tema) && (!f.ter || e.territorio === f.ter) && (!f.mes || (e.inicio || "").slice(0, 7) <= f.mes && (e.fin || e.inicio || "").slice(0, 7) >= f.mes));
+  c.innerHTML = `<div class="q-herr"><select id="ag-ft"><option value="">Todos los temas</option>${d.cfg.temas.map(t => `<option value="${t.id}" ${f.tema === t.id ? "selected" : ""}>${E(t.nombre)}</option>`).join("")}</select>
+    <select id="ag-fm"><option value="">Todos los meses</option>${meses.map(m => `<option value="${m}" ${f.mes === m ? "selected" : ""}>${MESES[+m.slice(5) - 1]} ${m.slice(0, 4)}</option>`).join("")}</select>
+    <select id="ag-fr"><option value="">Todas las comunidades</option>${d.territorios.map(t => `<option value="${t.id}" ${f.ter === t.id ? "selected" : ""}>${E(t.nombre)}</option>`).join("")}</select></div>
+    ${lista.map(e => agTarjeta(e, agBtn("editar", "Editar", e.id) + agBtn("comprobar_enlace", "Comprobar enlace", e.id) + (J ? agBtn("aplazado", "Aplazado", e.id) + agBtn("cancelado", "Cancelado", e.id) +
+      agBtn("fecha_por_confirmar", "Fecha por confirmar", e.id) + agBtn("retirar", "Retirar", e.id, "bad") : ""))).join("") || `<div class="vacio">Ninguno con esos filtros.</div>`}
+    <p class="mute">${d.pasados} eventos ya celebrados en el archivo.</p>`;
+  [["#ag-ft", "tema"], ["#ag-fm", "mes"], ["#ag-fr", "ter"]].forEach(([s, k]) => $(s).onchange = () => { AG.f[k] = $(s).value; agPublicados(c); });
+  agEnlaces(c);
+}
+function agConfirmar(c) {
+  const J = AG.d.jefe;
+  c.innerHTML = AG.d.por_confirmar.map(e => agTarjeta(e, agBtn("editar", "Editar (poner fecha)", e.id) + (J ? agBtn("retirar", "Retirar", e.id, "bad") : ""))).join("") || `<div class="vacio">Ninguno.</div>`;
+  agEnlaces(c);
+}
+function agRetirados(c) {
+  const J = AG.d.jefe;
+  c.innerHTML = AG.d.retirados.map(e => agTarjeta(e, J ? agBtn("restaurar", "Restaurar", e.id) : `<span class="mute">Solo el editor jefe restaura.</span>`)).join("") || `<div class="vacio">Ninguno.</div>`;
+  agEnlaces(c);
+}
+
+async function agOrganizadores(c) {
+  c.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando…</div>`;
+  let r; try { r = await api("agenda_organizadores"); } catch (e) { c.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const k = r.contadores, ESTC = {"Contacto directo": "pub", "Contacto general": "pub", "Contacto general · falta responsable": "pro", "Falta contacto": "ret"};
+  const dato = x => x ? `${E(x.valor)} <span class="mute">(${E(x.nivel)}; <a href="${E(x.fuente)}" target="_blank" rel="noopener">fuente</a>, ${E(x.fecha)})</span>` : `<span class="mute">por localizar</span>`;
+  c.innerHTML = `<div class="card"><div class="kpi"><div><b>${k.eventos}</b>eventos</div><div><b>${k.entidades}</b>entidades</div><div><b>${k.responsables}</b>responsables con nombre</div>
+    <div><b>${k.entidades_con_contacto}</b>entidades con correo o teléfono</div><div><b>${k.eventos_sin_responsable}</b>eventos sin responsable</div><div><b>${k.entidades_sin_contacto}</b>entidades sin contacto</div></div>
+    <p class="mute">Solo contactos que publica el propio organizador o una fuente identificable, con su fuente y su fecha. Un contacto público no es un permiso comercial.</p></div>
+    ${r.filas.map(x => `<button class="item" data-cuenta="${x.cuenta_id}"><div class="q-l1"><span class="chip ${ESTC[x.estado] || ""}">${E(x.estado)}</span> <span>${E(x.inicio || "")}</span></div>
+      <div class="t">${E(x.entidad)}</div><div class="mute">${E(x.evento)}</div>
+      <div style="font-size:14px;margin-top:6px">Responsable: ${x.responsable ? `<b>${E(x.responsable)}</b>${x.cargo ? " · " + E(x.cargo) : ""}` : `<span class="mute">por identificar</span>`}<br>
+      Correo: ${dato(x.correo)}<br>Teléfono: ${dato(x.telefono)}<br>Web: ${x.web ? E(x.web) : `<span class="mute">por localizar</span>`}${x.enlace ? ` · <span class="mute">evento:</span> ${E(x.enlace.replace(/^https?:\/\//, "").slice(0, 60))}` : ""}</div></button>`).join("") || `<div class="vacio">Aún no hay organizadores: se crean al publicar cada evento.</div>`}`;
+  c.querySelectorAll("[data-cuenta]").forEach(b => b.onclick = ev => { if (ev.target.closest("a")) return; fichaCrm(b.dataset.cuenta); });
+}
+
+function agEnlaces(c) {
+  c.querySelectorAll("[data-sel]").forEach(x => x.onchange = () => { x.checked ? AG.sel.add(x.dataset.sel) : AG.sel.delete(x.dataset.sel); agBloque(); });
+  c.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => agAccion(b.dataset.acc, [b.dataset.id], b));
+  c.querySelectorAll("[data-env]").forEach(b => b.onclick = () => agEnvio(b.dataset.env, b.dataset.id, b));
+}
+function agBloque() {
+  let q = $("#q-bloque"); if (q) q.remove(); document.body.classList.remove("q-con-bloque");
+  if (!AG.sel.size || vista !== "agenda") return;
+  const J = AG.d.jefe;
+  q = document.createElement("div"); q.id = "q-bloque"; q.className = "q-bloque";
+  q.innerHTML = `<b>${AG.sel.size} seleccionados</b>` + (J ? `<button class="b" data-b="publicar">Publicar</button>` : "") +
+    `<button class="b2" data-b="fecha_por_confirmar">Fecha por confirmar</button>` + (J ? `<button class="b2" data-b="aplazado">Aplazado</button><button class="b2" data-b="cancelado">Cancelado</button><button class="b2 bad" data-b="retirar">Retirar</button>` : "") +
+    `<button class="b2" data-b="">Quitar selección</button>`;
+  q.onclick = ev => { const b = ev.target.closest("button"); if (!b) return; if (!b.dataset.b) { AG.sel.clear(); pintarAgenda(); return; } agAccion(b.dataset.b, [...AG.sel], b); };
+  document.body.appendChild(q); document.body.classList.add("q-con-bloque");
+}
+
+async function agAccion(acc, ids, b) {
+  if (acc === "editar") return agEditor(AG.d.propuestos.concat(AG.d.publicados, AG.d.por_confirmar, AG.d.retirados).find(e => e.id === ids[0]));
+  const nombres = {publicar: "Publicar", retirar: "Retirar", restaurar: "Restaurar", fecha_por_confirmar: "Marcar «fecha por confirmar»", aplazado: "Marcar aplazado", cancelado: "Marcar cancelado"};
+  let motivo = null;
+  if (acc === "retirar") { motivo = prompt("Motivo de la retirada (queda en el historial; el evento no se borra):"); if (motivo === null) return; }
+  else if (nombres[acc] && !confirm(nombres[acc] + (ids.length > 1 ? ` ${ids.length} eventos` : "") + "?" + (acc === "publicar" ? "\n\nPublicar es decir que has comprobado fecha, sede y enlace en la web del organizador." : ""))) return;
+  if (b) b.disabled = true;
+  try {
+    const r = await api("agenda", {accion: acc, ids, motivo});
+    if (acc === "comprobar_enlace") { const x = (r.resultados || [])[0]; aviso(x ? (x.ok ? "El enlace responde (" + x.estado_http + ")" : "El enlace NO responde: " + (x.error || x.estado_http)) : "Sin enlace que comprobar", x && !x.ok); if (b) b.disabled = false; return; }
+    aviso((r.hechos || []).length + " hecho(s)" + ((r.errores || []).length ? " · " + r.errores.map(x => x.id + ": " + x.error).join(" | ") : "") + (r.web && r.web.ok ? " · web al día" : ""), (r.errores || []).length > 0);
+    verAgenda();
+  } catch (e) { aviso(e.message + (e.datos && e.datos.errores ? ": " + e.datos.errores.map(x => x.error).join(" | ") : ""), true); if (b) b.disabled = false; }
+}
+async function agEnvio(acc, id, b) {
+  let extra = {};
+  if (acc === "pedir_datos") { const m = prompt("¿Qué datos faltan? (se le escribe al remitente)"); if (!m) return; extra.mensaje = m; }
+  if (acc === "descartar_envio") { const m = prompt("Motivo del descarte (queda en el historial):"); if (m === null) return; extra.motivo = m; }
+  b.disabled = true;
+  try { const r = await api("agenda", Object.assign({accion: acc, envio: id}, extra)); aviso(acc === "convertir" ? "En la cola como " + r.id + ": revísalo y publícalo" : "Hecho"); verAgenda(); }
+  catch (e) { aviso(e.message, true); b.disabled = false; }
+}
+
+function agEditor(e) {
+  const d = AG.d, nuevo = !e; e = e || {modalidad: "presencial", publico: "profesional", fuentes: [], organizadores: []};
+  const vis = ["publicado", "aplazado", "cancelado"].includes(e.estado);
+  if (vis && !d.jefe) return aviso("Este evento ya está en la web: lo cambia el editor jefe", true);
+  const sel = (id, ops, val) => `<select id="${id}">${ops.map(([k, t]) => `<option value="${E(k)}" ${k === val ? "selected" : ""}>${E(t)}</option>`).join("")}</select>`;
+  const inp = (id, val, t) => `<input id="${id}" type="${t || "text"}" value="${E(val ?? "")}">`;
+  const velo = document.createElement("div"); velo.className = "q-velo"; const h = document.createElement("div"); h.className = "q-hoja";
+  h.innerHTML = `<h2>${nuevo ? "Nuevo evento" : "Editar · " + E(e.titulo_corto || e.titulo)}</h2>
+    <p class="mute">Cada fecha, sede y enlace, comprobado en la web del organizador. Lo que no se pudo comprobar se dice («sede por anunciar»). Nada de nombres, correos ni teléfonos aquí: van al CRM.</p>
+    <label>Nombre</label>${inp("e-tit", e.titulo)}<label>Nombre corto (mapa y listas)</label>${inp("e-cor", e.titulo_corto)}
+    <div class="grid2"><div><label>Inicio</label>${inp("e-ini", e.inicio, "date")}</div><div><label>Fin</label>${inp("e-fin", e.fin, "date")}</div></div>
+    <label>Si la fecha no está confirmada: mes previsto (AAAA-MM)</label>${inp("e-mes", e.mes_previsto)}
+    <div class="grid2"><div><label>Tema</label>${sel("e-tema", d.cfg.temas.map(t => [t.id, t.nombre]), e.tema)}</div><div><label>Formato</label>${sel("e-for", d.cfg.formatos.map(x => [x, x]), e.formato)}</div>
+    <div><label>Modalidad</label>${sel("e-mod", d.cfg.modalidades.map(x => [x, x]), e.modalidad)}</div><div><label>Público</label>${sel("e-pub", Object.entries(d.cfg.publicos), e.publico)}</div></div>
+    <div class="grid2"><div><label>Ciudad</label>${inp("e-ciu", e.ciudad)}</div><div><label>Comunidad</label>${sel("e-ter", d.territorios.map(t => [t.id, t.nombre]), e.territorio)}</div></div>
+    <label>Sede</label>${inp("e-sed", e.sede)}
+    <div class="grid2"><div><label>Latitud</label>${inp("e-lat", (e.geo || {}).lat, "number")}</div><div><label>Longitud</label>${inp("e-lon", (e.geo || {}).lon, "number")}</div></div>
+    <label>Resumen (hasta 60 palabras)</label><textarea id="e-res">${E(e.resumen)}</textarea>
+    <label>Organizan (una entidad por línea)</label><textarea id="e-org" style="min-height:60px">${E((e.organizadores || []).join("\n"))}</textarea>
+    <label>Enlace de inscripción</label>${inp("e-ins", e.url_inscripcion, "url")}<label>Web oficial</label>${inp("e-ofi", e.url_oficial, "url")}
+    <label>Precio</label>${inp("e-pre", e.precio)}<label>Nota (lo que falta o hay que saber)</label>${inp("e-not", e.nota)}
+    <label>Fuentes (una por línea: URL | AAAA-MM-DD | nota)</label><textarea id="e-fue" style="min-height:70px">${E((e.fuentes || []).map(f => [f.url, f.fecha, f.nota || ""].join(" | ")).join("\n"))}</textarea>
+    <div class="q-pie"><button class="b2" id="e-x">Cancelar</button>${nuevo ? `<button class="b" id="e-ok">Guardar como propuesto</button>${d.jefe ? `<button class="b" id="e-pub">Publicar</button>` : ""}` : `<button class="b" id="e-ok">Guardar</button>`}</div>`;
+  document.body.append(velo, h);
+  const cerrar = () => { velo.remove(); h.remove(); };
+  velo.onclick = cerrar; $("#e-x").onclick = cerrar;
+  const campos = () => {
+    const v = id => $(id).value.trim(), num = id => v(id) === "" ? null : Number(v(id));
+    const c = {titulo: v("#e-tit"), titulo_corto: v("#e-cor") || v("#e-tit").slice(0, 60), tema: v("#e-tema"), formato: v("#e-for"), modalidad: v("#e-mod"), publico: v("#e-pub"),
+      ciudad: v("#e-ciu"), territorio: v("#e-ter"), sede: v("#e-sed"), resumen: v("#e-res"), organizadores: v("#e-org").split("\n").map(x => x.trim()).filter(Boolean),
+      url_inscripcion: v("#e-ins") || null, url_oficial: v("#e-ofi") || null, precio: v("#e-pre") || null, nota: v("#e-not") || null,
+      fuentes: v("#e-fue").split("\n").map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([url, fecha, nota]) => Object.assign({url, fecha}, nota ? {nota} : {}))};
+    if (v("#e-ini")) { c.inicio = v("#e-ini"); c.fin = v("#e-fin") || v("#e-ini"); } else if (v("#e-mes")) c.mes_previsto = v("#e-mes");
+    if (num("#e-lat") != null && num("#e-lon") != null) c.geo = {lat: num("#e-lat"), lon: num("#e-lon")};
+    Object.keys(c).forEach(k => { if (c[k] === null) delete c[k]; });
+    return c;
+  };
+  const guardar = async (publicar, b) => {
+    b.disabled = true;
+    try {
+      const r = nuevo ? await api("agenda", {accion: "alta", campos: campos(), publicar}) : await api("agenda", {accion: "editar", ids: [e.id], campos: campos()});
+      if (r.errores && r.errores.length) throw new Error(r.errores.map(x => x.error).join(" | "));
+      aviso(nuevo ? (r.estado === "publicado" ? "Publicado" : "Guardado en la cola") + (r.duplicados && r.duplicados.length ? " · ojo: posible duplicado" : "") : "Guardado");
+      cerrar(); verAgenda(nuevo && r.estado === "publicado" ? "publicados" : null);
+    } catch (x) { aviso(x.message, true); b.disabled = false; }
+  };
+  $("#e-ok").onclick = ev => guardar(false, ev.target);
+  const p = $("#e-pub"); if (p) p.onclick = ev => guardar(true, ev.target);
+}
+
+async function agAbrirEnvio(id) {
+  await verAgenda("cola");
+  const n = app.querySelector(`[data-env][data-id="${CSS.escape(id)}"]`);
+  if (n) { n.closest(".q-it").scrollIntoView({block: "center"}); n.closest(".q-it").classList.add("sel"); }
+}
+async function agAbrirEvento(id, acc) {
+  await verAgenda("publicados");
+  const todos = AG.d.propuestos.concat(AG.d.publicados, AG.d.por_confirmar, AG.d.retirados);
+  const e = todos.find(x => x.id === id);
+  if (!e) return aviso("No encuentro ese evento", true);
+  if (acc === "retirar") return agAccion("retirar", [id]);
+  agEditor(e);
+}
+
+// Contactos de una cuenta del CRM (nivel y fuente) y eventos que organiza
+function contactosHtml(f) {
+  const cs = f.contactos || [], evs = f.eventos || [];
+  if (!cs.length && !evs.length) return "";
+  const NIV = {directo: "directo", prensa: "prensa", general: "general", centralita: "centralita"};
+  return `<div class="card"><h2>Contactos</h2>${cs.map(x => `<div class="paso"><div><b>${E(x.canal)}</b> · ${E(x.valor)}<br><span class="mute">nivel ${E(NIV[x.nivel] || x.nivel)} · <a href="${E(x.fuente_url)}" target="_blank" rel="noopener">fuente</a> (${E(x.fuente_fecha)})${x.notas ? " · " + E(x.notas) : ""}</span></div></div>`).join("") || `<p class="mute">Falta contacto: por localizar (nada deducido).</p>`}
+    ${evs.length ? `<p class="mute">Organiza en la agenda: ${evs.map(x => `<a href="https://www.moticias.com/agenda/${E(x.evento_id)}/" target="_blank" rel="noopener">${E(x.evento_id)}</a>`).join(" · ")}</p>` : ""}</div>`;
+}
+
+// ---------- «Inicio» ----------
+async function verInicio() {
+  app.innerHTML = `<div class="vacio"><span class="spin"></span>Cargando…</div>`;
+  let r; try { r = await api("inicio"); } catch (e) { if (e.message !== "sin sesión") app.innerHTML = `<div class="card">${E(e.message)}</div>`; return; }
+  const g = r.agenda, a = r.areas;
+  const cifra = (n, t, ir, extra) => `<button class="item" data-ir="${ir}" ${extra ? `data-x="${E(extra)}"` : ""} style="display:flex;justify-content:space-between;align-items:center"><span>${E(t)}</span><b style="font-size:22px">${n == null ? "—" : n}</b></button>`;
+  const b = g.ultimo_barrido;
+  app.innerHTML = `<div class="card"><h1>Inicio</h1><p class="mute">Lo que pide atención hoy, de todas las áreas. Cada cifra abre su lista.</p></div>
+    <div class="card"><h2>Agenda</h2>
+      ${cifra(g.proximos_14.length, "Citas en los próximos 14 días", "agenda:publicados")}
+      ${g.proximos_14.length ? `<p class="mute" style="margin:-4px 0 10px">${g.proximos_14.map(e => E(e.inicio.slice(8) + "/" + e.inicio.slice(5, 7) + " " + e.titulo + " (" + e.ciudad + ")")).join(" · ")}</p>` : ""}
+      ${cifra(g.propuestos + g.envios, "Pendientes de revisar", "agenda:cola")}
+      ${cifra(g.sin_responsable, "Eventos sin responsable", "agenda:organizadores")}
+      ${cifra(g.sin_contacto, "Entidades sin contacto", "agenda:organizadores")}
+      ${cifra(g.caidos.length, "Enlaces de inscripción caídos", "agenda:publicados")}
+      ${cifra(g.cambios.length, "Cambios de fecha o sede detectados", "agenda:cola")}
+      ${g.cambios.length ? g.cambios.slice(0, 5).map(x => `<div class="warn">${E(x.evento_id || "")}: ${E(x.detalle)} <button class="b2" data-resolver="${x.id}">Resuelto</button></div>`).join("") : ""}
+      <p class="mute">Último barrido: ${b ? E(b.at.slice(0, 16).replace("T", " ")) + " · " + (b.ok ? "correcto" : "con errores") + (b.resumen ? " · " + E(b.resumen) : "") : "todavía no ha corrido"}. Última comprobación de la agenda: ${E(g.comprobado || "—")}.</p></div>
+    <div class="card"><h2>Las demás áreas</h2>
+      ${a.cola_nuevos != null ? cifra(a.cola_nuevos, "Temas nuevos en la cola del editor", "cola") : ""}
+      ${a.piezas_pendientes != null ? cifra(a.piezas_pendientes, "Piezas pendientes de aprobación", "piezas") : ""}
+      ${a.cajas_propuestas != null ? cifra(a.cajas_propuestas, "Cajas de contenido patrocinado propuestas", "piezas") : ""}
+      ${a.retoques_abiertos != null ? cifra(a.retoques_abiertos, "Retoques abiertos", "piezas") : ""}
+      ${a.pasos_hoy != null ? cifra(a.pasos_hoy, "Pasos del CRM para hoy o vencidos", "crm") : ""}
+      ${a.publicidad_caidos != null ? cifra(a.publicidad_caidos, "Enlaces de publicidad que fallaron (24 h)", "anuncios") : ""}</div>`;
+  app.querySelectorAll("[data-ir]").forEach(x => x.onclick = () => { const [v, p] = x.dataset.ir.split(":"); if (v === "agenda") { vista = "agenda"; document.querySelectorAll("#nav button").forEach(n => n.classList.toggle("on", n.dataset.v === "agenda")); verAgenda(p); } else ir(v); });
+  app.querySelectorAll("[data-resolver]").forEach(x => x.onclick = async ev => { ev.stopPropagation(); x.disabled = true; try { await api("agenda", {accion: "resolver_aviso", aviso: +x.dataset.resolver}); verInicio(); } catch (e) { aviso(e.message, true); x.disabled = false; } });
+}
+
 arrancar();
 </script>
 </body>

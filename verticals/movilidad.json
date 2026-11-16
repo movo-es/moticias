@@ -2024,7 +2024,8 @@
    "propuesta": "Propuesta enviada",
    "contrato": "Contrato",
    "factura": "Factura",
-   "nota": "Nota"
+   "nota": "Nota",
+   "evento_agenda": "Evento en la agenda"
   },
   "suscriptores": {
    "fuente": "Ghost (Members): no se copian; la categoría es una etiqueta de Ghost con el prefijo «cat:»",
@@ -2563,7 +2564,8 @@
   "batida_tarde": "trig_01A5CAWQfbfusMNxU3krTUVU",
   "barrido": "trig_012Sc1jheY62WPUukGPstLqk",
   "nota": "ids de las tareas programadas de la cuenta de Rainer; el botón «Iniciar barrido de noticias ahora» lanza «barrido» con RUTINA_BARRIDO_TOKEN (solo en Vercel)",
-  "voz_del_editor": "trig_01DcPARRcwkRaoyZWnJxpEf5"
+  "voz_del_editor": "trig_01DcPARRcwkRaoyZWnJxpEf5",
+  "agenda_barrido": "trig_013vMpSTKZiMbQbTAiUWzHKV"
  },
  "copias": {
   "decidido": "2026-11-15",
@@ -2819,5 +2821,509 @@
     "En Vercel, https://vercel.com/movo2/moticias-app/settings/environment-variables → crea GSC_CLIENT_EMAIL (el client_email del fichero) y GSC_PRIVATE_KEY (el private_key, tal cual) para Production, y pulsa Redeploy. El fichero no se sube a ningún sitio más."
    ]
   }
+ },
+ "agenda": {
+  "decidido": "2026-11-15",
+  "nota": "Agenda de eventos (ferias, congresos, jornadas) de moticias.com/agenda/. Cambio OpenSpec agenda-de-eventos. Distinta de data/agenda/ («Próximos plazos» y «Sucederá pronto» de la edición diaria). Lo usan src/eventos.py, src/ghost_agenda.py, el gestor y /agenda-barrido.",
+  "coleccion": "data/eventos",
+  "periodo_meses": 3,
+  "temas": [
+   {
+    "id": "autobus",
+    "nombre": "Autobús y autocar",
+    "color": "#FF8FA3"
+   },
+   {
+    "id": "ferrocarril",
+    "nombre": "Ferrocarril, metro y tranvía",
+    "color": "#7CC4FF"
+   },
+   {
+    "id": "movilidad",
+    "nombre": "Movilidad sostenible",
+    "color": "#9BE15D"
+   },
+   {
+    "id": "carreteras",
+    "nombre": "Carreteras e infraestructuras",
+    "color": "#FFFFFF"
+   },
+   {
+    "id": "autonomo",
+    "nombre": "Vehículo autónomo y conectado",
+    "color": "#C9B8FF"
+   },
+   {
+    "id": "aereo",
+    "nombre": "Aéreo y drones",
+    "color": "#3FD0C9"
+   },
+   {
+    "id": "maritimo",
+    "nombre": "Marítimo y puertos",
+    "color": "#5B9BFF"
+   },
+   {
+    "id": "logistica",
+    "nombre": "Logística y mercancías",
+    "color": "#D9B38C"
+   },
+   {
+    "id": "energia",
+    "nombre": "Energía y recarga",
+    "color": "#FFE14D"
+   },
+   {
+    "id": "turismo",
+    "nombre": "Turismo y viajes",
+    "color": "#FFB35C"
+   }
+  ],
+  "formatos": [
+   "Feria",
+   "Feria profesional",
+   "Congreso",
+   "Convención",
+   "Conferencia",
+   "Jornada",
+   "Encuentro",
+   "Foro",
+   "Curso",
+   "Seminario web"
+  ],
+  "modalidades": [
+   "presencial",
+   "en línea",
+   "híbrida"
+  ],
+  "publicos": {
+   "profesional": "Profesional",
+   "general": "Abierta al público"
+  },
+  "regla_publico": "Solo eventos profesionales y las grandes ferias del sector con jornadas profesionales (como FITUR), que llevan «Abierta al público». Las de consumo puro no entran (decisión de Rainer, 16-11-2026).",
+  "estados": {
+   "propuesto": "Por revisar",
+   "publicado": "Publicado",
+   "fecha_por_confirmar": "Fecha por confirmar",
+   "aplazado": "Aplazado",
+   "cancelado": "Cancelado",
+   "retirado": "Retirado",
+   "pasado": "Pasado"
+  },
+  "estados_visibles": [
+   "publicado",
+   "aplazado",
+   "cancelado"
+  ],
+  "origenes": {
+   "redaccion": "Redacción",
+   "barrido": "Barrido",
+   "tercero": "Organizador (formulario)"
+  },
+  "niveles_contacto": {
+   "directo": "Directo de la persona",
+   "prensa": "Prensa del evento",
+   "general": "General de la entidad",
+   "centralita": "Centralita"
+  },
+  "etiqueta_crm": "organizador-eventos",
+  "paso_dias_antes": 14,
+  "paso_texto": "Evento dentro de 14 días: acreditación de prensa o propuesta de difusión",
+  "destacados": {
+   "activo": false,
+   "nota": "Eventos destacados de pago: más adelante (decisión 6). Si se activan, etiqueta «Contenido patrocinado · <cliente>», rel=\"sponsored\" y sin alterar el orden editorial."
+  },
+  "ghost": {
+   "slug": "agenda",
+   "slug_subir": "agenda-subir-mi-evento",
+   "etiqueta_interna": "#agenda",
+   "ruta_fichas": "/agenda/{slug}/",
+   "ruta_subir": "/agenda/subir-mi-evento/",
+   "rutas_fichero": "ghost/routes.yaml"
+  },
+  "formulario": {
+   "api": "https://app.moticias.com/api/agenda",
+   "responsable": "Avionline S.L.",
+   "segundos_minimos": 8,
+   "maximo_por_origen_dia": 5
+  },
+  "barrido": {
+   "dia": "lunes",
+   "hora": "09:41",
+   "modelo": "Opus 5.5",
+   "comando": "/agenda-barrido",
+   "fuentes": [
+    {
+     "nombre": "Asociación de Ferias Españolas (calendario)",
+     "url": "https://www.afe.es/es/eventos/fecha/"
+    },
+    {
+     "nombre": "IFEMA MADRID",
+     "url": "https://www.ifema.es/"
+    },
+    {
+     "nombre": "Fira Barcelona",
+     "url": "https://www.firabarcelona.com/"
+    },
+    {
+     "nombre": "FYCMA Málaga",
+     "url": "https://fycma.com/"
+    },
+    {
+     "nombre": "Feria Valencia",
+     "url": "https://feriavalencia.com/"
+    },
+    {
+     "nombre": "Feria de Zaragoza",
+     "url": "https://www.feriazaragoza.es/"
+    },
+    {
+     "nombre": "BEC Bilbao",
+     "url": "https://bilbaoexhibitioncentre.com/"
+    },
+    {
+     "nombre": "FIBES Sevilla",
+     "url": "https://www.fibes.es/"
+    },
+    {
+     "nombre": "Asociación Española de la Carretera",
+     "url": "https://www.aecarretera.com/"
+    },
+    {
+     "nombre": "ANFAC",
+     "url": "https://www.anfac.com/"
+    },
+    {
+     "nombre": "ITS España",
+     "url": "https://www.itsspain.es/"
+    },
+    {
+     "nombre": "Railway Innovation Hub",
+     "url": "https://www.railwayinnovationhub.com/"
+    },
+    {
+     "nombre": "Fundación Conama",
+     "url": "https://www.conama.org/"
+    },
+    {
+     "nombre": "AVIA (clúster de automoción y movilidad)",
+     "url": "https://eventos.avia.com.es/"
+    },
+    {
+     "nombre": "Confebus",
+     "url": "https://www.confebus.org/"
+    },
+    {
+     "nombre": "ATUC",
+     "url": "https://www.atuc.es/"
+    },
+    {
+     "nombre": "Mafex",
+     "url": "https://www.mafex.es/"
+    },
+    {
+     "nombre": "AEDIVE",
+     "url": "https://aedive.es/"
+    },
+    {
+     "nombre": "Spain Convention Bureau",
+     "url": "https://www.scb.es/"
+    },
+    {
+     "nombre": "Mobility City (Fundación Ibercaja)",
+     "url": "https://www.mobilitycity.es/explora/actividades/"
+    }
+   ]
+  },
+  "textos": {
+   "titulo": "Agenda de transportes, movilidad y turismo en España",
+   "aviso_pie": "Fechas, sedes y enlaces comprobados en la web de cada organizador. Confirma siempre en la web oficial antes de viajar.",
+   "subir_titulo": "Subir mi evento",
+   "organizas": "¿Organizas una jornada del sector?",
+   "organizas_texto": "Cuéntanoslo. La redacción lo revisa en la web del organizador y, si encaja, lo publica gratis en la agenda."
+  },
+  "ciudades": {
+   "a-coruna": {
+    "lat": 43.36,
+    "lon": -8.41
+   },
+   "albacete": {
+    "lat": 38.99,
+    "lon": -1.86
+   },
+   "alicante": {
+    "lat": 38.35,
+    "lon": -0.48
+   },
+   "almeria": {
+    "lat": 36.84,
+    "lon": -2.46
+   },
+   "avila": {
+    "lat": 40.66,
+    "lon": -4.7
+   },
+   "badajoz": {
+    "lat": 38.88,
+    "lon": -6.97
+   },
+   "barcelona": {
+    "lat": 41.39,
+    "lon": 2.17
+   },
+   "bilbao": {
+    "lat": 43.26,
+    "lon": -2.93
+   },
+   "burgos": {
+    "lat": 42.34,
+    "lon": -3.7
+   },
+   "caceres": {
+    "lat": 39.47,
+    "lon": -6.37
+   },
+   "cadiz": {
+    "lat": 36.53,
+    "lon": -6.29
+   },
+   "castellon-de-la-plana": {
+    "lat": 39.99,
+    "lon": -0.05
+   },
+   "ceuta": {
+    "lat": 35.89,
+    "lon": -5.32
+   },
+   "ciudad-real": {
+    "lat": 38.99,
+    "lon": -3.93
+   },
+   "cordoba": {
+    "lat": 37.89,
+    "lon": -4.78
+   },
+   "cuenca": {
+    "lat": 40.07,
+    "lon": -2.14
+   },
+   "girona": {
+    "lat": 41.98,
+    "lon": 2.82
+   },
+   "granada": {
+    "lat": 37.18,
+    "lon": -3.6
+   },
+   "guadalajara": {
+    "lat": 40.63,
+    "lon": -3.17
+   },
+   "huelva": {
+    "lat": 37.26,
+    "lon": -6.95
+   },
+   "huesca": {
+    "lat": 42.14,
+    "lon": -0.41
+   },
+   "jaen": {
+    "lat": 37.78,
+    "lon": -3.79
+   },
+   "leon": {
+    "lat": 42.6,
+    "lon": -5.57
+   },
+   "lleida": {
+    "lat": 41.62,
+    "lon": 0.62
+   },
+   "logrono": {
+    "lat": 42.47,
+    "lon": -2.45
+   },
+   "lugo": {
+    "lat": 43.01,
+    "lon": -7.56
+   },
+   "madrid": {
+    "lat": 40.42,
+    "lon": -3.7
+   },
+   "malaga": {
+    "lat": 36.72,
+    "lon": -4.42
+   },
+   "melilla": {
+    "lat": 35.29,
+    "lon": -2.94
+   },
+   "murcia": {
+    "lat": 37.99,
+    "lon": -1.13
+   },
+   "ourense": {
+    "lat": 42.34,
+    "lon": -7.86
+   },
+   "oviedo": {
+    "lat": 43.36,
+    "lon": -5.85
+   },
+   "palencia": {
+    "lat": 42.01,
+    "lon": -4.53
+   },
+   "palma": {
+    "lat": 39.57,
+    "lon": 2.65
+   },
+   "las-palmas-de-gran-canaria": {
+    "lat": 28.13,
+    "lon": -15.43
+   },
+   "pamplona": {
+    "lat": 42.81,
+    "lon": -1.65
+   },
+   "pontevedra": {
+    "lat": 42.43,
+    "lon": -8.64
+   },
+   "salamanca": {
+    "lat": 40.97,
+    "lon": -5.66
+   },
+   "san-sebastian": {
+    "lat": 43.32,
+    "lon": -1.98
+   },
+   "santa-cruz-de-tenerife": {
+    "lat": 28.46,
+    "lon": -16.25
+   },
+   "santander": {
+    "lat": 43.46,
+    "lon": -3.8
+   },
+   "segovia": {
+    "lat": 40.95,
+    "lon": -4.12
+   },
+   "sevilla": {
+    "lat": 37.39,
+    "lon": -5.99
+   },
+   "soria": {
+    "lat": 41.76,
+    "lon": -2.47
+   },
+   "tarragona": {
+    "lat": 41.12,
+    "lon": 1.25
+   },
+   "teruel": {
+    "lat": 40.34,
+    "lon": -1.11
+   },
+   "toledo": {
+    "lat": 39.86,
+    "lon": -4.02
+   },
+   "valencia": {
+    "lat": 39.47,
+    "lon": -0.38
+   },
+   "valladolid": {
+    "lat": 41.65,
+    "lon": -4.72
+   },
+   "vitoria-gasteiz": {
+    "lat": 42.85,
+    "lon": -2.67
+   },
+   "zamora": {
+    "lat": 41.5,
+    "lon": -5.75
+   },
+   "zaragoza": {
+    "lat": 41.65,
+    "lon": -0.88
+   },
+   "gijon": {
+    "lat": 43.54,
+    "lon": -5.66
+   },
+   "vigo": {
+    "lat": 42.24,
+    "lon": -8.72
+   },
+   "santiago-de-compostela": {
+    "lat": 42.88,
+    "lon": -8.54
+   },
+   "elche": {
+    "lat": 38.27,
+    "lon": -0.7
+   },
+   "cartagena": {
+    "lat": 37.61,
+    "lon": -0.99
+   },
+   "jerez-de-la-frontera": {
+    "lat": 36.69,
+    "lon": -6.14
+   },
+   "algeciras": {
+    "lat": 36.13,
+    "lon": -5.45
+   },
+   "benidorm": {
+    "lat": 38.54,
+    "lon": -0.13
+   },
+   "marbella": {
+    "lat": 36.51,
+    "lon": -4.88
+   },
+   "torremolinos": {
+    "lat": 36.62,
+    "lon": -4.5
+   },
+   "l-hospitalet-de-llobregat": {
+    "lat": 41.36,
+    "lon": 2.1
+   },
+   "tarrasa": {
+    "lat": 41.56,
+    "lon": 2.01
+   },
+   "sabadell": {
+    "lat": 41.55,
+    "lon": 2.11
+   },
+   "alcala-de-henares": {
+    "lat": 40.48,
+    "lon": -3.36
+   },
+   "getafe": {
+    "lat": 40.31,
+    "lon": -3.73
+   },
+   "ibiza": {
+    "lat": 38.91,
+    "lon": 1.43
+   },
+   "merida": {
+    "lat": 38.92,
+    "lon": -6.34
+   },
+   "santiago": {
+    "lat": 42.88,
+    "lon": -8.54
+   }
+  },
+  "dominios_compartidos_nota": "Dominios compartidos por muchos organismos: el CRM casa la cuenta por dominio y nombre (lista en src/agenda_gestor.py)."
  }
 }

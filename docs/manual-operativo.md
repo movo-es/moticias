@@ -60,6 +60,8 @@ Colección `boletines/{id}` — cada referencia curada del BOE: `fecha`, `boleti
 
 Colección `agenda/{id}` — plazos y fechas: `date`, `kind` (`plazo`, `consulta`, `vigor`, `evento`), `title`, `authority`, `amount`, `amount_eur`, `mode`, `url`, `edicion` (fecha de la edición que lo anotó).
 
+Colección `eventos/{id}` — **agenda de eventos** de moticias.com/agenda/ (cambio `agenda-de-eventos`, 16-11-2026), distinta de `agenda/` (los plazos de la edición, que siguen llamándose «Próximos plazos» y «Sucederá pronto»): ferias, congresos, jornadas y encuentros profesionales de transportes, movilidad y turismo en España. Un fichero `<inicio>-<slug>.json` con `titulo`, `titulo_corto`, `inicio`, `fin` (o `mes_previsto` si la fecha no está confirmada), `tema` (los diez de `verticals/movilidad.json → agenda.temas`, con su color), `formato`, `modalidad`, `publico` (`profesional` o `general` = «Abierta al público»), `ciudad`, `sede`, `territorio` (comunidad de la taxonomía), `geo`, `resumen` (≤ 60 palabras), `organizadores` (entidades, nunca personas), `url_inscripcion`, `url_oficial`, `precio`, `nota`, `estado` (`propuesto`, `publicado`, `fecha_por_confirmar`, `aplazado`, `cancelado`, `retirado`, `pasado`), `origen` (`redaccion`, `barrido`, `tercero`), `fuentes` (URL y fecha), `comprobado_at`, `revised_at`, `revisiones`. Lo valida `src/eventos.py validar`: sin fuente con fecha, sin fecha, con un tema o territorio que no existe, o con un correo o teléfono dentro, no pasa. Organizadores, responsables y contactos, solo en la base privada (migración 015).
+
 Documento `editions/{AAAA-MM-DD}` — la edición del día: `number`, `closed_at`, `lead_id`, `analysis_id`, `note_metodologica`, `document` (el documento del día), `boe_series` (barras del gráfico por día: `total`, `lic`, `disp`), `boe_range`, `ticker` (diez titulares de boletines) y `ticker_label`.
 
 Documento `settings/site` — `rotation` (los siete ámbitos del análisis diario), `recent_scopes` (los últimos ámbitos usados, para no repetir), `editor`, `contact`.
@@ -76,6 +78,7 @@ Con la sesión de Claude abierta, el artefacto detecta al propietario y muestra 
 - **Edición**: cabecera del día (apertura, análisis, documento del día, nota metodológica, titulares del ticker).
 - **Boletines**: altas y bajas de referencias del BOE.
 - **Agenda**: plazos y fechas.
+- **Agenda de eventos** (gestor móvil, pestaña «Agenda»; cambio `agenda-de-eventos`): cola «Por revisar» (lo que suben los organizadores por «Subir mi evento» y lo que encuentra el barrido de los lunes), publicados con filtros, por confirmar, retirados, «Organizadores y responsables» y alta manual. Publicar, retirar y restaurar: solo el editor jefe. La pantalla «Inicio» del gestor reúne el bloque «Agenda» (próximos 14 días, pendientes, sin responsable, sin contacto, enlaces caídos, cambios detectados, último barrido) y las cifras de las demás áreas.
 
 Desde cada pieza, el enlace «Editar esta pieza» abre su formulario. Los cambios se guardan en la base al instante y los ven todos los lectores en la siguiente carga.
 

@@ -1,0 +1,37 @@
+{
+ "ciudad": "Málaga",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2027-02-26",
+ "formato": "Feria profesional",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas y ciudad",
+   "url": "https://feriabus.com/"
+  }
+ ],
+ "geo": {
+  "lat": 36.72,
+  "lon": -4.42
+ },
+ "id": "2027-02-25-feriabus-2027",
+ "inicio": "2027-02-25",
+ "modalidad": "presencial",
+ "nota": "La web aún enseña el programa de 2026.",
+ "organizadores": [
+  "APETAM",
+  "FEDINTRA"
+ ],
+ "origen": "redaccion",
+ "precio": "Gratis con inscripción previa",
+ "publico": "profesional",
+ "resumen": "Feria profesional del autobús y el autocar en Málaga, con exposición y jornadas para empresas del transporte de viajeros por carretera.",
+ "sede": "recinto sin publicar",
+ "tema": "autobus",
+ "territorio": "andalucia",
+ "titulo": "Feriabus Málaga 2027",
+ "titulo_corto": "Feriabus 2027",
+ "url_inscripcion": "https://feriabus.com/",
+ "url_oficial": "https://feriabus.com/"
+}

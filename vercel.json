@@ -10,6 +10,10 @@
   "api/prensa.py": {
    "includeFiles": "{src,verticals,data/notas-de-prensa,data/articles}/**",
    "maxDuration": 120
+  },
+  "api/agenda.py": {
+   "includeFiles": "{src/**,verticals/**,data/eventos/**,portal/spain.js}",
+   "maxDuration": 60
   }
  },
  "headers": [
@@ -101,6 +105,12 @@
   {
    "path": "/api/gestor?a=seo_bateria",
    "schedule": "10 6-9 * * 0"
+  }
+ ],
+ "rewrites": [
+  {
+   "source": "/feed/agenda.ics",
+   "destination": "/api/agenda?a=ics"
   }
  ]
 }

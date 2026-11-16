@@ -1,0 +1,34 @@
+{
+ "ciudad": "Valencia",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-12-17",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "calendario AFE: fechas y ciudad",
+   "url": "https://www.afe.es/es/eventos/fecha/2026/12"
+  }
+ ],
+ "geo": {
+  "lat": 39.47,
+  "lon": -0.38
+ },
+ "id": "2026-12-16-edos-2026",
+ "inicio": "2026-12-16",
+ "modalidad": "presencial",
+ "nota": "Web oficial por localizar; fechas y ciudad según el calendario de la Asociación de Ferias Españolas.",
+ "organizadores": [
+  "EDOS"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Cumbre europea de operadores de drones: congreso plenario, exposición comercial, talleres y clases magistrales sobre emergencias, seguridad, agricultura y logística. Cierra con un plan de acción de diez puntos.",
+ "sede": "sede sin publicar",
+ "tema": "aereo",
+ "territorio": "comunidad-valenciana",
+ "titulo": "EDOS 2026 · European Drone Operator Summit",
+ "titulo_corto": "EDOS 2026",
+ "url_inscripcion": "https://www.afe.es/es/eventos/fecha/2026/12"
+}

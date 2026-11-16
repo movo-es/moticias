@@ -1,0 +1,46 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2027-01-24",
+ "formato": "Feria",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas y país socio",
+   "url": "https://www.ifema.es/fitur"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "pases",
+   "url": "https://www.ifema.es/fitur/entradas"
+  },
+  {
+   "fecha": "2026-11-16",
+   "nota": "47.ª edición",
+   "url": "https://www.afe.es/es/eventos/fecha/2027/01"
+  }
+ ],
+ "geo": {
+  "lat": 40.46,
+  "lon": -3.62
+ },
+ "id": "2027-01-20-fitur-2027",
+ "inicio": "2027-01-20",
+ "modalidad": "presencial",
+ "nota": "Pases y entradas en la web.",
+ "organizadores": [
+  "IFEMA MADRID"
+ ],
+ "origen": "redaccion",
+ "precio": "Pase profesional de un día, desde 15 € con promoción hasta el 31 de diciembre",
+ "publico": "general",
+ "resumen": "47.ª edición, con Puerto Rico como país socio y dos pabellones más. Días profesionales del 20 al 22; abierta al público el 23 y el 24. Secciones propias para cruceros, turismo accesible y tecnología.",
+ "sede": "IFEMA MADRID",
+ "tema": "turismo",
+ "territorio": "madrid",
+ "titulo": "FITUR 2027 · Feria Internacional de Turismo",
+ "titulo_corto": "FITUR 2027",
+ "url_inscripcion": "https://www.ifema.es/fitur/entradas",
+ "url_oficial": "https://www.ifema.es/fitur"
+}

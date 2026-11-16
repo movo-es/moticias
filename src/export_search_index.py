@@ -79,7 +79,18 @@ def construir(data_dir=None, base="https://www.moticias.com", vertical="movilida
         "mercancias": [k for k, x in tx.modos_t.items() if x["mercancias"]],
         "piezas": piezas,
         "menu": menu(tx, piezas, base),
+        "agenda": agenda(base),
     }
+
+
+def agenda(base="https://www.moticias.com"):
+    """Citas visibles de moticias.com/agenda/ (cambio agenda-de-eventos): el buscador las encuentra por título, ciudad y tema."""
+    try:
+        import eventos as EV
+    except ImportError:
+        return []
+    return [{"id": e["id"], "t": e["titulo"], "c": e["ciudad"], "i": e["inicio"], "f": EV.fin_de(e), "te": e["tema"], "ter": e["territorio"],
+             "u": "%s/agenda/#%s" % (base, e["id"])} for e in EV.visibles([EV.limpio(x) for x in EV.cargar()])]
 
 
 def menu(tx, piezas, base="https://www.moticias.com"):

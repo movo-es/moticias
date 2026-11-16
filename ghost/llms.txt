@@ -9,6 +9,7 @@
 - [Licitaciones y plazos](https://moticias.com/licitaciones/): anuncios, formalizaciones y concesiones con importe, órgano y fecha límite; agenda «Sucederá pronto»
 - [Análisis](https://moticias.com/analisis/): los análisis, firmados por su autor (el editor jefe o la redacción), y los reportajes, con declaración de intereses
 - [Datos](https://moticias.com/datos/): series propias descargables con método (referencias del BOE por día, licitaciones por comunidad, plazos)
+- [Agenda](https://moticias.com/agenda/): ferias, congresos y jornadas de transportes, movilidad y turismo en España de los próximos tres meses, con fecha, sede, organizador y enlace comprobados en la web de cada organizador; calendario en https://app.moticias.com/feed/agenda.ics
 - [Notas de prensa](https://moticias.com/notas-de-prensa/): comunicados de empresas y organismos, marcados como tales; no son contenido editorial
 - [Cómo trabajamos](https://moticias.com/como-trabajamos/): fuentes, firmas, aprobación, tecnología, correcciones, declaración de intereses
 

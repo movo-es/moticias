@@ -1,0 +1,40 @@
+{
+ "ciudad": "Sevilla",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-11-21",
+ "formato": "Convención",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas y ciudad",
+   "url": "https://www.iglta.org/seville"
+  },
+  {
+   "fecha": "2026-11-15",
+   "nota": "discrepa en fechas; manda el organizador",
+   "url": "https://www.afe.es/es/eventos/fecha/2026/11"
+  }
+ ],
+ "geo": {
+  "lat": 37.39,
+  "lon": -5.99
+ },
+ "id": "2026-11-17-iglta-global-convention",
+ "inicio": "2026-11-17",
+ "modalidad": "presencial",
+ "nota": "Registro de pago. La organización no publica la sede; la AFE da del 16 al 20, se usan las fechas del organizador.",
+ "organizadores": [
+  "IGLTA"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Convención mundial del turismo LGTBQ+: sesiones formativas, ponencias y un mercado de compradores y proveedores. Cuenta con el apoyo de Turespaña, Turismo Andaluz y el Ayuntamiento de Sevilla.",
+ "sede": "sede sin publicar",
+ "tema": "turismo",
+ "territorio": "andalucia",
+ "titulo": "IGLTA Global Convention 2026",
+ "titulo_corto": "IGLTA Global Convention",
+ "url_inscripcion": "https://www.iglta.org/seville",
+ "url_oficial": "https://www.iglta.org/seville"
+}

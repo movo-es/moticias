@@ -1,0 +1,32 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "fecha_por_confirmar",
+ "formato": "Foro",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "XII edición, 19-01-2026",
+   "url": "https://www.bolsamania.com/noticias_amp/empresas/economia--hotusa-cierra-la-xii-edicion-del-foro-hotusa-explora-posicionando-espana-como-capital-mundial-del-turismo--21519602.html"
+  }
+ ],
+ "geo": {
+  "lat": 40.42,
+  "lon": -3.7
+ },
+ "id": "2027-01-foro-hotusa-explora",
+ "mes_previsto": "2027-01",
+ "modalidad": "presencial",
+ "nota": "Fecha de 2027 sin anunciar.",
+ "organizadores": [
+  "Grupo Hotusa"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Foro anual de Grupo Hotusa sobre el turismo, en vísperas de FITUR. La XII edición fue el 19 de enero de 2026.",
+ "sede": "sede por anunciar",
+ "tema": "turismo",
+ "territorio": "madrid",
+ "titulo": "Foro Hotusa Explora 2027",
+ "titulo_corto": "Foro Hotusa Explora"
+}

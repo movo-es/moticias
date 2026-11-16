@@ -1,0 +1,35 @@
+{
+ "ciudad": "Granada",
+ "comprobado_at": "2026-11-15",
+ "estado": "publicado",
+ "fin": "2026-11-19",
+ "formato": "Jornada",
+ "fuentes": [
+  {
+   "fecha": "2026-11-15",
+   "nota": "convocatoria del organizador",
+   "url": "https://www.railwayinnovationhub.com/save-the-date-jornada-ia-nueva-parada-en-el-desarrollo-de-metros-y-tranvias-en-granada/"
+  }
+ ],
+ "geo": {
+  "lat": 37.18,
+  "lon": -3.6
+ },
+ "id": "2026-11-19-jornada-ia-en-metros-y-tranvias",
+ "inicio": "2026-11-19",
+ "modalidad": "presencial",
+ "nota": "Hora y precio sin publicar. Comprobado el 15-11; el 16-11 la página solo cargaba el título.",
+ "organizadores": [
+  "Railway Innovation Hub",
+  "Agencia de Obra Pública de la Junta de Andalucía"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Cómo la inteligencia artificial y las nuevas tecnologías están cambiando el desarrollo de metros y tranvías, y qué retos abre para el sector en los próximos años.",
+ "sede": "Sala Jiménez Torrecillas, estación Alcázar Genil",
+ "tema": "ferrocarril",
+ "territorio": "andalucia",
+ "titulo": "IA: nueva parada en el desarrollo de metros y tranvías",
+ "titulo_corto": "Jornada IA en metros y tranvías",
+ "url_inscripcion": "https://www.railwayinnovationhub.com/save-the-date-jornada-ia-nueva-parada-en-el-desarrollo-de-metros-y-tranvias-en-granada/"
+}

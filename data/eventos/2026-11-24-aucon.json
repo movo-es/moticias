@@ -1,0 +1,36 @@
+{
+ "ciudad": "Zaragoza",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-11-25",
+ "formato": "Congreso",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "ficha del congreso: fechas, horario, organizadores",
+   "url": "https://www.mobilitycity.es/explora/actividades/i-congreso-de-vehiculo-autonomo-y-conectado-zaragoza/"
+  }
+ ],
+ "geo": {
+  "lat": 41.67,
+  "lon": -0.91
+ },
+ "id": "2026-11-24-aucon",
+ "inicio": "2026-11-24",
+ "modalidad": "presencial",
+ "nota": "Martes de 10:00 a 17:20; miércoles de 10:00 a 15:00. Precio sin publicar.",
+ "organizadores": [
+  "ANFAC",
+  "Fundación Ibercaja (Mobility City)"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Primer congreso nacional del vehículo autónomo y conectado: fabricantes, tecnológicas, startups y centros de investigación, con demostraciones dinámicas. Regulación, seguro y mercancías, en el programa.",
+ "sede": "Mobility City, Puente Zaha Hadid",
+ "tema": "autonomo",
+ "territorio": "aragon",
+ "titulo": "AUCON · I Congreso de vehículo autónomo y conectado",
+ "titulo_corto": "AUCON",
+ "url_inscripcion": "https://www.mobilitycity.es/explora/actividades/i-congreso-de-vehiculo-autonomo-y-conectado-zaragoza/",
+ "url_oficial": "https://www.aucon.org/"
+}

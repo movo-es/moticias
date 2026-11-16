@@ -1,0 +1,33 @@
+{
+ "ciudad": "Pamplona",
+ "comprobado_at": "2026-11-16",
+ "estado": "propuesto",
+ "fin": "2027-02-21",
+ "formato": "Feria",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "agregador, no oficial",
+   "url": "https://www.cantonfair.net/event/27992-navartur"
+  }
+ ],
+ "geo": {
+  "lat": 42.81,
+  "lon": -1.65
+ },
+ "id": "2027-02-19-navartur-2027",
+ "inicio": "2027-02-19",
+ "modalidad": "presencial",
+ "nota": "Fechas de 2027 solo en un agregador; falta confirmarlas en la web del organizador.",
+ "organizadores": [
+  "Navartur"
+ ],
+ "origen": "redaccion",
+ "publico": "general",
+ "resumen": "Feria de turismo de Navarra, en el Baluarte de Pamplona. La 20.ª edición fue del 20 al 22 de febrero de 2026.",
+ "sede": "Baluarte",
+ "tema": "turismo",
+ "territorio": "navarra",
+ "titulo": "Navartur 2027 · Feria Internacional de Turismo Reyno de Navarra",
+ "titulo_corto": "Navartur 2027"
+}

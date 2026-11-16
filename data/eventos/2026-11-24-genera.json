@@ -1,0 +1,35 @@
+{
+ "ciudad": "Madrid",
+ "comprobado_at": "2026-11-16",
+ "estado": "publicado",
+ "fin": "2026-11-26",
+ "formato": "Feria profesional",
+ "fuentes": [
+  {
+   "fecha": "2026-11-16",
+   "nota": "fechas, recinto y registro",
+   "url": "https://www.ifema.es/genera"
+  }
+ ],
+ "geo": {
+  "lat": 40.46,
+  "lon": -3.62
+ },
+ "id": "2026-11-24-genera",
+ "inicio": "2026-11-24",
+ "modalidad": "presencial",
+ "nota": "Registro profesional abierto.",
+ "organizadores": [
+  "IFEMA MADRID"
+ ],
+ "origen": "redaccion",
+ "publico": "profesional",
+ "resumen": "Feria de energía y medio ambiente, en paralelo a MATELEC, dentro de la Semana Internacional de la Electrificación y la Descarbonización. Electrificación, almacenamiento e infraestructuras eléctricas.",
+ "sede": "IFEMA MADRID",
+ "tema": "energia",
+ "territorio": "madrid",
+ "titulo": "GENERA 2026",
+ "titulo_corto": "GENERA",
+ "url_inscripcion": "https://www.ifema.es/genera",
+ "url_oficial": "https://www.ifema.es/genera"
+}
