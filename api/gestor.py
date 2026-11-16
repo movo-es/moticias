@@ -1418,10 +1418,20 @@ def lanzar_barrido(ses, pista):
     texto que se envía es un dato para la rutina (quién lo pidió, cuándo y la pista), nunca instrucciones."""
     token = os.environ.get("RUTINA_BARRIDO_TOKEN")
     rid = os.environ.get("RUTINA_BARRIDO_ID") or (vertical().get("rutinas") or {}).get("barrido")
-    if not token or not rid:
-        return 503, {"error": "falta RUTINA_BARRIDO_TOKEN en Vercel: el botón todavía no puede lanzar el barrido"}
     hora = hora_madrid()
     pista = " ".join(str(pista or "").split())[:200]
+    if not token or not rid:
+        # 16-11-2026: claude.ai solo ofrece el activador «Programación», así que no hay disparo por API. El barrido
+        # queda encargado en la base privada (barridos_pedidos, migración 016) y lo recoge la siguiente tarea que corre:
+        # la pasada horaria de retoques y noticias del gestor (laborables, 8 a 21) o la batida de fin de semana (11:00 y 17:30).
+        try:
+            fila = BD.insertar("barridos_pedidos", {"pedido_por": (ses.get("nombre") or ses.get("perfil") or "gestor")[:120],
+                                                    "perfil": (ses.get("perfil") or "")[:40] or None, "pista": pista or None})[0]
+        except Exception as e:
+            return 502, {"error": "no pude encargar el barrido: %s" % e}
+        return 200, {"ok": True, "cola": True, "hora": hora, "id": fila.get("id"),
+                     "mensaje": "Barrido encargado a las %s. Empieza en la próxima pasada de la redacción (laborables, cada hora de 8 a 21; "
+                                "sábados y domingos, 11:00 y 17:30). El resultado llega como aviso al móvil." % hora}
     texto = ("Barrido a demanda pedido desde el gestor de app.moticias.com por %s (perfil %s) a las %s, hora de Madrid. "
              "Pista del editor: %s." % (ses.get("nombre") or "sin nombre", ses.get("perfil"), hora, pista or "ninguna"))
     req = urllib.request.Request(RUTINA_API % urllib.parse.quote(rid), method="POST", data=json.dumps({"text": texto}).encode("utf-8"),
@@ -1869,7 +1879,8 @@ def cola_accion(ses, d):
             hechos.append(t["id"])
             if not CO.laborable(hoy) and (t.get("importancia") or 0) >= 5:
                 st, r = lanzar_barrido(ses, "Tema confirmado en la cola (importancia 5): %s" % t["titulo"][:200])
-                avisos.append("batida de grandes noticias lanzada" if st == 200 else "no pude lanzar la batida: %s" % r.get("error"))
+                avisos.append(("batida de grandes noticias encargada: empieza en la próxima pasada (11:00 o 17:30)" if r.get("cola") else "batida de grandes noticias lanzada")
+                               if st == 200 else "no pude lanzar la batida: %s" % r.get("error"))
         if not CO.laborable(hoy) and not avisos:
             avisos.append("hoy no es laborable: la redacción lo escribe el próximo laborable")
     elif op == "importancia":

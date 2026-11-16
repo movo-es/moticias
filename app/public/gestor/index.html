@@ -199,7 +199,6 @@ function avisoConfig() {
   const e = window._est || {}; const f = [];
   if (!e.escritura) f.push("GITHUB_TOKEN (sin él, el gestor solo puede mirar)");
   if (!e.ghost) f.push("GHOST_ADMIN_KEY y GHOST_URL (sin ellas, los cambios se ven en la web en la próxima publicación)");
-  if (puede("barrido") && !e.barrido) f.push("RUTINA_BARRIDO_TOKEN (sin él, el botón «Iniciar barrido de noticias ahora» no puede lanzar la tarea)");
   return f.length ? `<div class="card" style="border-color:#e7c48d"><b>Configuración pendiente en Vercel</b><p class="mute">Falta: ${f.map(E).join("; ")}.</p></div>` : "";
 }
 
@@ -515,7 +514,7 @@ function pintarPiezas() {
       aviso(mal.length ? `${d.piezas.length - mal.length} subidas; ${mal.length} con error: ${mal[0].detalle}` : `${d.piezas.length} pieza(s) actualizadas en la web`, !!mal.length); verPiezas(); }
     catch (e) { aviso(e.message, true); bs.disabled = false; } };
   const bb = $("#barrido"); if (bb) bb.onclick = async () => { if (!confirm("¿Lanzar ahora un barrido de noticias?")) return; bb.disabled = true; bb.textContent = "Lanzando…";
-    try { const d = await api("barrido", {pista: ($("#pista") || {}).value || ""}); bb.textContent = "Barrido lanzado a las " + d.hora; aviso("Barrido lanzado a las " + d.hora + ". El resultado llega como aviso al móvil."); }
+    try { const d = await api("barrido", {pista: ($("#pista") || {}).value || ""}); bb.textContent = (d.cola ? "Barrido encargado a las " : "Barrido lanzado a las ") + d.hora; aviso(d.mensaje || ("Barrido lanzado a las " + d.hora + ". El resultado llega como aviso al móvil.")); }
     catch (e) { aviso(e.message, true); bb.disabled = false; bb.textContent = "Iniciar barrido de noticias ahora"; } };
   if (window._irBarrido && $("#caja-barrido")) { window._irBarrido = false; $("#caja-barrido").scrollIntoView({block: "center"}); ($("#pista") || {}).focus && $("#pista").focus(); }
   app.querySelector(".filtros").onclick = ev => { const b = ev.target.closest("button"); if (b) { filtro = b.dataset.f; pintarPiezas(); } };
