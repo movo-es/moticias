@@ -19,6 +19,7 @@ import argparse, datetime, html, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 import eventos as EV  # noqa: E402
+import entradilla as EN  # noqa: E402  (resúmenes que no se cortan a media palabra)
 
 E = lambda s: html.escape(str(s if s is not None else ""), quote=True)  # noqa: E731
 BASE = "https://www.moticias.com/"
@@ -306,7 +307,7 @@ def ficha(e, v, rutas_ok=True):
                                                                          (" · " + E(f["nota"])) if f.get("nota") else "") for f in e["fuentes"]))
     h.append('<p class="ma-pie">%s <a href="%sagenda/">Toda la agenda</a></p></div><!--kg-card-end: html-->' % (E(EV.cfg(v)["textos"]["aviso_pie"]), BASE))
     j = dict(evento_ld(e, v, rutas_ok), **{"@context": "https://schema.org"})
-    return {"title": e["titulo"], "slug": e["id"], "html": "\n".join(h), "custom_excerpt": e["resumen"][:300],
+    return {"title": e["titulo"], "slug": e["id"], "html": "\n".join(h), "custom_excerpt": EN.recortar(e["resumen"], 300),
             "meta_title": "%s · %s, %s" % (e["titulo_corto"], fechas(e), e["ciudad"]), "meta_description": e["resumen"][:300],
             "tags": [{"name": EV.cfg(v)["ghost"]["etiqueta_interna"]}], "codeinjection_head": ld(j)}
 

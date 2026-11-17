@@ -12,13 +12,18 @@ borrar o dar otro enfoque con la IA, que vería antes de volver a publicar. Impo
   publica o descarta. No puede añadir cifras ni fechas: lo que traiga y no esté en la pieza ni en sus fuentes se marca,
   y publicar con cifras nuevas exige que el editor jefe lo confirme expresamente.
 """
-import datetime, json, os, re, urllib.error, urllib.request
+import datetime, json, os, re, sys, urllib.error, urllib.request
 
-CAMPOS = ("title", "subtitle", "kicker", "summary", "body_md", "key_fact", "actors", "relevance_for", "why", "next")
-NOMBRES = {"title": "Titular", "subtitle": "Subtítulo", "kicker": "Antetítulo", "summary": "Respuesta directa (40–60 palabras)",
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import entradilla as EN  # noqa: E402  (la entradilla de las tarjetas y de lo que se comparte; openspec entradilla-y-linkedin)
+
+CAMPOS = ("title", "subtitle", "kicker", "entradilla", "summary", "body_md", "key_fact", "actors", "relevance_for", "why", "next")
+NOMBRES = {"title": "Titular", "subtitle": "Subtítulo", "kicker": "Antetítulo",
+           "entradilla": "Entradilla (tarjetas y LinkedIn: frases completas, máximo %d caracteres)" % EN.MAX,
+           "summary": "Respuesta directa (40–60 palabras)",
            "body_md": "Texto", "key_fact": "Dato clave", "actors": "Protagonistas", "relevance_for": "Para quién es relevante",
            "why": "Por qué es importante", "next": "Qué puede pasar ahora"}
-LIMITES = {"title": 220, "subtitle": 400, "kicker": 120, "summary": 900, "body_md": 30000, "key_fact": 400, "actors": 1500,
+LIMITES = {"title": 220, "subtitle": 400, "kicker": 120, "entradilla": 600, "summary": 900, "body_md": 30000, "key_fact": 400, "actors": 1500,
            "relevance_for": 1500, "why": 2000, "next": 2000}
 
 ENFOQUES = {
@@ -38,7 +43,9 @@ Reglas que no se rompen: NO añadas ninguna cifra, fecha, cita, nombre ni hecho 
 puedes reordenar, cambiar el enfoque, el titular y la estructura, y quitar lo accesorio. Conserva todos los enlaces https:// del texto.
 El texto (body_md) es Markdown: párrafos, `##` para secciones cortas, **negrita** en el sustantivo de arranque de los párrafos clave.
 La «respuesta directa» (summary) abre la pieza: 40–60 palabras que contestan qué ha pasado y por qué importa.
-Contesta SOLO con un objeto JSON con estas claves (todas, aunque alguna no cambie): title, subtitle, kicker, summary, body_md, key_fact,
+La «entradilla» es el texto de las tarjetas y de lo que se comparte en redes: una o dos frases completas que dicen el hecho, como mucho
+280 caracteres contando espacios, acabada en punto, sin puntos suspensivos y sin nada que no esté en la pieza. Cuéntalos: si se pasa, no se publica.
+Contesta SOLO con un objeto JSON con estas claves (todas, aunque alguna no cambie): title, subtitle, kicker, entradilla, summary, body_md, key_fact,
 actors, relevance_for, why, next, y además "nota": una o dos frases que expliquen qué has cambiado."""
 
 _NUM = re.compile(r"\d+(?:[.,]\d+)*")
@@ -91,6 +98,10 @@ def aplicar_edicion(a, cambios, quien, origen="manual", correccion=None):
         raise ValueError("el titular no puede quedar vacío")
     if "body_md" in cambios and len(cambios["body_md"].split()) < 150:
         raise ValueError("el texto se queda en menos de 150 palabras: MOTICIAS no publica resúmenes")
+    if "entradilla" in cambiados:  # la entradilla tiene que caber entera en las tarjetas: nunca se recorta sola
+        mal = EN.problemas(cambios["entradilla"])
+        if mal:
+            raise ValueError("Entradilla: " + "; ".join(mal))
     for k in cambiados:
         a[k] = cambios[k]
     t = ahora()
@@ -171,4 +182,6 @@ def otro_enfoque(a, enfoque, instruccion, cabeceras=None, modelo=None, tiempo=24
     prop = limpiar(p)
     for k in CAMPOS:  # lo que la IA no devuelve se queda como estaba
         prop.setdefault(k, a.get(k) or "")
+    if EN.problemas(prop.get("entradilla")):  # la de la IA no cabe o no acaba en frase: la suya propia en frases completas, o la que había
+        prop["entradilla"] = EN.proponer(prop.get("summary"), EN.MAX) or a.get("entradilla") or ""
     return {"propuesta": prop, "nota": str(p.get("nota") or "")[:600], "cifras_nuevas": cifras_nuevas(a, prop), "modelo": modelo}

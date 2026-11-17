@@ -215,5 +215,6 @@
  ],
  "importancia_agente": 4,
  "fiabilidad": "primaria",
- "importancia": 4
+ "importancia": 4,
+ "entradilla": "El Ministerio de Transportes ha fijado los servicios mínimos del Grupo Renfe para la huelga general del 11 de noviembre: 73 % en alta velocidad y larga distancia, 65 % en media distancia, 75 % de Cercanías en hora punta y 50 % el resto del día, y 26 % en mercancías."
 }

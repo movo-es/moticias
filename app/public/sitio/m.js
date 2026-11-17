@@ -8,7 +8,7 @@
       del grupo») o se queda la que pinta el tema.
    2. Editor jefe: si este navegador tiene la marca «moticias_jefe» (la pone el gestor al entrar el superadministrador), pregunta
       al gestor si de verdad lo es (con su sesión) y, solo entonces, enseña un icono discreto en cada noticia con Editar, Otro
-      enfoque con IA, Patrocinio y retoques, y Retirar. La marca no da ningún permiso: todo se comprueba en el servidor.
+      enfoque con IA, Patrocinio y retoques, Compartir en LinkedIn (17-11-2026) y Retirar. La marca no da ningún permiso: todo se comprueba en el servidor.
    3. Seguimiento: cuenta una visualización cuando una caja (publicidad, patrocinio o «Contenido patrocinado» del texto) se ve
       al menos a medias, y un clic cuando se pulsa su enlace (POST /api/gestor?a=evento). No cuenta las visitas del editor jefe
       ni de navegadores automatizados.
@@ -394,6 +394,7 @@
       (pieza ? '<li><a href="' + E(enlace(m[1], "editar")) + '">Editar</a></li>' +
         '<li><a href="' + E(enlace(m[1], "ia")) + '">Otro enfoque con IA</a></li>' +
         '<li><a href="' + E(enlace(m[1], "")) + '">Patrocinio y retoques</a></li>' +
+        '<li><a href="' + E(enlace(m[1], "linkedin")) + '">Compartir en LinkedIn</a></li>' +
         '<li><a class="r" href="' + E(enlace(m[1], "retirar")) + '">Retirar</a></li>' : '') +
       '<li><a href="' + E(barrido) + '">Iniciar barrido de noticias ahora</a></li></ul>';
     f.querySelector("button").onclick = function () { f.classList.toggle("on"); };

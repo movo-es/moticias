@@ -45,6 +45,8 @@ import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
 import tipos as T  # noqa: E402
 import agenda_gestor as AG  # noqa: E402  (agenda de eventos: openspec agenda-de-eventos)
+import entradilla as EN  # noqa: E402  (entradilla de las tarjetas: frases completas que caben; openspec entradilla-y-linkedin)
+import compartir as CP  # noqa: E402  (botón «Compartir en LinkedIn» de cada pieza)
 import restaurar as RS  # noqa: E402  (restauración desde el gestor; openspec restaurar-copia)  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
@@ -217,6 +219,8 @@ def detalle(pid):
     r = resumen_pieza(a, prods)
     r["candidatos"] = M.candidatos(a, prods)
     r["summary"] = a.get("summary")
+    r["entradilla"] = EN.de(a)  # lo que se ve en las tarjetas y lo que se comparte (nunca cortada a media palabra)
+    r["linkedin"] = CP.linkedin(a, v)  # texto y enlace del botón «Compartir en LinkedIn»; None si la pieza no está publicada
     r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
     r["url"] = "https://%s/%s/" % (v.get("domain", "www.moticias.com"), a["id"])
     r["retoques"] = retoques_de(pid)
@@ -810,7 +814,7 @@ def ficha_redaccion(pid):
             "kind": a.get("kind"), "date": a.get("date"), "author": a.get("author"), "section": a.get("section"), "url": _url_pieza(a, v),
             "revised_at": a.get("revised_at"), "revisiones": (a.get("revisiones") or [])[-8:], "correcciones": a.get("correcciones") or [],
             "fuentes": [{"medio": x.get("outlet"), "titulo": x.get("title"), "url": x.get("url")} for x in a.get("sources") or []],
-            "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()},
+            "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()}, "entradilla_max": EN.config(v)["max"],
             "firma": {"actual": "editor_jefe" if F.es_del_editor_jefe(a, c) else "redaccion", "editor_jefe": c["editor_jefe"], "redaccion": c["redaccion"],
                       "importante": imp, "motivo": mot, "propuesta": dec["firma"], "cupo": dec["cupo"]}}
 
@@ -952,6 +956,7 @@ def voz_nueva_pieza(d, quien, v=None):
          "author": cfg.get("autor", "Rainer Uphoff"), "author_role": (v.get("editor") or {}).get("role") or "Editor jefe de MOTICIAS",
          "author_note": (v.get("editor") or {}).get("interests_note"),
          "date": hoy, "event_date": hoy, "featured": 0, "kicker": "La voz del editor", "title": titulo, "subtitle": sub, "summary": resumen,
+         "entradilla": EN.proponer(primer, EN.config(v)["max"]) or EN.recortar(primer, EN.config(v)["max"]),
          "body_md": texto, "image": None, "relevance": "ALTA", "importancia": 4,
          "sources": [{"kind": "oficial" if _dominio_oficial(_dominio(u)) else "medios", "outlet": _dominio(u) or "enlace", "title": u, "url": u,
                       "published": None, "accessed": hoy} for u in enlaces],
@@ -1082,6 +1087,38 @@ def reintentar_subidas(max_n=4):
         BD.registrar("gestor (reintento automático)", "web_reintento", pid, {"ghost": ok, "detalle": str(det)[:500]})
         hechas.append({"id": pid, "ok": ok, "detalle": str(det)[:200]})
     return {"ok": all(h["ok"] for h in hechas), "reintentadas": hechas}
+
+
+def entradillas_al_dia(segundos=200):  # menos de los cinco minutos que dura el pase de Ghost
+    """Deja en Ghost, como resumen de cada post, la entradilla de su pieza (cambio entradilla-y-linkedin, 17-11-2026).
+    Compara lo que viene con el despliegue con lo que tiene Ghost y cambia solo el resumen de los que no coinciden —ni el
+    texto, ni la fecha, ni el estado—. Antes de escribir lee la pieza fresca del repositorio, para no pisar una entradilla
+    que el editor acaba de cambiar. Lo llama el cron `web_reintentos`; si no hay nada distinto, es una sola consulta."""
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key or ":" not in key:
+        return {"ok": False, "detalle": "sin clave de Ghost en el gestor"}
+    fin = time.time() + segundos
+    url = url.rstrip("/")
+    token = G.ghost_token(key)
+    posts = G.resumenes_en_ghost(url, token)
+    hechas, fallos, quedan = [], [], 0
+    for p in sorted(glob.glob(os.path.join(ROOT, "data", "articles", "*.json"))):
+        a = json.load(open(p, encoding="utf-8"))
+        post = posts.get(a["id"])
+        if not post or (post.get("custom_excerpt") or "") == EN.de(a):
+            continue
+        if time.time() > fin:
+            quedan += 1
+            continue
+        fresca, _ = leer("data/articles/%s.json" % a["id"])
+        texto = EN.de(fresca or a)
+        if (post.get("custom_excerpt") or "") == texto:
+            continue
+        ok, det = G.poner_resumen(post, texto, url, token)
+        (hechas if ok else fallos).append(a["id"] if ok else {"id": a["id"], "error": det})
+    if hechas or fallos:
+        BD.registrar("gestor (entradillas)", "entradillas_al_dia", None, {"cambiadas": len(hechas), "fallos": fallos[:10], "quedan": quedan})
+    return {"ok": not fallos, "cambiadas": len(hechas), "fallos": fallos[:10], "quedan": quedan}
 
 
 def accion_redaccion(ses, d, cabeceras):
@@ -2541,7 +2578,12 @@ class handler(BaseHTTPRequestHandler):
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
-            return self._enviar(200, reintentar_subidas())
+            r = reintentar_subidas()
+            try:  # y, de paso, que el resumen de cada post en Ghost sea la entradilla de su pieza (nunca tumba los reintentos)
+                r["entradillas"] = entradillas_al_dia()
+            except Exception as e:  # noqa: BLE001
+                r["entradillas"] = {"ok": False, "detalle": str(e)[:300]}
+            return self._enviar(200, r)
         if a == "copias_vigilar":  # Vercel Cron (diario): ¿hay copia reciente del Mac? Si no, correo a Rainer
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):

@@ -18,11 +18,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from taxonomia import Taxonomia, plano  # noqa: E402
 import tipos as T  # noqa: E402  (tipo de contenido y su marca; openspec tipos-de-contenido)
-
-
-def recortar(s, n=220):
-    s = " ".join(str(s or "").split())
-    return s if len(s) <= n else s[: n - 1].rsplit(" ", 1)[0] + "…"
+import entradilla as EN  # noqa: E402  (la entradilla de las tarjetas: frases completas; openspec entradilla-y-linkedin)
 
 
 FOTOS_GHOST = {}
@@ -37,7 +33,7 @@ def entrada(a, base):
     src = img.get("src") or ""
     gi = src if src.startswith("http") else FOTOS_GHOST.get(src[4:]) if src.startswith("img/") else None
     return {
-        "id": a["id"], "t": a.get("title"), "k": a.get("kicker"), "s": a.get("subtitle"), "r": recortar(a.get("summary")),
+        "id": a["id"], "t": a.get("title"), "k": a.get("kicker"), "s": a.get("subtitle"), "r": EN.de(a),
         "d": a.get("date"), "kind": a.get("kind"), "au": a.get("author"), "f": a.get("featured") or 0,
         "m": a.get("modo"), "sm": a.get("submodo"), "te": a.get("temas") or [], "tr": a.get("territorios") or [], "tg": a.get("tags") or [],
         "img": img.get("src"), "gi": gi, "alt": img.get("alt"), "sec": a.get("section"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),

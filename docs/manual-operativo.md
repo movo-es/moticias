@@ -36,6 +36,7 @@ Colección `articles/{id}` — una pieza (noticia, análisis o reportaje):
 | `temas` | Qué tipo de hecho es (eje 2): lista de uno o dos ids —`regulacion`, `concesiones`, `empresas`, `infraestructuras`, `tecnologia`, `seguridad`, `analisis`—; el primero manda |
 | `territorios` | Dónde se decide o a quién afecta (eje 3): lista de ids de comunidad (`cantabria`, `madrid`…, `ceuta`, `melilla`) y ámbitos (`estado`, `ue`, `internacional`). Alimenta el menú Territorio, el mapa y el buscador. `taxonomia_manual: true` protege una corrección a mano |
 | `kicker`, `title`, `subtitle` | Tema general y sector · Título · Subtítulo (formato obligatorio) |
+| `entradilla` | El texto de las tarjetas, de los listados, del resumen de Ghost y de lo que se comparte en LinkedIn: frases completas, un párrafo, máximo 280 caracteres, sin puntos suspensivos (`src/entradilla.py`, `verticals → editorial.entradilla`). Obligatoria desde el 17-11-2026; no es el `summary` recortado |
 | `summary`, `actors`, `relevance_for`, `why`, `next` | Los cinco bloques obligatorios: de qué trata, protagonistas, para quién es relevante, por qué importa, qué puede pasar ahora |
 | `key_fact` | El dato que sostiene la pieza (cifra, fecha, referencia) |
 | `body_md` | El reportaje de fondo en Markdown (## secciones, **negrita**, > cita, >> cita destacada). Obligatorio en toda pieza: 1.000–1.500 palabras en noticias, 900–1.300 en el análisis, 1.800–2.500 en reportajes. Los enlaces, solo `https://…`: el portal no convierte `[texto](#a-…)` |

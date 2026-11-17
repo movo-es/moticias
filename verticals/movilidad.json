@@ -229,6 +229,13 @@
    "name": "G. Jordan",
    "email": "redaccion@moticias.com",
    "nota": "decisión de Rainer, 9-11-2026: los commits de la redacción automática"
+  },
+  "entradilla": {
+   "decidido": "2026-11-17",
+   "cambio": "entradilla-y-linkedin",
+   "max": 280,
+   "min": 60,
+   "regla": "Cada pieza lleva su `entradilla`: el texto de las tarjetas, de los listados y de lo que se comparte. Frases completas, un solo párrafo, como mucho 280 caracteres (Ghost admite 300 en el resumen), sin puntos suspensivos y solo con hechos que ya están en la pieza. El bloque «De qué trata» (`summary`) no cambia. Nada se corta a media palabra: src/entradilla.py."
   }
  },
  "tipos_de_contenido": {
@@ -3333,5 +3340,21 @@
    }
   },
   "dominios_compartidos_nota": "Dominios compartidos por muchos organismos: el CRM casa la cuenta por dominio y nombre (lista en src/agenda_gestor.py)."
+ },
+ "redes": {
+  "decidido": "2026-11-17",
+  "cambio": "entradilla-y-linkedin",
+  "linkedin": {
+   "activo": true,
+   "texto": "{entradilla}\n\nSuscríbete gratis para seguir leyendo: {url}\n\n{firma}",
+   "firma": "moticias.com - Noticias con M de Movilidad y Transportes",
+   "utm": {
+    "utm_source": "linkedin",
+    "utm_medium": "social",
+    "utm_campaign": "compartir-gestor"
+   },
+   "abrir": "https://www.linkedin.com/feed/?shareActive=true&text={texto}",
+   "nota": "La imagen la pone LinkedIn con la tarjeta del enlace (la foto de la pieza). El gestor copia siempre el texto antes de abrir LinkedIn: el redactor de LinkedIn solo llega ya escrito en el ordenador; en el móvil se comparte con el menú del teléfono o se pega. Nada se publica solo: publica la persona en su LinkedIn."
+  }
  }
 }

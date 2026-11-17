@@ -1,0 +1,12 @@
+- [x] `src/entradilla.py`: frases, proponer, recortar (nunca a media palabra), problemas, `de()`, validar · proponer · migrar
+- [x] `verticals/movilidad.json`: `editorial.entradilla` (máximo 280) y `redes.linkedin` (texto, firma, medición, enlace del redactor)
+- [x] Las 103 piezas con `entradilla` (76 de su `summary`, 27 a mano; sin cifras nuevas; sin mover el resto del fichero)
+- [x] `src/ghost_publish.py`: el resumen del post es la entradilla; descripción para buscadores sin corte a media palabra; `resumenes_en_ghost`, `poner_resumen`
+- [x] `src/ghost_agenda.py`, `src/prensa_publicar.py`, `src/export_search_index.py`: mismo recorte; el índice lleva la entradilla
+- [x] `src/redaccion.py`: campo `entradilla` en el editor, validación y propuesta de la IA
+- [x] `api/gestor.py`: `entradilla` y `linkedin` en la ficha de la pieza, `entradillas_al_dia` en el cron `web_reintentos`, columnas de «La voz del editor» con entradilla
+- [x] `src/compartir.py`: texto y enlace de LinkedIn
+- [x] `app/public/gestor/index.html`: contador de la entradilla en el editor; tarjeta «Compartir en LinkedIn» (probada en pantalla de móvil y de ordenador con datos reales de una pieza y la API simulada); `app/public/sitio/m.js`: entrada en el menú ✎
+- [x] `docs/tarea-edicion-diaria.md`, `docs/tarea-batida.md`, `docs/tarea-voz-del-editor.md`, comandos `edicion-diaria`, `noticias-gestor`, `batida`, `pieza-bajo-demanda`, `retoques`; `docs/manual-operativo.md`, `docs/estandar-profundidad.md`, `docs/arquitectura.md`, `docs/gestores-portal.md`, `CLAUDE.md`, specs vivas
+- [x] `tests/test_entradilla.py` (16 pruebas sin red); `tipos.py validar`, `taxonomia.py validar` y `entradilla.py validar` en orden
+- [ ] Rainer: probar el botón desde su LinkedIn

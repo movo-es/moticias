@@ -23,6 +23,7 @@ import prensa_comun as P  # noqa: E402
 import prensa_asesor as A  # noqa: E402
 import prensa_impacto as I  # noqa: E402
 import tipos as T  # noqa: E402  (tipo de contenido: nota_de_prensa; openspec tipos-de-contenido)
+import entradilla as EN  # noqa: E402  (resúmenes que no se cortan a media palabra)
 from taxonomia import Taxonomia  # noqa: E402
 
 V = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
@@ -89,7 +90,7 @@ def post_de(n, tx):
           "datePublished": n.get("publicada_en"), "inLanguage": "es-ES", "genre": "Press release",
           "author": {"@type": "Organization", "name": n["organizacion"]["nombre"], "url": n["organizacion"].get("web") or None},
           "publisher": {"@type": "Organization", "name": V["name"], "url": "https://%s/" % V["domain"]}}
-    return {"title": n["titulo"], "slug": n["id"], "html": cuerpo_html(n), "custom_excerpt": (n.get("subtitulo") or "")[:300], "tags": tags,
+    return {"title": n["titulo"], "slug": n["id"], "html": cuerpo_html(n), "custom_excerpt": EN.recortar(n.get("subtitulo") or "", 300), "tags": tags,
             "meta_title": "%s · Nota de prensa de %s" % (n["titulo"][:60], n["organizacion"]["nombre"]),
             "meta_description": (n.get("subtitulo") or n["cuerpo_md"][:300])[:500], "featured": False,
             "published_at": n.get("publicada_en"), "codeinjection_head": '<script type="application/ld+json">%s</script>' % json.dumps(jl, ensure_ascii=False)}
