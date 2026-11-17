@@ -112,3 +112,17 @@ Respuesta corta: `moticias.com/agenda/` reúne las ferias, congresos y jornadas 
 - Ninguno de los dos publica. «Aprobar» pide marcar el texto y la imagen y elegir «Publicar ahora» o «Programar para el lunes a las 08:00».
 - La tarjeta enseña también lo encargado que aún no ha llegado, las columnas ya publicadas y el enlace a `/la-voz-del-editor/`.
 - La imagen candidata se ve en la tarjeta aunque todavía no esté en Ghost; se sube a Ghost al aprobar.
+
+## Entradilla y «Compartir en LinkedIn» (17-11-2026, cambio `entradilla-y-linkedin`)
+- **Entradilla.** Cada pieza tiene su campo «Entradilla»: lo que se lee en las tarjetas de moticias.com, en los listados y al compartir. En el editor de la pieza (`Editar`) hay un contador: frases completas, como mucho 280 caracteres. Si no cabe o no acaba en punto, el gestor no la guarda y dice por qué. Nada se corta ya a media palabra.
+- **Compartir en LinkedIn.** En la ficha de cada pieza publicada (`https://app.moticias.com/gestor/?pieza=<id>&accion=linkedin`; también en el menú ✎ de moticias.com) hay una tarjeta con la publicación preparada: la entradilla, la línea «Suscríbete gratis para seguir leyendo:» con el enlace a la pieza y la firma «moticias.com - Noticias con M de Movilidad y Transportes». El texto se puede retocar antes.
+  - «Compartir en LinkedIn» copia el texto y abre LinkedIn. En el ordenador, la publicación llega ya escrita; en el móvil se abre el menú de compartir del teléfono (se elige LinkedIn) o se pega el texto.
+  - La imagen la pone LinkedIn: es la tarjeta del enlace, con la foto y el titular de la pieza. LinkedIn no admite una imagen dentro de un enlace de compartir.
+  - No publica nada por su cuenta: publica la persona, en su LinkedIn. Las piezas pendientes o retiradas no se comparten.
+  - El enlace lleva `utm_source=linkedin` para saber cuántos lectores llegan por ahí. Los textos se cambian en `verticals/movilidad.json → redes.linkedin`.
+
+## «La voz del editor», visual y siempre con imagen (17-11-2026, cambio `voz-visual`)
+- **En la web.** La página `/la-voz-del-editor/` tiene cabecera propia, la última columna en grande con su imagen y las anteriores en rejilla. Cada columna se abre con la imagen a toda la anchura y el titular encima, el texto en serif a una columna y los datos y fuentes recogidos al final.
+- **Publicidad.** En esas páginas no hay cajas arriba ni en medio: una sola, al final.
+- **Imagen obligatoria.** En la tarjeta «La voz del editor» de la «Cola» (`https://app.moticias.com/gestor/?vista=cola`), una columna sin imagen no se puede aprobar. Si la escribes tú, el gestor encarga la imagen a la redacción en ese momento; también puedes pedirla con «Pedir otra versión».
+- **Avisos.** Si la imagen mide menos de 1.600 px de ancho o no es horizontal, la tarjeta y la hoja de aprobación lo dicen («Ojo: …»): puedes aprobarla igual o pedir otra. Al aprobar se ve la imagen.

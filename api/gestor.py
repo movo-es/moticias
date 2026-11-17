@@ -45,6 +45,9 @@ import seguimiento as S  # noqa: E402
 import prensa as PR  # noqa: E402  (prensa: medios, periodistas, envíos y coberturas; openspec/changes/prensa-y-medios/)
 import tipos as T  # noqa: E402
 import agenda_gestor as AG  # noqa: E402  (agenda de eventos: openspec agenda-de-eventos)
+import entradilla as EN  # noqa: E402  (entradilla de las tarjetas: frases completas que caben; openspec entradilla-y-linkedin)
+import compartir as CP  # noqa: E402  (botón «Compartir en LinkedIn» de cada pieza)
+import voz as VZ  # noqa: E402  (la imagen de «La voz del editor»: siempre, y que aguante la apertura; openspec voz-visual)
 import restaurar as RS  # noqa: E402  (restauración desde el gestor; openspec restaurar-copia)  (tipos de contenido: marca y rel en un solo sitio; openspec tipos-de-contenido)
 
 REPO = os.environ.get("GITHUB_REPO", "movo-es/moticias")
@@ -217,6 +220,8 @@ def detalle(pid):
     r = resumen_pieza(a, prods)
     r["candidatos"] = M.candidatos(a, prods)
     r["summary"] = a.get("summary")
+    r["entradilla"] = EN.de(a)  # lo que se ve en las tarjetas y lo que se comparte (nunca cortada a media palabra)
+    r["linkedin"] = CP.linkedin(a, v)  # texto y enlace del botón «Compartir en LinkedIn»; None si la pieza no está publicada
     r["vista"] = M.insertar_en_medio(G.md_to_html(a.get("body_md", "")), M.cajas_html(a, v, G.inline))
     r["url"] = "https://%s/%s/" % (v.get("domain", "www.moticias.com"), a["id"])
     r["retoques"] = retoques_de(pid)
@@ -810,7 +815,7 @@ def ficha_redaccion(pid):
             "kind": a.get("kind"), "date": a.get("date"), "author": a.get("author"), "section": a.get("section"), "url": _url_pieza(a, v),
             "revised_at": a.get("revised_at"), "revisiones": (a.get("revisiones") or [])[-8:], "correcciones": a.get("correcciones") or [],
             "fuentes": [{"medio": x.get("outlet"), "titulo": x.get("title"), "url": x.get("url")} for x in a.get("sources") or []],
-            "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()},
+            "enfoques": {k: t.split(":")[0] for k, t in R.ENFOQUES.items()}, "entradilla_max": EN.config(v)["max"],
             "firma": {"actual": "editor_jefe" if F.es_del_editor_jefe(a, c) else "redaccion", "editor_jefe": c["editor_jefe"], "redaccion": c["redaccion"],
                       "importante": imp, "motivo": mot, "propuesta": dec["firma"], "cupo": dec["cupo"]}}
 
@@ -860,6 +865,12 @@ def _hoy_madrid():
     return (utc + datetime.timedelta(hours=2 if ult(3) <= utc.date() < ult(10) else 1)).date().isoformat()
 
 
+def _programada(a):
+    """¿La pieza está aprobada pero aún no ha salido? Compara instantes, no textos con distinto huso (17-11-2026)."""
+    import export_search_index as X
+    return X.en_el_futuro(a.get("published_at"))
+
+
 def voz_propuestas():
     """Las propuestas de «La voz del editor» pendientes de aprobación (kind opinion), con lo que hace falta para decidir."""
     out = []
@@ -870,14 +881,15 @@ def voz_propuestas():
             continue
         if a.get("kind") != "opinion" or a.get("status") not in ("pendiente", "borrador", "publicado"):
             continue
-        if a.get("status") == "publicado" and (a.get("published_at") or "") < datetime.datetime.now().astimezone().isoformat():
+        if a.get("status") == "publicado" and not _programada(a):
             continue  # ya salió
         img = a.get("image") or {}
         out.append({"id": a["id"], "title": a.get("title"), "subtitle": a.get("subtitle"), "enfoque": (a.get("voz") or {}).get("enfoque") or a.get("summary"),
                     "palabras": len((a.get("body_md") or "").split()), "status": a.get("status"), "published_at": a.get("published_at"),
                     "fuentes": len(a.get("sources") or []),
                     "semana": (a.get("voz") or {}).get("semana"), "image": {"src": img.get("src"), "credit": img.get("credit"), "license": img.get("license"),
-                    "source_url": img.get("source_url") or img.get("url"), "alt": img.get("alt")} if img else None,
+                    "source_url": img.get("source_url") or img.get("source") or img.get("url"), "alt": img.get("alt")} if img.get("src") else None,
+                    "imagen_impide": VZ.problemas_imagen(a, vertical())[0], "imagen_avisos": VZ.problemas_imagen(a, vertical())[1],
                     "ghost": FOTOS_GHOST_URL(img.get("src"))})
     return sorted(out, key=lambda x: (x["status"] != "pendiente", x["id"]))
 
@@ -900,13 +912,13 @@ def FOTOS_GHOST_URL(src):
 
 def voz_publicadas(n=5):
     """Las últimas columnas de «La voz del editor» ya publicadas, para verlas y abrirlas desde el gestor."""
-    out, ahora, v = [], datetime.datetime.now().astimezone().isoformat(), vertical()
+    out, v = [], vertical()
     for f in glob.glob(os.path.join(ROOT, "data", "articles", "*.json")):
         try:
             a = json.load(open(f, encoding="utf-8"))
         except ValueError:
             continue
-        if a.get("kind") == "opinion" and a.get("status") == "publicado" and (a.get("published_at") or "") <= ahora:
+        if a.get("kind") == "opinion" and a.get("status") == "publicado" and not _programada(a):
             out.append({"id": a["id"], "title": a.get("title"), "date": a.get("date"), "url": _url_pieza(a, v)})
     return sorted(out, key=lambda x: x["date"] or "", reverse=True)[:n]
 
@@ -952,6 +964,7 @@ def voz_nueva_pieza(d, quien, v=None):
          "author": cfg.get("autor", "Rainer Uphoff"), "author_role": (v.get("editor") or {}).get("role") or "Editor jefe de MOTICIAS",
          "author_note": (v.get("editor") or {}).get("interests_note"),
          "date": hoy, "event_date": hoy, "featured": 0, "kicker": "La voz del editor", "title": titulo, "subtitle": sub, "summary": resumen,
+         "entradilla": EN.proponer(primer, EN.config(v)["max"]) or EN.recortar(primer, EN.config(v)["max"]),
          "body_md": texto, "image": None, "relevance": "ALTA", "importancia": 4,
          "sources": [{"kind": "oficial" if _dominio_oficial(_dominio(u)) else "medios", "outlet": _dominio(u) or "enlace", "title": u, "url": u,
                       "published": None, "accessed": hoy} for u in enlaces],
@@ -970,6 +983,9 @@ def voz_nueva_pieza(d, quien, v=None):
     return a
 
 
+VOZ_IMAGEN_MARCA = "LA VOZ DEL EDITOR · imagen para la columna"  # encargo que atiende /noticias-gestor (docs/tarea-voz-del-editor.md, paso 3)
+
+
 def accion_voz(ses, d):
     """«La voz del editor» desde el gestor (cambio voz-desde-el-panel, 16-11-2026). `crear`: el editor jefe escribe la columna
     y queda pendiente de su aprobación. `encargar`: da el tema y su enfoque y la redacción horaria prepara el borrador
@@ -986,8 +1002,16 @@ def accion_voz(ses, d):
         if not ok:
             return 502, {"error": det}
         BD.registrar(quien, "voz_crear", a["id"], {"commit": det, "palabras": len(a["body_md"].split())})
-        return 200, {"ok": True, "id": a["id"], "commit": det, "sin_fuentes": not a["sources"],
-                     "aviso": "Guardada como pendiente. Léela, añade una imagen si quieres y apruébala para publicarla."}
+        # Siempre con imagen (17-11-2026): la que escribe él nace sin foto, así que se encarga a la redacción en el momento.
+        pedida = True
+        try:
+            BD.insertar("encargos_gestor", {"texto": "%s\nColumna: %s\nTítulo: %s" % (VOZ_IMAGEN_MARCA, a["id"], a["title"][:200]), "enlace": None, "dominio": None,
+                                           "clase_fuente": None, "pedido_por": quien, "perfil": ses["perfil"], "publicacion": "revision"})
+        except BD.ErrorBD:
+            pedida = False
+        return 200, {"ok": True, "id": a["id"], "commit": det, "sin_fuentes": not a["sources"], "imagen_pedida": pedida,
+                     "aviso": "Guardada como pendiente. " + ("La redacción le busca la imagen en su próxima pasada y te avisa: sin imagen no se puede aprobar."
+                                                            if pedida else "Falta la imagen: pídela con «Pedir otra versión»; sin imagen no se puede aprobar.")}
     if acc == "encargar":
         tema, enfoque, enlaces = str(d.get("tema") or "").strip(), str(d.get("enfoque") or "").strip(), str(d.get("enlaces") or "").strip()
         if len(tema) < 8:
@@ -1084,6 +1108,38 @@ def reintentar_subidas(max_n=4):
     return {"ok": all(h["ok"] for h in hechas), "reintentadas": hechas}
 
 
+def entradillas_al_dia(segundos=200):  # menos de los cinco minutos que dura el pase de Ghost
+    """Deja en Ghost, como resumen de cada post, la entradilla de su pieza (cambio entradilla-y-linkedin, 17-11-2026).
+    Compara lo que viene con el despliegue con lo que tiene Ghost y cambia solo el resumen de los que no coinciden —ni el
+    texto, ni la fecha, ni el estado—. Antes de escribir lee la pieza fresca del repositorio, para no pisar una entradilla
+    que el editor acaba de cambiar. Lo llama el cron `web_reintentos`; si no hay nada distinto, es una sola consulta."""
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key or ":" not in key:
+        return {"ok": False, "detalle": "sin clave de Ghost en el gestor"}
+    fin = time.time() + segundos
+    url = url.rstrip("/")
+    token = G.ghost_token(key)
+    posts = G.resumenes_en_ghost(url, token)
+    hechas, fallos, quedan = [], [], 0
+    for p in sorted(glob.glob(os.path.join(ROOT, "data", "articles", "*.json"))):
+        a = json.load(open(p, encoding="utf-8"))
+        post = posts.get(a["id"])
+        if not post or (post.get("custom_excerpt") or "") == EN.de(a):
+            continue
+        if time.time() > fin:
+            quedan += 1
+            continue
+        fresca, _ = leer("data/articles/%s.json" % a["id"])
+        texto = EN.de(fresca or a)
+        if (post.get("custom_excerpt") or "") == texto:
+            continue
+        ok, det = G.poner_resumen(post, texto, url, token)
+        (hechas if ok else fallos).append(a["id"] if ok else {"id": a["id"], "error": det})
+    if hechas or fallos:
+        BD.registrar("gestor (entradillas)", "entradillas_al_dia", None, {"cambiadas": len(hechas), "fallos": fallos[:10], "quedan": quedan})
+    return {"ok": not fallos, "cambiadas": len(hechas), "fallos": fallos[:10], "quedan": quedan}
+
+
 def accion_redaccion(ses, d, cabeceras):
     acc, pid = d.get("accion"), d.get("id")
     ruta = _ruta_pieza(pid)
@@ -1129,7 +1185,11 @@ def accion_redaccion(ses, d, cabeceras):
             if a.get("status") not in ("pendiente", "borrador"):
                 return 400, {"error": "la pieza no está pendiente"}
             if a.get("kind") == "opinion":  # «La voz del editor»: texto e imagen aprobados expresamente
-                if not (d.get("texto_ok") and (d.get("imagen_ok") or not a.get("image"))):
+                # Siempre con imagen (decisión de Rainer, 17-11-2026, cambio voz-visual): la columna se abre con ella.
+                impiden, _ = VZ.problemas_imagen(a, v)
+                if impiden:
+                    return 400, {"error": "No se puede aprobar todavía: %s. Pide la imagen con «Pedir otra versión»." % "; ".join(impiden)}
+                if not (d.get("texto_ok") and d.get("imagen_ok")):
                     return 400, {"error": "aprueba expresamente el texto y la imagen"}
                 # Sale el lunes a las 08:00 salvo que el editor jefe elija «Publicar ahora» (voz-desde-el-panel, 16-11-2026).
                 if d.get("cuando") == "ahora":
@@ -2541,7 +2601,12 @@ class handler(BaseHTTPRequestHandler):
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
-            return self._enviar(200, reintentar_subidas())
+            r = reintentar_subidas()
+            try:  # y, de paso, que el resumen de cada post en Ghost sea la entradilla de su pieza (nunca tumba los reintentos)
+                r["entradillas"] = entradillas_al_dia()
+            except Exception as e:  # noqa: BLE001
+                r["entradillas"] = {"ok": False, "detalle": str(e)[:300]}
+            return self._enviar(200, r)
         if a == "copias_vigilar":  # Vercel Cron (diario): ¿hay copia reciente del Mac? Si no, correo a Rainer
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):

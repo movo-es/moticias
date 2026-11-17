@@ -71,6 +71,9 @@ details summary{cursor:pointer;color:var(--mute);font-size:14px;padding:6px 0}
 .prev h3{font-family:inherit;font-size:20px;margin:0 0 6px}.prev .sub{color:#555;margin:0 0 10px}
 .marca{background:#fff1c2;padding:0 2px;border-radius:3px}
 .warn{background:#fff6e6;border:1px solid #e7c48d;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.li-prev{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:10px 0;background:#fff}
+.li-prev img{width:112px;height:76px;object-fit:cover;flex:none}.li-prev div{padding:6px 10px 6px 0;min-width:0}.li-prev b{display:block;font-size:14px;line-height:1.25}.li-prev span{font-size:12px;color:#667}
+.li-prev.sin{padding:8px 10px}.cuenta.mal{color:var(--bad);font-weight:600}
 .okbox{background:#eef6f1;border:1px solid #bcd9c8;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
 .chk{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:14px}.chk input{width:auto;margin-top:3px}
 .ad-prev{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff}.ad-prev .l{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#7a837e}
@@ -281,7 +284,8 @@ function qVoz(){
     <p><button class="b" id="voz-nueva" style="width:100%">+ Nueva columna</button></p>
     ${P.map(p => `<div class="paso" style="display:block;padding:12px 0">
       ${p.ghost ? `<img src="${E(p.ghost)}" alt="${E((p.image || {}).alt || "")}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin:0 0 6px">` : ""}
-      ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="mute" style="font-size:12px">Sin imagen</div>`}
+      ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="warn" style="font-size:13px">Falta la imagen. «La voz del editor» sale siempre con una: la redacción la busca en su próxima pasada, o pídela con «Pedir otra versión».</div>`}
+      ${(p.imagen_avisos || []).map(x => `<div class="mute" style="font-size:12px;color:#8a5a00">Ojo: ${E(x)}.</div>`).join("")}
       <div class="q-t">${E(p.title)}</div>${p.enfoque ? `<div class="mute">Enfoque: ${E(p.enfoque)}</div>` : ""}
       <div class="mute" style="font-size:12px">${p.palabras} palabras · ${p.fuentes} ${p.fuentes === 1 ? "fuente" : "fuentes"} · ${p.status === "publicado" ? "Aprobada: sale el " + E(qFechaLarga(p.published_at)) : "Pendiente de tu aprobación"}</div>
       <div class="q-acc" style="padding:8px 0 0">${p.status === "publicado" ? `<a class="b2" href="?pieza=${encodeURIComponent(p.id)}">Ver</a>` :
@@ -333,16 +337,19 @@ function qVozEnganchar(){
   });
   document.querySelectorAll("[data-voz-ok]").forEach(b => b.onclick = () => {
     const p = Q.voz.propuestas.find(x => x.id === b.dataset.vozOk);
+    if ((p.imagen_impide || []).length || !p.image) return aviso("No se puede aprobar todavía: " + ((p.imagen_impide || [])[0] || "falta la imagen") + ". Pídela con «Pedir otra versión».", true);
     const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Sale firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
       ${p.fuentes ? "" : `<p class="mute" style="color:#b3261e">Esta columna no enlaza ninguna fuente. Si cita cifras, fechas o declaraciones, añade antes los enlaces en «Leer y editar».</p>`}
       <label class="chk"><input type="checkbox" id="v-t"> He leído el texto y lo apruebo</label>
-      ${p.image ? `<label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>` : ""}
+      ${p.ghost ? `<img src="${E(p.ghost)}" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;margin:6px 0">` : ""}
+      ${(p.imagen_avisos || []).map(x => `<p class="mute" style="color:#8a5a00;margin:4px 0">Ojo: ${E(x)}. Puedes aprobarla o pedir otra.</p>`).join("")}
+      <label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen: se abre a toda la anchura con el titular encima (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>
       <label class="chk"><input type="radio" name="v-c" value="ahora"> Publicar ahora</label>
       <label class="chk"><input type="radio" name="v-c" value="lunes" checked> Programar para el ${E(qFechaLarga(Q.voz.lunes))}</label>
       <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Aprobar</button></div>`);
     c.querySelector("#q-no").onclick = qCerrar;
     c.querySelector("#q-si").onclick = async ev => {
-      const t = c.querySelector("#v-t").checked, i = p.image ? c.querySelector("#v-i").checked : true;
+      const t = c.querySelector("#v-t").checked, i = c.querySelector("#v-i").checked;
       if (!t || !i) return aviso("Marca el texto y la imagen para aprobar", true);
       const cuando = c.querySelector('input[name="v-c"]:checked').value;
       ev.target.disabled = true;
@@ -632,6 +639,39 @@ function cajaTexto(p) {
   </article>
   ${acciones}</details>`;
 }
+// «Compartir en LinkedIn» (decisión de Rainer, 17-11-2026): la entradilla, la línea de suscripción con el enlace y la firma.
+// La imagen la pone LinkedIn con la tarjeta del enlace (foto y titular de la pieza). Publica la persona, en su LinkedIn.
+function cajaLinkedin(p) {
+  const l = p.linkedin; if (!l) return "";
+  return `<div class="card" id="li"><h2>Compartir en LinkedIn</h2>
+  <p class="mute">Deja la publicación preparada en tu LinkedIn y la publicas tú. La imagen la pone LinkedIn con la tarjeta del enlace: la foto y el titular de la pieza.</p>
+  <div class="li-prev${p.foto ? "" : " sin"}">${p.foto ? `<img src="${E(p.foto.url)}" alt="">` : ""}<div><b>${E(l.titulo)}</b><span>moticias.com</span></div></div>
+  <label>Texto de la publicación · <span id="li-n" class="cuenta"></span></label>
+  <textarea id="li-tx" style="min-height:210px">${E(l.texto)}</textarea>
+  <div class="row"><button class="b" id="li-ir">Compartir en LinkedIn</button><button class="b2" id="li-copiar">Copiar el texto</button></div>
+  <p class="mute" style="margin-bottom:0">Al pulsar se copia el texto y se abre LinkedIn. En el ordenador llega ya escrito; en el móvil, elige LinkedIn en el menú de compartir o pega el texto.</p></div>`;
+}
+function engancharLinkedin(p) {
+  const l = p.linkedin, tx = $("#li-tx"); if (!l || !tx) return;
+  const base = l.url.split("?")[0];
+  const cuenta = () => { const n = tx.value.trim().length, c = $("#li-n"); c.textContent = n + " de " + l.max + " caracteres"; c.classList.toggle("mal", n > l.max); };
+  const copiar = t => { try { return navigator.clipboard.writeText(t).then(() => true, () => false); } catch (e) { return Promise.resolve(false); } };
+  tx.oninput = cuenta; cuenta();
+  $("#li-copiar").onclick = async () => { if (await copiar(tx.value.trim())) aviso("Texto copiado"); else { tx.select(); aviso("Selecciónalo y cópialo a mano", true); } };
+  $("#li-ir").onclick = () => {
+    const t = tx.value.trim();
+    if (!t) return aviso("Escribe el texto de la publicación", true);
+    if (t.length > l.max) return aviso("LinkedIn admite " + l.max + " caracteres", true);
+    if (!t.includes(base)) return aviso("Falta el enlace a la pieza: sin él LinkedIn no pone la imagen", true);
+    const copia = copiar(t);  // se lanza antes de salir de la página: así el texto queda en el portapapeles pase lo que pase
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && navigator.share) {  // móvil: el menú de compartir del teléfono
+      navigator.share({text: t}).catch(e => { if (e && e.name !== "AbortError") copia.then(ok => aviso(ok ? "Texto copiado: pégalo en LinkedIn" : "Copia el texto y pégalo en LinkedIn", !ok)); });
+      return;
+    }
+    window.open(l.plantilla.replace("{texto}", encodeURIComponent(t)).replace("{url}", encodeURIComponent(l.url)), "_blank", "noopener");
+    copia.then(ok => aviso(ok ? "Texto copiado. Si LinkedIn no lo trae escrito, pégalo." : "Se abre LinkedIn con la publicación preparada"));
+  };
+}
 function pintarPieza(p, desdeCorreo) {
   const act = p.menciones.filter(m => m.estado !== "retirada"), ret = p.menciones.filter(m => m.estado === "retirada");
   const usados = new Set(act.map(m => m.producto));
@@ -643,6 +683,7 @@ function pintarPieza(p, desdeCorreo) {
   ${p.status === "pendiente" ? `<span class="mute">Aún no está en moticias.com (borrador): la pieza entera está aquí debajo.</span>` : `<a href="${E(p.url)}" target="_blank" rel="noopener" class="mute">Ver en moticias.com ↗</a>`}</div>
   ${cajaJefe(p)}
   ${cajaTexto(p)}
+  ${cajaLinkedin(p)}
   ${!pub && prop ? `<div class="card mute">Puedes proponer cajas de contenido patrocinado: quedan pendientes hasta que el editor jefe las publique.</div>` : ""}
   ${p.kind === "analisis" ? `<div class="card"><b>Análisis</b><p class="mute">Los análisis no llevan contenido patrocinado.</p></div>` : ""}
   ${act.map(m => cajaMencion(m, pub)).join("")}
@@ -677,6 +718,7 @@ function pintarPieza(p, desdeCorreo) {
   app.querySelectorAll("[data-acc]").forEach(b => b.onclick = () => mencion(p, b.dataset.prod, b.dataset.acc, b));
   app.querySelectorAll("[data-pos]").forEach(b => b.onclick = () => { if (!b.classList.contains("on")) mencion(p, b.dataset.prod, "posicion", b, {posicion: b.dataset.pos}); });
   app.querySelectorAll("[data-anadir]").forEach(b => b.onclick = () => mencion(p, b.dataset.anadir, "anadir", b));
+  engancharLinkedin(p);
   app.querySelectorAll("[data-editar]").forEach(b => b.onclick = () => {
     const box = b.closest(".card"), m = p.menciones.find(x => x.producto === b.dataset.editar);
     box.querySelector(".editor").innerHTML = `<label>Texto de la caja</label><textarea id="tx">${E(m.texto)}</textarea><label>Texto del enlace</label><input id="cta" value="${E(m.cta)}">
@@ -685,6 +727,7 @@ function pintarPieza(p, desdeCorreo) {
     box.querySelector("#g").onclick = ev => mencion(p, m.producto, "editar", ev.target, {texto: box.querySelector("#tx").value, cta: box.querySelector("#cta").value});
   });
   scrollTo(0,0);
+  if (params().get("accion") === "linkedin" && $("#li")) $("#li").scrollIntoView();  // desde el menú ✎ de moticias.com
 }
 function cajaRetoque(r) {
   const est = {pendiente: ["pro", "Pendiente · la redacción lo atiende en menos de una hora"], aplicado: ["pub", "Aplicado y publicado"], sin_fuentes: ["ret", "Sin fuente primaria: la pieza no cambió"], cancelado: ["", "Cancelado"]}[r.estado] || ["", r.estado];
@@ -736,9 +779,9 @@ async function abrirEditor(id, modo) {
   pintarEditor();
 }
 function campoEd(k) {
-  const largo = ["title", "subtitle", "body_md", "summary", "actors", "relevance_for", "why", "next", "key_fact"].includes(k);
+  const largo = ["title", "subtitle", "body_md", "entradilla", "summary", "actors", "relevance_for", "why", "next", "key_fact"].includes(k);
   const alto = {body_md: 420, title: 64, subtitle: 80, key_fact: 64}[k] || 90;
-  return `<label>${E(ED.f.nombres[k])}${k === "summary" ? ` · <span id="pal-summary"></span>` : k === "body_md" ? ` · <span id="pal-body"></span>` : ""}</label>${largo ? `<textarea data-c="${k}" style="min-height:${alto}px">${E(ED.campos[k])}</textarea>` : `<input data-c="${k}" value="${E(ED.campos[k])}">`}`;
+  return `<label>${E(ED.f.nombres[k])}${k === "summary" ? ` · <span id="pal-summary"></span>` : k === "body_md" ? ` · <span id="pal-body"></span>` : k === "entradilla" ? ` · <span id="car-entradilla" class="cuenta"></span>` : ""}</label>${largo ? `<textarea data-c="${k}" style="min-height:${alto}px">${E(ED.campos[k])}</textarea>` : `<input data-c="${k}" value="${E(ED.campos[k])}">`}`;
 }
 const palabras = t => (String(t || "").trim().match(/\S+/g) || []).length;
 function pintarEditor() {
@@ -760,7 +803,7 @@ function pintarEditor() {
       <label>Indicación tuya (opcional)</label><textarea id="ins" placeholder="Ej.: abre con lo que significa para los operadores canarios y deja la cronología para el final"></textarea>
       <p><button class="b" id="proponer" style="width:100%">Proponer versión</button></p></div><div id="res"></div>`;
   } else {
-    app.innerHTML = cab + `<div class="grid2"><div class="card"><h2>Texto</h2>${["title", "subtitle", "kicker", "summary", "body_md"].map(campoEd).join("")}
+    app.innerHTML = cab + `<div class="grid2"><div class="card"><h2>Texto</h2>${["title", "subtitle", "kicker", "entradilla", "summary", "body_md"].map(campoEd).join("")}
       <details><summary>Guía rápida y dato clave</summary>${["key_fact", "actors", "relevance_for", "why", "next"].map(campoEd).join("")}</details></div>
       <div><div class="card"><h2>Vista previa</h2><div class="prev" id="prev"></div></div>
       <div class="card"><h2>Firma</h2>
@@ -793,7 +836,9 @@ function pintarEditor() {
     if (ED.prop) pintarPropuesta();
   } else {
     const prev = () => { leerCampos(); $("#prev").innerHTML = `<p class="mute" style="margin:0">${E(ED.campos.kicker)}</p><h3>${E(ED.campos.title)}</h3><p class="sub">${E(ED.campos.subtitle)}</p><p><b>${E(ED.campos.summary)}</b></p>${md(ED.campos.body_md)}`;
-      const ps = $("#pal-summary"); if (ps) ps.textContent = palabras(ED.campos.summary) + " palabras"; const pb = $("#pal-body"); if (pb) pb.textContent = palabras(ED.campos.body_md) + " palabras"; };
+      const ps = $("#pal-summary"); if (ps) ps.textContent = palabras(ED.campos.summary) + " palabras"; const pb = $("#pal-body"); if (pb) pb.textContent = palabras(ED.campos.body_md) + " palabras";
+      // La entradilla tiene que caber entera en las tarjetas: se cuenta mientras se escribe y el servidor no admite más.
+      const ce = $("#car-entradilla"); if (ce) { const n = String(ED.campos.entradilla || "").trim().length, mx = ED.f.entradilla_max || 280; ce.textContent = n + " de " + mx + " caracteres" + (n > mx ? " · sobran " + (n - mx) + ": no cabe en las tarjetas" : ""); ce.classList.toggle("mal", n > mx); } };
     app.querySelectorAll("[data-c]").forEach(i => i.oninput = () => { clearTimeout(prev.t); prev.t = setTimeout(prev, 250); });
     prev();
     $("#firma").onclick = ev => { const b = ev.target.closest("button"); if (b) $("#firma").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); };

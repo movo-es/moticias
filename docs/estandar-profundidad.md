@@ -22,7 +22,7 @@ MOTICIAS es un portal profesional de transporte de personas (tierra, mar y aire)
 - `key_data`: de 4 a 8 cifras o datos duros (importes, plazos, kilómetros, viajeros, fechas, referencias normativas), cada uno con su fuente y fecha.
 - `timeline`: de 4 a 10 hitos fechados, pasados y futuros (AAAA-MM-DD; si solo se conoce el mes, AAAA-MM).
 - `sources`: TODAS las usadas, de 6 a 12, al menos 2 `oficial` (BOE, DOUE, EUR-Lex, ministerio, Moncloa, regulador, autoridad portuaria, Adif, Renfe, Aena, Puertos del Estado, CNMV, TED, PLACSP, Parlamento Europeo, Comisión, empresa en su web corporativa). Conserva las fuentes de la entrada que sigan siendo válidas. `published` = fecha de publicación del documento o artículo; `accessed` = la fecha de hoy.
-- `fixes`: solo los bloques de la entrada que contengan un error o se queden cortos; omite los que estén bien. El `summary` no pasa de 110 palabras.
+- `fixes`: solo los bloques de la entrada que contengan un error o se queden cortos; omite los que estén bien. El `summary` no pasa de 110 palabras. La `entradilla` (tarjetas, listados y LinkedIn) es aparte: frases completas, como mucho 280 caracteres, acabada en punto; si un arreglo cambia el hecho o el titular, se revisa también.
 - No cambies el `title` salvo error de hecho; si lo cambias, inclúyelo en `fixes.title` y explícalo en `notes`.
 
 ## Método de investigación (obligatorio antes de escribir)

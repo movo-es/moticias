@@ -1,0 +1,9 @@
+- [x] `app/public/sitio/m.js`: `ES_VOZ` (sin lateral ni cajas intermedias; una sola al final) y apartado 9 (página de la sección y columna)
+- [x] `src/voz.py` (validar · informe; medidas sin dependencias) y `verticals → voz_del_editor.imagen` y `.publicidad`
+- [x] `api/gestor.py`: sin imagen no se aprueba; avisos de imagen en las propuestas; encargo de imagen al crear la columna
+- [x] `app/public/gestor/index.html`: aviso de falta de imagen, avisos de tamaño y vista de la imagen al aprobar
+- [x] `portal/img/ghost-urls.json`: la foto de la columna publicada; índice regenerado
+- [x] `src/export_search_index.py` y gestor: lo recién publicado ya no se toma por programado
+- [x] `docs/tarea-voz-del-editor.md` (paso 3 y «Cómo se ve»), comandos `noticias-gestor` y `retoques`, `docs/gestores-portal.md`, `CLAUDE.md`, spec viva
+- [x] `tests/test_voz.py`: seis pruebas nuevas; probado sobre las páginas reales de moticias.com con el script nuevo, en móvil y en ordenador
+- [ ] Rainer: verlo en la web y elegir la foto nueva de «El polígono no tiene plan»

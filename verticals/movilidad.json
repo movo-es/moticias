@@ -229,6 +229,13 @@
    "name": "G. Jordan",
    "email": "redaccion@moticias.com",
    "nota": "decisión de Rainer, 9-11-2026: los commits de la redacción automática"
+  },
+  "entradilla": {
+   "decidido": "2026-11-17",
+   "cambio": "entradilla-y-linkedin",
+   "max": 280,
+   "min": 60,
+   "regla": "Cada pieza lleva su `entradilla`: el texto de las tarjetas, de los listados y de lo que se comparte. Frases completas, un solo párrafo, como mucho 280 caracteres (Ghost admite 300 en el resumen), sin puntos suspensivos y solo con hechos que ya están en la pieza. El bloque «De qué trata» (`summary`) no cambia. Nada se corta a media palabra: src/entradilla.py."
   }
  },
  "tipos_de_contenido": {
@@ -2715,6 +2722,19 @@
    "encargar": "El editor jefe da el tema y su enfoque; la redacción horaria (/noticias-gestor) prepara una propuesta con fuentes primarias e imagen candidata. El encargo empieza por «LA VOZ DEL EDITOR · columna de opinión».",
    "escribir": "El editor jefe escribe la columna en el gestor; queda pendiente de su aprobación, como las demás.",
    "intereses": "Si la columna toca el mercado de una empresa del grupo, la nota de intereses lo declara con su nombre y la pieza no lleva cajas de contenido patrocinado."
+  },
+  "imagen": {
+   "decidido": "2026-11-17",
+   "cambio": "voz-visual",
+   "ancho_min": 1600,
+   "proporcion_min": 1.3,
+   "candidatas": 3,
+   "regla": "Siempre con imagen, y bien elegida: horizontal, de al menos 1.600 px de ancho, nítida, del asunto concreto de la columna y con una idea visual clara; aguanta el titular encima. Se eligen tres candidatas mirándolas; la mejor va en `image` y las otras en `voz.imagenes_alternativas`. Sin imagen no se aprueba ni se publica (src/voz.py, api/gestor.py)."
+  },
+  "publicidad": {
+   "decidido": "2026-11-17",
+   "cambio": "voz-visual",
+   "regla": "En la página de la sección y en cada columna, ninguna caja compite arriba: una sola, y al final (cierre de la columna o antes del pie). Nunca lateral, ni entre la cabecera y el texto, ni dentro del texto."
   }
  },
  "seo": {
@@ -3333,5 +3353,21 @@
    }
   },
   "dominios_compartidos_nota": "Dominios compartidos por muchos organismos: el CRM casa la cuenta por dominio y nombre (lista en src/agenda_gestor.py)."
+ },
+ "redes": {
+  "decidido": "2026-11-17",
+  "cambio": "entradilla-y-linkedin",
+  "linkedin": {
+   "activo": true,
+   "texto": "{entradilla}\n\nSuscríbete gratis para seguir leyendo: {url}\n\n{firma}",
+   "firma": "moticias.com - Noticias con M de Movilidad y Transportes",
+   "utm": {
+    "utm_source": "linkedin",
+    "utm_medium": "social",
+    "utm_campaign": "compartir-gestor"
+   },
+   "abrir": "https://www.linkedin.com/feed/?shareActive=true&text={texto}",
+   "nota": "La imagen la pone LinkedIn con la tarjeta del enlace (la foto de la pieza). El gestor copia siempre el texto antes de abrir LinkedIn: el redactor de LinkedIn solo llega ya escrito en el ordenador; en el móvil se comparte con el menú del teléfono o se pega. Nada se publica solo: publica la persona en su LinkedIn."
+  }
  }
 }

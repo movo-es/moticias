@@ -18,7 +18,9 @@ Qué hace con cada pieza de data/articles/<id>.json:
 - Tipo de contenido (src/tipos.py): la pieza sin `tipo_contenido`, o con uno que no cuadra, NO se sube. Lleva la etiqueta
   interna #tipo-editorial o #tipo-noticia (y #analisis-editor-jefe si es un análisis firmado por el editor jefe) y su marca visible
   («Análisis», «Reportaje», «Noticia») al principio del cuerpo, para que no dependa del tema.
-- Metadatos: título, slug (= id), extracto (summary), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
+- Metadatos: título, slug (= id), extracto (la `entradilla` de la pieza: frases completas que caben en los 300 caracteres
+  del resumen de Ghost; src/entradilla.py — nunca los 300 primeros caracteres del summary, que cortaban a media palabra;
+  cambio entradilla-y-linkedin, 17-11-2026), etiquetas (#<section> interna; modo `m-<submodo>`, temas `tema-<id>` y
   territorios `t-<id>` con slug fijo; etiquetas libres que no repitan un eje), autor por defecto,
   fecha de publicación (published_at), imagen destacada (si hay URL pública; las /_blob/ no se suben todavía),
   codeinjection_head con JSON-LD NewsArticle.
@@ -41,6 +43,7 @@ from taxonomia import Taxonomia, plano  # noqa: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from menciones import cajas_html, insertar_en_medio  # noqa: E402  (cajas «Contenido patrocinado»; data/productos/README.md)
 import tipos as T  # noqa: E402  (tipos de contenido: marca, etiqueta interna y rel; openspec tipos-de-contenido)
+import entradilla as EN  # noqa: E402  (el resumen de las tarjetas: frases completas que caben; openspec entradilla-y-linkedin)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UA = "Moticias/1.0 (+https://moticias.com)"
@@ -483,9 +486,9 @@ def build_post(a, vertical, base_url, token=None):
     if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
     tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-editor-jefe
-    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
+    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": EN.de(a),
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("seo_title") or a.get("title"), "featured": a.get("featured") == 1,
-            "meta_description": (a.get("seo_description") or a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
+            "meta_description": EN.recortar(a.get("seo_description") or a.get("subtitle") or a.get("summary") or "", 500), "codeinjection_head": jsonld(a, vertical, url)}
     autor = autor_ghost(a, vertical, base_url, token)
     if autor:
         post["authors"] = [{"id": autor}]
@@ -570,6 +573,28 @@ def upsert(post, status, base_url, token):
         return None, res
     p = res["posts"][0]
     return {"ghost_id": p["id"], "url": p.get("url"), "status": p.get("status"), "updated_at": p.get("updated_at")}, None
+
+
+def resumenes_en_ghost(base_url, token):
+    """{slug: {"id", "custom_excerpt", "updated_at"}} de todos los posts (publicados, borradores y programados), por páginas."""
+    base, out, pagina = admin_base(base_url), {}, 1
+    while pagina and pagina < 50:
+        st, r = api("GET", "%s/ghost/api/admin/posts/?limit=100&page=%d&fields=id,slug,custom_excerpt,updated_at" % (base, pagina), token)
+        if st != 200:
+            raise RuntimeError("Ghost respondió %s al listar los posts" % st)
+        for p in r.get("posts") or []:
+            out[p["slug"]] = p
+        pagina = ((r.get("meta") or {}).get("pagination") or {}).get("next")
+    return out
+
+
+def poner_resumen(post, texto, base_url, token):
+    """Cambia solo el resumen (`custom_excerpt`) de un post: no toca el texto, la fecha ni el estado. Devuelve (ok, detalle)."""
+    st, r = api("PUT", "%s/ghost/api/admin/posts/%s/" % (admin_base(base_url), post["id"]), token,
+                {"posts": [{"custom_excerpt": texto, "updated_at": post["updated_at"]}]})
+    if st != 200:
+        return False, ((r.get("errors") or [{}])[0].get("message") or "HTTP %s" % st)[:200]
+    return True, "ok"
 
 
 def marcar_en_web(a, cuando=None):

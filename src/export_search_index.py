@@ -18,11 +18,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from taxonomia import Taxonomia, plano  # noqa: E402
 import tipos as T  # noqa: E402  (tipo de contenido y su marca; openspec tipos-de-contenido)
-
-
-def recortar(s, n=220):
-    s = " ".join(str(s or "").split())
-    return s if len(s) <= n else s[: n - 1].rsplit(" ", 1)[0] + "…"
+import entradilla as EN  # noqa: E402  (la entradilla de las tarjetas: frases completas; openspec entradilla-y-linkedin)
 
 
 FOTOS_GHOST = {}
@@ -37,7 +33,7 @@ def entrada(a, base):
     src = img.get("src") or ""
     gi = src if src.startswith("http") else FOTOS_GHOST.get(src[4:]) if src.startswith("img/") else None
     return {
-        "id": a["id"], "t": a.get("title"), "k": a.get("kicker"), "s": a.get("subtitle"), "r": recortar(a.get("summary")),
+        "id": a["id"], "t": a.get("title"), "k": a.get("kicker"), "s": a.get("subtitle"), "r": EN.de(a),
         "d": a.get("date"), "kind": a.get("kind"), "au": a.get("author"), "f": a.get("featured") or 0,
         "m": a.get("modo"), "sm": a.get("submodo"), "te": a.get("temas") or [], "tr": a.get("territorios") or [], "tg": a.get("tags") or [],
         "img": img.get("src"), "gi": gi, "alt": img.get("alt"), "sec": a.get("section"), "url": "%s/%s/" % (base.rstrip("/"), a["id"]),
@@ -53,6 +49,19 @@ def entrada(a, base):
     }
 
 
+def en_el_futuro(iso):
+    """¿Esa fecha de publicación aún no ha llegado? Compara instantes, no textos: «23:03+01:00» ya pasó a las 22:10 UTC
+    (el índice dejaba fuera durante una hora lo recién publicado desde el gestor; arreglado el 17-11-2026)."""
+    import datetime as _dt
+    try:
+        f = _dt.datetime.fromisoformat(str(iso or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if f.tzinfo is None:
+        f = f.astimezone()
+    return f > _dt.datetime.now(_dt.timezone.utc)
+
+
 def construir(data_dir=None, base="https://www.moticias.com", vertical="movilidad"):
     """El índice completo como diccionario (sin escribirlo). Lo usan main() y el servidor (api/gestor.py → indice_al_dia)."""
     data_dir = data_dir or os.path.join(ROOT, "data")
@@ -62,7 +71,7 @@ def construir(data_dir=None, base="https://www.moticias.com", vertical="movilida
         d = json.load(open(p, encoding="utf-8"))
         if d.get("status") != "publicado":  # solo lo que el lector puede abrir (sin estado = sin aprobar; 15-11-2026)
             continue
-        if (d.get("published_at") or "") > __import__("datetime").datetime.now().astimezone().isoformat():
+        if en_el_futuro(d.get("published_at")):
             continue  # programada (p. ej. «La voz del editor» aprobada que sale el lunes): aún no se ve
         piezas.append(entrada(d, base))
     piezas.sort(key=lambda e: (e["d"] or "", e["id"]), reverse=True)
