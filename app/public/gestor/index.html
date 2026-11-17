@@ -284,7 +284,8 @@ function qVoz(){
     <p><button class="b" id="voz-nueva" style="width:100%">+ Nueva columna</button></p>
     ${P.map(p => `<div class="paso" style="display:block;padding:12px 0">
       ${p.ghost ? `<img src="${E(p.ghost)}" alt="${E((p.image || {}).alt || "")}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin:0 0 6px">` : ""}
-      ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="mute" style="font-size:12px">Sin imagen</div>`}
+      ${p.image ? `<div class="mute" style="font-size:12px">Imagen candidata: ${E(p.image.credit || "sin crédito")} · ${E(p.image.license || "sin licencia")}${p.image.source_url ? ` · <a href="${E(p.image.source_url)}" target="_blank" rel="noopener">origen</a>` : ""}</div>` : `<div class="warn" style="font-size:13px">Falta la imagen. «La voz del editor» sale siempre con una: la redacción la busca en su próxima pasada, o pídela con «Pedir otra versión».</div>`}
+      ${(p.imagen_avisos || []).map(x => `<div class="mute" style="font-size:12px;color:#8a5a00">Ojo: ${E(x)}.</div>`).join("")}
       <div class="q-t">${E(p.title)}</div>${p.enfoque ? `<div class="mute">Enfoque: ${E(p.enfoque)}</div>` : ""}
       <div class="mute" style="font-size:12px">${p.palabras} palabras · ${p.fuentes} ${p.fuentes === 1 ? "fuente" : "fuentes"} · ${p.status === "publicado" ? "Aprobada: sale el " + E(qFechaLarga(p.published_at)) : "Pendiente de tu aprobación"}</div>
       <div class="q-acc" style="padding:8px 0 0">${p.status === "publicado" ? `<a class="b2" href="?pieza=${encodeURIComponent(p.id)}">Ver</a>` :
@@ -336,16 +337,19 @@ function qVozEnganchar(){
   });
   document.querySelectorAll("[data-voz-ok]").forEach(b => b.onclick = () => {
     const p = Q.voz.propuestas.find(x => x.id === b.dataset.vozOk);
+    if ((p.imagen_impide || []).length || !p.image) return aviso("No se puede aprobar todavía: " + ((p.imagen_impide || [])[0] || "falta la imagen") + ". Pídela con «Pedir otra versión».", true);
     const c = qHoja(`<h2>Aprobar «${E(p.title)}»</h2><p class="mute">Sale firmada «Rainer Uphoff» y marcada «Opinión · La voz del editor».</p>
       ${p.fuentes ? "" : `<p class="mute" style="color:#b3261e">Esta columna no enlaza ninguna fuente. Si cita cifras, fechas o declaraciones, añade antes los enlaces en «Leer y editar».</p>`}
       <label class="chk"><input type="checkbox" id="v-t"> He leído el texto y lo apruebo</label>
-      ${p.image ? `<label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>` : ""}
+      ${p.ghost ? `<img src="${E(p.ghost)}" alt="" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;margin:6px 0">` : ""}
+      ${(p.imagen_avisos || []).map(x => `<p class="mute" style="color:#8a5a00;margin:4px 0">Ojo: ${E(x)}. Puedes aprobarla o pedir otra.</p>`).join("")}
+      <label class="chk"><input type="checkbox" id="v-i"> Apruebo la imagen: se abre a toda la anchura con el titular encima (${E(p.image.credit || "")}, ${E(p.image.license || "")})</label>
       <label class="chk"><input type="radio" name="v-c" value="ahora"> Publicar ahora</label>
       <label class="chk"><input type="radio" name="v-c" value="lunes" checked> Programar para el ${E(qFechaLarga(Q.voz.lunes))}</label>
       <div class="q-pie"><button class="b2" id="q-no">Cancelar</button><button class="b" id="q-si">Aprobar</button></div>`);
     c.querySelector("#q-no").onclick = qCerrar;
     c.querySelector("#q-si").onclick = async ev => {
-      const t = c.querySelector("#v-t").checked, i = p.image ? c.querySelector("#v-i").checked : true;
+      const t = c.querySelector("#v-t").checked, i = c.querySelector("#v-i").checked;
       if (!t || !i) return aviso("Marca el texto y la imagen para aprobar", true);
       const cuando = c.querySelector('input[name="v-c"]:checked').value;
       ev.target.disabled = true;

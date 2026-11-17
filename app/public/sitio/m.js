@@ -87,6 +87,9 @@
       '<span class="ad-text">' + (x.anunciante ? '<span class="ad-brand">' + E(x.anunciante) + "</span>" : "") + "<b>" + E(x.titular) + "</b>" +
       (x.texto ? '<span class="ad-p">' + E(x.texto) + "</span>" : "") + '<span class="ad-cta">' + E(x.cta || "Más información") + " →</span></span></a></aside>";
   }
+  // «La voz del editor» (decisión de Rainer, 17-11-2026, cambio voz-visual): en su página y en cada columna no hay cajas
+  // que compitan arriba; una sola, y al final (cierre de la columna o antes del pie).
+  var ES_VOZ = /^\/la-voz-del-editor\/?$/.test(location.pathname) || (d.body && d.body.classList.contains("tag-la-voz-del-editor"));
   function publicidad(datos) {
     var H = (datos && datos.huecos) || {}, usadas = {}, x;
     // Como mucho tres huecos de pago por página (16-11-2026); las cajas del grupo no cuentan.
@@ -101,15 +104,16 @@
     if (cover && (x = elegir(H["portada-premium"], usadas))) premium(x, cover, datos);
     // Premium · lateral del artículo
     var lat = d.querySelector("aside.m-aside");
-    if (lat && (x = elegir(H["articulo-lateral"], usadas))) { var l = d.createElement("div"); l.className = "m-box mtx-hueco"; l.innerHTML = caja(x, "articulo-lateral", false); lat.insertBefore(l, lat.firstChild); }
+    if (lat && !ES_VOZ && (x = elegir(H["articulo-lateral"], usadas))) { var l = d.createElement("div"); l.className = "m-box mtx-hueco"; l.innerHTML = caja(x, "articulo-lateral", false); lat.insertBefore(l, lat.firstChild); }
     // Estándar · cierre del artículo (sustituye a la caja que pinta el tema solo si hay caja)
     var fin = d.querySelector(".ad-end");
     if (fin && (x = elegir(H["articulo-cierre"], usadas))) fin.innerHTML = caja(x, "articulo-cierre", false);
     // Estándar · huecos de la portada
+    if (ES_VOZ) [].forEach.call(d.querySelectorAll("section.ad-block"), function (n) { n.remove(); });
     [].forEach.call(d.querySelectorAll(".ad-block .ad.ad-wide"), function (n) { var y = elegir(H["portada-medio"], usadas); if (y) n.outerHTML = caja(y, "portada-medio", true); });
-    // Básico · antes del pie
+    // Básico · antes del pie (en una columna de «La voz del editor» que ya lleva caja de cierre, no se añade otra)
     var pie = d.querySelector("footer.site");
-    if (pie && (x = elegir(H.pie, usadas))) { var p = d.createElement("div"); p.className = "mtx-hueco mtx-cab"; p.innerHTML = caja(x, "pie", true); pie.parentNode.insertBefore(p, pie); }
+    if (pie && !(ES_VOZ && d.querySelector(".ad-end [data-mtx]")) && (x = elegir(H.pie, usadas))) { var p = d.createElement("div"); p.className = "mtx-hueco mtx-cab"; p.innerHTML = caja(x, "pie", true); pie.parentNode.insertBefore(p, pie); }
   }
   // ---------- 1 bis. Banner premium (cambio banner-premium, 16-11-2026) ----------
   css.textContent +=
@@ -274,7 +278,7 @@
   };
   SECCIONES["la-voz-del-editor"] = function (p) { return p.kind === "opinion"; };
   var secActual = (location.pathname.match(/^\/([a-z-]+)\/?$/) || [])[1];
-  if (secActual && SECCIONES[secActual] && d.querySelector("main#main")) {
+  if (secActual && secActual !== "la-voz-del-editor" && SECCIONES[secActual] && d.querySelector("main#main")) {
     css.textContent += ".mtx-sec{list-style:none;margin:0;padding:0;display:grid;gap:22px}" +
       ".mtx-sec li{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding-bottom:22px;border-bottom:1px solid #e5e7eb}" +
       ".mtx-sec img{width:200px;height:130px;object-fit:cover;border-radius:6px;background:#eef0f2}" +
@@ -503,5 +507,157 @@
       nav.insertBefore(a, nav.querySelector(".nav-analisis"));
     }
     if (d.querySelector(".m-agenda")) { var s = d.createElement("script"); s.src = API + "/sitio/agenda.js"; s.defer = true; d.body.appendChild(s); }
+  })();
+
+  // ---------- 9. «La voz del editor», visual (decisión de Rainer, 17-11-2026, cambio voz-visual) ----------
+  // «Tiene que quedar mucho más bonito y visual: nada de banners que compitan arriba (solo al final) y siempre con una buena
+  // imagen bien seleccionada.» Aquí va el aspecto: la página de la sección (cabecera propia, la última columna en grande con
+  // su imagen y las anteriores en rejilla) y cada columna (la imagen como apertura con el titular encima, texto de lectura en
+  // serif y a una columna, y los datos y las fuentes recogidos al final). La publicidad la ordena el apartado 1 (ES_VOZ); que
+  // no haya columna sin imagen lo garantiza el gestor. Hasta que el tema se versione, vive aquí.
+  (function () {
+    if (!ES_VOZ) return;
+    var NARANJA = "#f26b1d", MARINO = "#0b1a3e";
+    css.textContent +=
+      ".mtx-vz-pill{display:inline-flex;align-items:center;gap:8px;background:" + NARANJA + ";color:#fff;font:700 12px/1 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;padding:8px 14px;border-radius:999px;margin:0 0 16px}" +
+      // --- la columna
+      "body.mtx-vz .crumbs{display:none}" +
+      "body.mtx-vz figure.mtx-vh{position:relative;margin:18px 0 0;border-radius:16px;overflow:hidden;background:" + MARINO + "}" +
+      "body.mtx-vz figure.mtx-vh img{display:block;width:100%;height:clamp(440px,70vh,700px);object-fit:cover;border-radius:0}" +
+      "body.mtx-vz figure.mtx-vh::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,44,.10) 0%,rgba(8,18,44,.42) 42%,rgba(8,18,44,.93) 100%);pointer-events:none}" +
+      "body.mtx-vz figure.mtx-vh.sin{min-height:340px;background:linear-gradient(135deg," + MARINO + " 0%,#17306b 100%)}" +
+      "body.mtx-vz figure.mtx-vh .article-head{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:clamp(22px,4.5vw,56px);max-width:980px;border:0}" +
+      "body.mtx-vz figure.mtx-vh .kicker,body.mtx-vz figure.mtx-vh .dek{display:none}" +
+      "body.mtx-vz figure.mtx-vh h1{color:#fff;font-size:clamp(34px,5.4vw,68px);line-height:1.04;letter-spacing:-.015em;margin:0 0 18px;border:0;padding:0;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.35)}" +
+      "body.mtx-vz figure.mtx-vh h1::after{display:none}" +
+      "body.mtx-vz figure.mtx-vh .meta,body.mtx-vz figure.mtx-vh .meta *{color:rgba(255,255,255,.88)}" +
+      "body.mtx-vz figure.mtx-vh .meta .byline a{color:#fff;font-weight:700;text-decoration:none}" +
+      "body.mtx-vz figure.mtx-vh figcaption{position:absolute;right:12px;top:12px;z-index:2;margin:0;font:500 11px/1.3 system-ui,sans-serif;color:rgba(255,255,255,.9);background:rgba(8,18,44,.45);padding:3px 9px;border-radius:999px}" +
+      "body.mtx-vz .article-main.gh-content{max-width:720px;margin:clamp(28px,4vw,48px) auto 0;font-family:'Newsreader',Georgia,serif;font-size:20.5px;line-height:1.68;color:#1b2333}" +
+      "body.mtx-vz .gh-content>p{margin:0 0 1.15em}" +
+      "body.mtx-vz .gh-content .m-tipo{display:none}" +
+      "body.mtx-vz .gh-content>p.mtx-vz-entrada{font-size:1.22em;line-height:1.42;font-weight:500;color:" + MARINO + ";border-left:4px solid " + NARANJA + ";padding:2px 0 2px 20px;margin:0 0 1.5em}" +
+      "body.mtx-vz .gh-content>p.mtx-vz-entrada strong{font-weight:500}" +
+      "body.mtx-vz .gh-content>p.mtx-vz-capital::first-letter{float:left;font-size:3.5em;line-height:.82;font-weight:600;color:" + MARINO + ";padding:6px 10px 0 0}" +
+      "body.mtx-vz .gh-content>h2{font-family:'Newsreader',Georgia,serif;font-size:1.55em;line-height:1.2;font-weight:600;color:" + MARINO + ";margin:1.9em 0 .6em}" +
+      "body.mtx-vz .gh-content>h2::before{content:'';display:block;width:44px;height:3px;background:" + NARANJA + ";border-radius:2px;margin:0 0 14px}" +
+      "body.mtx-vz .gh-content blockquote{margin:1.6em 0;padding:4px 0 4px 22px;border-left:4px solid " + NARANJA + ";font-size:1.18em;line-height:1.45;font-style:italic;color:" + MARINO + "}" +
+      "body.mtx-vz .gh-content a{color:#0b3fa8;text-underline-offset:3px}" +
+      "body.mtx-vz .mtx-vz-ficha{margin:2.6em 0 0;padding:22px 24px;background:#fff;border:1px solid #dfe3ec;border-radius:14px;font:400 15px/1.55 'Plus Jakarta Sans',system-ui,sans-serif;color:#374151}" +
+      "body.mtx-vz .mtx-vz-ficha>summary{cursor:pointer;font:700 12px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#5b6477;list-style:none}" +
+      "body.mtx-vz .mtx-vz-ficha>summary::-webkit-details-marker{display:none}body.mtx-vz .mtx-vz-ficha>summary::after{content:' +';color:" + NARANJA + "}body.mtx-vz .mtx-vz-ficha[open]>summary::after{content:' −'}" +
+      "body.mtx-vz .mtx-vz-ficha h2{font:700 15px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;color:" + MARINO + ";margin:1.4em 0 .5em}" +
+      "body.mtx-vz .mtx-vz-ficha p,body.mtx-vz .mtx-vz-ficha li{font-size:15px;line-height:1.55;margin:0 0 .5em}body.mtx-vz .mtx-vz-ficha ul{margin:0;padding-left:1.1em}" +
+      "body.mtx-vz .mtx-vz-fin{max-width:720px;margin:36px auto 0;padding:26px 28px;border-radius:16px;background:linear-gradient(135deg," + MARINO + " 0%,#17306b 100%);color:#fff;display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;justify-content:space-between}" +
+      "body.mtx-vz .mtx-vz-fin b{display:block;font:600 24px/1.2 'Newsreader',Georgia,serif}body.mtx-vz .mtx-vz-fin span{display:block;font:500 14px/1.4 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(255,255,255,.8);margin-top:4px}" +
+      "body.mtx-vz .mtx-vz-fin .bts{display:flex;flex-wrap:wrap;gap:10px}" +
+      "body.mtx-vz .mtx-vz-fin a{font:700 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;padding:12px 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);color:#fff}" +
+      "body.mtx-vz .mtx-vz-fin a.pri{background:" + NARANJA + ";border-color:" + NARANJA + "}" +
+      "body.mtx-vz .ad-end{max-width:720px;margin:44px auto 0}" +
+      "@media(max-width:700px){body.mtx-vz figure.mtx-vh{border-radius:12px}body.mtx-vz figure.mtx-vh img{height:clamp(400px,66vh,560px)}" +
+      "body.mtx-vz .article-main.gh-content{font-size:19px;line-height:1.62}body.mtx-vz .mtx-vz-ficha{padding:18px 16px}body.mtx-vz .mtx-vz-fin{padding:22px 20px}}" +
+      // --- la página de la sección
+      "body.mtx-vzp .section-intro{background:linear-gradient(135deg," + MARINO + " 0%,#17306b 100%);color:#fff;padding:clamp(36px,6vw,72px) 0 clamp(30px,5vw,56px);margin:0}" +
+      "body.mtx-vzp .section-intro h1{color:#fff;font-size:clamp(42px,7vw,84px);line-height:1;letter-spacing:-.02em;border:0;padding:0;margin:0 0 16px}" +
+      "body.mtx-vzp .section-intro h1::after{display:none}" +
+      "body.mtx-vzp .section-intro .answer{color:rgba(255,255,255,.86);font-size:clamp(18px,2vw,22px);line-height:1.45;max-width:720px;margin:0}" +
+      "body.mtx-vzp .section-intro .firma{margin:18px 0 0;font:600 14px/1.4 'Plus Jakarta Sans',system-ui,sans-serif;color:#fff}body.mtx-vzp .section-intro .firma i{font-style:normal;color:rgba(255,255,255,.7);font-weight:500}" +
+      ".mtx-vz-pri{position:relative;display:block;margin:clamp(24px,4vw,40px) 0 0;border-radius:16px;overflow:hidden;background:" + MARINO + ";color:#fff;text-decoration:none}" +
+      ".mtx-vz-pri img{display:block;width:100%;height:clamp(380px,60vh,620px);object-fit:cover;transition:transform .5s ease}.mtx-vz-pri:hover img{transform:scale(1.02)}" +
+      ".mtx-vz-pri::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,44,.05) 0%,rgba(8,18,44,.45) 45%,rgba(8,18,44,.94) 100%)}" +
+      ".mtx-vz-pri.sin{min-height:340px;background:linear-gradient(135deg," + MARINO + " 0%,#17306b 100%)}" +
+      ".mtx-vz-pri .tx{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(20px,4vw,48px);max-width:900px}" +
+      ".mtx-vz-pri .f{font:600 12px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.85);margin:0 0 10px}" +
+      ".mtx-vz-pri h2{color:#fff;font:600 clamp(30px,4.6vw,56px)/1.06 'Newsreader',Georgia,serif;letter-spacing:-.012em;margin:0 0 14px;text-wrap:balance}" +
+      ".mtx-vz-pri p.r{color:rgba(255,255,255,.9);font:400 clamp(16px,1.5vw,19px)/1.45 'Newsreader',Georgia,serif;margin:0 0 16px;max-width:760px}" +
+      ".mtx-vz-pri .ir{font:700 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;color:#fff;border-bottom:2px solid " + NARANJA + ";padding-bottom:4px}" +
+      ".mtx-vz-h{font:700 12px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#5b6477;margin:clamp(34px,5vw,56px) 0 18px;display:flex;align-items:center;gap:14px}" +
+      ".mtx-vz-h::after{content:'';flex:1;height:1px;background:#d7dbe6}" +
+      ".mtx-vz-rej{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px}" +
+      ".mtx-vz-rej a{display:block;color:inherit;text-decoration:none}.mtx-vz-rej img,.mtx-vz-rej .sf{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;background:linear-gradient(135deg," + MARINO + " 0%,#17306b 100%)}" +
+      ".mtx-vz-rej .f{font:600 11px/1.3 'Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6b7280;margin:14px 0 6px}" +
+      ".mtx-vz-rej h3{font:600 25px/1.15 'Newsreader',Georgia,serif;color:" + MARINO + ";margin:0 0 8px}.mtx-vz-rej p.r{font:400 16px/1.45 'Newsreader',Georgia,serif;color:#374151;margin:0}" +
+      ".mtx-vz-sig{margin:clamp(30px,4vw,48px) 0 0;padding:24px 26px;border-radius:14px;background:#fff;border:1px solid #dfe3ec;display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between}" +
+      ".mtx-vz-sig b{display:block;font:600 22px/1.2 'Newsreader',Georgia,serif;color:" + MARINO + "}.mtx-vz-sig span{display:block;font:500 14px/1.4 'Plus Jakarta Sans',system-ui,sans-serif;color:#5b6477;margin-top:4px}" +
+      ".mtx-vz-sig a{font:700 14px/1 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;padding:12px 20px;border-radius:999px;background:" + NARANJA + ";color:#fff}" +
+      "@media(max-width:700px){.mtx-vz-pri img{height:clamp(420px,70vh,560px)}.mtx-vz-pri p.r{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.mtx-vz-rej{gap:30px}}";
+
+    var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    var fechaLarga = function (iso) { var x = String(iso || "").split("-"); return x.length === 3 ? (+x[2]) + " de " + MESES[+x[1] - 1] + " de " + x[0] : ""; };
+    var SUSCRIBIR = "#/portal/signup";
+
+    // --- Cada columna: la imagen abre, el titular va encima, el texto se lee a una columna y los datos quedan al final.
+    var art = d.querySelector("body.tag-la-voz-del-editor article.article");
+    if (art) {
+      d.body.classList.add("mtx-vz");
+      var cab = art.querySelector("header.article-head"), fig = art.querySelector("figure.article-hero"), cuerpo = art.querySelector(".article-main.gh-content");
+      if (cab) {
+        if (!fig) { fig = d.createElement("figure"); fig.className = "article-hero sin"; cab.parentNode.insertBefore(fig, cab); }
+        fig.classList.add("mtx-vh");
+        var pill = d.createElement("p"); pill.className = "mtx-vz-pill"; pill.textContent = "Opinión · La voz del editor";
+        cab.insertBefore(pill, cab.firstChild);
+        fig.appendChild(cab);
+        var img = fig.querySelector("img"); if (img) { img.setAttribute("sizes", "100vw"); img.setAttribute("fetchpriority", "high"); }
+      }
+      if (cuerpo) {
+        var ps = [].filter.call(cuerpo.children, function (n) { return n.tagName === "P" && !n.classList.contains("m-tipo"); });
+        // El primer párrafo es la respuesta directa (va entero en negrita): se enseña como entrada; el siguiente lleva la capitular.
+        if (ps[0] && ps[0].children.length === 1 && ps[0].firstElementChild.tagName === "STRONG" && ps[0].textContent.trim() === ps[0].firstElementChild.textContent.trim()) {
+          ps[0].classList.add("mtx-vz-entrada"); if (ps[1]) ps[1].classList.add("mtx-vz-capital");
+        } else if (ps[0]) ps[0].classList.add("mtx-vz-capital");
+        // Cifras, guía rápida y fuentes: siguen ahí, recogidas al final para que la columna se lea como una columna.
+        var corte = cuerpo.querySelector("h2#cifras-clave, h2#guia-rapida, h2#para-saber-mas");
+        if (corte && corte.parentNode === cuerpo) {
+          var ficha = d.createElement("details"); ficha.className = "mtx-vz-ficha"; ficha.open = window.innerWidth > 700;
+          var sum = d.createElement("summary"); sum.textContent = "Datos y fuentes de esta columna"; ficha.appendChild(sum);
+          cuerpo.insertBefore(ficha, corte);
+          while (ficha.nextSibling) ficha.appendChild(ficha.nextSibling);
+        }
+        var fin = d.createElement("div"); fin.className = "mtx-vz-fin";
+        fin.innerHTML = '<div><b>La voz del editor</b><span>Rainer Uphoff, editor jefe de MOTICIAS. Opinión, señalada como tal; los hechos, con su fuente.</span></div>' +
+          '<div class="bts"><a href="/la-voz-del-editor/">Todas las columnas</a><a class="pri" href="' + SUSCRIBIR + '">Suscríbete gratis</a></div>';
+        cuerpo.parentNode.insertBefore(fin, cuerpo.nextSibling);
+      }
+    }
+
+    // --- La página de la sección: cabecera propia, la última columna en grande con su imagen y las anteriores en rejilla.
+    var intro = d.querySelector("body.page-la-voz-del-editor section.section-intro");
+    if (!intro) return;
+    d.body.classList.add("mtx-vzp");
+    [].forEach.call(d.querySelectorAll("section.ad-block"), function (n) { n.remove(); });  // nada compite arriba: la caja va al final
+    var resp = intro.querySelector(".answer");
+    if (resp) resp.textContent = "Los temas espinosos del transporte y la movilidad, con el enfoque y la firma del editor jefe. Opinión, señalada como tal; los hechos, con su fuente primaria.";
+    if (!intro.querySelector(".firma")) (resp || intro.querySelector("h1")).insertAdjacentHTML("afterend", '<p class="firma">Rainer Uphoff <i>· Editor jefe de MOTICIAS · Los lunes</i></p>');
+    var main = d.querySelector("main#main"), vacio = main && main.querySelector("p.empty");
+    var caja = vacio ? vacio.parentNode : null;
+    if (!caja) { var sec0 = d.createElement("section"); sec0.className = "block"; caja = d.createElement("div"); caja.className = "wrap"; sec0.appendChild(caja); intro.parentNode.insertBefore(sec0, intro.nextSibling); }
+    // Si el índice no trae la foto (la subió el gestor), se toma la de la propia columna: nunca una tarjeta sin imagen.
+    var fotoDe = function (p) {
+      if (p.gi) return Promise.resolve(p.gi);
+      return fetch(p.url).then(function (r) { return r.ok ? r.text() : ""; }).then(function (h) {
+        var m = h.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i); return m ? m[1].replace(/&amp;/g, "&") : null; }).catch(function () { return null; });
+    };
+    fetch(API + "/buscador/index.json").then(function (r) { return r.ok ? r.json() : null; }).then(function (ix) {
+      if (!ix || !ix.piezas) return;
+      var lista = ix.piezas.filter(function (p) { return p.kind === "opinion"; }).sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
+      if (vacio) vacio.remove();
+      if (!lista.length) { caja.insertAdjacentHTML("beforeend", '<p class="empty">La primera columna se publicará un lunes, en cuanto el editor jefe apruebe la primera propuesta.</p>'); return; }
+      return Promise.all(lista.map(fotoDe)).then(function (fotos) {
+        var p = lista[0], f = fotos[0];
+        var h = '<a class="mtx-vz-pri' + (f ? "" : " sin") + '" href="' + E(p.url) + '">' + (f ? '<img src="' + E(f) + '" alt="' + E(p.alt || "") + '" fetchpriority="high">' : "") +
+          '<div class="tx"><p class="mtx-vz-pill">La última columna</p><p class="f">' + E(fechaLarga(p.d)) + '</p><h2>' + E(p.t) + "</h2>" + (p.r ? '<p class="r">' + E(p.r) + "</p>" : "") + '<span class="ir">Leer la columna →</span></div></a>';
+        if (lista.length > 1) {
+          h += '<p class="mtx-vz-h">Columnas anteriores</p><ul class="mtx-vz-rej">';
+          lista.slice(1).forEach(function (q, i) {
+            var g = fotos[i + 1];
+            h += '<li><a href="' + E(q.url) + '">' + (g ? '<img src="' + E(g) + '" alt="' + E(q.alt || "") + '" loading="lazy">' : '<span class="sf"></span>') +
+              '<p class="f">' + E(fechaLarga(q.d)) + "</p><h3>" + E(q.t) + "</h3>" + (q.r ? '<p class="r">' + E(q.r) + "</p>" : "") + "</a></li>";
+          });
+          h += "</ul>";
+        }
+        h += '<div class="mtx-vz-sig"><div><b>Una columna nueva cada lunes</b><span>Recíbela en tu correo con la edición de MOTICIAS. Gratis.</span></div><a href="' + SUSCRIBIR + '">Suscríbete gratis</a></div>';
+        caja.insertAdjacentHTML("beforeend", h);
+      });
+    }).catch(function () {});
   })();
 })();

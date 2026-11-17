@@ -15,6 +15,10 @@ TEXTO = ("La tesis va en el primer párrafo, con un [enlace](https://www.boe.es/
          + "palabra " * 140 + "\n\n## Lo que toca\n\nCierre con lo que debería decidirse y quién.")
 
 
+IMAGEN = {"src": "img/poligono-industrial-congost-iii.jpg", "orig_src": "img/poligono-industrial-congost-iii.jpg", "credit": "horrapics",
+          "license": "CC BY 2.0", "alt": "Calle de un polígono industrial", "source": "https://www.flickr.com/photos/84096608@N00/5036148012"}
+
+
 class VozDesdeElPanel(unittest.TestCase):
     def setUp(self):
         self.escritos, self.filas, self.subidas = [], [], []
@@ -54,6 +58,7 @@ class VozDesdeElPanel(unittest.TestCase):
 
     def _aprobar(self, cuando):
         pieza = GS.voz_nueva_pieza({"title": "El autobús de empresa no es un lujo", "body_md": TEXTO}, "prueba")
+        pieza["image"] = dict(IMAGEN)  # desde el 17-11-2026 no se aprueba una columna sin imagen (cambio voz-visual)
         GS.leer = lambda ruta, repo=None: (copy.deepcopy(pieza), "sha1")
         cuerpo = {"id": pieza["id"], "accion": "publicar", "texto_ok": True, "imagen_ok": True}
         if cuando:
@@ -133,6 +138,62 @@ class VozDesdeElPanel(unittest.TestCase):
         self.assertNotIn("published_at", a)
         self.assertIn("MOVO", a["author_note"])
         self.assertTrue(all(s.get("url") for s in a["sources"]))
+
+
+class VozVisual(unittest.TestCase):
+    """Siempre con imagen, y que aguante la apertura (decisión de Rainer, 17-11-2026, cambio voz-visual)."""
+    def setUp(self):
+        self.escritos, self.filas = [], []
+        GS.escribir = lambda ruta, obj, sha, mensaje, repo=None: (self.escritos.append((ruta, copy.deepcopy(obj))) or True, "abc1234")
+        GS.BD.registrar = lambda *a, **k: None
+        GS.BD.insertar = lambda tabla, fila: (self.filas.append((tabla, fila)) or [dict(fila, id=9)])
+        GS._subir = lambda a, v, estado=None: (True, "ok")
+        GS.ficha_redaccion = lambda pid: {"id": pid}
+        os.environ["GITHUB_TOKEN"] = "prueba"
+        self.V = json.load(open(os.path.join(ROOT, "verticals", "movilidad.json"), encoding="utf-8"))
+
+    def test_sin_imagen_no_se_aprueba(self):
+        pieza = GS.voz_nueva_pieza({"title": "El autobús de empresa no es un lujo", "body_md": TEXTO}, "prueba")
+        GS.leer = lambda ruta, repo=None: (copy.deepcopy(pieza), "sha1")
+        st, r = GS.accion_redaccion(SES, {"id": pieza["id"], "accion": "publicar", "texto_ok": True, "imagen_ok": True, "cuando": "ahora"}, {})
+        self.assertEqual(st, 400)
+        self.assertIn("imagen", r["error"])
+        self.assertFalse(self.escritos)
+
+    def test_con_imagen_hay_que_aprobarla_expresamente(self):
+        pieza = dict(GS.voz_nueva_pieza({"title": "El autobús de empresa no es un lujo", "body_md": TEXTO}, "prueba"), image=dict(IMAGEN))
+        GS.leer = lambda ruta, repo=None: (copy.deepcopy(pieza), "sha1")
+        self.assertEqual(GS.accion_redaccion(SES, {"id": pieza["id"], "accion": "publicar", "texto_ok": True}, {})[0], 400)
+        self.assertEqual(GS.accion_redaccion(SES, {"id": pieza["id"], "accion": "publicar", "texto_ok": True, "imagen_ok": True}, {})[0], 200)
+
+    def test_la_columna_que_escribe_el_editor_pide_su_imagen_a_la_redaccion(self):
+        st, r = GS.accion_voz(SES, {"accion": "crear", "title": "El autobús de empresa no es un lujo", "subtitle": "Sub", "body_md": TEXTO})
+        self.assertEqual(st, 200)
+        self.assertTrue(r["imagen_pedida"])
+        tabla, fila = self.filas[-1]
+        self.assertEqual(tabla, "encargos_gestor")
+        self.assertTrue(fila["texto"].startswith(GS.VOZ_IMAGEN_MARCA))
+        self.assertIn(r["id"], fila["texto"])
+        self.assertEqual(fila["publicacion"], "revision")
+
+    def test_imagen_sin_credito_o_sin_licencia_impide(self):
+        import voz as VZ
+        impiden, _ = VZ.problemas_imagen({"image": {"src": "img/x.jpg", "alt": "x"}}, self.V)
+        self.assertEqual(len(impiden), 2)
+        self.assertEqual(VZ.problemas_imagen({"image": None}, self.V)[0], ["falta la imagen: «La voz del editor» sale siempre con una"])
+
+    def test_imagen_pequena_avisa_pero_no_impide(self):
+        import voz as VZ
+        impiden, avisos = VZ.problemas_imagen({"image": dict(IMAGEN)}, self.V)  # 1.024 px: por debajo de los 1.600
+        self.assertEqual(impiden, [])
+        self.assertTrue(any("1024 px" in x for x in avisos))
+        self.assertEqual(VZ.config(self.V)["ancho_min"], 1600)
+
+    def test_el_script_del_sitio_no_pone_cajas_arriba_en_la_voz(self):
+        js = open(os.path.join(ROOT, "app", "public", "sitio", "m.js"), encoding="utf-8").read()
+        self.assertIn('lat && !ES_VOZ', js)                                   # sin lateral en la columna
+        self.assertIn('if (ES_VOZ) [].forEach.call(d.querySelectorAll("section.ad-block")', js)  # sin cajas intermedias en la sección
+        self.assertIn('secActual !== "la-voz-del-editor"', js)               # la sección tiene su propia página visual
 
 
 if __name__ == "__main__":

@@ -49,6 +49,19 @@ def entrada(a, base):
     }
 
 
+def en_el_futuro(iso):
+    """¿Esa fecha de publicación aún no ha llegado? Compara instantes, no textos: «23:03+01:00» ya pasó a las 22:10 UTC
+    (el índice dejaba fuera durante una hora lo recién publicado desde el gestor; arreglado el 17-11-2026)."""
+    import datetime as _dt
+    try:
+        f = _dt.datetime.fromisoformat(str(iso or "").replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if f.tzinfo is None:
+        f = f.astimezone()
+    return f > _dt.datetime.now(_dt.timezone.utc)
+
+
 def construir(data_dir=None, base="https://www.moticias.com", vertical="movilidad"):
     """El índice completo como diccionario (sin escribirlo). Lo usan main() y el servidor (api/gestor.py → indice_al_dia)."""
     data_dir = data_dir or os.path.join(ROOT, "data")
@@ -58,7 +71,7 @@ def construir(data_dir=None, base="https://www.moticias.com", vertical="movilida
         d = json.load(open(p, encoding="utf-8"))
         if d.get("status") != "publicado":  # solo lo que el lector puede abrir (sin estado = sin aprobar; 15-11-2026)
             continue
-        if (d.get("published_at") or "") > __import__("datetime").datetime.now().astimezone().isoformat():
+        if en_el_futuro(d.get("published_at")):
             continue  # programada (p. ej. «La voz del editor» aprobada que sale el lunes): aún no se ve
         piezas.append(entrada(d, base))
     piezas.sort(key=lambda e: (e["d"] or "", e["id"]), reverse=True)

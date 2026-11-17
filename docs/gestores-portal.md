@@ -120,3 +120,9 @@ Respuesta corta: `moticias.com/agenda/` reúne las ferias, congresos y jornadas 
   - La imagen la pone LinkedIn: es la tarjeta del enlace, con la foto y el titular de la pieza. LinkedIn no admite una imagen dentro de un enlace de compartir.
   - No publica nada por su cuenta: publica la persona, en su LinkedIn. Las piezas pendientes o retiradas no se comparten.
   - El enlace lleva `utm_source=linkedin` para saber cuántos lectores llegan por ahí. Los textos se cambian en `verticals/movilidad.json → redes.linkedin`.
+
+## «La voz del editor», visual y siempre con imagen (17-11-2026, cambio `voz-visual`)
+- **En la web.** La página `/la-voz-del-editor/` tiene cabecera propia, la última columna en grande con su imagen y las anteriores en rejilla. Cada columna se abre con la imagen a toda la anchura y el titular encima, el texto en serif a una columna y los datos y fuentes recogidos al final.
+- **Publicidad.** En esas páginas no hay cajas arriba ni en medio: una sola, al final.
+- **Imagen obligatoria.** En la tarjeta «La voz del editor» de la «Cola» (`https://app.moticias.com/gestor/?vista=cola`), una columna sin imagen no se puede aprobar. Si la escribes tú, el gestor encarga la imagen a la redacción en ese momento; también puedes pedirla con «Pedir otra versión».
+- **Avisos.** Si la imagen mide menos de 1.600 px de ancho o no es horizontal, la tarjeta y la hoja de aprobación lo dicen («Ojo: …»): puedes aprobarla igual o pedir otra. Al aprobar se ve la imagen.
