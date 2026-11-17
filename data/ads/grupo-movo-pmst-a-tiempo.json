@@ -1,0 +1,42 @@
+{
+ "accent": "#1c6b4a",
+ "advertiser": "MOVO",
+ "blog_ids": [],
+ "campaign_id": "movilidad-al-trabajo-pmst",
+ "created_at": "2026-11-17T23:30+01:00",
+ "crm_cuenta_id": null,
+ "cta": "Comprobar si mi centro está obligado",
+ "end": "2026-12-05",
+ "headline": "Plan de movilidad al trabajo: todavía estás a tiempo",
+ "historial": [
+  {
+   "en": "2026-11-17T23:30+01:00",
+   "estado": "activo",
+   "nota": "Pedida por el editor jefe: debajo de «La voz del editor», con el mensaje de que todavía están a tiempo. Termina el día del plazo.",
+   "por": "editor jefe"
+  }
+ ],
+ "id": "grupo-movo-pmst-a-tiempo",
+ "image": null,
+ "label": "Contenido patrocinado",
+ "name": "Grupo · MOVO PMST · todavía estás a tiempo (La voz del editor)",
+ "nivel": "estandar",
+ "notes": "Plazo del artículo 26 de la Ley 9/2025 (5-12-2026, centros de más de 200 personas o 100 por turno), con fuente en la columna «El polígono no tiene plan» (BOE-A-2025-24545 y RDL 7/2026) y en movo.es/pmst/ (comprobado el 17-11-2026). Medir por utm_campaign.",
+ "pricing": "sin coste · servicio del grupo",
+ "sections": [
+  "la-voz-del-editor"
+ ],
+ "slots": [
+  "portada-medio"
+ ],
+ "start": "2026-11-17",
+ "status": "activo",
+ "text": "Si tu centro de trabajo tiene más de 200 personas, o 100 por turno, el plan vence el 5 de diciembre. MOVO hace el diagnóstico, la encuesta a la plantilla y el plan, en semanas.",
+ "tipo_contenido": "patrocinado",
+ "type": "grupo",
+ "updated_at": "2026-11-17T23:30+01:00",
+ "url": "https://movo.es/pmst/",
+ "utm": true,
+ "utm_campaign": "moticias-pmst-a-tiempo-2026",
+ "weight": 9
+}

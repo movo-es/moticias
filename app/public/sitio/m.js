@@ -65,12 +65,16 @@
   // ---------- 1. Publicidad ----------
   var seccion = (function () {
     var a = d.querySelector("article.article");
-    return a ? (a.className.replace(/\barticle\b/, "").trim().split(/\s+/)[0] || "") : "";
+    if (a) return a.className.replace(/\barticle\b/, "").trim().split(/\s+/)[0] || "";
+    return (location.pathname.match(/^\/([a-z-]+)\/?$/) || [])[1] || "";  // páginas de sección: /la-voz-del-editor/, /tierra/… (17-11-2026)
   })();
   function elegir(lista, usadas) {
     var c = (lista || []).filter(function (x) { return !usadas[x.id] && (!x.secciones.length || x.secciones.indexOf(seccion) >= 0); });
     var pagadas = c.filter(function (x) { return x.tipo !== "grupo"; });
     if (pagadas.length) c = pagadas;
+    // Una caja pensada para esta sección va delante de las genéricas del mismo rango (decisión de Rainer, 17-11-2026).
+    var propias = c.filter(function (x) { return x.secciones.length; });
+    if (propias.length) c = propias;
     if (!c.length) return null;
     var nivel = c[0].nivel; c = c.filter(function (x) { return x.nivel === nivel; });
     var total = c.reduce(function (s, x) { return s + (x.peso || 1); }, 0), r = Math.random() * total;

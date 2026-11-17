@@ -2,3 +2,4 @@
 - [x] La marca de tipo que añade `m.js` a los titulares no se duplica en la columna desplegada
 - [x] Probado contra moticias.com con el script nuevo (Playwright, escritorio 1400 px y móvil 390 px): `/la-voz-del-editor/`, portada, `/tierra/` y una pieza; sin errores de JavaScript; en la sección y en la pieza queda una sola caja al pie
 - [x] Specs vivas (`menu-y-voz-del-editor`, `banner-premium`) y `CLAUDE.md`
+- [x] Caja de MOVO «todavía estás a tiempo» bajo la columna (`data/ads/grupo-movo-pmst-a-tiempo.json`) y elección por sección en `m.js`; probada con los datos de publicidad nuevos en escritorio y móvil
