@@ -17,6 +17,8 @@
       app.moticias.com/buscador/tipos.json (lo genera src/export_search_index.py). Dentro de cada pieza la marca ya va
       en el cuerpo del post (src/ghost_publish.py), así que no depende de este script ni del tema.
    6. Pinta las páginas de sección con sus piezas (la plantilla del tema salía vacía).
+      En /la-voz-del-editor/, la última columna entera y las anteriores en una columna estrecha a la derecha (17-11-2026).
+   1 ter. Nunca dos cajas de publicidad o patrocinio una encima de otra sin contenido entre ellas, en ninguna página (17-11-2026).
    5. Oculta la marca «Powered by Ghost» de la ventana de entrada y suscripción de Ghost.
    7. Menú con submenús (cambio menu-y-voz-del-editor, 16-11-2026): Portada · La voz del editor (destacado fijo) · Tierra ▾ ·
       Mar ▾ · Aire ▾ · Logística ▾ · Temas ▾ · Regiones ▾ · Análisis. Datos y recuentos de tipos.json → menu. En el móvil la
@@ -110,6 +112,46 @@
     // Básico · antes del pie
     var pie = d.querySelector("footer.site");
     if (pie && (x = elegir(H.pie, usadas))) { var p = d.createElement("div"); p.className = "mtx-hueco mtx-cab"; p.innerHTML = caja(x, "pie", true); pie.parentNode.insertBefore(p, pie); }
+    sinApilar();
+  }
+  // ---------- 1 ter. Nunca dos cajas una encima de otra (decisión de Rainer, 17-11-2026) ----------
+  // En ninguna página quedan dos cajas de publicidad, patrocinio o «Contenido patrocinado» seguidas en vertical sin contenido
+  // entre ellas (texto visible, imagen o vídeo; los comentarios, que suelen estar vacíos, no separan). Si pasa, se queda la de más rango (contenido patrocinado del texto >
+  // pagada > del grupo o del tema) y, a igualdad, la de arriba; la otra se quita con su hueco. Las que van una al lado de otra
+  // (lateral del artículo) no cuentan. Se comprueba al poner la publicidad y cada vez que se pinta una sección.
+  var SEL_AD = "aside.ad, aside.mtx-ban, aside.contenido-patrocinado";
+  function visible(el) { var r = el.getBoundingClientRect(); return r.width > 2 && r.height > 2; }
+  function rango(el) {
+    if (el.matches("aside.contenido-patrocinado")) return 3;
+    return el.hasAttribute("data-mtx") && !el.classList.contains("house") ? 2 : 1;
+  }
+  function separadas(a, b) {
+    var w = d.createTreeWalker(d.body, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT), n;
+    w.currentNode = a;
+    while ((n = w.nextNode()) && n !== b) {
+      if (a.contains(n)) continue;
+      if (n.nodeType === 3) {
+        var pe = n.parentElement;
+        if (n.nodeValue.trim() && pe && !/^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE)$/.test(pe.tagName) && visible(pe)) return true;
+      } else if (/^(IMG|PICTURE|VIDEO|CANVAS|svg)$/.test(n.tagName) && n.getBoundingClientRect().height > 24) return true;
+    }
+    return false;
+  }
+  function quitarCaja(el) {
+    var c = el.closest(".mtx-hueco, section.ad-block, .ad-end, section.mtx-premium");
+    if (c && c.querySelectorAll(SEL_AD).length === 1) c.remove(); else el.remove();
+  }
+  function sinApilar() {
+    for (var vuelta = 0; vuelta < 10; vuelta++) {
+      var ads = [].filter.call(d.querySelectorAll(SEL_AD), function (el) { return visible(el) && !el.parentElement.closest(SEL_AD); }), quitada = false;
+      for (var i = 0; i + 1 < ads.length && !quitada; i++) {
+        var a = ads[i], b = ads[i + 1], ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        if (ra.left >= rb.right || rb.left >= ra.right) continue;  // una al lado de otra
+        if (separadas(a, b)) continue;
+        quitarCaja(rango(b) > rango(a) ? a : b); quitada = true;
+      }
+      if (!quitada) return;
+    }
   }
   // ---------- 1 bis. Banner premium (cambio banner-premium, 16-11-2026) ----------
   css.textContent +=
@@ -303,6 +345,7 @@
       if (!caja) { var sec0 = d.createElement("section"); sec0.className = "block"; caja = d.createElement("div"); caja.className = "wrap"; sec0.appendChild(caja); main.insertBefore(sec0, main.firstChild); }
       if (vacio) vacio.remove();
       if (!lista.length) { caja.insertAdjacentHTML("beforeend", '<p class="empty">' + (secActual === "la-voz-del-editor" ? "La primera columna se publicará un lunes, en cuanto el editor jefe apruebe la primera propuesta." : "Todavía no hay piezas en esta sección.") + "</p>"); return; }
+      if (secActual === "la-voz-del-editor") { vozDesplegada(lista, caja); sinApilar(); return; }
       var ul = d.createElement("ul"); ul.className = "mtx-sec"; caja.appendChild(ul);
       var n = 0;
       function mas() {
@@ -319,6 +362,55 @@
         else if (n >= lista.length && b) b.remove();
       }
       mas();
+      sinApilar();
+    }).catch(function () {});
+  }
+
+  // ---------- 6 bis. «La voz del editor» desplegada (cambio voz-desplegada-y-sin-banners-apilados, 17-11-2026) ----------
+  // En /la-voz-del-editor/ la última columna se lee entera, con su foto y su crédito, y a la derecha, en una columna estrecha
+  // que no compite con ella, las anteriores (fecha, tema y titular). El texto se toma tal cual de la página de la columna
+  // (mismo dominio): no se reescribe nada. Si no se puede leer, queda el resumen con «Leer la columna completa». En el móvil
+  // las anteriores van debajo.
+  function vozDesplegada(lista, caja) {
+    css.textContent += ".mtx-vz{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:56px;align-items:start}" +
+      ".mtx-vz-ult{min-width:0;max-width:760px}.mtx-vz-ult .k{font:600 11px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6b7280;margin:0 0 8px}" +
+      ".mtx-vz-ult .k b{color:#7a1f2b;font-weight:700}.mtx-vz-ult h2{font-size:clamp(28px,4vw,40px);line-height:1.12;margin:0 0 10px}.mtx-vz-ult h2 a{color:inherit;text-decoration:none}" +
+      ".mtx-vz-ult .dek{font-size:19px;line-height:1.45;color:#374151;margin:0 0 12px}.mtx-vz-ult .by{font:500 14px/1.4 system-ui,sans-serif;color:#4b5563;margin:0 0 18px}" +
+      ".mtx-vz-ult figure{margin:0 0 22px}.mtx-vz-ult figure img{display:block;width:100%;height:auto;border-radius:6px}.mtx-vz-ult figcaption{font:12px/1.4 system-ui,sans-serif;color:#6b7280;margin-top:6px}" +
+      ".mtx-vz-ult .article-main{max-width:none;margin:0;padding:0;font-size:18px;line-height:1.6}.mtx-vz-ult .article-main p,.mtx-vz-ult .article-main ul{margin:0 0 1em}" +
+      ".mtx-vz-ult .article-main h2{font-size:26px;line-height:1.2;margin:1.6em 0 .5em}.mtx-vz-ult .article-main li{margin:0 0 .4em}.mtx-vz-ult .article-main a{color:#1d4ed8;text-decoration:underline}.mtx-vz-ult .ir{display:inline-block;margin-top:18px;font:600 14px system-ui,sans-serif;color:#1d4ed8}" +
+      ".mtx-vz-ant{position:sticky;top:20px;border-left:1px solid #e5e7eb;padding-left:22px;font-family:system-ui,sans-serif}" +
+      ".mtx-vz-ant h3{font:700 11px/1.4 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5d6b82;margin:0 0 6px}" +
+      ".mtx-vz-ant ul{list-style:none;margin:0;padding:0}.mtx-vz-ant li{padding:12px 0;border-bottom:1px solid #eef0f3}" +
+      ".mtx-vz-ant small{display:block;font:600 10.5px/1.4 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#7a8597;margin-bottom:3px}" +
+      ".mtx-vz-ant a{color:#0b2545;text-decoration:none;font:500 16px/1.3 Newsreader,Georgia,serif}.mtx-vz-ant a:hover{text-decoration:underline}" +
+      ".mtx-vz-ant p.v{font-size:13px;line-height:1.45;color:#6b7280;margin:8px 0 0}" +
+      "@media(max-width:900px){.mtx-vz{grid-template-columns:1fr;gap:32px}.mtx-vz-ant{position:static;border-left:0;padding-left:0;border-top:3px solid #0b2545;padding-top:12px}}";
+    var ult = lista[0], ant = lista.slice(1);
+    var tema = function (p) { return String(p.k || "").replace(/^La voz del editor\s*·\s*/i, ""); };
+    var g = d.createElement("div"); g.className = "mtx-vz";
+    g.innerHTML = '<article class="mtx-vz-ult"><p class="k"><b>' + E(ult.mc || "Opinión · La voz del editor") + "</b>" + (tema(ult) ? " · " + E(tema(ult)) : "") + " · " + E(fecha(ult.d)) + "</p>" +
+      '<h2><a href="' + E(ult.url) + '">' + E(ult.t) + "</a></h2>" + (ult.s ? '<p class="dek">' + E(ult.s) + "</p>" : "") +
+      '<p class="by">Por ' + E(ult.au || "Rainer Uphoff") + "</p>" +
+      '<div class="mtx-vz-cuerpo">' + (ult.r ? "<p>" + E(ult.r) + "</p>" : "") + '<a class="ir" href="' + E(ult.url) + '">Leer la columna completa →</a></div></article>' +
+      '<aside class="mtx-vz-ant" aria-label="Columnas anteriores"><h3>Columnas anteriores</h3>' +
+      (ant.length ? "<ul>" + ant.map(function (p) { return '<li><small>' + E(fecha(p.d)) + (tema(p) ? " · " + E(tema(p)) : "") + '</small><a href="' + E(p.url) + '">' + E(p.t) + "</a></li>"; }).join("") + "</ul>"
+        : '<p class="v">Esta es la primera columna. Las siguientes dejarán aquí las anteriores.</p>') + "</aside>";
+    caja.appendChild(g);
+    var ruta; try { ruta = new URL(ult.url).pathname; } catch (e) { return; }
+    fetch(ruta, {credentials: "same-origin"}).then(function (r) { return r.ok ? r.text() : null; }).then(function (h) {
+      if (!h) return;
+      var doc = new DOMParser().parseFromString(h, "text/html");
+      var cuerpo = doc.querySelector(".article-main.gh-content") || doc.querySelector(".gh-content");
+      if (!cuerpo || cuerpo.textContent.trim().length < 200) return;
+      [].forEach.call(cuerpo.querySelectorAll(".m-tipo, script, aside.contenido-patrocinado"), function (x) { x.remove(); });  // la marca ya va arriba
+      var foto = doc.querySelector("figure.article-hero"), t = doc.querySelector(".article-head time");
+      var dest = g.querySelector(".mtx-vz-cuerpo"); dest.innerHTML = "";
+      if (foto) dest.appendChild(d.importNode(foto, true));
+      var c = d.importNode(cuerpo, true); dest.appendChild(c);
+      dest.insertAdjacentHTML("beforeend", '<a class="ir" href="' + E(ult.url) + '">Abrir en su página (para compartir o comentar) →</a>');
+      if (t) g.querySelector(".by").insertAdjacentHTML("beforeend", " · " + E(t.textContent.trim()));
+      sinApilar();
     }).catch(function () {});
   }
 
@@ -353,7 +445,7 @@
     [].forEach.call(d.querySelectorAll("main h1 a[href], main h2 a[href], main h3 a[href], .lead h2 a, .second h3 a, .m-map-list a[href]"), function (a) {
       try { var u = new URL(a.href, location.href); } catch (e) { return; }
       var mm = u.host === location.host && u.pathname.match(SLUG_TC), x = mm && tc[mm[1]];
-      if (!x || (u.pathname === location.pathname) || a.parentNode.querySelector(".mtx-tc") || a.closest(".mtx-sec")) return;
+      if (!x || (u.pathname === location.pathname) || a.parentNode.querySelector(".mtx-tc") || a.closest(".mtx-sec, .mtx-vz")) return;
       var s = d.createElement("span");
       s.className = "mtx-tc t-" + x[0]; s.textContent = x[1];
       s.style.display = "block"; a.insertAdjacentElement("beforebegin", s);

@@ -1,0 +1,4 @@
+- [x] `app/public/sitio/m.js`: `vozDesplegada` (última columna entera desde su página, anteriores a la derecha; en el móvil debajo) y `sinApilar` (tras la publicidad y tras pintar la sección)
+- [x] La marca de tipo que añade `m.js` a los titulares no se duplica en la columna desplegada
+- [x] Probado contra moticias.com con el script nuevo (Playwright, escritorio 1400 px y móvil 390 px): `/la-voz-del-editor/`, portada, `/tierra/` y una pieza; sin errores de JavaScript; en la sección y en la pieza queda una sola caja al pie
+- [x] Specs vivas (`menu-y-voz-del-editor`, `banner-premium`) y `CLAUDE.md`
