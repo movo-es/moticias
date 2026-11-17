@@ -1,0 +1,147 @@
+{
+ "analysis_id": "el-maquinista-por-decreto-el-conductor-por-expediente-95pp",
+ "boe_range": [
+  "2026-11-17",
+  "2026-11-17"
+ ],
+ "boe_series": {
+  "2026-11-02": {
+   "disp": 3,
+   "lic": 0,
+   "total": 3
+  },
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  }
+ },
+ "closed_at": "07:48",
+ "date": "2026-11-17",
+ "document": {
+  "date": "2026-11-17",
+  "kicker": "Orden ministerial · BOE",
+  "ref": "Orden TRM/1232/2026 (BOE-A-2026-24108)",
+  "source": "Ministerio de Transportes y Movilidad Sostenible / BOE núm. 286",
+  "summary": "Qué es: la orden firmada el 16 de noviembre por Carlos Cuerpo como titular de Transportes por suplencia y publicada en el BOE núm. 286, con once apartados en cuatro páginas.\nQué crea: un grupo de trabajo temporal (artículo 22.3 de la Ley 40/2015) que debe entregar un plan de acción en una semana y un libro blanco en tres meses desde su constitución.\nQuién: lo preside el titular de Transportes; de siete a diez vocales, al menos seis a propuesta del Colegio de Ingenieros de Caminos; invitados sin voto, entre ellos sindicatos, industria, la AESF y la CNMC.\nQué leer: los apartados segundo (funciones y plazos), tercero (composición e independencia) y octavo (acuerdos no vinculantes).\nQué falta: los nombres de los vocales, la fecha de la sesión constitutiva y cualquier compromiso de publicar el plan y el libro blanco.",
+  "title": "Orden TRM/1232/2026, de 16 de noviembre, por la que se crea y regula el Comité de Asesoramiento Técnico del Sistema Ferroviario",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24108"
+ },
+ "id": "2026-11-17",
+ "lead_id": "un-comite-tecnico-tendra-una-semana-para-el-plan-de-accion-hstx",
+ "note_metodologica": "Edición nº 11 de MOTICIAS, cerrada a las 07:48 (CET) del martes 17 de noviembre de 2026. Tres noticias y un análisis, una pieza menos que el mínimo de cinco. Fuentes primarias abiertas en esta sesión, todas en el BOE por su API de datos abiertos: la Orden TRM/1232/2026 del Comité de Asesoramiento Técnico del Sistema Ferroviario; el convenio de la Variante Sur Ferroviaria de Bilbao y el anuncio de aprobación del estudio informativo de su fase 1 (BOE-B-2024-42510); los anuncios de las autoridades portuarias de Barcelona (BOE-B-2026-37835, 36977 y 36980), Gijón (36885) y Santander (28317); los reales decretos 974, 975, 999 y 806/2026, 402/2025 y 2621/1986, el Real Decreto-ley 34/2026 y el anuncio de las ayudas a los permisos C y D (BOE-B-2026-36299); y los textos consolidados de la Constitución, la Ley General de la Seguridad Social, la Ley 50/1997 del Gobierno, la Ley 40/2015, la Ley 38/2015 del Sector Ferroviario, la Ley 11/2020 y la Ley de Puertos del Estado y de la Marina Mercante; se contrastan con Railin, Diario del Puerto y trans.info, cada enlace con su fecha de publicación y de consulta. Periodo barrido en el BOE: 17 de noviembre (número 286, disponible en la API a las 07:31), con 20 referencias de transporte y 12 de valor editorial. El análisis sigue la rotación (Autobús y carretera); lo firma la redacción y espera la aprobación del editor jefe por tratar el mercado del transporte de viajeros por carretera, con nota de intereses. Excepciones del día: las salas de prensa del Ministerio de Transportes y de Renfe no fueron legibles para la lectura automática, y la sede electrónica del puerto de Barcelona no mostró la documentación del expediente del suministro eléctrico a buques. Quedan en la cola del editor, sin fuente primaria accesible al cierre, la huelga convocada por FSC-CCOO en la carretera el 23 y el 24 de diciembre, la nueva concesión de autobús entre Pamplona y Baztán-Bidasoa, el dato de septiembre del autobús interurbano y el expediente de regulación de empleo anunciado en Plus Ultra; se suman avisos al contrato de autobús urbano de Murcia y al descarrilamiento de Zarzalejo. El comité de expertos que anunció el ministro el 16 de noviembre entra en la edición por la orden publicada hoy. La huelga ferroviaria de hoy se cubrió en la edición del 16 de noviembre. La pieza del puerto de Barcelona usa la ilustración propia del portal por no haber foto libre del sujeto; las demás reutilizan fotos ya publicadas, con su licencia y crédito. Los agentes de lectura web consumieron 256.623 tokens (cifra leída); los de la sesión principal no los informa el entorno. MOTICIAS no cubre operaciones propias de Movenbus, empresa de la que es cofundador el editor jefe. La búsqueda de noticias, la lectura de fuentes y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se han comprobado en la fuente abierta en esta sesión.",
+ "number": 11,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24108",
+   "text": "Orden TRM/1232/2026: nace el Comité de Asesoramiento Técnico del Sistema Ferroviario, con una semana para el plan de acción y tres meses para el libro blanco",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24108"
+  },
+  {
+   "ref": "BOE-A-2026-24095",
+   "text": "Variante Sur Ferroviaria de Bilbao: Euskadi licitará y ejecutará la fase 1, valorada en 438,27 M€, a cuenta del cupo",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24095"
+  },
+  {
+   "ref": "BOE-B-2026-37835",
+   "text": "Barcelona propone un único prestador para el suministro eléctrico a buques atracados (OPS)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37835"
+  },
+  {
+   "ref": "BOE-B-2026-37814",
+   "text": "A-23 en Teruel: 22,57 M€ para rehabilitar el firme entre Santa Eulalia y Calamocha Sur",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37814"
+  },
+  {
+   "ref": "BOE-B-2026-37812",
+   "text": "Transportes licita por 3,91 M€ la asistencia técnica a las obras de Conservación y Gestión de Activos (área PYO I)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37812"
+  },
+  {
+   "ref": "BOE-B-2026-37811",
+   "text": "A-66 Benavente-Zamora: 2,08 M€ para la asistencia técnica a la inspección de la concesión",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37811"
+  },
+  {
+   "ref": "BOE-B-2026-37834",
+   "text": "A-6 en Valladolid: aprobado el proyecto de 3,24 M€ contra el ruido entre los pk 141,3 y 172,9",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37834"
+  },
+  {
+   "ref": "BOE-B-2026-37833",
+   "text": "Melilla otorga a Trasmediterránea un almacén del puerto comercial por 37 meses",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37833"
+  },
+  {
+   "ref": "BOE-B-2026-37807",
+   "text": "Interior formaliza por 329.689,77 € el transporte de personal a los centros penitenciarios de Puerto I, II y III",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37807"
+  },
+  {
+   "ref": "BOE-B-2026-37810",
+   "text": "Ávila: 1,19 M€ para pintar las marcas viales de la AV-20, la A-50 y cuatro nacionales",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37810"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
