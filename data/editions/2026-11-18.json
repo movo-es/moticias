@@ -1,0 +1,132 @@
+{
+ "analysis_id": "el-rescate-llega-al-vencimiento-rkoh",
+ "boe_range": [
+  "2026-11-18",
+  "2026-11-18"
+ ],
+ "boe_series": {
+  "2026-11-03": {
+   "disp": 6,
+   "lic": 18,
+   "total": 24
+  },
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  }
+ },
+ "closed_at": "07:45",
+ "date": "2026-11-18",
+ "document": {
+  "date": "2026-11-18",
+  "kicker": "Acuerdo internacional · BOE",
+  "ref": "BOE-A-2026-24122",
+  "source": "Ministerio de Asuntos Exteriores, Unión Europea y Cooperación / BOE núm. 287",
+  "summary": "Qué es: el acuerdo bilateral de transporte aéreo entre España y Uruguay, firmado en Kuala Lumpur el 22 de octubre de 2024 y publicado hoy en el BOE núm. 287.\nCuándo: entra en vigor el 27 de noviembre de 2026, un mes después de la última nota del canje diplomático (artículo 23).\nQué abre: designación de cuantas compañías quiera cada parte, tarifas libres y quinta libertad para las españolas en Río de Janeiro, São Paulo, Asunción, Buenos Aires y Puerto Iguazú.\nQué reserva: las autoridades pueden fijar juntas la capacidad (artículo 15) y el código compartido se presenta treinta días antes de operar.\nQué leer: el artículo 3 (cláusula de la Unión Europea y propiedad CLAC para las uruguayas) y el anexo I (cuadro de rutas).",
+  "title": "Acuerdo sobre Transporte Aéreo entre el Reino de España y la República Oriental del Uruguay, hecho en Kuala Lumpur el 22 de octubre de 2024",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24122"
+ },
+ "id": "2026-11-18",
+ "lead_id": "espana-y-uruguay-estrenan-el-27-de-noviembre-un-acuerdo-aere-g2ki",
+ "note_metodologica": "Edición nº 12 de MOTICIAS, cerrada a las 07:45 (CET) del miércoles 18 de noviembre de 2026. Una noticia y un análisis, tres piezas menos que el mínimo de cinco: el BOE del día (núm. 287, disponible a las 07:31) trae poco transporte de viajeros y el barrido no halló otros hechos de las últimas 72 horas con fuente primaria accesible. Fuentes primarias abiertas en esta sesión, todas en el BOE por su API de datos abiertos: el Acuerdo sobre Transporte Aéreo entre España y Uruguay (BOE-A-2026-24122), la Ley 25/2014 de Tratados, el convenio de doble imposición con Uruguay (BOE-A-2011-6551), la Orden TMA/201/2022, el Real Decreto-ley 25/2020, el Acuerdo del Consejo de Ministros de 15 de junio de 2021 sobre el fondo de recapitalización (BOE-A-2021-10027), los Reales Decretos-leyes 37, 38 y 39/2026 y los anuncios de Adif AV, la DGT y las autoridades portuarias de Pasaia y Valencia. Periodo barrido en el BOE: 18 de noviembre (núm. 287). El análisis sigue la rotación (Aéreo) y se apoya, para los hechos de esta semana, en RPP, Infobae y Vozpópuli, con atribución; es crítico por tratar de dos empresas con nombre y espera la aprobación del editor jefe. No fueron legibles para la lectura automática la referencia del Consejo de Ministros del 17 de noviembre en La Moncloa, las notas de Adif AV y la sala de prensa del Ministerio de Transportes. Sin fuente primaria al cierre, a la cola del editor: la suspensión de rutas y el despido colectivo anunciados por Plus Ultra, el cese de AlbaStar, el nuevo mapa concesional de autobús de Aragón y el balance de la huelga ferroviaria del 17 de noviembre. Fotos reutilizadas del archivo de MOTICIAS. La búsqueda y los borradores se apoyan en inteligencia artificial bajo supervisión editorial. Los agentes de lectura web consumieron 220.907 tokens (cifra leída); el entorno no informa del consumo de la sesión principal.",
+ "number": 12,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24122",
+   "text": "España y Uruguay: el acuerdo de transporte aéreo entra en vigor el 27 de noviembre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24122"
+  },
+  {
+   "ref": "BOE-B-2026-37943",
+   "text": "Adif AV abre la información pública de las expropiaciones del proyecto modificado de la Variante de Loja (Riofrío)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37943"
+  },
+  {
+   "ref": "BOE-B-2026-37917",
+   "text": "La DGT licita una consultoría para actualizar la normativa de vehículos",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37917"
+  },
+  {
+   "ref": "BOE-A-2026-24119",
+   "text": "Real Decreto-ley 37/2026: el sector público podrá subir hasta un 4,5 % los salarios en 2027",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24119"
+  },
+  {
+   "ref": "BOE-B-2026-37939",
+   "text": "Pasaia abre competencia de proyectos sobre el pesaje de camiones de Buenavista",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37939"
+  },
+  {
+   "ref": "BOE-B-2026-37940",
+   "text": "Pasaia abre competencia de proyectos sobre el pesaje de camiones de Lezo",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37940"
+  },
+  {
+   "ref": "BOE-B-2026-37941",
+   "text": "Sagunto: I-DE pide 50 años de concesión para la línea de alta tensión de la futura subestación Palancia",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37941"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
