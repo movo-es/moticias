@@ -1,0 +1,122 @@
+{
+ "analysis_id": "cada-puerto-su-enchufe-4sax",
+ "boe_range": [
+  "2026-11-19",
+  "2026-11-19"
+ ],
+ "boe_series": {
+  "2026-11-04": {
+   "disp": 9,
+   "lic": 8,
+   "total": 17
+  },
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  }
+ },
+ "closed_at": "07:46",
+ "date": "2026-11-19",
+ "document": {
+  "date": "2026-11-17",
+  "kicker": "Nota oficial · Puerto de Málaga",
+  "ref": "APM 17-11-2026",
+  "source": "Autoridad Portuaria de Málaga",
+  "summary": "Qué es: la nota de la Autoridad Portuaria de Málaga sobre su reunión con la Consejería de Fomento y Movilidad de la Junta de Andalucía.\nQué acuerda: una ronda de consultas con navieras y empresas del sector para una línea de ferry directa Málaga–Ceuta.\nQuién: el consejero Mario Muñoz-Atanet y el presidente del puerto, Carlos Rubio, con la APPA, la delegación de Fomento y la Fundación Málagaport.\nQué no dice: fecha de la reunión, formato de la consulta, buque, frecuencias, ayudas ni calendario.\nMarco: la línea sería cabotaje insular del Real Decreto 1516/2007, fuera de las líneas declaradas de interés público.",
+  "title": "Reunión de trabajo para conectar Málaga y Ceuta en ferry",
+  "url": "https://www.puertomalaga.com/es/actualidad/reunion-de-trabajo-para-conectar-malaga-y-ceuta-en-ferry/"
+ },
+ "id": "2026-11-19",
+ "lead_id": "malaga-y-la-junta-sondean-a-las-navieras-para-abrir-una-line-xm7d",
+ "note_metodologica": "Edición nº 13 de MOTICIAS, cerrada a las 07:46 (CET) del jueves 19 de noviembre de 2026. Una noticia y un análisis, tres piezas menos que el mínimo de cinco: el BOE del día (núm. 288, disponible a las 07:31) no trae disposiciones de transporte de viajeros y el barrido de prensa sectorial no halló otros hechos de las últimas 72 horas con fuente primaria accesible; la ampliación del plazo del contrato de Adif para servicios en estaciones queda como boletín porque MOTICIAS informó de ese contrato el 4 de noviembre. Fuentes primarias abiertas en esta sesión: la nota de la Autoridad Portuaria de Málaga del 17 de noviembre y, por la API de datos abiertos del BOE, el Real Decreto 1516/2007, la Orden de 22 de julio de 1999, la Ley 14/2014 de Navegación Marítima, el texto refundido de la Ley de Puertos y los anuncios BOE-B-2026-37835, 36885, 28317, 36980, 34113 y 38000. Periodo barrido en el BOE: 19 de noviembre. El análisis sigue la rotación (Marítimo y puertos). La búsqueda de noticias y los borradores se apoyan en herramientas de inteligencia artificial bajo supervisión editorial; la lectura web de esta mañana consumió buena parte del tope de tokens de la sesión, y la edición cerró con lo verificado.",
+ "number": 13,
+ "ticker": [
+  {
+   "ref": "BOE-B-2026-38000",
+   "text": "Adif amplía al 18 de noviembre el plazo de ofertas del contrato de 84,6 M€ para servicios en estaciones de viajeros",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38000"
+  },
+  {
+   "ref": "BOE-B-2026-38037",
+   "text": "El Puerto de Santa María pide suelo portuario para un puente rodado sobre el Guadalete",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38037"
+  },
+  {
+   "ref": "BOE-B-2026-38038",
+   "text": "Santa Cruz de Tenerife concede 25 años a la Universidad de La Laguna en el frente marítimo de Náutica",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38038"
+  },
+  {
+   "ref": "BOE-B-2026-38036",
+   "text": "Bahía de Cádiz: Sodio Corporación Solar pide suelo en Zona Franca para baterías de litio",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38036"
+  },
+  {
+   "ref": "BOE-A-2026-24255",
+   "text": "Registro de concesiones: la DGSJFP resuelve sobre la inscripción de un aparcamiento subterráneo municipal de Madrid",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24255"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

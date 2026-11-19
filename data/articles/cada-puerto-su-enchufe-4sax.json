@@ -1,0 +1,179 @@
+{
+ "actors": "Autoridad Portuaria de Barcelona (director general, Àlex Garcia i Formatjé); Autoridad Portuaria de Gijón y Regenera OPS Tres, S.L.; Autoridad Portuaria de Santander e Iberdrola Clientes, S.A.U.; Creuers del Port de Barcelona, S.A.; navieras de cruceros y ferris.",
+ "author": "G. Jordan",
+ "author_role": "Redactor responsable",
+ "body_md": "La Autoridad Portuaria de Barcelona ha abierto el procedimiento para que un solo operador preste el suministro eléctrico a los buques atracados, el OPS. Es la tercera fórmula distinta para el mismo servicio que el BOE recoge en tres meses, tras una concesión en Gijón y una solicitud de concesión en Santander.\n\n## La regla\n\nEl punto de partida de la ley española no deja dudas. Los servicios comerciales de los puertos «se prestarán en régimen de concurrencia», y las autoridades portuarias deben adoptar medidas para promover la competencia (artículo 139.1 del [texto refundido de la Ley de Puertos del Estado y de la Marina Mercante](https://www.boe.es/buscar/act.php?id=BOE-A-2011-16467)). Los servicios portuarios los presta la iniciativa privada, en libre concurrencia, con licencias que no dan derecho a prestar el servicio en exclusiva (artículo 109).\n\n**La excepción.** Barcelona califica el OPS de servicio comercial, pero «considerado servicio portuario a los efectos del Reglamento (UE) 2017/352». Esa doble naturaleza es la puerta: el anuncio invoca el artículo 6 del reglamento europeo, que regula la limitación del número de prestadores y obliga a someterla a información pública. Es lo que publicó el [BOE el 17 de noviembre](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37835): el expediente 109/2026-SGSJC, con una propuesta motivada que analiza el sistema, las alternativas para explotarlo y los motivos de la limitación, y tres meses para alegar desde el anuncio en el Diario Oficial de la Unión Europea.\n\n## Tres fórmulas\n\n**Gijón.** El consejo de administración de la Autoridad Portuaria otorgó el 29 de octubre a Regenera OPS Tres, S.L. la concesión para construir, operar y explotar un sistema OPS para portacontenedores en la séptima alineación del muelle de la Osa, en El Musel: 30 años, 2.366 metros cuadrados, una tasa de actividad de 2.000 euros anuales y otra de ocupación de 8.757,46 euros ([BOE-B-2026-36885](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36885)).\n\n**Santander.** Iberdrola Clientes, S.A.U. ha pedido a la Autoridad Portuaria una concesión de dominio público para construir y explotar instalaciones de suministro eléctrico a buques en atraque. La solicitud salió a información pública en el [BOE del 1 de septiembre](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-28317).\n\n**Barcelona.** No es una concesión a un solicitante, sino una decisión previa sobre el mercado: cuántos pueden prestar el servicio en todo el puerto. La propuesta es uno. La firma el director general, Àlex Garcia i Formatjé, el 16 de noviembre.\n\n>> Un prestador único convierte por decisión administrativa en monopolio un servicio que la ley quiere en competencia.\n\n## El pasajero\n\nEl asunto toca de lleno al pasaje. Barcelona es puerto de cruceros y de ferris, y la Estación Marítima C de Creuers del Port de Barcelona acaba de ver revisada su concesión: hasta el 3 de junio de 2050, con una prórroga posible de tres años, y una tasa de actividad por operativa de pasaje que pasa de 0,09 euros por pasajero a 2 euros desde el 1 de enero de 2028 ([BOE-B-2026-36980](https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36980)).\n\nUn buque conectado a tierra apaga sus motores auxiliares en el muelle. Lo que cambia de un puerto a otro es quién invierte en la instalación, cuánto dura su derecho y a qué precio vende la energía. Para una naviera de pasaje con escalas en varios puertos españoles, cada una de esas variables se negocia hoy por separado.\n\n## El dinero\n\n**La tarifa.** Con varios prestadores, el precio de la electricidad en el muelle lo disciplina la competencia. Con uno, depende de lo que fije el título que lo habilite. El anuncio de Barcelona no menciona ni la duración del derecho ni el régimen de precios: remite a la propuesta motivada y a sus anexos técnicos, en la sede electrónica del puerto.\n\n**La inversión.** El argumento clásico a favor de la exclusiva es que nadie tiende una red de alta tensión hasta los muelles si después debe compartir el mercado. Es un argumento serio, con una contrapartida conocida: plazos largos, tarifas que solo revisa quien otorgó la exclusiva y poco margen de negociación para las navieras. Gijón ha resuelto la ecuación con una concesión de treinta años para un muelle de contenedores; Barcelona la plantea para todo el puerto.\n\n## El regulador\n\nCada expediente lo resuelve el consejo de administración de una autoridad portuaria distinta. Los tres aplican normas comunes —el texto refundido de la Ley de Puertos y, en Barcelona, el reglamento europeo de servicios portuarios—, pero el resultado son tres modelos para un servicio que las navieras compran en red. Lo previsible es un mapa de soluciones locales: concesiones de dominio en unos puertos, prestador único en otros, con tasas y plazos distintos.\n\n## Lo que toca\n\nTres fechas. La del anuncio en el Diario Oficial de la UE, que abre los tres meses de alegaciones en Barcelona y que el BOE no indica. La de las alegaciones de navieras, consignatarios y posibles competidores, que medirán el apoyo real a la exclusiva. Y la del acuerdo del consejo de administración de Barcelona, que dirá si la limitación se aprueba y por cuánto tiempo. Las navieras de pasaje que escalan en Barcelona harán bien en leer la propuesta motivada antes de que venza el plazo: lo que allí se decida servirá de referencia al resto del sistema portuario.",
+ "campaign": null,
+ "date": "2026-11-19",
+ "event_date": "2026-11-17",
+ "featured": 0,
+ "fecha_limite": null,
+ "fiabilidad": "primaria",
+ "firma_motivo": "importancia 3 (hace falta 4 o más)",
+ "geo": {
+  "lat": 41.353,
+  "lon": 2.173,
+  "place": "Puerto de Barcelona"
+ },
+ "id": "cada-puerto-su-enchufe-4sax",
+ "image": null,
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Prestadores propuestos en Barcelona",
+   "source": "BOE-B-2026-37835, 17-11-2026",
+   "value": "1 para todo el puerto"
+  },
+  {
+   "label": "Información pública",
+   "source": "BOE-B-2026-37835",
+   "value": "3 meses desde el anuncio en el DOUE"
+  },
+  {
+   "label": "OPS de El Musel (Gijón)",
+   "source": "BOE-B-2026-36885, 11-11-2026",
+   "value": "Concesión a 30 años y 2.366 m² para portacontenedores"
+  },
+  {
+   "label": "Tasas en Gijón",
+   "source": "BOE-B-2026-36885",
+   "value": "2.000 €/año de actividad y 8.757,46 €/año de ocupación"
+  },
+  {
+   "label": "Santander",
+   "source": "BOE-B-2026-28317, 1-9-2026",
+   "value": "Solicitud de concesión OPS de Iberdrola Clientes"
+  },
+  {
+   "label": "Estación Marítima C (Barcelona)",
+   "source": "BOE-B-2026-36980, 12-11-2026",
+   "value": "Concesión hasta el 3-6-2050; 2 €/pasajero de tasa de actividad desde 2028"
+  }
+ ],
+ "key_fact": "1 prestador propuesto para todo el puerto de Barcelona (BOE-B-2026-37835)",
+ "kicker": "Análisis · Marítimo y puertos",
+ "kind": "analisis",
+ "medio": "mar",
+ "modo": "mar",
+ "modos": [
+  "puertos",
+  "pasaje-ferris"
+ ],
+ "motivo_importante": "",
+ "next": "Tres meses de alegaciones desde el anuncio en el Diario Oficial de la UE, fecha que el BOE no indica; después, acuerdo del consejo de administración de Barcelona.",
+ "published_at": "2026-11-19T07:46:00+01:00",
+ "published_time": "07:46",
+ "relevance": "MEDIA",
+ "relevance_for": "Navieras de pasaje y de cruceros, consignatarios, comercializadoras eléctricas, autoridades portuarias y Puertos del Estado.",
+ "review_note": "Rutinaria: se apoya en anuncios del BOE y en la ley de puertos; juzga decisiones de organismos públicos sin atribuir conductas indebidas.",
+ "risk": "rutinaria",
+ "scope": "Marítimo y puertos",
+ "section": "analisis",
+ "sources": [
+  {
+   "accessed": "2026-11-19",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-17",
+   "title": "Anuncio de la Autoridad Portuaria de Barcelona: procedimiento para limitar a un único prestador el servicio de suministro eléctrico a buques (OPS)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-37835"
+  },
+  {
+   "accessed": "2026-11-19",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-11",
+   "title": "Resolución de la Autoridad Portuaria de Gijón: otorgamiento concesional a Regenera OPS Tres, S.L.",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36885"
+  },
+  {
+   "accessed": "2026-11-19",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-09-01",
+   "title": "Anuncio de la Autoridad Portuaria de Santander: información pública de la solicitud de concesión de Iberdrola Clientes para OPS",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-28317"
+  },
+  {
+   "accessed": "2026-11-19",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-12",
+   "title": "Anuncio de la Autoridad Portuaria de Barcelona sobre la revisión de la concesión de Creuers del Port de Barcelona (Estación Marítima C)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-36980"
+  },
+  {
+   "accessed": "2026-11-19",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2011-10-20",
+   "title": "Real Decreto Legislativo 2/2011, texto refundido de la Ley de Puertos del Estado y de la Marina Mercante (texto consolidado)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2011-16467"
+  },
+  {
+   "accessed": "2026-11-19",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-11-17",
+   "title": "El puerto de Barcelona aboga por limitar a un único operador el suministro eléctrico a buques",
+   "url": "https://elmercantil.com/2026/11/17/el-puerto-de-barcelona-aboga-por-limitar-a-un-unico-operador-el-suministro-electrico-a-buques/"
+  }
+ ],
+ "status": "publicado",
+ "submodo": "puertos",
+ "subsector": "marítimo",
+ "subtitle": "Barcelona propone un único prestador para la electricidad a buques atracados; Gijón la ha dado en concesión y Santander la tramita a petición de Iberdrola: tres fórmulas para el mismo servicio",
+ "summary": "El suministro eléctrico a buques atracados se organiza puerto a puerto. Barcelona propone limitarlo a un solo prestador, Gijón lo ha otorgado en concesión a treinta años para portacontenedores y Santander tramita una solicitud de Iberdrola Clientes. Para las navieras de pasaje con escalas en varios puertos, la falta de un modelo común tiene coste.",
+ "tags": [
+  "OPS",
+  "puerto de Barcelona",
+  "servicios portuarios",
+  "cruceros",
+  "electrificación"
+ ],
+ "taxonomia_manual": true,
+ "temas": [
+  "analisis",
+  "concesiones"
+ ],
+ "territorios": [
+  "cataluna",
+  "asturias",
+  "cantabria",
+  "estado"
+ ],
+ "timeline": [
+  {
+   "date": "2026-09-01",
+   "text": "Información pública de la solicitud OPS de Iberdrola Clientes en Santander"
+  },
+  {
+   "date": "2026-10-29",
+   "text": "Gijón otorga la concesión OPS de El Musel a Regenera OPS Tres"
+  },
+  {
+   "date": "2026-11-12",
+   "text": "BOE: revisión de la concesión de la Estación Marítima C de Barcelona"
+  },
+  {
+   "date": "2026-11-16",
+   "text": "Firma del anuncio de Barcelona sobre el prestador único del OPS"
+  },
+  {
+   "date": "2026-11-17",
+   "text": "El BOE publica el anuncio de Barcelona (BOE-B-2026-37835)"
+  },
+  {
+   "date": "2028-01-01",
+   "text": "La tasa de actividad por pasajero de la Estación Marítima C pasa a 2 euros"
+  },
+  {
+   "date": "2050-06-03",
+   "text": "Vence la concesión de la Estación Marítima C, prorrogable tres años"
+  }
+ ],
+ "tipo_contenido": "editorial",
+ "title": "Cada puerto, su enchufe",
+ "why": "La ley española quiere los servicios comerciales de los puertos en competencia; Barcelona usa el reglamento europeo de servicios portuarios para proponer un prestador único de la electricidad en muelle. Lo que decida será referencia para el resto del sistema."
+}
