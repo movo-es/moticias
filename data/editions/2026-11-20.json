@@ -1,0 +1,147 @@
+{
+ "analysis_id": "una-semana-para-el-plan-una-legislatura-para-pagarlo-nyrv",
+ "boe_range": [
+  "2026-11-20",
+  "2026-11-20"
+ ],
+ "boe_series": {
+  "2026-11-05": {
+   "disp": 6,
+   "lic": 7,
+   "total": 13
+  },
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  }
+ },
+ "closed_at": "07:47",
+ "date": "2026-11-20",
+ "document": {
+  "date": "2026-11-20",
+  "kicker": "Real Decreto · Marina Mercante",
+  "ref": "BOE-A-2026-24302",
+  "source": "BOE",
+  "summary": "Qué es: un real decreto de siete artículos que prohíbe verter al mar el agua de los sistemas de limpieza de gases de escape de los buques.\nDónde: aguas interiores, zonas de servicio de los puertos estatales y autonómicos y fondeaderos designados del mar territorial.\nA quién: a todo buque civil con estos equipos, sea cual sea su pabellón, y en cualquier modo de operación.\nQué más: aviso previo de 24 horas en la Ventanilla única marítima nacional e inspección de la Marina Mercante y las capitanías.\nCuándo: en vigor el 1 de julio de 2027; para el modo cerrado, dos años antes que el plazo máximo de OSPAR.",
+  "title": "Real Decreto 1006/2026, de 18 de noviembre, sobre el uso de los sistemas de limpieza de gases de escape de buques",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24302"
+ },
+ "id": "2026-11-20",
+ "lead_id": "los-buques-no-podran-verter-el-agua-de-sus-scrubbers-en-puer-kvgl",
+ "note_metodologica": "Edición nº 14 de MOTICIAS, cerrada a las 07:47 (CET) del viernes 20 de noviembre de 2026. Dos noticias y un análisis, dos piezas menos que el mínimo de cinco: el BOE del día (núm. 289, disponible a las 07:31) trae dos disposiciones de entidad —el Real Decreto 1006/2026 y la publicación de la convalidación de los Reales Decretos-leyes 32/2026 y 34/2026— y el barrido de prensa sectorial (Carril Bus, Vía Libre, Diario del Puerto, El Mercantil, Fly News, Hosteltur, Autobuses y Autocares) no halló otros hechos de las últimas 72 horas con fuente primaria accesible; la adjudicación de la terminal de pasajeros del muelle Reina Sofía de Cádiz, acordada el 29 de octubre, queda como boletín. Fuentes primarias abiertas en esta sesión: el BOE por su API de datos abiertos (sumario del 20-11 y textos de las disposiciones citadas, con sus fechas de publicación). Periodo barrido en el BOE: 20 de noviembre de 2026. El análisis, del ámbito Ferrocarril según la rotación, lo firma el editor jefe dentro de su cupo y espera su aprobación. Campaña «Movilidad al trabajo»: sin hechos nuevos esta semana, no se fuerza pieza. La búsqueda de noticias y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se comprobaron en la fuente.",
+ "number": 14,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24302",
+   "text": "Prohibidas desde julio de 2027 las descargas de los scrubbers de los buques en puertos y aguas interiores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24302"
+  },
+  {
+   "ref": "BOE-A-2026-24295",
+   "text": "Publicada la convalidación del Real Decreto-ley 34/2026 de seguridad operacional ferroviaria",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24295"
+  },
+  {
+   "ref": "BOE-A-2026-24293",
+   "text": "Convalidado el Real Decreto-ley 32/2026 de ayudas a las víctimas de Urda y tope de precios en emergencias",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24293"
+  },
+  {
+   "ref": "BOE-B-2026-38186",
+   "text": "Cádiz adjudica a Mdt Port Investments el concurso de la terminal de pasajeros del muelle Reina Sofía",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38186"
+  },
+  {
+   "ref": "BOE-A-2026-24303",
+   "text": "120.000 euros para el Observatorio de la Movilidad Metropolitana de la Politécnica de Madrid",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24303"
+  },
+  {
+   "ref": "BOE-B-2026-38187",
+   "text": "Sevilla da a Llopis Servicios Ambientales la licencia de recepción de basuras de buques (Marpol, anexo V)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38187"
+  },
+  {
+   "ref": "BOE-B-2026-38159",
+   "text": "Adif adjudica a Guadaltel la renovación de su plataforma de licitación electrónica",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38159"
+  },
+  {
+   "ref": "BOE-B-2026-38158",
+   "text": "Transportes licita por 237.264,28 euros sus servicios de nube de Google para 2027-2028",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38158"
+  },
+  {
+   "ref": "BOE-B-2026-38185",
+   "text": "La Autoridad Portuaria de la Bahía de Cádiz publica concesiones de ocupación otorgadas el 29 de octubre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38185"
+  },
+  {
+   "ref": "BOE-B-2026-38157",
+   "text": "Carreteras formaliza el control y vigilancia de obras de su Subdirección de Sostenibilidad e Innovación",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38157"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
