@@ -33,7 +33,7 @@ Qué hace con cada pieza de data/articles/<id>.json:
 Limitaciones conocidas (se resuelven por OpenSpec): el Markdown se convierte con un conversor mínimo (títulos, negrita,
 cursiva, enlaces, listas, citas); las fotos /_blob/ requieren subirlas con /images/upload/ (pendiente).
 """
-import argparse, base64, datetime, glob, hashlib, hmac, html, json, os, re, sys, time, urllib.error, urllib.request
+import argparse, base64, datetime, glob, hashlib, hmac, html, json, os, re, sys, time, unicodedata, urllib.error, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from taxonomia import Taxonomia, plano  # noqa: E402
@@ -174,7 +174,7 @@ def marca_html(a, vertical, coleccion="articles"):
                inline(T.marca(a, coleccion, vertical))))
 
 
-def build_html(a, vertical):
+def build_html(a, vertical, pie=None):
     parts = [marca_html(a, vertical)]
     if a.get("summary"):
         parts.append('<p class="respuesta-directa"><strong>%s</strong></p>' % inline(a["summary"]))
@@ -199,6 +199,8 @@ def build_html(a, vertical):
         rel = [r for r in a["relacionadas"] if isinstance(r, dict) and r.get("id") and r.get("titulo")][:4]
         if rel:
             parts.append("<h2>Relacionadas en MOTICIAS</h2><ul>" + "".join('<li><a href="/%s/">%s</a></li>' % (html.escape(r["id"], quote=True), inline(r["titulo"])) for r in rel) + "</ul>")
+    # Etiquetas clicables al pie (decisión de Rainer, 20-11-2026): protagonistas, temas, modo y región, cada una a su lista.
+    parts.append(etiquetas_pie_html(pie if pie is not None else etiquetas_pie(etiquetas_pieza(a, taxonomia(vertical)))))
     for c in a.get("correcciones") or []:  # regla de siempre: la corrección se dice al final, con su fecha
         parts.append('<p class="correccion"><small><strong>Corrección (%s).</strong> %s</small></p>' % (fmt_date(c.get("en")), inline(c.get("texto", ""))))
     traz = ["Hechos: %s" % fmt_date(a.get("event_date")), "Redacción: %s" % (a.get("published_at") or "")]
@@ -334,6 +336,80 @@ def etiquetas_taxonomia(tx):
                     "description": "Noticias de transporte, movilidad y logística que se deciden en %s o afectan a %s." % (t["nombre"], t["nombre"])
                     if t["tipo"] == "ccaa" else "Noticias de transporte, movilidad y logística de ámbito %s." % t["nombre"].lower()})
     return out
+
+
+# ---------- etiquetas clicables al pie (decisión de Rainer, 20-11-2026; cambio etiquetas-al-pie) ----------
+FORMATO = "2"  # versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
+_SLUGS = {}  # nombre en minúsculas → slug real de la etiqueta en Ghost (una lectura por proceso)
+
+
+def slug_etiqueta(nombre):
+    """El slug que Ghost da a una etiqueta nueva con ese nombre: minúsculas, sin acentos, lo demás a guiones."""
+    s = unicodedata.normalize("NFKD", str(nombre)).encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+
+
+def slugs_ghost(base_url, token):
+    """Los slugs que tienen hoy las etiquetas en Ghost (las antiguas los recibieron de Ghost; no se adivinan)."""
+    if token and not _SLUGS:
+        st, r = api("GET", "%s/ghost/api/admin/tags/?limit=all&fields=name,slug" % admin_base(base_url), token)
+        if st == 200:
+            for t in r.get("tags") or []:
+                _SLUGS[(t.get("name") or "").lower()] = t.get("slug")
+    return _SLUGS
+
+
+def alinear_ejes(tags, base_url, token):
+    """Si una etiqueta de eje (slug fijo) existe en Ghost con otro nombre —«Unión Europea» pasó a «Europa» e «Internacional» a
+    «Resto del mundo» el 20-11-2026—, la renombra antes de publicar: Ghost busca las etiquetas por nombre y, con el nombre
+    nuevo y el slug ocupado, crearía «t-ue-2». Devuelve el mapa nombre → slug ya al día."""
+    reales = slugs_ghost(base_url, token)
+    por_slug = {s: n for n, s in reales.items()}
+    for t in tags:
+        sl, nombre = t.get("slug"), (t.get("name") or "")
+        if not sl or sl not in por_slug or por_slug[sl] == nombre.lower():
+            continue
+        st, r = api("GET", "%s/ghost/api/admin/tags/slug/%s/" % (admin_base(base_url), sl), token)
+        if st == 200 and r.get("tags"):
+            actual = r["tags"][0]
+            st2, _ = api("PUT", "%s/ghost/api/admin/tags/%s/" % (admin_base(base_url), actual["id"]), token,
+                         {"tags": [{"name": nombre, "updated_at": actual["updated_at"]}]})
+            if st2 < 300:
+                reales.pop(por_slug[sl], None)
+                reales[nombre.lower()] = sl
+                por_slug[sl] = nombre.lower()
+    return reales
+
+
+def etiquetas_pie(tags, slugs=None):
+    """Lo que ve el lector al pie de cada noticia: las etiquetas públicas de la pieza como pares (nombre, slug). Primero las
+    libres (protagonistas y temas concretos), después modo, tema y región. Las internas (#…) no salen nunca."""
+    slugs = slugs or {}
+    libres, ejes, vistos = [], [], set()
+    for t in tags:
+        nombre = (t.get("name") or "").strip()
+        if not nombre or nombre.startswith("#"):
+            continue
+        slug = t.get("slug") or slugs.get(nombre.lower()) or slug_etiqueta(nombre)
+        if not slug or slug in vistos:
+            continue
+        vistos.add(slug)
+        (ejes if t.get("slug") else libres).append((nombre, slug))
+    return libres + ejes
+
+
+def etiquetas_pie_html(pie):
+    """Tarjeta HTML (Ghost la conserva tal cual) con la lista de etiquetas enlazadas a /tag/<slug>/, donde Ghost lista las
+    demás piezas que la comparten. Lleva siempre `data-fmt`, también vacía: así se sabe qué piezas hay que republicar."""
+    enlaces = "".join(
+        '<li style="margin:0"><a rel="tag" href="/tag/%s/" style="display:inline-block;padding:.2em .75em;border:1px solid currentColor;'
+        'border-radius:999px;font:500 13px/1.6 system-ui,sans-serif;text-decoration:none;color:inherit">%s</a></li>' % (
+            html.escape(slug, quote=True), html.escape(nombre)) for nombre, slug in pie)
+    titulo = ('<p style="margin:0 0 .5em;font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase">'
+              'Más noticias sobre</p>') if pie else ""
+    return ('<!--kg-card-begin: html--><nav class="m-etiquetas" data-fmt="%s" aria-label="Etiquetas de esta noticia" style="margin:1.6em 0">%s'
+            '<ul style="list-style:none;display:flex;flex-wrap:wrap;gap:.45em;margin:0;padding:0">%s</ul></nav><!--kg-card-end: html-->') % (
+                FORMATO, titulo, enlaces)
 
 
 def etiquetas_pieza(a, tx):
@@ -483,7 +559,12 @@ def build_post(a, vertical, base_url, token=None):
     if any(m.get("estado") == "publicada" for m in a.get("menciones") or []):
         tags.append({"name": "#contenido-patrocinado"})  # etiqueta interna: piezas con caja del grupo (página del grupo, colecciones)
     tags += [{"name": n} for n in T.etiquetas_ghost(a, "articles", vertical)]  # #tipo-… y, si firma el editor jefe, #analisis-editor-jefe
-    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical), "custom_excerpt": (a.get("summary") or "")[:300],
+    reales = alinear_ejes(tags, base_url, token) if token else {}
+    pie = etiquetas_pie(tags, reales)
+    for t in tags:  # una etiqueta libre que Ghost aún no tiene nace con el slug que enlazamos al pie
+        if not t.get("slug") and not t["name"].startswith("#") and t["name"].lower() not in reales and slug_etiqueta(t["name"]):
+            t["slug"] = slug_etiqueta(t["name"])
+    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical, pie), "custom_excerpt": (a.get("summary") or "")[:300],
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("seo_title") or a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("seo_description") or a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
     autor = autor_ghost(a, vertical, base_url, token)
@@ -597,7 +678,7 @@ def publicar_con_estado(a, vertical, base_url, admin_key, estado):
     return upsert(post, estado, base_url, token)
 
 
-def republicar(a, vertical, base_url, admin_key):
+def republicar(a, vertical, base_url, admin_key, conservar_destacado=False):
     """Actualiza en Ghost un post que ya existe, manteniendo su estado (publicado o borrador). No crea posts nuevos.
     Lo usa el gestor de patrocinios tras cada cambio. Devuelve (resultado, error)."""
     token = ghost_token(admin_key)
@@ -612,6 +693,8 @@ def republicar(a, vertical, base_url, admin_key):
         post = build_post(a, vertical, base_url, token)
     except ValueError as e:
         return None, "no se publica: %s" % e
+    if conservar_destacado:  # el repaso de formato no toca la portada: Ghost conserva el destacado que tenga el post
+        post.pop("featured", None)
     return upsert(post, found["posts"][0].get("status") or "draft", base_url, token)
 
 

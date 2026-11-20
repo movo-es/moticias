@@ -23,6 +23,7 @@
    7. Menú con submenús (cambio menu-y-voz-del-editor, 16-11-2026): Portada · La voz del editor (destacado fijo) · Tierra ▾ ·
       Mar ▾ · Aire ▾ · Logística ▾ · Temas ▾ · Regiones ▾ · Análisis. Datos y recuentos de tipos.json → menu. En el móvil la
       barra sigue en su sitio (no se pega arriba ni tapa los titulares) y los submenús se abren como hoja inferior.
+   9. Preferencias al apuntarse al boletín (20-11-2026): temas y regiones bajo el correo, como etiquetas del suscriptor en Ghost.
    Sin dependencias; si algo falla, el sitio sigue igual. */
 (function () {
   "use strict";
@@ -598,5 +599,65 @@
       nav.insertBefore(a, nav.querySelector(".nav-analisis"));
     }
     if (d.querySelector(".m-agenda")) { var s = d.createElement("script"); s.src = API + "/sitio/agenda.js"; s.defer = true; d.body.appendChild(s); }
+  })();
+  // ---------- 9. Preferencias al apuntarse al boletín (decisión de Rainer, 20-11-2026; cambio decisiones-20-11) ----------
+  // Bajo el correo del formulario de suscripción, un formulario pequeño: qué quiere recibir, por temas y por regiones.
+  // Cada casilla marcada viaja a Ghost como etiqueta del suscriptor (`medio:…`, `tema:…`, `region:…`) por el mecanismo propio
+  // de Ghost (input[data-members-label]); quien no marca nada lo recibe todo. «Suscríbete» de la cabecera lleva a este
+  // formulario, porque la ventana de Ghost (Portal) no admite etiquetas. Si algo falla, el formulario sigue como estaba.
+  (function () {
+    var TEMAS = [["medio:tierra", "Tierra"], ["medio:mar", "Mar"], ["medio:aire", "Aire"], ["medio:logistica", "Logística"],
+      ["tema:regulacion", "Regulación"], ["tema:concesiones", "Licitaciones y concesiones"], ["tema:empresas", "Empresas"],
+      ["tema:infraestructuras", "Infraestructuras"], ["tema:tecnologia", "Tecnología"], ["tema:analisis", "Análisis y opinión"]];
+    var REG = [["region:estado", "España"], ["region:pt-iberoamerica", "Portugal e Iberoamérica"], ["region:ue", "Europa"],
+      ["region:internacional", "Resto del mundo"]];
+    var CCAA = [["andalucia", "Andalucía"], ["aragon", "Aragón"], ["asturias", "Asturias"], ["baleares", "Baleares"], ["canarias", "Canarias"],
+      ["cantabria", "Cantabria"], ["castilla-la-mancha", "Castilla-La Mancha"], ["castilla-y-leon", "Castilla y León"], ["cataluna", "Cataluña"],
+      ["comunidad-valenciana", "Comunidad Valenciana"], ["extremadura", "Extremadura"], ["galicia", "Galicia"], ["madrid", "Comunidad de Madrid"],
+      ["murcia", "Región de Murcia"], ["navarra", "Navarra"], ["pais-vasco", "País Vasco"], ["la-rioja", "La Rioja"], ["ceuta", "Ceuta"], ["melilla", "Melilla"]];
+    function casillas(lista) {
+      return lista.map(function (x) { return '<label><input type="checkbox" value="' + E(x[0]) + '"> ' + E(x[1]) + "</label>"; }).join("");
+    }
+    function montar(f) {
+      if (f.querySelector(".mtx-pref")) return;
+      var caja = d.createElement("fieldset"); caja.className = "mtx-pref";
+      caja.innerHTML = "<legend>¿Qué quieres recibir? <small>Opcional: si no marcas nada, lo recibes todo.</small></legend>" +
+        '<div class="mtx-pref-g"><b>Temas</b>' + casillas(TEMAS) + "</div>" +
+        '<div class="mtx-pref-g"><b>Regiones</b>' + casillas(REG) +
+        '<label class="mtx-pref-cc">Mi comunidad <select aria-label="Comunidad autónoma"><option value="">—</option>' +
+        CCAA.map(function (x) { return '<option value="region:' + E(x[0]) + '">' + E(x[1]) + "</option>"; }).join("") + "</select></label></div>";
+      var antes = f.querySelector("[data-members-success]") || f.querySelector(".legal");
+      if (antes) f.insertBefore(caja, antes); else f.appendChild(caja);
+      function etiquetas() {
+        [].forEach.call(f.querySelectorAll("input.mtx-lab"), function (i) { i.parentNode.removeChild(i); });
+        var vals = [].map.call(caja.querySelectorAll("input:checked"), function (i) { return i.value; });
+        var sel = caja.querySelector("select"); if (sel && sel.value) vals.push(sel.value);
+        vals.forEach(function (v) {
+          var i = d.createElement("input"); i.type = "hidden"; i.className = "mtx-lab"; i.setAttribute("data-members-label", ""); i.value = v; f.appendChild(i);
+        });
+      }
+      caja.addEventListener("change", etiquetas);
+    }
+    try {
+      var forms = d.querySelectorAll('form[data-members-form="signup"], form[data-members-form="subscribe"]');
+      if (!forms.length) return;
+      var st = d.createElement("style");
+      st.textContent = ".mtx-pref{flex:1 1 100%;width:100%;box-sizing:border-box;margin:12px 0 4px;padding:10px 12px;border:1px solid rgba(128,128,128,.45);border-radius:8px;text-align:left;font:13px/1.5 system-ui,sans-serif;min-width:0}" +
+        ".mtx-pref legend{padding:0 6px;font-weight:600}.mtx-pref legend small{font-weight:400;opacity:.75}" +
+        ".mtx-pref-g{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;margin:4px 0}.mtx-pref-g b{flex:0 0 100%;font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}" +
+        ".mtx-pref label{display:inline-flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}.mtx-pref input[type=checkbox]{width:auto;min-width:0;margin:0;padding:0;flex:none}" +
+        ".mtx-pref select{width:auto;min-width:0;font:inherit;padding:2px 4px;margin:0;flex:none}";
+      d.head.appendChild(st);
+      [].forEach.call(forms, montar);
+      var f0 = forms[0]; if (!f0.id) f0.id = "mtx-suscripcion";
+      [].forEach.call(d.querySelectorAll('a[data-portal="signup"]'), function (a) {
+        var b = a.cloneNode(true); b.removeAttribute("data-portal"); b.href = "#" + f0.id;  // sin el aviso de Portal: va al formulario con preferencias
+        b.addEventListener("click", function (ev) {
+          ev.preventDefault(); f0.scrollIntoView({behavior: "smooth", block: "center"});
+          var c = f0.querySelector("input[data-members-email]"); if (c) setTimeout(function () { c.focus({preventScroll: true}); }, 400);
+        });
+        a.parentNode.replaceChild(b, a);
+      });
+    } catch (e) {}
   })();
 })();

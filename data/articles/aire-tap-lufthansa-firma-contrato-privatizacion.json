@@ -178,8 +178,9 @@
   "concesiones"
  ],
  "territorios": [
-  "madrid",
-  "ue"
+  "pt-iberoamerica",
+  "ue",
+  "madrid"
  ],
  "tipo_contenido": "noticia",
  "status": "publicado",

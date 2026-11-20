@@ -1954,6 +1954,34 @@ def ghost_al_dia(solo=None):
     return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
 
 
+def formato_al_dia(maximo=10):
+    """Cron ghost_al_dia (cambio etiquetas-al-pie, 20-11-2026): republica en Ghost, poco a poco, las piezas cuyo HTML es de un
+    formato anterior a `G.FORMATO` (las que no llevan todavía las etiquetas clicables al pie). No toca el texto, el estado
+    (publicada o borrador) ni el destacado de la portada, y no crea posts: solo rehace el HTML desde `data/articles/`."""
+    import random
+    url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
+    if not url or not key:
+        return {"ok": False, "error": "faltan GHOST_URL o GHOST_ADMIN_KEY"}
+    base, marca, viejas, pagina = G.admin_base(url.rstrip("/")), 'data-fmt="%s"' % G.FORMATO, [], 1
+    while pagina and pagina <= 20:
+        st, r = G.api("GET", "%s/ghost/api/admin/posts/?limit=50&page=%d&formats=html&fields=slug,html" % (base, pagina), G.ghost_token(key))
+        if st != 200:
+            return {"ok": False, "error": "no se pudieron leer los posts de Ghost (%s)" % st}
+        viejas += [p["slug"] for p in r.get("posts") or [] if marca not in (p.get("html") or "")
+                   and os.path.exists(os.path.join(ROOT, "data", "articles", p["slug"] + ".json"))]
+        pagina = (((r.get("meta") or {}).get("pagination") or {}).get("next"))
+    random.shuffle(viejas)  # una pieza que falle no bloquea a las demás en la pasada siguiente
+    v, hechas, fallos = vertical(), [], []
+    for slug in viejas[:maximo]:
+        try:
+            a = json.load(open(os.path.join(ROOT, "data", "articles", slug + ".json"), encoding="utf-8"))
+            res, err = G.republicar(a, v, url.rstrip("/"), key, conservar_destacado=True)
+        except Exception as e:  # noqa: BLE001
+            res, err = None, str(e)
+        (fallos if err else hechas).append(slug if not err else {"id": slug, "error": str(err)[:160]})
+    return {"ok": not fallos, "pendientes": len(viejas) - len(hechas), "republicadas": hechas, "fallos": fallos}
+
+
 # ---------- cola del editor (cambio cola-del-editor, 15 y 16-11-2026; migración 012, src/cola.py) ----------
 # Temas nuevos para el editor jefe. Solo él confirma (= encargo a la redacción horaria) y publica; los demás proponen.
 COLA_CAMPOS = ("id,titulo,resumen,avisos,clave_hecho,medio,modos,temas,territorios,importancia,importancia_agente,fiabilidad,"
@@ -2526,6 +2554,11 @@ class handler(BaseHTTPRequestHandler):
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
                 return self._enviar(401, {"error": "solo el cron"})
             r = ghost_al_dia()
+            if r.get("ok") and not r.get("publicadas"):  # con la edición al día, repasa el formato de las piezas antiguas
+                try:
+                    r["formato"] = formato_al_dia()
+                except Exception as e:  # noqa: BLE001
+                    r["formato"] = {"ok": False, "error": str(e)[:300]}
             try:
                 r["agenda"] = agenda_al_dia()
             except Exception as e:  # noqa: BLE001

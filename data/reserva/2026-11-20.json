@@ -1,0 +1,28 @@
+[
+ {
+  "encontrado_en": "repaso de El Mercantil (20-11-2026)",
+  "event_date": null,
+  "fuentes": [
+   {
+    "outlet": "El Mercantil",
+    "published": "2026-11-20",
+    "url": "https://elmercantil.com/2026/11/20/los-maquinistas-desconvocan-la-huelga-del-dia-23-tras-dar-por-cumplidas-sus-reivindicaciones/"
+   }
+  ],
+  "resumen": "El Mercantil publica el 20-11-2026 que los maquinistas desconvocan la huelga del día 23 tras dar por cumplidas sus reivindicaciones. Falta la fuente primaria (comunicado del sindicato o del Ministerio).",
+  "titulo": "Los maquinistas desconvocan la huelga ferroviaria del 23 de noviembre"
+ },
+ {
+  "encontrado_en": "repaso de El Mercantil (20-11-2026)",
+  "event_date": null,
+  "fuentes": [
+   {
+    "outlet": "El Mercantil",
+    "published": "2026-11-20",
+    "url": "https://elmercantil.com/2026/11/20/transportes-adjudica-el-estudio-para-mejorar-la-linea-ferroviaria-logrono-miranda-de-ebro/"
+   }
+  ],
+  "resumen": "El Mercantil publica el 20-11-2026 la adjudicación del estudio de mejora de la línea. Falta la fuente primaria (nota del Ministerio o anuncio de adjudicación).",
+  "titulo": "Transportes adjudica a WSP Spain el estudio para mejorar la línea ferroviaria Logroño-Miranda de Ebro"
+ }
+]
