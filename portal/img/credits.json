@@ -401,5 +401,33 @@
   "width": 1024,
   "height": 768,
   "openverse_id": "95e6fc0e-1238-44bd-a854-d7f78f05744b"
+ },
+ "gasolinera-marquesina-anochecer": {
+  "query": "gasolinera",
+  "title": "Gasolinera",
+  "creator": "Daquella manera",
+  "creator_url": "https://www.flickr.com/photos/62518311@N00",
+  "license": "CC0",
+  "license_version": "1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "source": "https://www.flickr.com/photos/62518311@N00/69731386",
+  "provider": "flickr",
+  "width": 1024,
+  "height": 768,
+  "openverse_id": "117e87d7-20a4-4288-b4aa-fe7504acc8c7"
+ },
+ "puerto-almeria-estacion-maritima": {
+  "query": "Estación Marítima Puerto de Almería",
+  "title": "Estación Marítima del Puerto de Almería",
+  "creator": "Televisible",
+  "creator_url": "",
+  "license": "CC0",
+  "license_version": "1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "source": "https://commons.wikimedia.org/w/index.php?curid=87117812",
+  "provider": "wikimedia",
+  "width": 1280,
+  "height": 719,
+  "openverse_id": "83495114-f55f-4997-8e2c-cef3b0f13847"
  }
 }
