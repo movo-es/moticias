@@ -1954,6 +1954,60 @@ def ghost_al_dia(solo=None):
     return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
 
 
+def sensores_al_dia(forzar=False):
+    """Cron `sensores` (decisión de Rainer, 21-11-2026): cada hora, de 06:00 a 23:00 (Madrid), baja sin IA los titulares de
+    los medios monitorizados (`src/sensores_titulares.py`, `verticals → sensores`) y guarda los nuevos en la base privada
+    (migración 017). Un titular nuevo con pinta de gran noticia va a la cola del editor (rutina «sensores») y encarga un
+    barrido a la redacción. La primera pasada, con la tabla vacía, no avisa de nada."""
+    import zoneinfo
+    import sensores_titulares as ST
+    v = vertical()
+    conf = v.get("sensores") or {}
+    ahora = datetime.datetime.now(zoneinfo.ZoneInfo("Europe/Madrid"))
+    h0, h1 = (conf.get("horas") or [6, 23])[:2]
+    if not forzar and not (h0 <= ahora.hour <= h1 and (ahora.hour < h1 or ahora.minute <= 5)):
+        return {"ok": True, "fuera_de_horario": True, "hora": ahora.strftime("%H:%M")}
+    habia = bool(BD.leer("sensores_titulares", select="id", limit="1"))
+    titulares, estado = ST.recoger(v)
+    nuevos = []
+    for i in range(0, len(titulares), 200):
+        nuevos += BD.peticion("POST", "sensores_titulares", {"on_conflict": "url"}, titulares[i:i + 200],
+                              prefer="resolution=ignore-duplicates,return=representation")
+    marca = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    for mid, e in estado.items():
+        fila = {"medio": mid, "pasada_at": marca}
+        if e.get("error") or not e.get("n"):
+            fila.update(ultimo_error=(e.get("error") or "sin titulares")[:400], error_at=marca)
+        else:
+            fila.update(ultimo_ok=marca, ultimo_n=e["n"], ultimo_error=None, error_at=None)
+        try:
+            BD.upsert("sensores_medios", fila, conflicto="medio")
+        except Exception:  # noqa: BLE001
+            pass
+    avisos = []
+    if habia:
+        limite = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=36)).isoformat()
+        grandes = [t for t in nuevos if t.get("grande") and (not t.get("publicado_at") or t["publicado_at"] >= limite)][:3]
+        nombres = {m["id"]: m.get("nombre") or m["id"] for m in conf.get("medios") or []}
+        for t in grandes:
+            try:
+                fila = CO.normalizar({"titulo": t["titulo"][:300], "resumen": "Aviso automático del servidor: titular de %s con pinta de gran noticia. Sin verificar." % nombres.get(t["medio"], t["medio"]),
+                                        "avisos": [{"texto": t["titulo"][:300], "fuente": nombres.get(t["medio"], t["medio"]), "url": t["url"], "fecha": (t.get("publicado_at") or marca)[:10]}],
+                                        "importancia_agente": 4, "fiabilidad": "secundaria"}, rutina="sensores")
+                CO.proponer([fila])
+                BD.actualizar("sensores_titulares", {"id": "eq.%s" % t["id"]}, {"avisado": True})
+                avisos.append(t["titulo"][:120])
+            except Exception as e:  # noqa: BLE001
+                avisos.append("no pude avisar: %s" % str(e)[:100])
+        if grandes and not BD.leer("barridos_pedidos", select="id", estado="eq.pendiente", limit="1"):
+            try:
+                BD.insertar("barridos_pedidos", {"pedido_por": "sensores (servidor)", "perfil": None, "pista": grandes[0]["titulo"][:200]})
+            except Exception:  # noqa: BLE001
+                pass
+    return {"ok": True, "hora": ahora.strftime("%H:%M"), "leidos": len(titulares), "nuevos": len(nuevos), "avisos": avisos,
+            "medios": {k: (e.get("error") or e.get("n")) for k, e in estado.items()}}
+
+
 def formato_al_dia(maximo=20):
     """Cron ghost_al_dia (cambio etiquetas-al-pie, 20-11-2026): republica en Ghost, poco a poco, las piezas cuyo HTML es de un
     formato anterior a `G.FORMATO` (las que no llevan todavía las etiquetas clicables al pie). No toca el texto, el estado
@@ -2578,6 +2632,14 @@ class handler(BaseHTTPRequestHandler):
             except Exception as e:  # la comprobación nunca hace fallar la publicación
                 r["secciones_error"] = str(e)[:300]
             return self._enviar(200, r)
+        if a == "sensores":  # Vercel Cron (cada hora; la función respeta 06:00–23:00 de Madrid): titulares de los medios, sin IA
+            sec = os.environ.get("CRON_SECRET")
+            if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):
+                return self._enviar(401, {"error": "solo el cron"})
+            try:
+                return self._enviar(200, sensores_al_dia())
+            except Exception as e:  # noqa: BLE001
+                return self._enviar(200, {"ok": False, "error": str(e)[:300]})
         if a == "web_reintentos":  # Vercel Cron (cada 20 min, todos los días): vuelve a subir a Ghost lo aprobado que no llegó
             sec = os.environ.get("CRON_SECRET")
             if not sec or not hmac.compare_digest(self.headers.get("Authorization") or "", "Bearer " + sec):

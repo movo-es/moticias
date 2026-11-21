@@ -3391,5 +3391,114 @@
    }
   },
   "dominios_compartidos_nota": "Dominios compartidos por muchos organismos: el CRM casa la cuenta por dominio y nombre (lista en src/agenda_gestor.py)."
+ },
+ "sensores": {
+  "nota": "Medios cuyos titulares recoge el servidor cada hora, de 06:00 a 23:00 (hora de Madrid), sin IA (decisión de Rainer, 21-11-2026). `grandes`: reglas para avisar de una posible gran noticia; cada regla es una lista de expresiones que deben aparecer todas en el titular, sin acentos.",
+  "horas": [
+   6,
+   23
+  ],
+  "medios": [
+   {
+    "id": "el-mercantil",
+    "nombre": "El Mercantil",
+    "rss": "https://elmercantil.com/feed/",
+    "archivo": "https://elmercantil.com/%Y/%m/%d/",
+    "patron": "/\\d{4}/\\d{2}/\\d{2}/[^/]+/?$",
+    "excluye": "/ca/"
+   },
+   {
+    "id": "railin",
+    "nombre": "Railin",
+    "rss": "https://www.railin.net/es/feed/"
+   },
+   {
+    "id": "autobuses-y-autocares",
+    "nombre": "Autobuses & Autocares",
+    "rss": "https://www.autobusesyautocares.com/feed/all"
+   },
+   {
+    "id": "carrilbus",
+    "nombre": "Carril Bus",
+    "rss": "https://carrilbus.com/feed"
+   },
+   {
+    "id": "nexotrans",
+    "nombre": "Nexotrans",
+    "rss": "https://nexotrans.com/feed/"
+   },
+   {
+    "id": "hosteltur",
+    "nombre": "Hosteltur Transportes",
+    "rss": "https://www.hosteltur.com/rss/transportes"
+   },
+   {
+    "id": "fly-news",
+    "nombre": "Fly News",
+    "rss": "https://fly-news.es/feed/"
+   },
+   {
+    "id": "aviacion-digital",
+    "nombre": "Aviación Digital",
+    "rss": "https://aviaciondigital.com/feed/",
+    "nota": "El 21-11-2026 su servidor responde con una página de espera a las lecturas automáticas: si da error, la edición lo lee con WebFetch."
+   },
+   {
+    "id": "anetra-informa",
+    "nombre": "Anetra Informa",
+    "rss": "https://anetra-informa.es/feed/"
+   },
+   {
+    "id": "anave",
+    "nombre": "Anave",
+    "rss": "https://anave.es/feed/"
+   },
+   {
+    "id": "diario-del-puerto",
+    "nombre": "Diario del Puerto",
+    "portada": "https://www.diariodelpuerto.com/"
+   },
+   {
+    "id": "via-libre",
+    "nombre": "Vía Libre",
+    "portada": "https://www.vialibre-ffe.com/",
+    "patron": "noticias\\.asp\\?not=\\d+"
+   },
+   {
+    "id": "transporte-profesional",
+    "nombre": "Transporte Profesional",
+    "portada": "https://transporteprofesional.es/"
+   }
+  ],
+  "grandes": [
+   [
+    "huelga",
+    "convoca|desconvoca|suspend|aplaza|servicios minimos"
+   ],
+   [
+    "descarril|colision|choque|accidente|incendio|explosion|naufrag|hundimiento",
+    "tren|ave\\b|cercanias|rodalies|metro|tranvia|autobus|autocar|avion|vuelo|aeropuerto|ferri|ferry|buque|puerto|tunel|viaducto"
+   ],
+   [
+    "muert|fallec|victimas mortales",
+    "tren|ave\\b|cercanias|rodalies|metro|autobus|autocar|avion|vuelo|ferri|ferry|buque"
+   ],
+   [
+    "cierr|cerrad|cortad|interrump|suspendid|paraliza|caida del sistema|apagon",
+    "aeropuerto|espacio aereo|puerto de|linea de alta velocidad|\\bave\\b|cercanias|rodalies|circulacion ferroviaria|control aereo"
+   ],
+   [
+    "dimit|dimision|destitu|\\bcesa\\b|\\bcese\\b|nombra|releva",
+    "ministr|secretari[oa] de estado|adif|renfe|aena|enaire|puertos del estado|aesa|cnmc|dgt"
+   ],
+   [
+    "real decreto-ley|decreto-ley|consejo de ministros aprueba|congreso aprueba|convalida",
+    "transporte|movilidad|ferrovi|aere|maritim|puerto|carretera|autobus|peaje"
+   ],
+   [
+    "quiebra|concurso de acreedores|cesa su actividad|suspende (sus )?operaciones",
+    "aerolinea|naviera|operador|autobus|ferrovi"
+   ]
+  ]
  }
 }

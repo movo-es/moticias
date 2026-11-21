@@ -29,3 +29,13 @@ La noticia no se detectó: el barrido buscaba por temas en un buscador con venta
 - Inventario verificado de fuentes de Portugal e Iberoamérica en `docs/fuentes.md` (hoy el bloque se barre por búsqueda).
 - Envíos del boletín segmentados por las etiquetas de preferencia, cuando arranque el boletín.
 - Preferencias en la ventana de Ghost (Portal), que no admite etiquetas: hoy «Suscríbete» lleva al formulario del pie.
+
+## 21-11-2026 · Titulares recogidos por el servidor
+
+La edición nº 15 (primera con los medios como sensores) gastó 447.597 tokens en lectura web y cerró con tres piezas y sin análisis. Decisión de Rainer: la recogida de titulares pasa al servidor, sin IA, cada hora de 06:00 a 23:00 (Madrid) y nunca entre las 23:01 y las 06:00; sirve además para detectar grandes noticias en el momento.
+
+- `src/sensores_titulares.py` (RSS, archivo por día o portada; `probar`), `verticals → sensores` (13 medios y reglas de «gran noticia»), migración 017 (`sensores_titulares`, `sensores_medios`), cron de Vercel `sensores` (`api/gestor.py`: `sensores_al_dia`).
+- Un titular nuevo que casa con una regla va a la cola del editor (rutina «sensores», importancia 4) y encarga un barrido; como mucho tres por pasada; la primera pasada no avisa.
+- La edición lee la lista con `execute_sql`; a la antigua solo los medios con error (Aviación Digital responde con una página de espera a las lecturas automáticas).
+- Si el tope de 450.000 tokens sigue obligando a cerrar corto, el aviso empieza por «TOPE INSUFICIENTE» y el editor jefe decide si se sube.
+- Pendiente: el barrido que encarga un aviso lo atiende la pasada horaria de la redacción solo en laborables de 8 a 21; en fin de semana, las batidas de las 11:00 y las 17:30.
