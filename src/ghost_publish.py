@@ -339,7 +339,7 @@ def etiquetas_taxonomia(tx):
 
 
 # ---------- etiquetas clicables al pie (decisión de Rainer, 20-11-2026; cambio etiquetas-al-pie) ----------
-FORMATO = "3"  # 3 (21-11-2026): se republica todo para soltar las etiquetas de región duplicadas.  versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
+FORMATO = "4"  # 4 (22-11-2026): se republica todo para rehacer las entradillas, que salían cortadas a media palabra. 3 (21-11-2026): se republica todo para soltar las etiquetas de región duplicadas.  versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
 _SLUGS = {}  # nombre en minúsculas → slug real de la etiqueta en Ghost (una lectura por proceso)
 _NOMBRES = {}  # slug → nombre exacto de la etiqueta en Ghost
 
@@ -480,14 +480,62 @@ def estado_ghost(a, pedido):
     return "draft" if a.get("status") in ("pendiente", "borrador", "retirada") else pedido
 
 
+_ABREV = ("art", "arts", "núm", "num", "pág", "págs", "ej", "etc", "sr", "sra", "sres", "dr", "dra", "d", "dª", "s.l", "s.a", "s.l.u", "s.a.u", "ee", "uu", "aprox", "p")
+
+
+def extracto(resumen, tope=300):
+    """Entradilla para Ghost (admite 300 caracteres). Si el resumen no cabe, se corta al final de la última frase que cabe;
+    si ni una frase cabe, en la última palabra entera, con puntos suspensivos. Nunca a media palabra (22-11-2026: los
+    resúmenes pasan de 300 y la web enseñaba «La solución está en el pl»)."""
+    t = " ".join((resumen or "").split())
+    if len(t) <= tope:
+        return t
+    corte = 0
+    for m in re.finditer(r"[.!?…»](?=\s+[A-ZÁÉÍÓÚÑÜ¿¡«\d])", t[:tope + 1]):
+        palabra = t[:m.start()].rsplit(" ", 1)[-1].lower().strip("«(")
+        if t[m.start()] == "." and (palabra in _ABREV or len(palabra) == 1):
+            continue  # «art. 26», «S.L. y», una inicial: no es fin de frase
+        if m.end() <= tope:
+            corte = m.end()
+    if corte >= 120:
+        return t[:corte]
+    return t[:tope - 1].rsplit(" ", 1)[0].rstrip(" ,;:(«") + "…"
+
+
 URLS_FOTOS = os.path.join(ROOT, "portal", "img", "ghost-urls.json")
+FOTOS_NUEVAS = {}   # fotos subidas a Ghost en este proceso: quien llama las anota en el repositorio (api/gestor.py → _anotar_fotos)
+_FOTOS_REPO = None  # copia de ghost-urls.json leída del repositorio cuando el despliegue no la lleva
+
+
+def _del_repositorio(ruta):
+    """Bytes de un fichero del repositorio por la API de GitHub (con GITHUB_TOKEN si lo hay), o None."""
+    repo, rama, tok = os.environ.get("GITHUB_REPO", "movo-es/moticias"), os.environ.get("GITHUB_BRANCH", "main"), os.environ.get("GITHUB_TOKEN")
+    cab = {"Accept": "application/vnd.github.raw", "User-Agent": UA, "X-GitHub-Api-Version": "2022-11-28"}
+    if tok:
+        cab["Authorization"] = "Bearer " + tok
+    req = urllib.request.Request("https://api.github.com/repos/%s/contents/%s?ref=%s" % (repo, urllib.request.quote(ruta), rama), headers=cab)
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return r.read()
+    except (urllib.error.URLError, OSError):
+        return None
 
 
 def urls_fotos():
+    """Foto → URL en Ghost. El gestor en Vercel no lleva `portal/` (.vercelignore): sin esta lista volvía a subir cada foto
+    en cada republicación (22-11-2026: «…-6.jpg»). Si el fichero no está en el disco, se lee del repositorio, una vez por proceso."""
+    global _FOTOS_REPO
     try:
-        return json.load(open(URLS_FOTOS, encoding="utf-8"))
+        urls = json.load(open(URLS_FOTOS, encoding="utf-8"))
     except (OSError, ValueError):
-        return {}
+        if _FOTOS_REPO is None:
+            try:
+                _FOTOS_REPO = json.loads((_del_repositorio("portal/img/ghost-urls.json") or b"{}").decode("utf-8"))
+            except ValueError:
+                _FOTOS_REPO = {}
+        urls = dict(_FOTOS_REPO)
+    urls.update(FOTOS_NUEVAS)
+    return urls
 
 
 def subir_imagen(ruta, base_url, token):
@@ -510,21 +558,12 @@ def subir_imagen(ruta, base_url, token):
 
 
 def _foto_del_repositorio(nombre):
-    """Baja `portal/img/<nombre>` del repositorio (API de GitHub; con GITHUB_TOKEN si lo hay) a un fichero temporal y
-    devuelve su ruta, o None. Para los despliegues que no llevan `portal/` (el gestor en Vercel)."""
+    """Baja `portal/img/<nombre>` del repositorio a un fichero temporal y devuelve su ruta, o None. Para los despliegues
+    que no llevan `portal/` (el gestor en Vercel)."""
     if not re.fullmatch(r"[A-Za-z0-9._-]{3,120}\.(?:jpe?g|png|webp)", nombre or ""):
         return None
-    repo, rama, tok = os.environ.get("GITHUB_REPO", "movo-es/moticias"), os.environ.get("GITHUB_BRANCH", "main"), os.environ.get("GITHUB_TOKEN")
-    cab = {"Accept": "application/vnd.github.raw", "User-Agent": UA, "X-GitHub-Api-Version": "2022-11-28"}
-    if tok:
-        cab["Authorization"] = "Bearer " + tok
-    req = urllib.request.Request("https://api.github.com/repos/%s/contents/portal/img/%s?ref=%s" % (repo, urllib.request.quote(nombre), rama), headers=cab)
-    try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            datos = r.read()
-    except (urllib.error.URLError, OSError):
-        return None
-    if len(datos) < 1000:
+    datos = _del_repositorio("portal/img/" + nombre)
+    if not datos or len(datos) < 1000:
         return None
     import tempfile
     ruta = os.path.join(tempfile.gettempdir(), nombre)
@@ -556,6 +595,7 @@ def imagen_ghost(a, base_url, token):
     url = subir_imagen(ruta, base_url, token)
     if url:
         urls[nombre] = url
+        FOTOS_NUEVAS[nombre] = url
         try:
             with open(URLS_FOTOS, "w", encoding="utf-8") as fh:
                 json.dump(urls, fh, ensure_ascii=False, indent=1, sort_keys=True)
@@ -597,7 +637,7 @@ def build_post(a, vertical, base_url, token=None):
     for t in tags:  # una etiqueta libre que Ghost aún no tiene nace con el slug que enlazamos al pie
         if not t.get("slug") and not t["name"].startswith("#") and t["name"].lower() not in reales and slug_etiqueta(t["name"]):
             t["slug"] = slug_etiqueta(t["name"])
-    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical, pie), "custom_excerpt": (a.get("summary") or "")[:300],
+    post = {"title": a.get("title"), "slug": slug, "html": build_html(a, vertical, pie), "custom_excerpt": extracto(a.get("summary")),
             "tags": tags, "published_at": a.get("published_at"), "meta_title": a.get("seo_title") or a.get("title"), "featured": a.get("featured") == 1,
             "meta_description": (a.get("seo_description") or a.get("subtitle") or a.get("summary") or "")[:500], "codeinjection_head": jsonld(a, vertical, url)}
     autor = autor_ghost(a, vertical, base_url, token)

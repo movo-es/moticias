@@ -187,6 +187,7 @@ def republicar(a, v):
         return False, "Ghost: %s" % e
     if err:
         return False, err if isinstance(err, str) else "Ghost: %s" % json.dumps(err, ensure_ascii=False)[:200]
+    _anotar_fotos()
     return True, res.get("url") or "actualizada en Ghost"
 
 
@@ -1023,6 +1024,30 @@ def voz_encargos():
     return out
 
 
+def _anotar_fotos():
+    """Las fotos que este proceso acaba de subir a Ghost se anotan en `portal/img/ghost-urls.json` del repositorio, para no
+    volver a subirlas y para que el índice de las secciones tenga su URL (22-11-2026). Nunca hace fallar una publicación."""
+    nuevas = dict(G.FOTOS_NUEVAS)
+    if not nuevas or not os.environ.get("GITHUB_TOKEN"):
+        return False
+    try:
+        ruta = "portal/img/ghost-urls.json"
+        actual, sha = leer(ruta)
+        actual = actual or {}
+        faltan = {k: u for k, u in nuevas.items() if not actual.get(k)}
+        if faltan and sha:
+            ok, _ = escribir(ruta, dict(actual, **faltan), sha, "Fotos en Ghost: %s" % ", ".join(sorted(faltan))[:120])
+            if not ok:
+                return False
+        for k in nuevas:
+            G.FOTOS_NUEVAS.pop(k, None)
+        if G._FOTOS_REPO is not None:
+            G._FOTOS_REPO.update(nuevas)
+        return bool(faltan)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _subir(a, v, estado=None):
     url, key = os.environ.get("GHOST_URL"), os.environ.get("GHOST_ADMIN_KEY")
     if not url or not key or ":" not in key:
@@ -1033,6 +1058,7 @@ def _subir(a, v, estado=None):
         return False, "Ghost: %s" % e
     if err:
         return False, err if isinstance(err, str) else "Ghost: %s" % json.dumps(err, ensure_ascii=False)[:200]
+    _anotar_fotos()
     return True, res.get("url") or "actualizada en Ghost"
 
 
@@ -2041,6 +2067,7 @@ def formato_al_dia(maximo=20):
         except Exception as e:  # noqa: BLE001
             res, err = None, str(e)
         (fallos if err else hechas).append(slug if not err else {"id": slug, "error": str(err)[:160]})
+    _anotar_fotos()
     return {"ok": not fallos, "pendientes": len(viejas) - len(hechas), "republicadas": hechas, "fallos": fallos, "duplicadas_borradas": limpieza}
 
 

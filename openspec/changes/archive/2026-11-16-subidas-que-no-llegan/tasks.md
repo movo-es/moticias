@@ -3,4 +3,4 @@
 - [x] `app/public/gestor/index.html`: «Aprobada, pero no ha llegado a la web» y «Subir a la web ahora»; aviso claro al aprobar
 - [x] `tests/test_voz.py`: cuatro pruebas nuevas (12 en total)
 - [x] `CLAUDE.md` y spec viva
-- [ ] Comprobar en moticias.com que la columna del 16-11 ha llegado
+- [x] Comprobar en moticias.com que la columna del 16-11 ha llegado (subió sola el 16-11 a las 21:07)
