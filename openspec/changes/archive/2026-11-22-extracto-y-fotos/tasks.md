@@ -1,0 +1,6 @@
+- [x] `src/ghost_publish.py`: `extracto`, `urls_fotos` con el repositorio, `FOTOS_NUEVAS`, `FORMATO = "4"`
+- [x] `api/gestor.py`: `_anotar_fotos` tras publicar, republicar y el repaso de formato
+- [x] `portal/img/ghost-urls.json`: las dos fotos que faltaban; índice del buscador y de las secciones rehecho
+- [x] `tests/test_extracto_y_fotos.py` (9 pruebas sin red)
+- [x] `CLAUDE.md`
+- [ ] Comprobar en moticias.com, tras el repaso del cron, la entradilla de la columna y la foto en la sección
