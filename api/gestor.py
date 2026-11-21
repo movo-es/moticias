@@ -1972,6 +1972,10 @@ def formato_al_dia(maximo=10):
         pagina = (((r.get("meta") or {}).get("pagination") or {}).get("next"))
     random.shuffle(viejas)  # una pieza que falle no bloquea a las demás en la pasada siguiente
     v, hechas, fallos = vertical(), [], []
+    try:  # las etiquetas de eje, con su nombre y su slug de hoy, aunque no quede ninguna pieza por republicar (21-11-2026)
+        G.alinear_ejes([t for t in G.etiquetas_taxonomia(G.taxonomia(v)) if t["slug"].startswith("t-")], url.rstrip("/"), G.ghost_token(key))
+    except Exception:  # noqa: BLE001
+        pass
     for slug in viejas[:maximo]:
         try:
             a = json.load(open(os.path.join(ROOT, "data", "articles", slug + ".json"), encoding="utf-8"))

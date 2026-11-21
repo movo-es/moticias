@@ -36,6 +36,37 @@ def test_todas_las_piezas_llevan_el_bloque():
     assert n > 50
 
 
+def test_alinear_ejes_sin_red():
+    """21-11-2026: Ghost creó «t-ue-2» porque el slug fijo lo tenía la etiqueta con el nombre antiguo. Nada se borra."""
+    tags = {"t-ue": {"id": "1", "name": "Unión Europea"}, "t-ue-2": {"id": "2", "name": "Europa"}, "m-puertos": {"id": "5", "name": "Puertos"},
+            "puertos": {"id": "6", "name": "Puertos"}, "t-x": {"id": "7", "name": "Viejo"}}
+
+    def api(method, url, token, body=None):
+        if method == "GET" and "/tags/?" in url:
+            return 200, {"tags": [{"name": v["name"], "slug": k} for k, v in tags.items()], "meta": {"pagination": {"next": None}}}
+        sl = url.rstrip("/").split("/")[-1]
+        if method == "GET":
+            return (200, {"tags": [dict(tags[sl], slug=sl, updated_at="u")]}) if sl in tags else (404, {})
+        sl = [k for k, v in tags.items() if v["id"] == sl][0]
+        c = body["tags"][0]
+        if "slug" in c:
+            assert c["slug"] not in tags
+            tags[c["slug"]] = tags.pop(sl)
+            sl = c["slug"]
+        if "name" in c:
+            tags[sl]["name"] = c["name"]
+        return 200, {}
+
+    original = G.api
+    G.api, G._SLUGS, G._NOMBRES = api, {}, {}
+    try:
+        r = G.alinear_ejes([{"name": "Europa", "slug": "t-ue"}, {"name": "Puertos", "slug": "m-puertos"}, {"name": "Nuevo", "slug": "t-x"}, {"name": "OSPAR"}], "https://x", "t")
+    finally:
+        G.api, G._SLUGS, G._NOMBRES = original, {}, {}
+    assert tags["t-ue"]["name"] == "Europa" and tags["t-ue-antigua"]["name"] == "Unión Europea" and "t-ue-2" not in tags
+    assert tags["m-puertos"]["id"] == "5" and tags["puertos"]["id"] == "6" and tags["t-x"]["name"] == "Nuevo" and r["europa"] == "t-ue"
+
+
 if __name__ == "__main__":
     for nombre, f in sorted(globals().items()):
         if nombre.startswith("test_"):

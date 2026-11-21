@@ -341,6 +341,7 @@ def etiquetas_taxonomia(tx):
 # ---------- etiquetas clicables al pie (decisión de Rainer, 20-11-2026; cambio etiquetas-al-pie) ----------
 FORMATO = "2"  # versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
 _SLUGS = {}  # nombre en minúsculas → slug real de la etiqueta en Ghost (una lectura por proceso)
+_NOMBRES = {}  # slug → nombre exacto de la etiqueta en Ghost
 
 
 def slug_etiqueta(nombre):
@@ -350,34 +351,58 @@ def slug_etiqueta(nombre):
 
 
 def slugs_ghost(base_url, token):
-    """Los slugs que tienen hoy las etiquetas en Ghost (las antiguas los recibieron de Ghost; no se adivinan)."""
+    """Los slugs que tienen hoy las etiquetas en Ghost (las antiguas los recibieron de Ghost; no se adivinan). Ghost 6 da
+    como mucho 100 por página aunque se pida `limit=all` (por eso el 20-11-2026 no se vio «Unión Europea»): se pagina."""
     if token and not _SLUGS:
-        st, r = api("GET", "%s/ghost/api/admin/tags/?limit=all&fields=name,slug" % admin_base(base_url), token)
-        if st == 200:
+        pagina = 1
+        while pagina and pagina <= 40:
+            st, r = api("GET", "%s/ghost/api/admin/tags/?limit=100&page=%d&fields=name,slug" % (admin_base(base_url), pagina), token)
+            if st != 200:
+                break
             for t in r.get("tags") or []:
                 _SLUGS[(t.get("name") or "").lower()] = t.get("slug")
+                _NOMBRES[t.get("slug")] = t.get("name") or ""
+            pagina = ((r.get("meta") or {}).get("pagination") or {}).get("next")
     return _SLUGS
 
 
+def _cambiar_etiqueta(base_url, token, slug, cambios):
+    st, r = api("GET", "%s/ghost/api/admin/tags/slug/%s/" % (admin_base(base_url), slug), token)
+    if st != 200 or not r.get("tags"):
+        return False
+    actual = r["tags"][0]
+    st2, _ = api("PUT", "%s/ghost/api/admin/tags/%s/" % (admin_base(base_url), actual["id"]), token,
+                 {"tags": [dict(cambios, updated_at=actual["updated_at"])]})
+    return st2 < 300
+
+
 def alinear_ejes(tags, base_url, token):
-    """Si una etiqueta de eje (slug fijo) existe en Ghost con otro nombre —«Unión Europea» pasó a «Europa» e «Internacional» a
-    «Resto del mundo» el 20-11-2026—, la renombra antes de publicar: Ghost busca las etiquetas por nombre y, con el nombre
-    nuevo y el slug ocupado, crearía «t-ue-2». Devuelve el mapa nombre → slug ya al día."""
+    """Deja cada etiqueta de eje (slug fijo: modo, tema, región) con el nombre de hoy. «Unión Europea» pasó a «Europa» e
+    «Internacional» a «Resto del mundo» el 20-11-2026, y Ghost busca las etiquetas por nombre: con el nombre nuevo y el slug
+    ocupado creó «t-ue-2» y «t-internacional-2». Dos casos, y nada se borra: (a) el slug fijo lo tiene la etiqueta con el
+    nombre antiguo y el nombre nuevo no existe → se renombra; (b) el nombre nuevo existe como duplicado «<slug>-N» → la
+    antigua pasa a «<slug>-antigua» y la duplicada recibe el slug fijo. Si el slug fijo ya tiene el nombre de hoy, no toca
+    nada, haya o no etiquetas libres que se llamen igual. Devuelve el mapa nombre → slug al día."""
     reales = slugs_ghost(base_url, token)
-    por_slug = {s: n for n, s in reales.items()}
     for t in tags:
         sl, nombre = t.get("slug"), (t.get("name") or "")
-        if not sl or sl not in por_slug or por_slug[sl] == nombre.lower():
+        if not sl or not nombre or nombre.startswith("#") or sl not in _NOMBRES or _NOMBRES[sl] == nombre:
             continue
-        st, r = api("GET", "%s/ghost/api/admin/tags/slug/%s/" % (admin_base(base_url), sl), token)
-        if st == 200 and r.get("tags"):
-            actual = r["tags"][0]
-            st2, _ = api("PUT", "%s/ghost/api/admin/tags/%s/" % (admin_base(base_url), actual["id"]), token,
-                         {"tags": [{"name": nombre, "updated_at": actual["updated_at"]}]})
-            if st2 < 300:
-                reales.pop(por_slug[sl], None)
+        dobles = [s for s, n in _NOMBRES.items() if n == nombre and s != sl]
+        if not dobles:  # (a)
+            if _cambiar_etiqueta(base_url, token, sl, {"name": nombre}):
+                reales.pop(_NOMBRES[sl].lower(), None)
+                _NOMBRES[sl] = nombre
                 reales[nombre.lower()] = sl
-                por_slug[sl] = nombre.lower()
+        elif len(dobles) == 1 and re.fullmatch(re.escape(sl) + r"-\d+", dobles[0]):  # (b)
+            vieja = sl + "-antigua"
+            if vieja not in _NOMBRES and _cambiar_etiqueta(base_url, token, sl, {"slug": vieja}):
+                _NOMBRES[vieja] = _NOMBRES.pop(sl)
+                reales[_NOMBRES[vieja].lower()] = vieja
+                if _cambiar_etiqueta(base_url, token, dobles[0], {"slug": sl}):
+                    _NOMBRES.pop(dobles[0], None)
+                    _NOMBRES[sl] = nombre
+                    reales[nombre.lower()] = sl
     return reales
 
 
