@@ -1,0 +1,20 @@
+[
+ {
+  "titulo": "Renfe avisa a sus clientes de que el ciberataque de septiembre pudo exponer DNI, NIE y contraseñas cifradas",
+  "resumen": "Renfe ha publicado una notificación a las personas afectadas por el acceso indebido del 24-09-2026 en la que dice que potencialmente podrían estar afectados números de DNI, NIE u otros documentos y contraseñas protegidas criptográficamente; recomienda cambiar la contraseña e indica que lo ha notificado a la AEPD. El 25-09 había hablado de un volumen limitado de nombres y correos y había descartado los DNI; el número de afectados no consta.",
+  "event_date": "2026-09-24",
+  "fuentes": [
+   {
+    "outlet": "Renfe (Notificación Personas Afectadas)",
+    "url": "https://www.renfe.com/es/es/ayuda/notificacion-personas-afectadas",
+    "published": null
+   },
+   {
+    "outlet": "El Español Invertia",
+    "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261120/renfe-advierte-posible-robo-datos-personales-contrasenas-dnis-ciberataque-septiembre/1003744466367_0.html",
+    "published": "2026-11-20"
+   }
+  ],
+  "encontrado_en": "batida de fin de semana (tarde), 2026-11-21"
+ }
+]
