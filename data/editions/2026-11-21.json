@@ -1,0 +1,147 @@
+{
+ "analysis_id": null,
+ "boe_range": [
+  "2026-11-21",
+  "2026-11-21"
+ ],
+ "boe_series": {
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  }
+ },
+ "closed_at": "07:36",
+ "date": "2026-11-21",
+ "document": {
+  "date": "2026-11-21",
+  "kicker": "Real Decreto-ley · Comercio de emisiones",
+  "ref": "BOE-A-2026-24438",
+  "source": "BOE",
+  "summary": "Qué es: un real decreto-ley que reforma la Ley 1/2005 para trasponer las Directivas (UE) 2023/958 y 2023/959.\nEn el mar: orden de expulsión o inmovilización de los buques de navieras que no entreguen derechos dos o más periodos seguidos.\nEn el aire: fin progresivo de la asignación gratuita y multas de 15.001 € a 2 M€ por infracción muy grave.\nEn la carretera: régimen propio para los combustibles, a cargo de quien los despacha a consumo, no del consumidor final.\nCuándo: en vigor el 22 de noviembre; la Diputación Permanente debe convalidarlo en treinta días.",
+  "title": "Real Decreto-ley 41/2026, de 20 de noviembre, por el que se modifica la Ley 1/2005, de 9 de marzo, del régimen del comercio de derechos de emisión de gases de efecto invernadero",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+ },
+ "id": "2026-11-21",
+ "lead_id": "el-real-decreto-ley-41-2026-lleva-el-comercio-de-emisiones-a-8pjg",
+ "note_metodologica": "Edición nº 15 de MOTICIAS, cerrada a las 07:36 (CET) del sábado 21 de noviembre de 2026: la primera de sábado, por la decisión del editor jefe del 20-11-2026 de publicar todos los días. Se aplican sus cinco decisiones de esa fecha: edición diaria también en fin de semana y festivos; medios monitorizados leídos como sensores; fuente primaria siempre que exista y secundaria reputada solo si no la hay; etiquetas de protagonistas y temas al pie de cada pieza; y el encargo de la noticia de Alsa Rail en el puerto de Gijón, que MOTICIAS no había publicado. Tres noticias y ningún análisis, dos piezas menos que el mínimo: los agentes de lectura web consumieron 447.597 tokens (cifra leída) en la lectura de los medios monitorizados y de las fuentes de las piezas, de modo que con los de la sesión se superó el tope de 450.000 y la edición se cierra con lo verificado; el análisis del día (tocaba Movilidad urbana y tecnología) no se escribe. Medios leídos entrada a entrada desde el cierre anterior: Railin, Autobuses y Autocares, Carril Bus, Vía Libre, Nexotrans, Hosteltur, Fly News, Aviación Digital, Anetra Informa, Anave, Diario del Puerto y Transporte Profesional (unas cuarenta entradas en la ventana; Railin, Carril Bus, Nexotrans y Anave sin novedades). El Mercantil: el archivo del 20-11 no se dejó leer (error del servidor en dos intentos); el del 21-11 trae 1 titular, fuera de alcance; de la reserva del 20-11, 2 titulares: 1 entra hoy (la desconvocatoria de Semaf) y 1 sigue en la cola del editor (el estudio del corredor Logroño-Miranda de Ebro). Sin fuente primaria: la pieza de Semaf se apoya en elDiario.es y El Mercantil del 20-11, citados por su nombre en el texto; no se localizó en búsqueda el comunicado del sindicato ni una nota del Ministerio de Transportes o de Renfe, y el contexto oficial lo dan el Real Decreto-ley 34/2026, su convalidación, la Orden TRM/1232/2026 y el Real Decreto 975/2026. Alsa Rail: los hechos son del 13-11; se escribe desde la nota de la Autoridad Portuaria de Gijón (fechada el 13-11 y publicada en su web el 18-11) y desde el BOE (BOE-A-2026-17486 y BOE-B-2019-29304), con El Mercantil como contraste; la adjudicación no se pudo consultar en la Plataforma de Contratación del Sector Público y el anuncio de TED no admitió lectura automática. Fuentes primarias abiertas en esta sesión: el BOE por su API de datos abiertos (sumario del 21-11 y textos citados) y la nota de la Autoridad Portuaria de Gijón. Periodo barrido en el BOE: 21 de noviembre de 2026 (número 290, disponible a las 07:31); trae una sola disposición de transporte, el Real Decreto-ley 41/2026, que abre la edición. A la cola del editor: ocho temas nuevos y avisos sobre tres que ya estaban. La búsqueda de noticias y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se comprobaron en la fuente.",
+ "number": 15,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24438",
+   "text": "El Real Decreto-ley 41/2026 lleva el comercio de emisiones a navieras, operadores aéreos y combustibles de carretera; en vigor el 22",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+  },
+  {
+   "ref": "BOE-A-2026-24302",
+   "text": "Prohibidas desde julio de 2027 las descargas de los scrubbers de los buques en puertos y aguas interiores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24302"
+  },
+  {
+   "ref": "BOE-A-2026-24295",
+   "text": "Publicada la convalidación del Real Decreto-ley 34/2026 de seguridad operacional ferroviaria",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24295"
+  },
+  {
+   "ref": "BOE-A-2026-24293",
+   "text": "Convalidado el Real Decreto-ley 32/2026 de ayudas a las víctimas de Urda y tope de precios en emergencias",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24293"
+  },
+  {
+   "ref": "BOE-B-2026-38186",
+   "text": "Cádiz adjudica a Mdt Port Investments el concurso de la terminal de pasajeros del muelle Reina Sofía",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38186"
+  },
+  {
+   "ref": "BOE-A-2026-24303",
+   "text": "120.000 euros para el Observatorio de la Movilidad Metropolitana de la Politécnica de Madrid",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24303"
+  },
+  {
+   "ref": "BOE-B-2026-38187",
+   "text": "Sevilla da a Llopis Servicios Ambientales la licencia de recepción de basuras de buques (Marpol, anexo V)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38187"
+  },
+  {
+   "ref": "BOE-B-2026-38159",
+   "text": "Adif adjudica a Guadaltel la renovación de su plataforma de licitación electrónica",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38159"
+  },
+  {
+   "ref": "BOE-B-2026-38158",
+   "text": "Transportes licita por 237.264,28 euros sus servicios de nube de Google para 2027-2028",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38158"
+  },
+  {
+   "ref": "BOE-B-2026-38185",
+   "text": "La Autoridad Portuaria de la Bahía de Cádiz publica concesiones de ocupación otorgadas el 29 de octubre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38185"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
