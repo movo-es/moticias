@@ -339,7 +339,7 @@ def etiquetas_taxonomia(tx):
 
 
 # ---------- etiquetas clicables al pie (decisión de Rainer, 20-11-2026; cambio etiquetas-al-pie) ----------
-FORMATO = "2"  # versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
+FORMATO = "3"  # 3 (21-11-2026): se republica todo para soltar las etiquetas de región duplicadas.  versión del HTML de las piezas; el cron `formato_al_dia` del gestor republica las que tengan una anterior
 _SLUGS = {}  # nombre en minúsculas → slug real de la etiqueta en Ghost (una lectura por proceso)
 _NOMBRES = {}  # slug → nombre exacto de la etiqueta en Ghost
 
@@ -377,33 +377,41 @@ def _cambiar_etiqueta(base_url, token, slug, cambios):
 
 
 def alinear_ejes(tags, base_url, token):
-    """Deja cada etiqueta de eje (slug fijo: modo, tema, región) con el nombre de hoy. «Unión Europea» pasó a «Europa» e
-    «Internacional» a «Resto del mundo» el 20-11-2026, y Ghost busca las etiquetas por nombre: con el nombre nuevo y el slug
-    ocupado creó «t-ue-2» y «t-internacional-2». Dos casos, y nada se borra: (a) el slug fijo lo tiene la etiqueta con el
-    nombre antiguo y el nombre nuevo no existe → se renombra; (b) el nombre nuevo existe como duplicado «<slug>-N» → la
-    antigua pasa a «<slug>-antigua» y la duplicada recibe el slug fijo. Si el slug fijo ya tiene el nombre de hoy, no toca
-    nada, haya o no etiquetas libres que se llamen igual. Devuelve el mapa nombre → slug al día."""
+    """Deja cada etiqueta de eje (slug fijo: modo, tema, región) con el nombre de hoy, antes de publicar. «Unión Europea» pasó
+    a «Europa» e «Internacional» a «Resto del mundo» el 20-11-2026, y Ghost solo reutiliza una etiqueta si coinciden nombre y
+    slug: con el nombre nuevo y el slug ocupado creaba una etiqueta nueva por pieza («t-ue-2», «t-ue-3»…). Si el slug fijo lo
+    tiene una etiqueta con otro nombre, se le cambia el nombre; si ya tiene el de hoy, no se toca nada, haya o no etiquetas
+    libres que se llamen igual. Devuelve el mapa nombre → slug al día."""
     reales = slugs_ghost(base_url, token)
     for t in tags:
         sl, nombre = t.get("slug"), (t.get("name") or "")
         if not sl or not nombre or nombre.startswith("#") or sl not in _NOMBRES or _NOMBRES[sl] == nombre:
             continue
-        dobles = [s for s, n in _NOMBRES.items() if n == nombre and s != sl]
-        if not dobles:  # (a)
-            if _cambiar_etiqueta(base_url, token, sl, {"name": nombre}):
-                reales.pop(_NOMBRES[sl].lower(), None)
-                _NOMBRES[sl] = nombre
-                reales[nombre.lower()] = sl
-        elif len(dobles) == 1 and re.fullmatch(re.escape(sl) + r"-\d+", dobles[0]):  # (b)
-            vieja = sl + "-antigua"
-            if vieja not in _NOMBRES and _cambiar_etiqueta(base_url, token, sl, {"slug": vieja}):
-                _NOMBRES[vieja] = _NOMBRES.pop(sl)
-                reales[_NOMBRES[vieja].lower()] = vieja
-                if _cambiar_etiqueta(base_url, token, dobles[0], {"slug": sl}):
-                    _NOMBRES.pop(dobles[0], None)
-                    _NOMBRES[sl] = nombre
-                    reales[nombre.lower()] = sl
+        if _cambiar_etiqueta(base_url, token, sl, {"name": nombre}):
+            _NOMBRES[sl] = nombre
+        reales[nombre.lower()] = sl
+    for t in tags:  # el nombre de un eje lleva siempre a su slug fijo, aunque queden duplicadas con el mismo nombre
+        if t.get("slug") and t.get("name") and t["slug"] in _NOMBRES:
+            reales[t["name"].lower()] = t["slug"]
     return reales
+
+
+def limpiar_duplicadas(tags, base_url, token):
+    """Borra las etiquetas duplicadas que Ghost creó por el fallo del 20-11-2026 («t-ue-2», «t-ue-3»…): solo las que tienen
+    el slug de un eje más «-N», el mismo nombre que la etiqueta de ese eje y ninguna pieza. Devuelve cuántas borró."""
+    fijas = {t["slug"]: t["name"] for t in tags if t.get("slug")}
+    borradas, pagina = 0, 1
+    while pagina and pagina <= 40:
+        st, r = api("GET", "%s/ghost/api/admin/tags/?limit=100&page=%d&include=count.posts" % (admin_base(base_url), pagina), token)
+        if st != 200:
+            break
+        for g in r.get("tags") or []:
+            m = re.fullmatch(r"(.+)-\d+", g.get("slug") or "")
+            if m and fijas.get(m.group(1)) == g.get("name") and not ((g.get("count") or {}).get("posts")):
+                st2, _ = api("DELETE", "%s/ghost/api/admin/tags/%s/" % (admin_base(base_url), g["id"]), token)
+                borradas += st2 < 300
+        pagina = ((r.get("meta") or {}).get("pagination") or {}).get("next")
+    return borradas
 
 
 def etiquetas_pie(tags, slugs=None):

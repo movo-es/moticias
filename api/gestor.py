@@ -1954,7 +1954,7 @@ def ghost_al_dia(solo=None):
     return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
 
 
-def formato_al_dia(maximo=10):
+def formato_al_dia(maximo=20):
     """Cron ghost_al_dia (cambio etiquetas-al-pie, 20-11-2026): republica en Ghost, poco a poco, las piezas cuyo HTML es de un
     formato anterior a `G.FORMATO` (las que no llevan todavía las etiquetas clicables al pie). No toca el texto, el estado
     (publicada o borrador) ni el destacado de la portada, y no crea posts: solo rehace el HTML desde `data/articles/`."""
@@ -1972,8 +1972,12 @@ def formato_al_dia(maximo=10):
         pagina = (((r.get("meta") or {}).get("pagination") or {}).get("next"))
     random.shuffle(viejas)  # una pieza que falle no bloquea a las demás en la pasada siguiente
     v, hechas, fallos = vertical(), [], []
-    try:  # las etiquetas de eje, con su nombre y su slug de hoy, aunque no quede ninguna pieza por republicar (21-11-2026)
-        G.alinear_ejes([t for t in G.etiquetas_taxonomia(G.taxonomia(v)) if t["slug"].startswith("t-")], url.rstrip("/"), G.ghost_token(key))
+    limpieza = None
+    try:  # las etiquetas de región, con su nombre de hoy; y sin piezas pendientes, fuera las duplicadas vacías (21-11-2026)
+        regiones = [t for t in G.etiquetas_taxonomia(G.taxonomia(v)) if t["slug"].startswith("t-")]
+        G.alinear_ejes(regiones, url.rstrip("/"), G.ghost_token(key))
+        if not viejas:
+            limpieza = G.limpiar_duplicadas(regiones, url.rstrip("/"), G.ghost_token(key))
     except Exception:  # noqa: BLE001
         pass
     for slug in viejas[:maximo]:
@@ -1983,7 +1987,7 @@ def formato_al_dia(maximo=10):
         except Exception as e:  # noqa: BLE001
             res, err = None, str(e)
         (fallos if err else hechas).append(slug if not err else {"id": slug, "error": str(err)[:160]})
-    return {"ok": not fallos, "pendientes": len(viejas) - len(hechas), "republicadas": hechas, "fallos": fallos}
+    return {"ok": not fallos, "pendientes": len(viejas) - len(hechas), "republicadas": hechas, "fallos": fallos, "duplicadas_borradas": limpieza}
 
 
 # ---------- cola del editor (cambio cola-del-editor, 15 y 16-11-2026; migración 012, src/cola.py) ----------
