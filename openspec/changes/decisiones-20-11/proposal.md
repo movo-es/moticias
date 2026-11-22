@@ -39,3 +39,11 @@ La edición nº 15 (primera con los medios como sensores) gastó 447.597 tokens 
 - La edición lee la lista con `execute_sql`; a la antigua solo los medios con error (Aviación Digital responde con una página de espera a las lecturas automáticas).
 - Si el tope de 450.000 tokens sigue obligando a cerrar corto, el aviso empieza por «TOPE INSUFICIENTE» y el editor jefe decide si se sube.
 - Pendiente: el barrido que encarga un aviso lo atiende la pasada horaria de la redacción solo en laborables de 8 a 21; en fin de semana, las batidas de las 11:00 y las 17:30.
+
+## 22-11-2026 · Ningún medio se nombra fuera de una pieza
+
+La portada enseñaba en la nota metodológica la lista de medios leídos y un recuento con el nombre de uno de ellos. Decisión de Rainer: los medios monitorizados son solo fuentes para detectar temas que MOTICIAS desarrolla por sí misma; no se nombran medios ni marcas en texto público ni en nombres de rutinas, salvo como fuente citada dentro de una pieza de elaboración propia.
+
+- Notas de las ediciones nº 15 y nº 16 reescritas; la portada lleva `data-nota` y `ghost_al_dia` la rehace si la nota cambia.
+- `docs/tarea-edicion-diaria.md`: la nota metodológica es pública y no nombra medios, recuentos, decisiones internas ni tokens; el repaso de medios es uno solo, sin trato aparte, y su recuento va en el aviso al editor jefe.
+- Cola del editor: la rutina de los 14 temas del repaso del 20-11 pasa a llamarse `repaso-medios`.

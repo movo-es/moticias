@@ -389,7 +389,7 @@ Mantenimiento: la rutina diaria anota aquí (sección «Cambios detectados») to
   https://elmercantil.com/
   Diario de logística, transporte y puertos (equipo fundado por antiguos redactores de El Vigía).
   RSS/API: https://elmercantil.com/feed/
-  Nota: REPASO DIARIO OBLIGATORIO (decisión de Rainer, 20-11-2026): es el medio de control de que no se olvidan temas. El 20-11-2026 el RSS devolvió error a la lectura automática; el archivo por día `https://elmercantil.com/AAAA/MM/DD/` sí se lee (los días sin artículos, como los fines de semana, dan error). Secciones: /ferrocarril/, /maritimo/, /carretera/, /aereo/, /infraestructuras/, /logistica/. RSS verificado el 03/11/2026. ATENCIÓN: elvigia.com ya no aloja el diario logístico ('El Vigía de la Comunicación', contenido político/general) — no usar.
+  Nota: El 20-11-2026 el RSS devolvió error a la lectura con WebFetch (el servidor sí lo lee); el archivo por día `https://elmercantil.com/AAAA/MM/DD/` sí se lee (los días sin artículos, como los fines de semana, dan error). Secciones: /ferrocarril/, /maritimo/, /carretera/, /aereo/, /infraestructuras/, /logistica/. RSS verificado el 03/11/2026. ATENCIÓN: elvigia.com ya no aloja el diario logístico ('El Vigía de la Comunicación', contenido político/general) — no usar.
 - **Hosteltur – Transportes** — transversal/ES · diaria (varias al día)
   https://www.hosteltur.com/transportes
   Noticias de transporte turístico: aerolíneas, Aena, Renfe, cruceros, autocares; muy rápida en actualidad política.

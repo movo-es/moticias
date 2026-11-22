@@ -1960,8 +1960,21 @@ def ghost_al_dia(solo=None):
     if not en_web and not solo:  # sin número no se sabe qué tiene la web: no se republica todo a ciegas
         return {"ok": False, "error": "la página edicion-hoy no dice qué edición tiene; publícala a mano con ghost_edicion.py"}
     faltan = [f for f, n in sorted(eds.items()) if n > en_web] if not solo else [solo]
-    if not faltan:
-        return {"ok": True, "en_web": en_web, "publicadas": []}
+    solo_portada = None
+    if not faltan:  # al día: ¿ha cambiado la nota de la última edición (una corrección)? Entonces se rehace solo la portada
+        try:
+            import ghost_edicion as GE
+            ultima = max(eds, key=lambda f: eds[f])
+            ed = json.load(open(os.path.join(ROOT, "data", "editions", ultima + ".json"), encoding="utf-8"))
+            st2, r2 = G.api("GET", base + "/ghost/api/admin/pages/slug/edicion-hoy/?formats=html&fields=id,html", tok)
+            cuerpo = (((r2 or {}).get("pages") or [{}])[0].get("html") or "") if st2 == 200 else ""
+            if cuerpo and 'data-nota="%s"' % GE.huella_nota(ed) not in cuerpo:
+                solo_portada = ultima
+        except Exception:  # noqa: BLE001
+            solo_portada = None
+        if not solo_portada:
+            return {"ok": True, "en_web": en_web, "publicadas": []}
+        faltan = [solo_portada]
     tmp = "/tmp/moticias-ghost"
     shutil.rmtree(tmp, ignore_errors=True)
     for sub in ("src", "verticals", "data", os.path.join("portal", "img")):
@@ -1974,10 +1987,14 @@ def ghost_al_dia(solo=None):
         res = {"fecha": fecha}
         for nombre, args in (("piezas", ["src/ghost_publish.py", "--date", fecha, "--status", "published"]),
                              ("portada", ["src/ghost_edicion.py", "--date", fecha])):
+            if solo_portada and nombre == "piezas":
+                res[nombre] = {"ok": True, "salida": "solo la portada", "error": ""}
+                continue
             pr = subprocess.run([sys.executable, "-I"] + args, cwd=tmp, env=env, capture_output=True, text=True, timeout=200)
             res[nombre] = {"ok": pr.returncode == 0, "salida": (pr.stdout or "")[-600:], "error": (pr.stderr or "")[-600:]}
         hechas.append(res)
-    return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": hechas}
+    return {"ok": all(h["piezas"]["ok"] and h["portada"]["ok"] for h in hechas), "en_web_antes": en_web, "publicadas": [] if solo_portada else hechas,
+            "portada_rehecha": solo_portada}
 
 
 def sensores_al_dia(forzar=False):

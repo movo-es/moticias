@@ -121,7 +121,7 @@ def construir(dia, vertical):
 
     # Todo el cuerpo va como una sola tarjeta HTML de Ghost (marcas kg-card-begin/end): sin ellas, Ghost convierte el HTML
     # a su editor y pierde clases, atributos data-* y las secciones, y el tema deja de pintar el mapa y los bloques.
-    h = ['<!--kg-card-begin: html-->', '<div class="m-ed" data-date="%s">' % e(dia)]
+    h = ['<!--kg-card-begin: html-->', '<div class="m-ed" data-date="%s" data-nota="%s">' % (e(dia), huella_nota(ed))]
     # Teletipo del BOE (el tema lo sube bajo la cabecera).
     h.append('<div class="m-ticker"><span class="m-ticker-label">%s %s</span><ul>%s</ul></div>' % (
         e(ed.get("ticker_label") or "Boletines"), e(corta(dia)),
@@ -210,6 +210,13 @@ def subir_inyeccion(base_url, token):
     st, r = api("PUT", base + "/ghost/api/admin/settings/", token,
                 {"settings": [{"key": "codeinjection_head", "value": cab}, {"key": "codeinjection_foot", "value": pie}]})
     return st, (None if st == 200 else r)
+
+
+def huella_nota(ed):
+    """Marca de la nota metodológica que lleva la portada: si la nota de la edición cambia (una corrección), el cron
+    `ghost_al_dia` lo ve y rehace la portada (22-11-2026)."""
+    import hashlib
+    return hashlib.sha1((ed.get("note_metodologica") or "").encode("utf-8")).hexdigest()[:10]
 
 
 def main():
