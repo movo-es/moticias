@@ -1,0 +1,24 @@
+[
+ {
+  "titulo": "FSC-CCOO convoca huelga estatal en el transporte por carretera el 23 y el 24 de diciembre por el bloqueo de la jubilación anticipada de los conductores",
+  "resumen": "Según la nota del sindicato del 16-11-2026, la convocatoria responde a que la Dirección General de Ordenación de la Seguridad Social no ha convocado la comisión de evaluación del expediente de coeficientes reductores pedido por Confebus (viajeros) y CETM (mercancías), al que se sumaron Fenadismer y Fitrans; anuncia además paros en enero y febrero, huelga indefinida en la segunda quincena de marzo y una concentración el 26-11 ante la DGOSS en Madrid. La nota no fija horario ni subsectores concretos de los paros de diciembre; hay que comprobar la mediación previa, que según el propio sindicato terminó sin acuerdo (fsc.ccoo.es/noticia:773023, sin leer).",
+  "event_date": "2026-11-16",
+  "fuentes": [
+   {
+    "outlet": "FSC-CCOO (nota del sindicato)",
+    "url": "https://fsc.ccoo.es/noticia:772725",
+    "published": "2026-11-16"
+   },
+   {
+    "outlet": "FSC-CCOO Carretera y Logística (campaña de jubilación anticipada)",
+    "url": "https://carreteraylogistica.fsc.ccoo.es/Campanas/Jubilacion_anticipada",
+    "published": "2026-11-16"
+   }
+  ],
+  "encontrado_en": "barrido a demanda (aviso de sensores), 2026-11-22 21:10",
+  "cola": [
+   9,
+   42
+  ]
+ }
+]
