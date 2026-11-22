@@ -746,7 +746,7 @@ function pintarEditor() {
   const vuelta = volverAlSitio();
   const tabs = `<div class="tabs"><button data-m="editar" class="${ED.modo==="editar"?"on":""}">Editar</button><button data-m="ia" class="${ED.modo==="ia"?"on":""}">Otro enfoque con IA</button><button data-m="retirar" class="${ED.modo==="retirar"?"on":""}">${f.status === "retirada" ? "Restaurar" : "Retirar"}</button></div>`;
   const cab = `<p class="row"><button class="b2" id="volver">← La pieza</button>${vuelta ? `<a class="b2" href="${E(vuelta)}">Volver a moticias.com</a>` : ""}<a class="b2" href="${E(f.url)}" target="_blank" rel="noopener">Ver en la web ↗</a></p>
-  <div class="card"><span class="mute">${E(f.date)} · ${E(f.section || "")} · ${E(f.kind || "")} · ${E(f.author || "")}${f.status !== "publicado" ? " · " + E(f.status) : ""}</span><h1>${E(f.campos.title)}</h1></div>` + tabs;
+  <div class="card"><span class="mute">${E(f.date)} · ${E(f.section || "")} · ${E(f.kind || "")} · ${E(f.author || "")}${f.status !== "publicado" ? " · " + E(f.status) : ""}</span><h1>${E(f.campos.title)}</h1></div>` + edHecho() + tabs;
   if (ED.modo === "retirar") {
     app.innerHTML = cab + (f.status === "retirada"
       ? `<div class="card"><h2>Restaurar</h2><p class="mute">Vuelve a publicarse tal como estaba.</p><p><button class="b" id="rest">Restaurar y publicar</button></p></div>`
@@ -775,7 +775,8 @@ function pintarEditor() {
         <p><button class="b2" id="pub" style="width:100%">Guardar cambios (sigue pendiente)</button></p>
         <p><button class="b" id="apr-ahora" style="width:100%">Aprobar y publicar ahora</button></p>
         ${f.kind === "opinion" ? `<p><button class="b2" id="apr-lunes" style="width:100%">Aprobar para el lunes a las 08:00</button></p>` : ""}
-        <p class="mute">Al aprobar das por buenos el texto${f.kind === "opinion" ? " y la imagen" : ""}. Si has cambiado algo, guarda primero.</p>`
+        <div id="apr-estado" hidden></div>
+        <p class="mute">Al aprobar das por buenos el texto${f.kind === "opinion" ? " y la imagen" : ""}. Si has cambiado algo, se guarda antes de publicar.</p>`
         : `<p><button class="b" id="pub" style="width:100%">Publicar cambios</button></p>
         <p class="mute">Se guarda en el repositorio (con su historial) y se actualiza en moticias.com al momento. Queda la fecha de revisión.</p>`}</div></div></div>`;
   }
@@ -804,8 +805,8 @@ function pintarEditor() {
     $("#firma").onclick = ev => { const b = ev.target.closest("button"); if (b) $("#firma").querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); };
     $("#escorr").onchange = ev => { $("#corrbox").hidden = !ev.target.checked; };
     $("#pub").onclick = ev => publicarEdicion(ev.target, false);
-    const aa = $("#apr-ahora"); if (aa) aa.onclick = ev => aprobarDesdeEditor("ahora", ev.target);
-    const al = $("#apr-lunes"); if (al) al.onclick = ev => aprobarDesdeEditor("lunes", ev.target);
+    const aa = $("#apr-ahora"); if (aa) aa.onclick = () => aprPedir("ahora");
+    const al = $("#apr-lunes"); if (al) al.onclick = () => aprPedir("lunes");
   }
   scrollTo(0,0);
 }
@@ -831,33 +832,80 @@ function pintarPropuesta() {
 // 22-11-2026: en una pieza pendiente, «Publicar cambios» solo guardaba y decía «Publicado»; el editor jefe creyó haberla
 // publicado. Ahora el editor distingue guardar de aprobar, y se puede aprobar sin salir de él.
 function edPendiente() { return !!(ED.f && (ED.f.status === "pendiente" || ED.f.status === "borrador")); }
-async function aprobarDesdeEditor(cuando, btn) {
-  leerCampos();
-  const sinGuardar = Object.keys(ED.campos).some(k => (ED.campos[k] || "") !== (ED.f.campos[k] || ""));
-  if (sinGuardar) return aviso("Has cambiado el texto: pulsa antes «Guardar cambios»", true);
-  const opi = ED.f.kind === "opinion";
-  if (!confirm("Apruebas el texto" + (opi ? " y la imagen" : "") + " y la pieza se publica " + (cuando === "lunes" ? "el lunes a las 08:00" : "ahora") + ". ¿Seguimos?")) return;
-  const texto = btn.textContent; btn.disabled = true; btn.innerHTML = `<span class="spin"></span>Aprobando…`;
-  try {
-    const r = await api("redaccion", {id: ED.f.id, accion: "publicar", texto_ok: true, imagen_ok: true, cuando});
-    aviso(cuando === "lunes" ? "Aprobada: sale el lunes a las 08:00" : (r.ghost && r.ghost.ok ? "Publicada en moticias.com" : "Aprobada, pero NO ha llegado a la web: " + ((r.ghost || {}).detalle || "") + ". El gestor lo reintenta solo."), cuando !== "lunes" && !(r.ghost && r.ghost.ok));
-    app.className = ""; abrirPieza(ED.f.id);
-  } catch (e) { btn.disabled = false; btn.textContent = texto; aviso(e.message, true); }
-}
-async function publicarEdicion(btn, confirmo) {
+// 22-11-2026 (segunda vuelta): la aprobación desde el editor no llegó al servidor y la pantalla siguió diciendo «todavía no está
+// publicada». Ya no depende de un diálogo del navegador ni de un aviso que se va solo: la confirmación, el progreso y el error
+// se ven dentro de la tarjeta; si hay cambios sin guardar se guardan antes; y al terminar la pantalla dice arriba qué ha pasado.
+function edCambios() {
   leerCampos();
   const cambios = {}; Object.keys(ED.campos).forEach(k => { if ((ED.campos[k] || "") !== (ED.f.campos[k] || "")) cambios[k] = ED.campos[k]; });
-  const firma = ($("#firma .on") || {}).dataset ? $("#firma .on").dataset.f : null;
-  const corr = $("#escorr").checked ? $("#corr").value.trim() : "";
-  if ($("#escorr").checked && corr.length < 10) return aviso("Escribe la nota de corrección", true);
-  if (!Object.keys(cambios).length && firma === ED.f.firma.actual && !corr) return aviso("No hay cambios", true);
+  const on = $("#firma .on"), firma = on ? on.dataset.f : null;
+  const esc = $("#escorr"), corr = esc && esc.checked ? $("#corr").value.trim() : "";
+  return {cambios, firma, corr, corrMal: !!(esc && esc.checked && corr.length < 10), hay: !!(Object.keys(cambios).length || (firma && firma !== ED.f.firma.actual) || corr)};
+}
+function aprEstado(html, clase) { const n = $("#apr-estado"); if (!n) return; n.className = clase || "warn"; n.innerHTML = html || ""; n.hidden = !html; if (html) n.scrollIntoView({block: "center"}); }
+function aprPedir(cuando) {
+  const c = edCambios(), opi = ED.f.kind === "opinion";
+  if (c.corrMal) return aprEstado("Escribe la nota de corrección o desmarca la casilla.");
+  aprEstado(`<b>${cuando === "lunes" ? "Sale el lunes a las 08:00." : "Sale ahora en moticias.com."}</b> Das por buenos el texto${opi ? " y la imagen" : ""}.${c.hay ? " Antes se guardan los cambios que has hecho." : ""}
+    <div class="row" style="margin-top:8px"><button class="b" id="apr-si">${cuando === "lunes" ? "Sí, programar para el lunes" : "Sí, publicar ahora"}</button><button class="b2" id="apr-no">Cancelar</button></div>`);
+  $("#apr-si").onclick = ev => aprobarDesdeEditor(cuando, ev.target, false);
+  $("#apr-no").onclick = () => aprEstado("");
+}
+async function aprobarDesdeEditor(cuando, btn, confirmo) {
+  const c = edCambios(), id = ED.f.id, giro = `<span class="spin"></span>`;
+  btn.disabled = true; btn.innerHTML = giro + (c.hay ? "Guardando los cambios…" : "Publicando…");
+  let paso = "guardar";
+  try {
+    if (c.hay) {
+      let d = null;
+      try { d = await api("redaccion", {accion: "editar", id, cambios: c.cambios, firma: c.firma, correccion: c.corr || null, origen: ED.origen, confirmo_cifras: !!confirmo}); }
+      catch (e) { if (e.message !== "no hay cambios") throw e; }
+      if (d) {  // lo guardado pasa a ser el punto de partida: un reintento no vuelve a guardarlo
+        ED.f = d.pieza; ED.campos = Object.assign({}, d.pieza.campos); ED.origen = "manual"; ED.prop = null;
+        app.querySelectorAll("[data-c]").forEach(i => i.value = ED.campos[i.dataset.c] || "");
+        $("#firma").querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.f === ED.f.firma.actual));
+        const esc = $("#escorr"); if (esc) { esc.checked = false; $("#corrbox").hidden = true; }
+      }
+      btn.innerHTML = giro + "Publicando…";
+    }
+    paso = "aprobar";
+    const r = await api("redaccion", {id, accion: "publicar", texto_ok: true, imagen_ok: true, cuando});
+    ED.f = Object.assign({}, r.pieza || ED.f, {status: "publicado"});  // el servidor ya la ha publicado: la pantalla no puede seguir diciendo «pendiente»
+    ED.campos = Object.assign({}, ED.f.campos); ED.hecho = {cuando, ghost: r.ghost || {}};
+    cache.piezas = null;
+    pintarEditor();
+  } catch (e) {
+    if (e.message === "sin sesión") return;
+    if (paso === "guardar" && e.status === 409 && e.datos && e.datos.cifras) {
+      aprEstado(`<b>Cifras o fechas nuevas:</b> ${e.datos.cifras.map(E).join(", ")}. No están en la pieza ni en sus fuentes. Si son tuyas y respondes de ellas, publica igualmente; si no, quítalas.
+        <div class="row" style="margin-top:8px"><button class="b2 bad" id="apr-igual">Publicar igualmente (respondo de estas cifras)</button><button class="b2" id="apr-no">Cancelar</button></div>`);
+      $("#apr-igual").onclick = ev => aprobarDesdeEditor(cuando, ev.target, true);
+      $("#apr-no").onclick = () => aprEstado("");
+      return;
+    }
+    aprEstado(`<b>No se ha publicado.</b> ${paso === "guardar" ? "No se han podido guardar los cambios: " : "Motivo: "}${E(e.message)}.
+      <div class="row" style="margin-top:8px"><button class="b" id="apr-otra">Reintentar</button><button class="b2" id="apr-no">Cerrar</button></div>`);
+    $("#apr-otra").onclick = ev => aprobarDesdeEditor(cuando, ev.target, confirmo);
+    $("#apr-no").onclick = () => aprEstado("");
+  }
+}
+function edHecho() {
+  const h = ED && ED.hecho; if (!h) return "";
+  if (h.cuando === "lunes") return `<div class="okbox" id="ed-hecho"><b>Aprobada.</b> Sale el lunes a las 08:00 en moticias.com.</div>`;
+  return h.ghost.ok ? `<div class="okbox" id="ed-hecho"><b>Publicada en moticias.com.</b> <a href="${E(ED.f.url)}" target="_blank" rel="noopener">Verla en la web ↗</a></div>`
+    : `<div class="warn" id="ed-hecho"><b>Aprobada, pero todavía no ha llegado a la web.</b> ${E(h.ghost.detalle || "")} El gestor lo reintenta solo cada 20 minutos.</div>`;
+}
+async function publicarEdicion(btn, confirmo) {
+  const c = edCambios(), cambios = c.cambios, firma = c.firma, corr = c.corr;
+  if (c.corrMal) return aviso("Escribe la nota de corrección", true);
+  if (!c.hay) return aviso("No hay cambios", true);
   const pend = edPendiente();
   btn.disabled = true; btn.innerHTML = `<span class="spin"></span>${pend ? "Guardando…" : "Publicando…"}`;
   try {
     const d = await api("redaccion", {accion: "editar", id: ED.f.id, cambios, firma, correccion: corr || null, origen: ED.origen, confirmo_cifras: !!confirmo});
     if (pend) aviso("Cambios guardados. La pieza sigue pendiente: falta aprobarla para que se publique.");
     else aviso("Publicado" + (d.ghost.ok ? " · moticias.com actualizada" : " · " + d.ghost.detalle), !d.ghost.ok);
-    ED.f = d.pieza; ED.campos = Object.assign({}, d.pieza.campos); ED.origen = "manual"; ED.prop = null; pintarEditor();
+    ED.f = d.pieza; ED.campos = Object.assign({}, d.pieza.campos); ED.origen = "manual"; ED.prop = null; ED.hecho = null; pintarEditor();
   } catch (e) {
     btn.disabled = false; btn.textContent = edPendiente() ? "Guardar cambios (sigue pendiente)" : "Publicar cambios";
     if (e.status === 409 && e.datos && e.datos.cifras) {

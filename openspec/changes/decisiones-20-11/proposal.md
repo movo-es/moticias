@@ -47,3 +47,11 @@ La portada enseñaba en la nota metodológica la lista de medios leídos y un re
 - Notas de las ediciones nº 15 y nº 16 reescritas; la portada lleva `data-nota` y `ghost_al_dia` la rehace si la nota cambia.
 - `docs/tarea-edicion-diaria.md`: la nota metodológica es pública y no nombra medios, recuentos, decisiones internas ni tokens; el repaso de medios es uno solo, sin trato aparte, y su recuento va en el aviso al editor jefe.
 - Cola del editor: la rutina de los 14 temas del repaso del 20-11 pasa a llamarse `repaso-medios`.
+
+## 22-11-2026 · Aprobar y publicar desde el editor del gestor
+
+El editor jefe abrió «Leer y editar» en dos columnas pendientes y pulsó «Publicar cambios»: el gestor guardó, dijo «Publicado» y las columnas siguieron pendientes. El primer arreglo separó guardar de aprobar, pero la aprobación desde el editor dependía de un diálogo del navegador y de un aviso que se va solo; la suya no llegó al servidor y la pantalla siguió diciendo «todavía no está publicada».
+
+- En una pieza pendiente, el editor ofrece «Guardar cambios (sigue pendiente)», «Aprobar y publicar ahora» y, en las columnas, «Aprobar para el lunes a las 08:00». La confirmación, el progreso y el fallo (con su motivo y «Reintentar») se ven dentro de la tarjeta; lo cambiado se guarda antes de publicar; al terminar, la pantalla dice arriba «Publicada en moticias.com», «Aprobada: sale el lunes» o «Aprobada, pero todavía no ha llegado a la web».
+- Un intento de guardar o aprobar que el repositorio rechaza queda en el registro del gestor (`redaccion_<acción>_fallo`).
+- Prueba en navegador con API fingida: `tests/navegador/test_aprobar_desde_editor.py`.

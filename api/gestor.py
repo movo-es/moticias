@@ -1174,6 +1174,7 @@ def accion_redaccion(ses, d, cabeceras):
         return 400, {"error": str(e)}
     ok, det = escribir(ruta, a, sha, mensaje)
     if not ok:
+        BD.registrar(quien, "redaccion_%s_fallo" % acc, pid, {"error": str(det)[:500]})  # que un intento fallido deje rastro (22-11-2026)
         return 502, {"error": det}
     g_ok, g = _subir(a, v, estado)
     BD.registrar(quien, "redaccion_" + acc, pid, dict({"commit": det, "ghost": g_ok}, **({} if g_ok else {"error": str(g)[:500]})))
