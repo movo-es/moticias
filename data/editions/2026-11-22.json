@@ -1,0 +1,146 @@
+{
+ "analysis_id": "dos-meses-para-saber-que-se-llevaron-p7t2",
+ "boe_range": [
+  "2026-11-22",
+  "2026-11-22"
+ ],
+ "boe_series": {
+  "2026-11-06": {
+   "disp": 13,
+   "lic": 9,
+   "total": 22
+  },
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  }
+ },
+ "closed_at": "07:25",
+ "date": "2026-11-22",
+ "document": {
+  "date": "2026-09-19",
+  "kicker": "Regulación aeroportuaria · Aéreo",
+  "ref": "BOE-A-2026-19507",
+  "source": "BOE",
+  "summary": "El Consejo de Ministros lo aprobó el 15 de septiembre y el BOE lo publicó el 19.\nFija hasta 2031 inversiones, calidad e ingreso máximo por pasajero de la red de Aena.\nEn Barajas compromete 1.559,9 millones de inversión estratégica, 1.262,6 para la T4 y la T4S.\nEl IMAP pasa de 10,52 euros en 2026 a 10,69 en 2031 (X = +0,33 % anual).\nAir Europa lo ha recurrido ante el Supremo por el reparto de la inversión en Madrid.",
+  "title": "Documento de Regulación Aeroportuaria 2027-2031",
+  "url": "https://www.boe.es/boe/dias/2026/09/19/pdfs/BOE-A-2026-19507.pdf"
+ },
+ "lead_id": "air-europa-lleva-al-supremo-el-dora-2027-2031-por-el-reparto-rd0b",
+ "note_metodologica": "Edición nº 16 de MOTICIAS, cerrada a las 07:25 (CET) del domingo 22 de noviembre de 2026: la primera de domingo. Se aplican las decisiones del editor jefe del 20-11-2026 (edición todos los días, medios monitorizados como sensores, fuente primaria siempre que exista y secundaria reputada solo si no la hay, etiquetas de protagonistas y temas al pie; el encargo de Alsa Rail en el puerto de Gijón ya se publicó el 21-11). Una noticia y un análisis, tres piezas menos que el mínimo, y las dos esperan la aprobación del editor jefe: la lectura de los medios monitorizados por agentes consumió la mayor parte del tope de 450.000 tokens y la edición se cierra con lo verificado. Domingo: no hay BOE y se salta su barrido; el teletipo repite los boletines del sábado. Medios leídos entrada a entrada por su RSS o su portada desde el cierre anterior (la tabla de titulares del servidor todavía no existe en la base): con entradas en la ventana, Aviación Digital (5), Hosteltur (4), Fly News (3) y Transporte Profesional (3); sin entradas, Railin, Vía Libre, Diario del Puerto, Anave, Autobuses y Autocares, Carril Bus, Nexotrans y Anetra Informa. El Mercantil: 1 titular repasado (archivo del 21-11; el feed y el archivo del 22-11 no se dejaron leer), 0 ya publicados, 0 hoy, 0 a la cola, 1 fuera de alcance. Sin fuente primaria: el recurso de Air Europa ante el Supremo se publica apoyado en Aviación Digital (21-11), tras buscar en el buscador un comunicado de la aerolínea o un anuncio oficial; las cifras proceden del DORA 2027-2031 publicado en el BOE (BOE-A-2026-19507). Fuentes primarias abiertas en esta sesión: el DORA 2027-2031 en el BOE, la notificación de Renfe a las personas afectadas por el acceso del 24-09 y, por la API de datos abiertos del BOE, la Ley 18/2014, la Ley 29/1998, la Ley Orgánica 3/2018, el Real Decreto-ley 12/2018 y el Real Decreto 43/2021. Reserva de la batida del sábado: la notificación de Renfe pasa al análisis. El análisis, del ámbito Movilidad urbana y tecnología según la rotación, lo firma la redacción. La búsqueda de noticias y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se comprobaron en la fuente.",
+ "number": 16,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24438",
+   "text": "El Real Decreto-ley 41/2026 lleva el comercio de emisiones a navieras, operadores aéreos y combustibles de carretera; en vigor el 22",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+  },
+  {
+   "ref": "BOE-A-2026-24302",
+   "text": "Prohibidas desde julio de 2027 las descargas de los scrubbers de los buques en puertos y aguas interiores",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24302"
+  },
+  {
+   "ref": "BOE-A-2026-24295",
+   "text": "Publicada la convalidación del Real Decreto-ley 34/2026 de seguridad operacional ferroviaria",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24295"
+  },
+  {
+   "ref": "BOE-A-2026-24293",
+   "text": "Convalidado el Real Decreto-ley 32/2026 de ayudas a las víctimas de Urda y tope de precios en emergencias",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24293"
+  },
+  {
+   "ref": "BOE-B-2026-38186",
+   "text": "Cádiz adjudica a Mdt Port Investments el concurso de la terminal de pasajeros del muelle Reina Sofía",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38186"
+  },
+  {
+   "ref": "BOE-A-2026-24303",
+   "text": "120.000 euros para el Observatorio de la Movilidad Metropolitana de la Politécnica de Madrid",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24303"
+  },
+  {
+   "ref": "BOE-B-2026-38187",
+   "text": "Sevilla da a Llopis Servicios Ambientales la licencia de recepción de basuras de buques (Marpol, anexo V)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38187"
+  },
+  {
+   "ref": "BOE-B-2026-38159",
+   "text": "Adif adjudica a Guadaltel la renovación de su plataforma de licitación electrónica",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38159"
+  },
+  {
+   "ref": "BOE-B-2026-38158",
+   "text": "Transportes licita por 237.264,28 euros sus servicios de nube de Google para 2027-2028",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38158"
+  },
+  {
+   "ref": "BOE-B-2026-38185",
+   "text": "La Autoridad Portuaria de la Bahía de Cádiz publica concesiones de ocupación otorgadas el 29 de octubre",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38185"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

@@ -1,0 +1,160 @@
+{
+ "actors": "Renfe (responsable del tratamiento y autora de la notificación); Adif, en cuyos servidores situó Renfe el origen en septiembre según El Español; Agencia Española de Protección de Datos, notificada; clientes de Renfe potencialmente afectados.",
+ "amount": null,
+ "author": "G. Jordan",
+ "author_role": "Redactor responsable",
+ "authority": null,
+ "body_md": "Renfe ha publicado en su web una [notificación a las personas afectadas](https://www.renfe.com/es/es/ayuda/notificacion-personas-afectadas) por el acceso no autorizado a sus sistemas del 24 de septiembre en la que admite que pudieron quedar expuestos números de DNI y NIE y contraseñas cifradas. En septiembre, según recogió El Español, la compañía había limitado el alcance a nombres y correos y había descartado los documentos de identidad.\n\n## El hecho\n\n**La lista.** La página de Renfe, sin fecha visible, enumera lo que pudo verse afectado: «datos identificativos y de contacto», la información de billetes comprados y de viajes realizados, números de DNI, NIE u otros documentos equivalentes y «credenciales de autenticación (contraseñas)», protegidas criptográficamente. Pide a los clientes que cambien la contraseña —también en otros servicios si la reutilizan—, que no faciliten claves ni datos bancarios por correo, mensaje o teléfono y que comprueben los remitentes. Dice haber notificado la violación de seguridad a la Agencia Española de Protección de Datos, sin indicar cuándo. No da el número de afectados.\n\n## La rectificación\n\n**El relato.** El 25 de septiembre, según [El Español Invertia](https://www.elespanol.com/invertia/observatorios/movilidad/20261120/renfe-advierte-posible-robo-datos-personales-contrasenas-dnis-ciberataque-septiembre/1003744466367_0.html), Renfe abrió una investigación, situó el origen en servidores de Adif comprometidos y habló de un volumen limitado de datos, sobre todo nombres y direcciones de correo, sin medios de pago ni DNI. El mismo medio dio cuenta el 20 de noviembre de la nueva versión. La notificación no explica qué cambió entre una fecha y otra: si la investigación encontró más de lo que se creía o si el primer perímetro se trazó antes de tiempo.\n\n**La diferencia.** No es un matiz. Un correo expuesto alimenta campañas de suplantación genéricas; un número de documento unido a un nombre y a un historial de viajes permite engaños mucho más creíbles, porque el estafador sabe adónde fue la víctima y cuándo. La propia recomendación de Renfe —desconfiar de mensajes que pidan claves o datos bancarios— describe ese riesgo.\n\n**La confianza.** Una empresa que corrige al alza el alcance de un incidente no comete por eso una falta, pero gasta credibilidad: la primera versión es la que leyó la mayoría de los clientes, y la segunda llega dos meses después, en una página de ayuda de su web. En materia de datos, contar pronto y contar completo no son objetivos contrarios; la secuencia de Renfe los ha separado.\n\n>> Un correo expuesto es una molestia; un DNI con historial de viajes es una herramienta.\n\n## La regla\n\n**La protección de datos.** La Ley Orgánica 3/2018 califica como infracción grave no notificar a la autoridad de control una violación de seguridad conforme al artículo 33 del Reglamento (UE) 2016/679, y también no comunicarla a los afectados conforme al artículo 34 cuando la autoridad lo haya requerido (artículo 73, letras r y s). Renfe dice haber hecho lo primero y ha publicado ahora lo segundo. Rectificar no es infracción; lo que cuenta, para la Agencia y para el cliente, es la secuencia: qué se supo, cuándo y cuándo se dijo.\n\n**La seguridad de las redes.** El ferrocarril tiene otra capa. El Real Decreto-ley 12/2018, de seguridad de las redes y sistemas de información, obliga a los operadores de servicios esenciales a notificar a la autoridad competente, a través del CSIRT de referencia, los incidentes que puedan tener efectos perturbadores significativos en esos servicios (artículo 19); el Real Decreto 43/2021 lo desarrolla. Esa vía protege el servicio, no al viajero: un robo de datos de clientes que no detiene un solo tren puede quedar fuera de ella y dentro, en cambio, de la de protección de datos.\n\n## El sistema\n\n**Dos casas.** Si el origen estuvo en servidores de Adif, como dijo Renfe en septiembre según El Español, el incidente retrata una dependencia que el viajero no ve: compra el billete al operador, pero parte de la infraestructura digital que lo sostiene puede ser del administrador. La frontera entre los sistemas de uno y otro es también una frontera de responsabilidad, y la notificación de Renfe no la aclara. Tampoco dice si el acceso afectó a datos de otros operadores o servicios.\n\n**El precedente.** El sector trata la ciberseguridad como un asunto de continuidad del servicio: que los trenes circulen, que las señales funcionen. Este caso muestra la otra mitad. El billete digital, la cuenta de cliente y el historial de viajes son ya parte de la infraestructura del transporte, y su protección tiene el mismo peso reputacional que la puntualidad.\n\n## El pasajero\n\n**Sin cifra.** El cliente no puede saber si está entre los afectados: la página habla de personas potencialmente afectadas sin dar número ni criterio para identificarlas. La notificación remite, para cualquier consulta, al delegado de protección de datos de Renfe para viajeros, que es también la vía para ejercer los derechos de acceso y rectificación. La recomendación práctica es la que da la propia empresa: cambiar la contraseña, no reutilizarla y desconfiar de cualquier mensaje que, en nombre de Renfe, pida datos de pago o claves.\n\n## Lo que toca\n\n**Tres datos.** Renfe debería publicar el número de afectados y la cronología del incidente, con lo que supo en cada momento; Adif, aclarar qué sistemas suyos estuvieron comprometidos y si el riesgo está cerrado; y las dos, explicar por qué el alcance cambió entre septiembre y noviembre. Lo que hay que vigilar es si la Agencia Española de Protección de Datos abre un procedimiento y si Renfe actualiza la notificación con una cifra. El 24 de diciembre se cumplirán tres meses del acceso sin que se sepa a cuántas personas afecta.",
+ "campaign": null,
+ "date": "2026-11-22",
+ "deadline": null,
+ "doc_ref": null,
+ "event_date": "2026-09-24",
+ "featured": 0,
+ "fiabilidad": "primaria",
+ "firma_motivo": "importancia 3 (hace falta 4 o más)",
+ "geo": null,
+ "id": "dos-meses-para-saber-que-se-llevaron-p7t2",
+ "image": {
+  "alt": "Un tren AVE de Renfe",
+  "credit": "elandroid",
+  "license": "CC BY 2.0",
+  "source": "https://www.flickr.com/photos/26802171@N05/51757190735",
+  "src": "img/renfe-velaro-103.jpg"
+ },
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Fecha del acceso no autorizado",
+   "source": "Renfe, notificación a personas afectadas",
+   "value": "24-09-2026"
+  },
+  {
+   "label": "Datos potencialmente afectados",
+   "source": "Renfe, notificación a personas afectadas",
+   "value": "Identificativos y de contacto, billetes y viajes, DNI/NIE, contraseñas cifradas"
+  },
+  {
+   "label": "Alcance comunicado en septiembre",
+   "source": "El Español Invertia, 20-11-2026",
+   "value": "Volumen limitado: sobre todo nombres y correos; sin DNI ni medios de pago"
+  },
+  {
+   "label": "Número de afectados",
+   "source": "Renfe, notificación a personas afectadas",
+   "value": "No consta"
+  },
+  {
+   "label": "Infracción grave",
+   "source": "Ley Orgánica 3/2018, art. 73 r) y s)",
+   "value": "No notificar a la autoridad (art. 33 RGPD) o no comunicar a los afectados si se requiere (art. 34)"
+  }
+ ],
+ "key_fact": "24-09-2026: acceso no autorizado; DNI, NIE y contraseñas cifradas, potencialmente expuestos",
+ "kicker": "Ciberseguridad · Ferrocarril",
+ "kind": "analisis",
+ "medio": "tierra",
+ "modo": "tierra",
+ "modos": [
+  "tren-viajeros"
+ ],
+ "motivo_importante": "",
+ "next": "Puede haber actualización de la notificación con número de afectados y cronología; la AEPD puede abrir un procedimiento. El 24 de diciembre se cumplen tres meses del acceso.",
+ "published_at": "2026-11-22T07:24:00+01:00",
+ "published_time": "07:24",
+ "reg_kind": null,
+ "relevance": "MEDIA",
+ "relevance_for": "Operadores de transporte con venta digital y cuentas de cliente, Adif, delegados de protección de datos y responsables de ciberseguridad del sector, Ministerio de Transportes, AEPD y asociaciones de usuarios.",
+ "review_note": "Crítica: trata de una violación de seguridad de datos personales y señala que Renfe cambió el alcance comunicado (implicaciones legales; atribuye conducta a una empresa con nombre). Fuente primaria: la notificación de Renfe; el relato de septiembre procede de El Español. Por el tope de tokens lleva cinco fuentes, una menos que el estándar.",
+ "risk": "critica",
+ "scope": "Movilidad urbana y tecnología",
+ "section": "analisis",
+ "sources": [
+  {
+   "accessed": "2026-11-22",
+   "kind": "oficial",
+   "outlet": "Renfe",
+   "published": "",
+   "title": "Notificación a personas afectadas",
+   "url": "https://www.renfe.com/es/es/ayuda/notificacion-personas-afectadas"
+  },
+  {
+   "accessed": "2026-11-22",
+   "kind": "medios",
+   "outlet": "El Español Invertia",
+   "published": "2026-11-20",
+   "title": "Información de L. Broche sobre la notificación de Renfe a los afectados por el ciberataque de septiembre",
+   "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261120/renfe-advierte-posible-robo-datos-personales-contrasenas-dnis-ciberataque-septiembre/1003744466367_0.html"
+  },
+  {
+   "accessed": "2026-11-22",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2018-12-06",
+   "title": "Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (texto consolidado; artículo 73)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673"
+  },
+  {
+   "accessed": "2026-11-22",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2018-09-08",
+   "title": "Real Decreto-ley 12/2018, de 7 de septiembre, de seguridad de las redes y sistemas de información (texto consolidado; artículo 19)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-12257"
+  },
+  {
+   "accessed": "2026-11-22",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2021-01-28",
+   "title": "Real Decreto 43/2021, de 26 de enero, por el que se desarrolla el Real Decreto-ley 12/2018",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2021-1192"
+  }
+ ],
+ "status": "pendiente",
+ "submodo": "ferrocarril",
+ "subsector": "ferrocarril",
+ "subtitle": "Renfe admite ahora que el acceso del 24 de septiembre pudo exponer DNI, NIE y contraseñas cifradas; en septiembre había hablado de nombres y correos",
+ "summary": "Renfe reconoce en su web que el acceso indebido del 24 de septiembre pudo exponer DNI, NIE, datos de viajes y contraseñas cifradas, después de haber limitado el alcance a nombres y correos. Sin número de afectados ni cronología, la rectificación deja abiertas la responsabilidad entre Renfe y Adif y la protección del viajero.",
+ "tags": [
+  "Renfe",
+  "Adif",
+  "AEPD",
+  "ciberseguridad",
+  "protección de datos",
+  "datos de viajeros"
+ ],
+ "temas": [
+  "analisis",
+  "tecnologia"
+ ],
+ "territorios": [
+  "estado"
+ ],
+ "timeline": [
+  {
+   "date": "2026-09-24",
+   "text": "Acceso no autorizado a sistemas de Renfe"
+  },
+  {
+   "date": "2026-09-25",
+   "text": "Renfe habla de un volumen limitado de nombres y correos, según El Español"
+  },
+  {
+   "date": "2026-11-20",
+   "text": "El Español informa de la notificación que amplía el alcance a DNI, NIE y contraseñas"
+  },
+  {
+   "date": "2026-11-22",
+   "text": "La notificación sigue sin número de afectados"
+  },
+  {
+   "date": "2026-12-24",
+   "text": "Se cumplen tres meses del acceso"
+  }
+ ],
+ "tipo_contenido": "editorial",
+ "title": "Dos meses para saber qué se llevaron",
+ "why": "Es el primer reconocimiento público de que el ataque a Renfe alcanzó documentos de identidad y contraseñas, y muestra que la venta digital y las cuentas de cliente son ya infraestructura crítica del transporte, con obligaciones de notificación que no dependen de que se paren los trenes."
+}
