@@ -74,6 +74,7 @@ def cerca(a, b, t=40): return all(abs(i - j) <= t for i, j in zip(a, b))
 
 def captura(pg, nombre, sel=None):
     if CAP:
+        pg.evaluate("() => { const n = document.querySelector('#aviso'); if (n) n.style.display = 'none'; }")  # el aviso flotante taparía la captura
         (pg.locator(sel) if sel else pg).screenshot(path=os.path.join(CAP, nombre))
 
 
