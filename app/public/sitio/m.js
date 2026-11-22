@@ -166,7 +166,8 @@
     ".mtx-mas small{display:block;font:600 10.5px/1.4 system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7a1f2b;margin-bottom:2px}" +
     ".mtx-ban{position:relative;border-radius:12px;overflow:hidden;border:1px solid #d8dde6;background:#fff;margin:0}" +
     ".mtx-ban-lab{position:absolute;top:0;left:0;z-index:3;background:#fff;color:#4a5568;font:700 10px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-bottom-right-radius:8px;border-right:1px solid #d8dde6;border-bottom:1px solid #d8dde6}" +
-    ".mtx-ban img{display:block;width:100%;height:100%;object-fit:cover}.mtx-ban a.mtx-ban-a{position:absolute;inset:0;z-index:1}" +
+    // La imagen nunca se estira ni se corta (22-11-2026, cambio imagenes-de-banner): entra entera en la caja; lo que sobra es banda del color de la imagen.
+    ".mtx-ban picture{position:absolute;inset:0;display:block}.mtx-ban img{display:block;width:100%;height:100%;object-fit:contain}.mtx-ban a.mtx-ban-a{position:absolute;inset:0;z-index:1}" +
     ".mtx-ban-t{position:relative;height:100%;padding:30px 22px 18px;display:flex;flex-direction:column;justify-content:center;gap:8px}" +
     ".mtx-ban-t .m{font:700 11px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.85}.mtx-ban-t b{font:600 22px/1.15 Newsreader,Georgia,serif}" +
     ".mtx-ban-t .p{font:500 14px/1.4 system-ui,sans-serif;opacity:.92}" +
@@ -194,17 +195,30 @@
         (x.anunciante ? '<span class="m">' + E(x.anunciante) + "</span>" : "") + "<b>" + E(x.titular) + "</b>" + (x.texto ? '<span class="p">' + E(x.texto) + "</span>" : "") +
         (x.cta_tipo === "web" ? '<a class="cta" data-cta href="' + E(url) + '" rel="sponsored noopener" target="_blank" style="background:' + E(col.boton) + ";color:" + E(col.boton_texto) + '">' + E(x.cta_texto || "Ir a la web") + "</a>" : "") +
         (x.cta_tipo === "info" ? '<button type="button" class="cta" data-form style="background:' + E(col.boton) + ";color:" + E(col.boton_texto) + '">' + E(x.cta_texto || "Pide más información") + "</button>" : "") + "</div>";
+    var conImg = x.modo === "imagen" && x.imagen, banda = /^#[0-9a-f]{6}$/i.test(x.imagen_fondo || "") ? x.imagen_fondo : "#fff";
     var ban = '<aside class="mtx-ban' + (r === 1 ? " bajo" : "") + (x.tipo === "grupo" ? " house" : "") + '" data-mtx="' + E(x.id) + '" data-mtx-h="portada-premium" aria-label="' + E(x.etiqueta) +
-      '" style="grid-column:' + (5 - c) + " / span " + c + '"><span class="mtx-ban-lab">' + E(x.etiqueta) + "</span>" + cuerpo + "</aside>";
+      '" style="grid-column:' + (5 - c) + " / span " + c + (conImg ? ";background:" + banda : "") + '"><span class="mtx-ban-lab">' + E(x.etiqueta) + "</span>" + cuerpo + "</aside>";
     wrap.innerHTML = '<div class="mtx-esc">' + (c < 4 ? '<div class="mtx-mas" style="grid-column:1 / span ' + (4 - c) + '"><h3>Más noticias</h3></div>' : "") + ban + "</div>";
     cover.insertAdjacentElement("afterend", sec);
     var el = wrap.querySelector(".mtx-ban");
-    function alto() {  // alto real según la rejilla: fila = media columna
+    // Alto: la caja guarda siempre la proporción de su formato (la de las medidas que da el gestor), a cualquier ancho de pantalla;
+    // así una imagen hecha a esas medidas la llena entera, sin bandas ni recorte (22-11-2026, cambio imagenes-de-banner).
+    var nc = R.columnas || 4, colN = ((R.ancho || 1203) - (nc - 1) * gap) / nc, wN = c * colN + (c - 1) * gap, hN = r * (R.fila || 140) + (r - 1) * gap;
+    function alto() {
       if (window.matchMedia("(max-width:760px)").matches) { el.style.height = ""; return; }
-      var w = wrap.querySelector(".mtx-esc").getBoundingClientRect().width, cw = (w - 3 * gap) / 4;
-      el.style.height = Math.round(r * (cw / 2) + (r - 1) * gap) + "px";
+      el.style.height = Math.round(el.getBoundingClientRect().width * hN / wN) + "px";
     }
-    alto(); window.addEventListener("resize", alto);
+    // Encaje de la imagen: si su proporción es la de la caja (2 % de margen, por el redondeo) la llena; si no (el móvil sin imagen
+    // propia, una imagen hecha para otro formato), sale entera y centrada, con bandas de su color. Nunca estirada ni cortada.
+    var im = el.querySelector("picture img");
+    function encaje() {
+      if (!im || !im.naturalWidth) return;
+      var b = el.getBoundingClientRect(); if (!b.width || !b.height) return;
+      var rc = b.width / b.height, ri = im.naturalWidth / im.naturalHeight;
+      im.style.objectFit = Math.abs(ri - rc) / rc < 0.02 ? "cover" : "contain";
+    }
+    if (im) { im.addEventListener("load", encaje); if (im.complete) encaje(); }
+    alto(); encaje(); window.addEventListener("resize", function () { alto(); encaje(); });
     tiposJSON().then(function (j) {  // a la izquierda, los últimos titulares que no estén ya en la apertura
       var mas = wrap.querySelector(".mtx-mas"); if (!mas || !j || !j.menu) return;
       var ya = {}; [].forEach.call(cover.querySelectorAll("a[href]"), function (a) { ya[a.href.replace(/[?#].*$/, "")] = 1; });

@@ -1,0 +1,7 @@
+- [x] Comprobar qué hacía ya el gestor con las imágenes (subida y recorte, solo en el banner premium)
+- [x] Gestor: tabla de medidas por formato con su forma real; encajar entera (bandas de color) o recortar; vista previa de ordenador y móvil antes de subir; aviso si la imagen subida es de otro formato
+- [x] API: `imagen_fondo` (campo del anuncio, validado como color, sale en `a=publicidad`)
+- [x] `m.js`: la caja guarda la proporción del formato; la imagen entra entera con bandas si no coincide; nunca estirada ni cortada
+- [x] Pruebas: `python3 -I tests/test_imagen_banner.py` y `python3 tests/navegador/test_imagen_banner.py` (gestor a 390 px; portada a 1280, 1000, 800 y 390 px)
+- [x] Spec viva (`banner-premium`), `CLAUDE.md` y `docs/gestores-portal.md`
+- [ ] Rainer: reenviar el ejemplo del formato de los banners de texto

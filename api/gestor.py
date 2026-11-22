@@ -63,7 +63,9 @@ CAMPOS_ANUNCIO = {"status", "start", "end", "headline", "text", "cta", "url", "w
                   "sections", "image", "crm_cuenta_id", "utm_campaign", "notes",
                   # banner premium (16-11-2026): formato de la rejilla, imagen o caja de texto, imagen para móvil, texto alternativo,
                   # fondo de la paleta y botón (Ir a la web · Pide más información)
-                  "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo"}
+                  "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo",
+                  # color de las bandas cuando la imagen se encaja sin estirar (22-11-2026, cambio imagenes-de-banner)
+                  "imagen_fondo"}
 
 
 # ---------- sesión ----------
@@ -431,7 +433,7 @@ def anuncios():
         a = json.load(open(f, encoding="utf-8"))
         out.append({k: a.get(k) for k in ("id", "name", "advertiser", "type", "label", "status", "start", "end", "slots", "sections", "headline",
                                           "text", "cta", "url", "weight", "nivel", "image", "crm_cuenta_id", "utm_campaign", "updated_at", "propuesto_por",
-                                          "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo")})
+                                          "formato", "modo", "imagen_movil", "alt", "fondo", "cta_tipo", "imagen_fondo")})
     return out
 
 
@@ -499,7 +501,9 @@ def banner_publico(a, pub):
     formulario está apagado, «Pide más información» se pinta como «Ir a la web»."""
     out = {"formato": a.get("formato") if a.get("formato") in (pub.get("formatos") or {}) else None,
            "modo": a.get("modo") if a.get("modo") in ("imagen", "texto") else ("imagen" if a.get("image") else "texto"),
-           "imagen_movil": a.get("imagen_movil") or None, "alt": a.get("alt") or ""}
+           "imagen_movil": a.get("imagen_movil") or None, "alt": a.get("alt") or "",
+           # la imagen nunca se estira: donde la caja no tiene su proporción (el móvil sin imagen propia) sale entera sobre este color
+           "imagen_fondo": a.get("imagen_fondo") if re.fullmatch(r"#[0-9a-fA-F]{6}", str(a.get("imagen_fondo") or "")) else None}
     f = _fondo(pub, a.get("fondo") or "azul")
     if f:
         out["colores"] = {k: f[k] for k in ("fondo", "texto", "boton", "boton_texto")}
@@ -539,7 +543,8 @@ def validar_banner(a, pub):
 
 
 def subir_imagen_anuncio(ses, d):
-    """Sube a Ghost la imagen de un banner (ya recortada en el navegador a la proporción del formato). Devuelve su URL."""
+    """Sube a Ghost la imagen de un banner. Llega ya compuesta en el navegador a la proporción exacta del formato, sin deformar:
+    entera sobre bandas de color o recortada, según eligió quien la sube tras ver la vista previa. Devuelve su URL."""
     if not ("publicidad" in ses["permisos"] or "contratos" in ses["permisos"] or "proponer" in ses["permisos"]):
         return 403, {"error": "tu perfil no sube imágenes de publicidad"}
     m = re.match(r"^data:image/(jpeg|png|webp);base64,(.+)$", str(d.get("datos") or ""), re.S)
@@ -654,6 +659,8 @@ def accion_anuncio(ses, d):
     for k in ("image", "imagen_movil"):
         if cambios.get(k) and not str(cambios[k]).startswith("https://"):
             return 400, {"error": "la imagen tiene que estar subida (https://)"}
+    if cambios.get("imagen_fondo") and not re.fullmatch(r"#[0-9a-fA-F]{6}", str(cambios["imagen_fondo"])):
+        return 400, {"error": "el color de las bandas no es válido"}
     if cambios.get("url") and not str(cambios["url"]).startswith(("https://", "mailto:")):
         return 400, {"error": "el enlace tiene que empezar por https:// (o mailto: para escribir a un correo)"}
     for k in ("start", "end"):
