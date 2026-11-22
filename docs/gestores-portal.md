@@ -32,6 +32,10 @@ Todo se gestiona desde **Administrar**, que solo ve el superadministrador. Pesta
 - El panel muestra campañas en curso y programadas, importe contratado e inventario de huecos.
 - Para el contenido patrocinado se rellena el campo «Contenido patrocinado por» de la pieza. Se señaliza y queda fuera de la selección automática de portada.
 - Página pública: #anunciate (formatos, sin tarifas publicadas).
+- Imágenes del banner premium (22-11-2026):
+  - al marcar el hueco «portada-premium» y «Imagen», el gestor enseña la tabla de píxeles de cada formato (ancho × alto, al doble de como se ve) y la del móvil;
+  - al elegir una imagen se ve antes cómo queda en el ordenador y en el móvil; no se sube nada hasta pulsar «Subir esta imagen»;
+  - si no tiene la proporción del formato no se estira: se encaja entera con bandas de color o, si se prefiere, se recorta.
 
 ## Gestor de patrocinios (móvil) · desde el 8-11-2026
 
