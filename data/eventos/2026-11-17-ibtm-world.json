@@ -1,7 +1,7 @@
 {
  "ciudad": "Barcelona",
  "comprobado_at": "2026-11-16",
- "estado": "publicado",
+ "estado": "pasado",
  "fin": "2026-11-19",
  "formato": "Feria profesional",
  "fuentes": [
@@ -26,6 +26,13 @@
  "precio": "Visitante profesional, 100 € + IVA",
  "publico": "profesional",
  "resumen": "Feria mundial de reuniones, incentivos, congresos y eventos, con agenda de citas concertadas. Lema de este año: «The Age of Disruption», con zona ampliada de tecnología para eventos.",
+ "revised_at": "2026-11-23",
+ "revisiones": [
+  {
+   "fecha": "2026-11-23",
+   "que": "pasa a pasado (terminó el 2026-11-19)"
+  }
+ ],
  "sede": "Fira Gran Via (L'Hospitalet de Llobregat)",
  "tema": "turismo",
  "territorio": "cataluna",

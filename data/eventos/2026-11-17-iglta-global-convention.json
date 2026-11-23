@@ -1,7 +1,7 @@
 {
  "ciudad": "Sevilla",
  "comprobado_at": "2026-11-16",
- "estado": "publicado",
+ "estado": "pasado",
  "fin": "2026-11-21",
  "formato": "Convención",
  "fuentes": [
@@ -30,6 +30,13 @@
  "origen": "redaccion",
  "publico": "profesional",
  "resumen": "Convención mundial del turismo LGTBQ+: sesiones formativas, ponencias y un mercado de compradores y proveedores. Cuenta con el apoyo de Turespaña, Turismo Andaluz y el Ayuntamiento de Sevilla.",
+ "revised_at": "2026-11-23",
+ "revisiones": [
+  {
+   "fecha": "2026-11-23",
+   "que": "pasa a pasado (terminó el 2026-11-21)"
+  }
+ ],
  "sede": "sede sin publicar",
  "tema": "turismo",
  "territorio": "andalucia",

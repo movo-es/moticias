@@ -1,7 +1,7 @@
 {
  "ciudad": "Granada",
  "comprobado_at": "2026-11-16",
- "estado": "publicado",
+ "estado": "pasado",
  "fin": "2026-11-19",
  "formato": "Jornada",
  "fuentes": [
@@ -26,6 +26,13 @@
  "origen": "redaccion",
  "publico": "profesional",
  "resumen": "Cómo la inteligencia artificial y las nuevas tecnologías están cambiando el desarrollo de metros y tranvías, y qué retos abre para el sector en los próximos años.",
+ "revised_at": "2026-11-23",
+ "revisiones": [
+  {
+   "fecha": "2026-11-23",
+   "que": "pasa a pasado (terminó el 2026-11-19)"
+  }
+ ],
  "sede": "Sala Jiménez Torrecillas, estación Alcázar Genil",
  "tema": "ferrocarril",
  "territorio": "andalucia",

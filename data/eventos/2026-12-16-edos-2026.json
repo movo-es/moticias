@@ -1,12 +1,12 @@
 {
  "ciudad": "Valencia",
- "comprobado_at": "2026-11-16",
+ "comprobado_at": "2026-11-23",
  "estado": "publicado",
  "fin": "2026-12-17",
  "formato": "Congreso",
  "fuentes": [
   {
-   "fecha": "2026-11-16",
+   "fecha": "2026-11-23",
    "nota": "web del organizador: «December 16–17, 2026 · Feria de Valencia – Events Center»",
    "url": "https://europeandroneoperatorsummit.com/"
   },

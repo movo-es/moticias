@@ -1,12 +1,12 @@
 {
  "ciudad": "Málaga",
- "comprobado_at": "2026-11-16",
+ "comprobado_at": "2026-11-23",
  "estado": "publicado",
  "fin": "2027-02-26",
  "formato": "Feria profesional",
  "fuentes": [
   {
-   "fecha": "2026-11-16",
+   "fecha": "2026-11-23",
    "nota": "fechas y ciudad",
    "url": "https://feriabus.com/"
   }

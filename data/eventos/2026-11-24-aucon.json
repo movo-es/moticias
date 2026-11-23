@@ -1,12 +1,12 @@
 {
  "ciudad": "Zaragoza",
- "comprobado_at": "2026-11-16",
+ "comprobado_at": "2026-11-23",
  "estado": "publicado",
  "fin": "2026-11-25",
  "formato": "Congreso",
  "fuentes": [
   {
-   "fecha": "2026-11-16",
+   "fecha": "2026-11-23",
    "nota": "ficha del congreso: fechas, horario, organizadores",
    "url": "https://www.mobilitycity.es/explora/actividades/i-congreso-de-vehiculo-autonomo-y-conectado-zaragoza/"
   }

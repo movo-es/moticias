@@ -1,12 +1,12 @@
 {
  "ciudad": "Madrid",
- "comprobado_at": "2026-11-16",
+ "comprobado_at": "2026-11-23",
  "estado": "publicado",
  "fin": "2026-11-26",
  "formato": "Feria profesional",
  "fuentes": [
   {
-   "fecha": "2026-11-16",
+   "fecha": "2026-11-23",
    "nota": "fechas, recinto y registro",
    "url": "https://www.ifema.es/genera"
   }

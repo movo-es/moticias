@@ -1,7 +1,7 @@
 {
  "ciudad": "Las Palmas de Gran Canaria",
  "comprobado_at": "2026-11-16",
- "estado": "publicado",
+ "estado": "pasado",
  "fin": "2026-11-18",
  "formato": "Congreso",
  "fuentes": [
@@ -26,6 +26,13 @@
  "origen": "redaccion",
  "publico": "profesional",
  "resumen": "Primer congreso viario de Canarias, con el lema «Carreteras para un futuro más eficiente». Cinco sesiones: ecoingeniería, conservación, obras singulares en un territorio fragmentado y movilidad urbana.",
+ "revised_at": "2026-11-23",
+ "revisiones": [
+  {
+   "fecha": "2026-11-23",
+   "que": "pasa a pasado (terminó el 2026-11-18)"
+  }
+ ],
  "sede": "Palacio de Congresos de Canarias – Auditorio Alfredo Kraus",
  "tema": "carreteras",
  "territorio": "canarias",

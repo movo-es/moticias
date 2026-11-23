@@ -1,12 +1,12 @@
 {
  "ciudad": "Valencia",
- "comprobado_at": "2026-11-16",
+ "comprobado_at": "2026-11-23",
  "estado": "publicado",
  "fin": "2026-12-10",
  "formato": "Encuentro",
  "fuentes": [
   {
-   "fecha": "2026-11-16",
+   "fecha": "2026-11-23",
    "nota": "fecha, hora, sede, precio",
    "url": "https://eventos.avia.com.es/events/miv-2026-encuentro-de-innovacion-y-movilidad-sostenible/"
   }
