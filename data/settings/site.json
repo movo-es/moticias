@@ -49,8 +49,20 @@
    "scope": "Aéreo"
   },
   {
+   "date": "2026-11-19",
+   "scope": "Marítimo y puertos"
+  },
+  {
    "date": "2026-11-20",
    "scope": "Ferrocarril"
+  },
+  {
+   "date": "2026-11-22",
+   "scope": "Movilidad urbana y tecnología"
+  },
+  {
+   "date": "2026-11-23",
+   "scope": "Infraestructuras, financiación y Europa"
   }
  ],
  "rotation": [

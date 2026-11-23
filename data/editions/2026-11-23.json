@@ -1,0 +1,146 @@
+{
+ "analysis_id": "el-plazo-paga-la-terminal-bki0",
+ "boe_range": [
+  "2026-11-22",
+  "2026-11-23"
+ ],
+ "boe_series": {
+  "2026-11-07": {
+   "disp": 1,
+   "lic": 0,
+   "total": 2
+  },
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  }
+ },
+ "closed_at": "07:39",
+ "date": "2026-11-23",
+ "document": {
+  "date": "2026-11-23",
+  "kicker": "Licitaciones · Ferrocarril de alta velocidad",
+  "ref": "BOE-B-2026-38595",
+  "source": "BOE",
+  "summary": "El BOE lo publica hoy, 23 de noviembre.\nValor estimado de 35.853.483,65 euros y 48 meses de duración.\nProcedimiento abierto: 60 % fórmulas y 40 % juicio de valor.\nOfertas hasta las 11:00 del 12 de enero de 2027; apertura económica el 16 de febrero.\nEl contrato anterior, de 2020, se adjudicó con una sola oferta.",
+  "title": "Anuncio de licitación de Adif: perfilado de carril en líneas de alta velocidad en explotación",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38595"
+ },
+ "lead_id": "adif-licita-por-35-9-millones-el-perfilado-del-carril-de-la-dmw9",
+ "note_metodologica": "Edición nº 17 de MOTICIAS, cerrada a las 07:39 (CET) del lunes 23 de noviembre de 2026. Cuatro noticias y un análisis. Periodo barrido en el BOE: 22 y 23 de noviembre (el domingo no hay boletín); del BOE núm. 291 salen once referencias y cuatro plazos. Todas las piezas se apoyan en fuentes primarias: el BOE de hoy y anuncios anteriores leídos por su API de datos abiertos (Adif, AESA y las autoridades portuarias de la Bahía de Cádiz, Barcelona y Baleares), la documentación del concurso publicada por la Autoridad Portuaria de la Bahía de Cádiz, la resolución ambiental del aeropuerto de Lanzarote, la nota de Aena del 12 de noviembre, las notas del sindicato convocante de la huelga en la carretera y la normativa citada (Ley de Puertos, Real Decreto 402/2025, Ley 50/1997, Real Decreto 806/2026, Ley 21/2013 y Real Decreto 840/2015). La inversión y la superficie de la terminal de Cádiz y las posiciones de terceros sobre la jubilación anticipada de los conductores proceden de medios especializados citados en cada texto. El análisis lo firma la redacción. La búsqueda de noticias y los borradores se apoyan en inteligencia artificial bajo supervisión editorial; cada cifra y cada fecha se comprobaron en la fuente.",
+ "number": 17,
+ "ticker": [
+  {
+   "ref": "BOE-B-2026-38595",
+   "text": "Adif licita el perfilado de carril de la alta velocidad en explotación: 35,85 M€ y 48 meses",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38595"
+  },
+  {
+   "ref": "BOE-B-2026-38598",
+   "text": "Adif licita por 16,24 M€ la coordinación de seguridad y salud en la red convencional noreste y este",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38598"
+  },
+  {
+   "ref": "BOE-B-2026-38601",
+   "text": "Adif formaliza por 9,71 M€ las obras contra inundaciones de la línea Madrid-Valencia en Benifaió",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38601"
+  },
+  {
+   "ref": "BOE-A-2026-24579",
+   "text": "Lanzarote: el nuevo parque de combustible del aeropuerto, sin evaluación ambiental ordinaria",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24579"
+  },
+  {
+   "ref": "BOE-B-2026-38594",
+   "text": "Adif suspende la licitación del servicio Adif Acerca de asistencia a personas con movilidad reducida",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38594"
+  },
+  {
+   "ref": "BOE-B-2026-38603",
+   "text": "AESA licita por 5,01 M€ la rehabilitación de fachadas e instalaciones de su sede",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38603"
+  },
+  {
+   "ref": "BOE-B-2026-38604",
+   "text": "Saitec controlará la nueva vía de apartado de 750 metros de Corrales de Buelna, en la Palencia-Santander",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38604"
+  },
+  {
+   "ref": "BOE-B-2026-38597",
+   "text": "Adif amplía al 1-12 el plazo de la línea de alta tensión de señalización Arenys-Maçanet",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38597"
+  },
+  {
+   "ref": "BOE-B-2026-38600",
+   "text": "Adif AV abre el 25-11 las ofertas económicas del taller de material rodante de la subbase Madrid-sur",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38600"
+  },
+  {
+   "ref": "BOE-B-2026-38592",
+   "text": "Adif licita el control de las obras de la bóveda y las fachadas de la estación de A Coruña",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38592"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
