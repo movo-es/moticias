@@ -1,0 +1,121 @@
+{
+ "analysis_id": "un-1-2-que-todavia-no-tiene-fabrica-ziwr",
+ "boe_range": [
+  "2026-11-24",
+  "2026-11-24"
+ ],
+ "boe_series": {
+  "2026-11-09": {
+   "disp": 4,
+   "lic": 0,
+   "total": 4
+  },
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  },
+  "2026-11-24": {
+   "disp": 1,
+   "lic": 4,
+   "total": 11
+  }
+ },
+ "closed_at": "07:42",
+ "date": "2026-11-24",
+ "document": {
+  "date": "2026-11-24",
+  "kicker": "Licitaciones · Ferrocarril",
+  "ref": "BOE-B-2026-38759",
+  "source": "BOE",
+  "summary": "El BOE lo publica hoy, 24 de noviembre.\nValor estimado de 101.319.481,92 euros y 24 meses de duración.\nOfertas hasta las 10:00 del 21 de diciembre; apertura económica el 21 de enero de 2027.\nEl procedimiento se suspendió el 18 de noviembre, dos días después del plazo original.\nEs el segundo concurso del año: el primero, de 84,3 millones, terminó en desistimiento en mayo.",
+  "title": "Anuncio de corrección de errores de Adif: nuevas fechas del servicio Adif Acerca de asistencia a personas con discapacidad y personas con movilidad reducida",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38759"
+ },
+ "lead_id": "plus-ultra-suspende-todos-sus-vuelos-hasta-nuevo-aviso-mient-w8el",
+ "note_metodologica": "Edición nº 18 de MOTICIAS, cerrada a las 07:42 (CET) del martes 24 de noviembre de 2026. Cinco noticias y un análisis. Periodo barrido en el BOE: 24 de noviembre (BOE núm. 292), del que salen cinco referencias y tres plazos; los anuncios anteriores citados se han leído en la API de datos abiertos del BOE. Cuatro piezas se apoyan en fuentes primarias: los anuncios del BOE de Adif y Enaire y las normas que citan, las notas oficiales de Euskotren y del Gobierno Vasco sobre la pasante de Donostia, la nota de la compañía energética sobre su producción de combustible sostenible de aviación en San Roque y la información del Banco Europeo de Inversiones. La pieza de apertura, sobre la suspensión de todos los vuelos de una aerolínea española, se apoya en agencias y medios especializados citados en el texto, porque no ha sido posible consultar un comunicado oficial de la compañía; las fuentes oficiales de esa pieza son de contexto. La pasante de Donostia entró en servicio el sábado 21 de noviembre y la producción de San Roque se anunció el 19 de noviembre: se publican ahora porque MOTICIAS no los había dado y siguen vigentes. El análisis corresponde al ámbito de Regulación y gobernanza, según la rotación. La búsqueda, la verificación de fechas y los borradores se apoyan en herramientas de inteligencia artificial bajo supervisión editorial.",
+ "number": 18,
+ "ticker": [
+  {
+   "ref": "BOE-B-2026-38773",
+   "text": "Enaire convoca 159 plazas de controladora y controlador de tránsito aéreo",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38773"
+  },
+  {
+   "ref": "BOE-B-2026-38759",
+   "text": "Adif fija nuevas fechas para el concurso de 101,3 M€ del servicio Adif Acerca",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38759"
+  },
+  {
+   "ref": "BOE-B-2026-38770",
+   "text": "Información pública de los bienes afectados por la autopista ferroviaria Manzanares-Badajoz en su tramo final",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38770"
+  },
+  {
+   "ref": "BOE-B-2026-38771",
+   "text": "Actas previas de expropiación por el tratamiento de cinco túneles entre Monfragüe y Cáceres",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38771"
+  },
+  {
+   "ref": "BOE-B-2026-38772",
+   "text": "Información pública para tratar el túnel nº 17 de la línea La Tour de Carol-Bifurcación Aigües",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38772"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
