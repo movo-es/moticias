@@ -1,0 +1,101 @@
+{
+ "analysis_id": "seis-meses-de-certeza-para-el-autobus-4d0k",
+ "boe_range": [
+  "2026-11-25",
+  "2026-11-25"
+ ],
+ "boe_series": {
+  "2026-11-10": {
+   "disp": 2,
+   "lic": 18,
+   "total": 31
+  },
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  },
+  "2026-11-24": {
+   "disp": 1,
+   "lic": 4,
+   "total": 11
+  },
+  "2026-11-25": {
+   "disp": 0,
+   "lic": 6,
+   "total": 9
+  }
+ },
+ "closed_at": "07:49",
+ "date": "2026-11-25",
+ "document": {
+  "date": "2025-12-24",
+  "kicker": "Regulación · Transporte público",
+  "ref": "BOE-A-2025-26459",
+  "source": "BOE",
+  "summary": "Es la norma de los descuentos de 2026, que el Gobierno prorrogó el 24 de noviembre para 2027.\nConcesiones estatales de autobús: gratuidad infantil, 40 % en bonos de diez viajes, 50 % en el abono mensual y 70 % para jóvenes (artículo 1).\nRenfe: abono mensual de 20 euros en Cercanías y Rodalies, 10 euros para jóvenes y 40 % en Media Distancia (artículo 3).\nComunidades y entidades locales: 20 % estatal en abonos y multiviajes, sobre las tarifas vigentes a 30 de noviembre de 2025 (artículo 8).\nCanarias y Baleares: 120 y 63 millones en dos anualidades para la gratuidad de sus abonos (capítulo IV).",
+  "title": "Real Decreto-ley 17/2025, de 23 de diciembre, de medidas de promoción del uso del transporte público mediante la bonificación de abonos y títulos multiviaje",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26459"
+ },
+ "lead_id": "el-gobierno-prorroga-a-2027-los-descuentos-del-transporte-pu-t225",
+ "note_metodologica": "Edición nº 19 de MOTICIAS, cerrada a las 07:49 (CET) del miércoles 25 de noviembre de 2026. Cuatro noticias y un análisis. Periodo barrido en el BOE: 25 de noviembre (BOE núm. 293), del que salen una referencia y un plazo; las normas citadas se han leído en la API de datos abiertos del BOE. Los decretos-ley aprobados por el Consejo de Ministros del 24 de noviembre no figuraban en el BOE al cierre y su nota oficial no pudo consultarse: las tres piezas sobre ellos —los descuentos del transporte público para 2027, los avales para la flota mercante y los límites del régimen de módulos— se apoyan en medios especializados y generalistas citados en el texto, con el marco legal tomado del BOE. La pieza sobre las leyes de limitación de vehículos en Mallorca y Menorca se apoya en tres medios citados en el texto, a falta de su publicación en el boletín autonómico; los precedentes de Ibiza y Formentera se citan del BOE. El análisis corresponde al ámbito «Autobús y carretera», según la rotación, y se apoya en la Ley 9/2025 de Movilidad Sostenible y en el Real Decreto-ley 17/2025. La búsqueda de información y los borradores se apoyan en herramientas de inteligencia artificial, bajo supervisión editorial.",
+ "number": 19,
+ "ticker": [
+  {
+   "ref": "BOE-B-2026-38847",
+   "text": "Adif fija el 26 de noviembre la apertura económica del control de vegetación en la alta velocidad",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38847"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
