@@ -1,0 +1,168 @@
+{
+ "actors": "Consejo de Ministros; Ministerio de Hacienda; Agencia Tributaria; Federación Nacional de Asociaciones de Transporte de España (Fenadismer); transportistas autónomos; Diputación Permanente del Congreso",
+ "author": "G. Jordan",
+ "author_role": "Redactor responsable",
+ "authority": "Consejo de Ministros",
+ "body_md": "El Consejo de Ministros aprobó el martes 24 de noviembre un real decreto-ley que prorroga para 2027 los límites que permiten a los autónomos seguir tributando en el método de estimación objetiva del IRPF —los módulos—, entre ellos el de 125.000 euros anuales de facturación, según publicó [Nexotrans](https://nexotrans.com/el-gobierno-prorroga-el-limite-de-modulos-para-los-transportistas-autonomos-en-2027/) el 25 de noviembre. La Federación Nacional de Asociaciones de Transporte de España (Fenadismer) calcula que la medida afecta a más de 30.000 transportistas autónomos. El decreto no figura todavía en el [BOE de hoy](https://www.boe.es/boe/dias/2026/11/25/), número 293.\n\n## Los hechos\n\nSegún esa información, el decreto mantiene un año más el umbral de 125.000 euros para el régimen de módulos. Añade una autoliquidación anual voluntaria del IVA para los autónomos con ingresos inferiores a 85.000 euros, con tres pagos a cuenta en abril, julio y octubre, y la exoneración de los pagos fraccionados en estimación directa en determinados supuestos. Para quienes están en estimación directa y facturan menos de 250.000 euros, el tipo de los pagos fraccionados baja del 20 % al 19 %. Fenadismer valora positivamente las medidas, según la misma información, que no cita a ningún portavoz por su nombre.\n\n## El marco legal\n\nLos límites se prorrogan año a año desde 2016. El último texto es el [Real Decreto-ley 16/2025](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26458), de 23 de diciembre, que dio nueva redacción a la disposición transitoria trigésima segunda de la Ley del IRPF: «para los ejercicios 2016 a 2026», las magnitudes de 150.000 y 75.000 euros del artículo 31 quedan fijadas en 250.000 y 125.000 euros. El mismo decreto hizo lo propio en el IVA, donde la magnitud de 150.000 euros de los artículos 122 y 124 de su ley quedó en 250.000 euros. Sin una nueva prórroga, en 2027 volverían a regir los 150.000 y 75.000 euros de la ley.\n\nEse es el riesgo que señala la patronal: según Fenadismer, sin prórroga los autónomos afectados tendrían que pasar de forma obligatoria a la estimación directa, con contabilidad completa y pagos fraccionados calculados sobre el rendimiento real.\n\nEl instrumento exige una segunda votación. Un real decreto-ley debe someterse al Congreso en los treinta días siguientes a su promulgación (artículo 86.2 de la [Constitución](https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229)) y, con las Cortes disueltas por las elecciones del 29 de noviembre, decide la Diputación Permanente (artículo 78.2). El BOE del 13 de noviembre publicó el [acuerdo de derogación](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23754) del Real Decreto-ley 28/2026: la convalidación no es automática.\n\n## El contexto\n\nEl Consejo del 24 de noviembre fue el último de la legislatura, según [El Mercantil](https://elmercantil.com/2026/11/24/el-gobierno-aprueba-un-aval-de-1-000-millones-hasta-2029-para-renovar-la-flota-mercante/), y aprobó en la misma sesión la prórroga de los descuentos del transporte público para 2027 y avales para la renovación de la flota mercante. Para el transporte por carretera, la prórroga de los módulos es la medida con efecto más directo: el régimen fija la cuota por signos y módulos —vehículos, carga, personal— en lugar de por el beneficio declarado, y el límite de facturación es el que saca del sistema al transportista que crece por encima de él.\n\n## Qué cambia\n\nPara el transportista autónomo que factura entre 75.000 y 125.000 euros en las operaciones que computan para ese límite, la prórroga significa seguir en módulos en 2027 y evitar el salto a la estimación directa. Para quien ya está en estimación directa, el decreto rebaja un punto el tipo de los pagos fraccionados si no supera los 250.000 euros. Para el autónomo pequeño, la autoliquidación anual del IVA reduce a una declaración anual con tres pagos a cuenta la gestión trimestral.\n\n## El calendario\n\n- 24 de diciembre de 2025: el BOE publica el Real Decreto-ley 16/2025, con los límites para 2026.\n- 24 de noviembre de 2026: el Consejo de Ministros aprueba la prórroga para 2027.\n- 25 de noviembre: el decreto no figura en el BOE número 293.\n- 29 de noviembre: elecciones generales.\n- Treinta días desde la publicación: plazo para la convalidación.\n- 1 de enero de 2027: arranca el ejercicio al que se aplica la prórroga.\n- Abril, julio y octubre de 2027: pagos a cuenta de quienes opten por la autoliquidación anual del IVA.\n\n## Lo que hay que vigilar\n\nEl texto en el BOE, que fijará los límites exactos y el plazo de renuncias y revocaciones al régimen para 2027. La convalidación en la Diputación Permanente. Y la orden ministerial que cada año desarrolla los módulos, de la que dependen las cuotas concretas del transporte de mercancías por carretera.",
+ "campaign": null,
+ "date": "2026-11-25",
+ "event_date": "2026-11-24",
+ "featured": 0,
+ "fiabilidad": "secundaria",
+ "id": "el-gobierno-prorroga-a-2027-el-limite-de-125000-euros-que-ma-g780",
+ "image": null,
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Límite de facturación prorrogado",
+   "source": "Nexotrans, 25-11-2026",
+   "value": "125.000 € anuales"
+  },
+  {
+   "label": "Límite sin prórroga",
+   "source": "RDL 16/2025, DT 32.ª LIRPF, BOE-A-2025-26458",
+   "value": "75.000 € (artículo 31 de la Ley del IRPF)"
+  },
+  {
+   "label": "Transportistas autónomos afectados",
+   "source": "Fenadismer, según Nexotrans, 25-11-2026",
+   "value": "Más de 30.000"
+  },
+  {
+   "label": "Autoliquidación anual voluntaria del IVA",
+   "source": "Nexotrans, 25-11-2026",
+   "value": "Ingresos inferiores a 85.000 €"
+  },
+  {
+   "label": "Pagos fraccionados en estimación directa",
+   "source": "Nexotrans, 25-11-2026",
+   "value": "Del 20 % al 19 % por debajo de 250.000 €"
+  },
+  {
+   "label": "Prórrogas anuales",
+   "source": "RDL 16/2025, BOE-A-2025-26458",
+   "value": "Desde el ejercicio 2016"
+  }
+ ],
+ "key_fact": "125.000 euros: límite de facturación para seguir en módulos en 2027",
+ "kicker": "Fiscalidad · Transporte por carretera",
+ "kind": "noticia",
+ "medio": "tierra",
+ "modo": "logistica",
+ "modos": [
+  "mercancias-carretera"
+ ],
+ "next": "Publicación del real decreto-ley en el BOE; plazo de renuncias y revocaciones al régimen para 2027; convalidación por la Diputación Permanente en treinta días; aplicación al ejercicio 2027.",
+ "published_at": "2026-11-25T07:49:00+01:00",
+ "published_time": "07:49",
+ "reg_kind": "real decreto-ley",
+ "relevance": "MEDIA",
+ "relevance_for": "Transportistas autónomos de mercancías por carretera; asociaciones y cooperativas del transporte; asesores fiscales; cargadores que contratan a autónomos",
+ "review_note": "Rutinaria: acuerdo del Consejo de Ministros recogido por la prensa especializada; los límites vigentes y su base legal se citan del BOE; la cifra de afectados se atribuye a la patronal. Sin acusaciones.",
+ "risk": "rutinaria",
+ "section": "regulacion",
+ "sources": [
+  {
+   "accessed": "2026-11-25",
+   "kind": "medios",
+   "outlet": "Nexotrans",
+   "published": "2026-11-25",
+   "title": "El Gobierno prorroga el límite de módulos para los transportistas autónomos en 2027",
+   "url": "https://nexotrans.com/el-gobierno-prorroga-el-limite-de-modulos-para-los-transportistas-autonomos-en-2027/"
+  },
+  {
+   "accessed": "2026-11-25",
+   "kind": "medios",
+   "outlet": "El Mercantil",
+   "published": "2026-11-24",
+   "title": "El Gobierno aprueba un aval de 1.000 millones hasta 2029 para renovar la flota mercante",
+   "url": "https://elmercantil.com/2026/11/24/el-gobierno-aprueba-un-aval-de-1-000-millones-hasta-2029-para-renovar-la-flota-mercante/"
+  },
+  {
+   "accessed": "2026-11-25",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2025-12-24",
+   "title": "Real Decreto-ley 16/2025, de 23 de diciembre, por el que se prorrogan determinadas medidas para hacer frente a situaciones de vulnerabilidad social y se adoptan medidas urgentes en materia tributaria y de Seguridad Social (BOE-A-2025-26458)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26458"
+  },
+  {
+   "accessed": "2026-11-25",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "1978-12-29",
+   "title": "Constitución Española, artículos 78 y 86 (BOE-A-1978-31229)",
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229"
+  },
+  {
+   "accessed": "2026-11-25",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-13",
+   "title": "Resolución de 12 de noviembre de 2026, del Congreso de los Diputados, por la que se ordena la publicación del Acuerdo de derogación del Real Decreto-ley 28/2026 (BOE-A-2026-23754)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23754"
+  },
+  {
+   "accessed": "2026-11-25",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-25",
+   "title": "Sumario del Boletín Oficial del Estado núm. 293, de 25 de noviembre de 2026",
+   "url": "https://www.boe.es/boe/dias/2026/11/25/"
+  }
+ ],
+ "status": "publicado",
+ "submodo": "logistica-tierra",
+ "subsector": "carretera",
+ "subtitle": "El real decreto-ley del 24 de noviembre evita que el umbral vuelva a 75.000 euros y añade alivios en el IVA y los pagos fraccionados; la patronal calcula más de 30.000 autónomos afectados",
+ "summary": "El Consejo de Ministros aprobó el 24 de noviembre un real decreto-ley que prorroga para 2027 los límites que permiten a los autónomos seguir en el régimen de módulos del IRPF, entre ellos el de 125.000 euros de facturación, según la prensa especializada. Sin prórroga, la Ley del IRPF devolvería ese umbral a 75.000 euros. La federación Fenadismer calcula que la medida afecta a más de 30.000 transportistas autónomos. El decreto incluye también una autoliquidación anual voluntaria del IVA y un tipo menor en los pagos fraccionados. No está aún en el BOE y debe convalidarlo la Diputación Permanente.",
+ "tags": [
+  "Fenadismer",
+  "régimen de módulos",
+  "IRPF",
+  "transportistas autónomos",
+  "fiscalidad del transporte",
+  "real decreto-ley"
+ ],
+ "taxonomia_manual": true,
+ "temas": [
+  "regulacion"
+ ],
+ "territorios": [
+  "estado"
+ ],
+ "timeline": [
+  {
+   "date": "2025-12-24",
+   "text": "El BOE publica el Real Decreto-ley 16/2025 con los límites para 2026"
+  },
+  {
+   "date": "2026-11-13",
+   "text": "El BOE publica la derogación del Real Decreto-ley 28/2026"
+  },
+  {
+   "date": "2026-11-24",
+   "text": "El Consejo de Ministros aprueba la prórroga de los límites para 2027"
+  },
+  {
+   "date": "2026-11-25",
+   "text": "El decreto no figura en el BOE número 293"
+  },
+  {
+   "date": "2026-11-29",
+   "text": "Elecciones generales"
+  },
+  {
+   "date": "2027-01-01",
+   "text": "Ejercicio al que se aplica la prórroga"
+  },
+  {
+   "date": "2027-04",
+   "text": "Primer pago a cuenta de la autoliquidación anual voluntaria del IVA"
+  }
+ ],
+ "tipo_contenido": "noticia",
+ "title": "El Gobierno prorroga a 2027 el límite de 125.000 euros que mantiene a los transportistas autónomos en módulos",
+ "why": "El límite de 125.000 euros es el que decide si muchos transportistas autónomos pueden seguir tributando por módulos. Se prorroga año a año desde 2016: si no se renovara, miles de ellos pasarían por obligación a la estimación directa, con más cargas de gestión."
+}
