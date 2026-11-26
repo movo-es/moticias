@@ -1,0 +1,146 @@
+{
+ "analysis_id": "la-cobertura-se-acaba-en-2027-g51q",
+ "boe_range": [
+  "2026-11-26",
+  "2026-11-26"
+ ],
+ "boe_series": {
+  "2026-11-11": {
+   "disp": 4,
+   "lic": 16,
+   "total": 36
+  },
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  },
+  "2026-11-24": {
+   "disp": 1,
+   "lic": 4,
+   "total": 11
+  },
+  "2026-11-25": {
+   "disp": 0,
+   "lic": 6,
+   "total": 9
+  },
+  "2026-11-26": {
+   "disp": 12,
+   "lic": 15,
+   "total": 36
+  }
+ },
+ "closed_at": "07:52",
+ "date": "2026-11-26",
+ "document": {
+  "date": "2026-11-25",
+  "kicker": "Regulación · Transporte público",
+  "ref": "BOE-A-2026-24703",
+  "source": "BOE",
+  "summary": "Es la norma que fija las ayudas al transporte público de 2027; está en vigor desde el 26 de noviembre.\nRenfe: abono mensual de 20 euros en Cercanías y Rodalies, 10 euros para jóvenes y gratuidad para los nacidos desde 2013 (artículo 3).\nComunidades y entidades locales: gratuidad infantil, 50 % joven y 20 % general, con 639 millones en dos créditos extraordinarios (artículos 8 y 18).\nNovedad: el Consejo de Ministros podrá recortar hasta diez puntos la ayuda estatal al descuento general en el segundo semestre, y la AIReF evaluará las ayudas (disposición adicional sexta).\nAdemás: 100 % insular en Canarias y Baleares, ampliaciones para la bonificación a residentes y avales de hasta 1.000 millones a navieras; convalidación antes del 24 de diciembre.",
+  "title": "Real Decreto-ley 45/2026, de 24 de noviembre, de medidas de promoción del uso del transporte público mediante la bonificación de abonos y títulos multiviaje en el año 2027 y de medidas financieras para la renovación de la flota española por razones medioambientales.",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24703"
+ },
+ "lead_id": "descuentos-de-2027-el-boe-fija-un-20-en-abonos-un-50-joven-y-irhb",
+ "note_metodologica": "Edición nº 20 de MOTICIAS, cerrada a las 07:52 (CET) del jueves 26 de noviembre de 2026. Cuatro noticias y un análisis. Periodo barrido en el BOE: 26 de noviembre (BOE núm. 294); se incorpora además el Real Decreto-ley 45/2026, publicado en el BOE núm. 293, de 25 de noviembre, que es el documento del día y la fuente de la apertura. Salen once referencias y cuatro plazos. Las normas citadas se han leído en la API de datos abiertos del BOE. La pieza sobre el concurso de la sociedad de suministro eléctrico a buques del puerto de Barcelona se apoya en dos medios especializados citados en el texto, a falta de una nota oficial accesible, con el procedimiento de información pública tomado del BOE. La de la autorización de la serie 452 de Renfe se apoya en un medio especializado y en la información de una agencia, citados en el texto, con el contrato y los plazos comprometidos tomados de notas oficiales del Ministerio de Transportes y del fabricante. El análisis corresponde al ámbito «Aéreo», según la rotación, y se apoya en los resultados anuales de una aerolínea y en el Real Decreto-ley 45/2026. La búsqueda de información y los borradores se apoyan en herramientas de inteligencia artificial, bajo supervisión editorial.",
+ "number": 20,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24703",
+   "text": "Real Decreto-ley 45/2026: descuentos del transporte público en 2027 y avales a la flota",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24703"
+  },
+  {
+   "ref": "BOE-A-2026-24811",
+   "text": "Real Decreto 1078/2026: suplencia en la Secretaría General de Movilidad Sostenible",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24811"
+  },
+  {
+   "ref": "BOE-A-2026-24895",
+   "text": "Planificación de la red eléctrica de transporte Horizonte 2030",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24895"
+  },
+  {
+   "ref": "BOE-A-2026-24800",
+   "text": "Real Decreto 1046/2026: subvención directa a ITS España",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24800"
+  },
+  {
+   "ref": "BOE-A-2026-24799",
+   "text": "Real Decreto 1045/2026: subvención directa al Colegio de Ingenieros de Caminos",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24799"
+  },
+  {
+   "ref": "BOE-B-2026-38997",
+   "text": "Adif amplía el plazo del proyecto de electrificación Teruel-Sagunto",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38997"
+  },
+  {
+   "ref": "BOE-B-2026-39001",
+   "text": "Adif licita la reparación del túnel de Gravet, entre Manresa y Barcelona",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39001"
+  },
+  {
+   "ref": "BOE-B-2026-39004",
+   "text": "Pavasal suprimirá un paso a nivel en Crevillente por 1,94 millones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39004"
+  },
+  {
+   "ref": "BOE-B-2026-39002",
+   "text": "Emergencia de 1,92 millones en el talud de Astillero-Orejo (Bilbao-Santander)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39002"
+  },
+  {
+   "ref": "BOE-B-2026-38998",
+   "text": "Control de las obras de desmontes entre Ferrol y Viveiro, por 0,48 millones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-38998"
+  }
+ ],
+ "ticker_label": "Boletines"
+}
