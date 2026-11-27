@@ -1,0 +1,152 @@
+{
+ "actors": "Ryanair Holdings (Michael O'Leary, consejero delegado); Airlines for Europe (A4E); European Network Airlines Association (ENAA); Lufthansa; Air France-KLM; Irish Aviation Authority; High Court irlandesa (jueza Eileen Roberts)",
+ "author": "G. Jordan",
+ "author_role": "Redactor responsable",
+ "body_md": "Ryanair dejará en diciembre Airlines for Europe (A4E), la principal patronal de aerolíneas europeas, que fundó en enero de 2016 con easyJet, IAG, Lufthansa y Air France-KLM. Su consejero delegado, Michael O'Leary, anunció la salida en Berlín y una portavoz de A4E la confirmó, según publicó Hosteltur el 26 de noviembre. El motivo es un pleito en Irlanda: la asociación de aerolíneas de red ENAA, de la que forman parte Lufthansa y Air France-KLM, pide revisar cómo vigila la autoridad aeronáutica irlandesa que Ryanair cumple las reglas europeas de propiedad y control.\n\n## Los hechos\n\nO'Leary ya había advertido el 8 de octubre de que la compañía se iría si los miembros de ENAA no retiraban el procedimiento o no abandonaban esa asociación, según Hosteltur y ch-aviation. La advertencia se ha convertido en decisión: la salida será efectiva en unas dos semanas, según Hosteltur.\n\nEl procedimiento es una revisión judicial de la actuación de la Irish Aviation Authority, la autoridad que concede y supervisa la licencia de Ryanair. Lo tramita el tribunal mercantil de la High Court irlandesa; Hosteltur lo llama Tribunal Superior y ch-aviation, Commercial Court. ENAA sostiene que a cierre de marzo solo el 30 % del capital de Ryanair estaba en manos de ciudadanos de la Unión. Ryanair responde que cumple, porque sus accionistas de fuera de la Unión no tienen derechos de voto.\n\nEl 16 de noviembre, la jueza Eileen Roberts rechazó que Lufthansa, KLM y Air France entraran en el pleito como partes demandadas, aunque admitió sus declaraciones juradas, según ch-aviation. En la suya, O'Leary acusa a las dos aerolíneas de un ataque deliberado contra la competencia y alega que el proceso pone en riesgo el certificado de operador aéreo de Ryanair. La próxima vista está fijada para el 16 de diciembre, según Hosteltur.\n\n## El marco legal\n\nEl Reglamento (CE) 1008/2008, sobre normas comunes para la explotación de servicios aéreos en la Unión, exige para conceder una licencia de explotación que los Estados miembros o sus nacionales posean más del 50 % de la compañía y la controlen de forma efectiva (artículo 4). La Comisión publicó en junio de 2017 unas directrices interpretativas sobre cómo valorar esa propiedad y ese control. La supervisión corresponde a la autoridad que concede la licencia, en este caso la irlandesa. Por eso el pleito no se dirige contra Ryanair, sino contra el regulador que la vigila.\n\nLa defensa de Ryanair descansa en la distinción entre capital y control: si los accionistas de fuera de la Unión no votan, la compañía sostiene que el control efectivo sigue en manos comunitarias. ENAA plantea que la cuota de capital importa por sí misma. El tribunal irlandés tendrá que decir si la autoridad hizo bien su trabajo y, si necesita interpretar el reglamento, podrá plantear una cuestión prejudicial al Tribunal de Justicia de la Unión.\n\n## Los actores\n\nA4E reúne a 16 grupos aéreos que suman más del 80 % del tráfico europeo, según la web de la asociación citada por Hosteltur, entre ellos IAG, Lufthansa, Air France-KLM, easyJet, Norwegian, Jet2, Volotea, TUI y TAP. ENAA, con sede en Ámsterdam, agrupa a aerolíneas de red. Ryanair Holdings, cuyo consejero delegado es O'Leary, actúa como parte interesada en un proceso dirigido contra la Irish Aviation Authority.\n\n## Qué cambia para el sector\n\n**La voz en Bruselas.** A4E pierde a la mayor aerolínea de bajo coste de Europa cuando la regulación climática sigue abierta en Bruselas; sobre ella, cinco grupos, entre ellos Ryanair, Lufthansa y Air France-KLM, habían pedido cambios a la Comisión, según Hosteltur. Ryanair seguirá defendiendo sus posiciones por su cuenta.\n\n**Las aerolíneas españolas.** IAG, con Iberia y Vueling, y Volotea siguen en la patronal. En las consultas europeas que afectan a los aeropuertos y a los pasajeros españoles, la industria tendrá una voz común menos.\n\n**El riesgo de licencia.** Es el punto que más importa a operadores y aeropuertos. La propia Ryanair invoca el riesgo para su certificado; ninguna autoridad ha anunciado una medida contra él.\n\n## El calendario\n\n- Enero de 2016: Ryanair, easyJet, IAG, Lufthansa y Air France-KLM fundan A4E.\n- 08-10-2026: O'Leary advierte de que dejará la patronal.\n- 16-11-2026: el tribunal irlandés rechaza incorporar a Lufthansa, KLM y Air France como demandadas.\n- 26-11-2026: se conoce la salida, confirmada por A4E.\n- Diciembre de 2026: salida efectiva.\n- 16-12-2026: próxima vista del procedimiento.\n\n## Lo que hay que vigilar\n\nLa vista del 16 de diciembre dirá si el pleito avanza hacia el fondo. Si el tribunal obliga a la autoridad irlandesa a revisar su supervisión, la cuestión de la propiedad de las aerolíneas cotizadas con accionistas de fuera de la Unión saltará del caso Ryanair al conjunto del sector. Mientras tanto, nada cambia en las operaciones: no consta ninguna medida sobre la licencia de la compañía.",
+ "campaign": null,
+ "date": "2026-11-27",
+ "event_date": "2026-11-26",
+ "featured": 0,
+ "fiabilidad": "secundaria",
+ "geo": {
+  "lat": 53.3498,
+  "lon": -6.2603,
+  "place": "Dublín"
+ },
+ "id": "ryanair-deja-airlines-for-europe-por-el-pleito-de-lufthansa-wkzc",
+ "image": null,
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Salida de A4E",
+   "source": "Hosteltur, 26-11-2026",
+   "value": "Diciembre de 2026"
+  },
+  {
+   "label": "Capital en manos comunitarias, según ENAA",
+   "source": "Hosteltur, 26-11-2026",
+   "value": "30 % a cierre de marzo"
+  },
+  {
+   "label": "Umbral del Reglamento 1008/2008",
+   "source": "Reglamento (CE) 1008/2008, art. 4",
+   "value": "Más del 50 % de propiedad y control efectivo comunitarios"
+  },
+  {
+   "label": "Miembros de A4E",
+   "source": "Web de A4E citada por Hosteltur, 26-11-2026",
+   "value": "16 grupos, más del 80 % del tráfico europeo"
+  },
+  {
+   "label": "Próxima vista",
+   "source": "Hosteltur, 26-11-2026",
+   "value": "16-12-2026"
+  }
+ ],
+ "key_fact": "30 % del capital de Ryanair en manos comunitarias a cierre de marzo, según ENAA",
+ "kicker": "Patronales y regulación · Transporte aéreo",
+ "kind": "noticia",
+ "medio": "aire",
+ "modo": "aire",
+ "modos": [
+  "aerolineas"
+ ],
+ "next": "Salida efectiva de Ryanair de A4E en diciembre; vista del procedimiento irlandés el 16 de diciembre de 2026; posible revisión de la supervisión de la Irish Aviation Authority.",
+ "published_at": "2026-11-27T07:37:00+01:00",
+ "published_time": "07:37",
+ "relevance": "MEDIA",
+ "relevance_for": "Aerolíneas y aeropuertos que operan en España; Aena y autoridades de aviación civil; inversores en aerolíneas cotizadas; asociaciones del sector que actúan ante la Comisión Europea",
+ "review_note": "Crítica: recoge acusaciones cruzadas entre empresas con nombre en un procedimiento judicial en curso y el riesgo que la propia Ryanair alega para su certificado; se apoya en dos medios sin comunicado oficial accesible. Espera la aprobación del editor jefe.",
+ "risk": "critica",
+ "section": "aire",
+ "sources": [
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "EUR-Lex",
+   "published": "2008-10-31",
+   "title": "Reglamento (CE) n.º 1008/2008 del Parlamento Europeo y del Consejo, sobre normas comunes para la explotación de servicios aéreos en la Comunidad",
+   "url": "https://eur-lex.europa.eu/eli/reg/2008/1008/oj/?locale=es"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "EUR-Lex",
+   "published": "2017-06-16",
+   "title": "Comunicación de la Comisión: directrices interpretativas sobre el Reglamento (CE) n.º 1008/2008, normas de propiedad y control de las compañías aéreas de la UE",
+   "url": "https://eur-lex.europa.eu/legal-content/ES/ALL/?uri=CELEX:52017XC0616(01)"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "medios",
+   "outlet": "Hosteltur",
+   "published": "2026-11-26",
+   "title": "Ryanair sale de la principal patronal aérea tras un choque con Lufthansa y Air France-KLM",
+   "url": "https://www.hosteltur.com/180248_ryanair-sale-de-la-principal-patronal-aerea-tras-un-choque-con-lufthansa-y-air-france-klm.html"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "medios",
+   "outlet": "ch-aviation",
+   "published": "",
+   "title": "Ryanair accuses rivals of anti-competitive legal attack (en inglés)",
+   "url": "https://www.ch-aviation.com/news/174112-ryanair-accuses-rivals-of-anti-competitive-legal-attack"
+  }
+ ],
+ "status": "pendiente",
+ "submodo": "aerolineas",
+ "subsector": "aéreo",
+ "subtitle": "La aerolínea sale en diciembre de la patronal que cofundó en 2016; la asociación de aerolíneas de red ENAA impugna en Irlanda la supervisión de la autoridad aeronáutica y la próxima vista es el 16 de diciembre",
+ "summary": "Ryanair abandonará en diciembre Airlines for Europe (A4E), la principal patronal aérea europea, según anunció Michael O'Leary y confirmó la asociación. El detonante es la revisión judicial que la asociación de aerolíneas de red ENAA, con Lufthansa y Air France-KLM entre sus miembros, ha pedido en Irlanda sobre cómo supervisa la Irish Aviation Authority que Ryanair cumple las reglas de propiedad y control del Reglamento (CE) 1008/2008. ENAA sostiene que solo el 30 % del capital está en manos comunitarias; Ryanair responde que sus accionistas de fuera de la Unión no votan.",
+ "tags": [
+  "Ryanair",
+  "Airlines for Europe",
+  "Lufthansa",
+  "Air France-KLM",
+  "Irish Aviation Authority",
+  "propiedad y control",
+  "Reglamento (CE) 1008/2008"
+ ],
+ "taxonomia_manual": true,
+ "temas": [
+  "empresas",
+  "regulacion"
+ ],
+ "territorios": [
+  "ue"
+ ],
+ "timeline": [
+  {
+   "date": "2008-10-31",
+   "text": "El Diario Oficial publica el Reglamento (CE) 1008/2008"
+  },
+  {
+   "date": "2016-01",
+   "text": "Ryanair, easyJet, IAG, Lufthansa y Air France-KLM fundan A4E"
+  },
+  {
+   "date": "2017-06-16",
+   "text": "La Comisión publica sus directrices sobre propiedad y control de las aerolíneas"
+  },
+  {
+   "date": "2026-10-08",
+   "text": "O'Leary advierte de que Ryanair dejará la patronal"
+  },
+  {
+   "date": "2026-11-16",
+   "text": "El tribunal rechaza incorporar a Lufthansa, KLM y Air France como demandadas"
+  },
+  {
+   "date": "2026-11-26",
+   "text": "Se conoce la salida de Ryanair, confirmada por A4E"
+  },
+  {
+   "date": "2026-12-16",
+   "text": "Próxima vista del procedimiento en Irlanda"
+  }
+ ],
+ "tipo_contenido": "noticia",
+ "title": "Ryanair deja Airlines for Europe por el pleito de Lufthansa y Air France-KLM sobre el control de su propiedad",
+ "why": "La mayor aerolínea de bajo coste de Europa sale de la patronal común y el sector pierde una voz única ante Bruselas. El pleito de fondo, sobre la propiedad y el control de una aerolínea cotizada con accionistas extracomunitarios, puede tener alcance para todo el sector si prospera."
+}

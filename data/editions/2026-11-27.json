@@ -1,0 +1,146 @@
+{
+ "analysis_id": "la-lista-que-deja-fuera-a-nador-hihb",
+ "boe_range": [
+  "2026-11-27",
+  "2026-11-27"
+ ],
+ "boe_series": {
+  "2026-11-12": {
+   "disp": 5,
+   "lic": 12,
+   "total": 31
+  },
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  },
+  "2026-11-24": {
+   "disp": 1,
+   "lic": 4,
+   "total": 11
+  },
+  "2026-11-25": {
+   "disp": 0,
+   "lic": 6,
+   "total": 9
+  },
+  "2026-11-26": {
+   "disp": 12,
+   "lic": 15,
+   "total": 36
+  },
+  "2026-11-27": {
+   "disp": 4,
+   "lic": 13,
+   "total": 24
+  }
+ },
+ "closed_at": "07:39",
+ "date": "2026-11-27",
+ "document": {
+  "date": "2026-11-27",
+  "kicker": "Energía en los puertos · Gas natural licuado",
+  "ref": "BOE-A-2026-24990",
+  "source": "BOE",
+  "summary": "Integra la planta de GNL de El Musel (Gijón) en el sistema gasista desde el 1 de enero de 2027 (apartado primero).\nSu titular es Musel Energy Hub, participada en un 75 % por Enagás y en un 25 % por Reganosa Holdco (preámbulo).\nLa capacidad se ofrecerá con la del resto de plantas y la retribución seguirá las circulares de la CNMC (apartados cuarto y quinto).\nEl gestor técnico comprará hasta 103 GWh de gas talón desde el 1 de julio de 2027, o antes si el precio baja de 35 €/MWh (apartado tercero).\nAntes de enero debe aprobarse un procedimiento contra la congestión en el noroeste; la Orden TED/578/2023 deja de aplicarse (apartados segundo y sexto).",
+  "title": "Orden TED/1273/2026, de 25 de noviembre, por la que se incorpora la planta de regasificación del puerto de El Musel al régimen ordinario del sistema gasista español",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24990"
+ },
+ "lead_id": "rodalies-recupera-el-contrato-programa-1-407-millones-hasta-x032",
+ "note_metodologica": "Edición nº 21 de MOTICIAS, cerrada a las 07:39 (CET) del viernes 27 de noviembre de 2026. Tres noticias y un análisis. Periodo barrido en el BOE: 27 de noviembre (BOE núm. 295). Salen seis referencias y cuatro plazos. Las normas citadas se han leído en la API de datos abiertos del BOE. La pieza sobre el contrato-programa de Rodalies se apoya en un medio especializado y en la información de una agencia, citados en el texto, a falta de una nota oficial accesible, con el marco legal tomado de la Ley del Sector Ferroviario. La del hundimiento del buque Med Emre se apoya en dos medios especializados citados en el texto y en el plan activado por el Govern balear, con el marco normativo tomado del BOE. La de la planta de El Musel se apoya en la orden publicada hoy en el BOE. El análisis corresponde al ámbito «Marítimo y puertos», según la rotación, y se apoya en un reglamento de ejecución de la Comisión Europea, en el Real Decreto-ley 41/2026 y en el observatorio del comercio de emisiones de Puertos del Estado. La búsqueda de información y los borradores se apoyan en herramientas de inteligencia artificial, bajo supervisión editorial.",
+ "number": 21,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-24990",
+   "text": "Orden TED/1273/2026: la regasificadora de El Musel entra en el sistema gasista el 1 de enero",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24990"
+  },
+  {
+   "ref": "BOE-B-2026-39135",
+   "text": "Adif licita por 4,27 millones los cerramientos de la red convencional sur",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39135"
+  },
+  {
+   "ref": "BOE-B-2026-39124",
+   "text": "Adif busca apoyo de ensayos para su laboratorio central por 3,48 millones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39124"
+  },
+  {
+   "ref": "BOE-B-2026-39130",
+   "text": "Adif compra equipos de regulación de la tensión en cuatro lotes",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39130"
+  },
+  {
+   "ref": "BOE-B-2026-39131",
+   "text": "Mantenimiento de las puertas automáticas de estaciones de Adif durante tres años",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39131"
+  },
+  {
+   "ref": "BOE-B-2026-39161",
+   "text": "Avilés otorga a R Cable y Telecable una concesión para su red de telecomunicaciones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39161"
+  },
+  {
+   "ref": "BOE-A-2026-24438",
+   "text": "Real Decreto-ley 41/2026: comercio de emisiones para navieras, aerolíneas y carretera",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+  },
+  {
+   "ref": "BOE-A-2026-24703",
+   "text": "Real Decreto-ley 45/2026: descuentos del transporte público en 2027",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24703"
+  },
+  {
+   "ref": "BOE-A-2026-24811",
+   "text": "Real Decreto 1078/2026: suplencia en la Secretaría General de Movilidad Sostenible",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24811"
+  },
+  {
+   "ref": "BOE-B-2026-39001",
+   "text": "Adif licita la reparación del túnel de Gravet, entre Manresa y Barcelona",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39001"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

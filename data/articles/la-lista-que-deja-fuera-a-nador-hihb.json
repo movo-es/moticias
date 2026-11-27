@@ -1,0 +1,198 @@
+{
+ "actors": "Comisión Europea; Puertos del Estado y su observatorio del comercio de emisiones; Oficina Española de Cambio Climático; Anave; ESPO; puertos de Algeciras y Valencia; Tánger Med, East Port Said, Damietta, Abu Qir y Nador West Med; Gobierno del Reino Unido",
+ "author": "G. Jordan",
+ "author_role": "Redactor responsable",
+ "body_md": "Desde el 10 de diciembre, una escala en los puertos egipcios de Damietta y Abu Qir dejará de servir para recortar la factura de carbono de un portacontenedores que viaja de Asia a un puerto europeo. Lo fija el Reglamento de Ejecución (UE) 2026/2562 de la Comisión, de 19 de noviembre, que eleva a cuatro la lista de puertos vecinos de transbordo y deja fuera, otra vez, a Nador West Med.\n\n## La regla\n\n**El cómputo.** El transporte marítimo paga derechos de emisión desde 2024. En un viaje entre un puerto de un tercer país y uno de la Unión se cuenta la mitad de las emisiones del trayecto, y ese trayecto empieza en el último puerto de escala fuera de la Unión. De ahí nace el atajo: parar en un gran puerto de transbordo cercano, al otro lado del Estrecho o en la boca del canal de Suez, convertía un viaje desde Singapur en un salto corto, y la factura bajaba en la misma proporción.\n\n**El cierre.** La Directiva 2003/87/CE obliga a la Comisión a listar los puertos donde una parada no cuenta como escala (artículo 3 ga, apartado 2). Los requisitos son tres: estar a menos de 300 millas náuticas de un puerto de la Unión, mover en transbordo más del 65 % de su tráfico de contenedores en los doce meses con datos y pertenecer a un país sin medidas equivalentes al régimen europeo. La primera lista, el Reglamento de Ejecución (UE) 2023/2297, incluyó East Port Said, en Egipto, y Tánger Med, en Marruecos. La de 2026 añade Damietta y Abu Qir. Con ellos, el ejemplo de Singapur a Valencia con parada en Damietta vuelve a computarse al 50 % sobre todo el recorrido.\n\n**La ley española.** El Real Decreto-ley 41/2026, publicado en el BOE del 21 de noviembre, ya incorporó la regla a la Ley 1/2005. Su definición de puerto de escala excluye\n\n> «las paradas de buques portacontenedores en un puerto considerado puerto vecino de transbordo de contenedores»\n\nconforme a la normativa europea. La misma reforma permite pedir a la Administración marítima la expulsión de los buques de una naviera que incumpla la entrega de derechos durante dos o más periodos consecutivos (artículo 31 bis).\n\n## El atajo\n\nLa regla persigue una fuga concreta: el buque que para fuera de la Unión justo antes de entrar en ella. No alcanza otra, la del servicio que deja de tocar un puerto comunitario. El observatorio del comercio de emisiones de Puertos del Estado, con datos hasta marzo de 2026, documenta el caso: un servicio de Maersk trasladó a finales de 2024 su escala de Algeciras a Tánger Med y redujo a la mitad su coste de carbono. Ninguna lista lo evita, porque ese buque ya no entra en un puerto europeo en ese tramo.\n\n>> La lista cierra la puerta del último salto, pero no impide que el tráfico de transbordo cambie de orilla.\n\nEl mismo observatorio matiza el diagnóstico de la fuga masiva. Tánger Med ha pasado del 41 % al 37 % de la conectividad del Mediterráneo occidental medida en TEU-milla entre 2022 y 2026, y Valencia, del 8 % al 15 %. Su propuesta para Bruselas es designar los puertos por esa conectividad y no solo por el porcentaje de transbordo.\n\n## Nador\n\n**El hueco.** Nador West Med, en la costa mediterránea de Marruecos, no figura en la lista, y su ausencia preocupa a los puertos españoles, según recogió la Asociación de Navieros Españoles (Anave). Tampoco entran Djen Djen, en Argelia; Alejandría, en Egipto, ni Tekirdag, en Turquía. La Organización Europea de Puertos Marítimos (ESPO) pidió actualizaciones más frecuentes.\n\n**El retrovisor.** El método explica el hueco. Para entrar en la lista hacen falta doce meses de datos con más de un 65 % de transbordo, y la lista se revisa cada cierto tiempo, no al ritmo del mercado. Un puerto nuevo puede captar tráfico durante meses antes de cumplir el umbral con datos completos, y ese es el tiempo en que una naviera reorganiza sus servicios. Para Algeciras, que compite con Tánger Med y con Nador por los mismos tráficos de transbordo, la lista llega siempre una revisión tarde.\n\n## El Reino Unido\n\nEl otro frente se abrió el 20 de noviembre en Bruselas. La Unión y el Reino Unido concluyeron la negociación para vincular sus mercados de derechos de emisión desde el 1 de enero de 2028, a falta de ratificación, según Anave. El sistema británico cubre desde 2026 el 50 % de las emisiones de los viajes entre puertos británicos y extranjeros de los buques de 5.000 toneladas de arqueo bruto o más. Con la vinculación, los derechos de ambos sistemas serán intercambiables y el primer plazo de entrega conjunto será el 30 de septiembre de 2028, por las obligaciones de 2027. Para las navieras con tráficos entre España y el Reino Unido, un mismo derecho servirá a los dos lados.\n\n## Lo que toca\n\nTres fechas. El 10 de diciembre se aplica la nueva lista, junto con el reglamento gemelo para FuelEU Maritime, el 2026/2563. Durante 2027, Bruselas y Londres tienen que aprobar los cambios legislativos y adaptar sus registros para la vinculación. Y la siguiente revisión de la lista dirá si Nador West Med cumple ya los criterios.\n\nLa cuestión de fondo es otra. El comercio de emisiones aplicado al mar se diseñó con un perímetro geográfico, y cada revisión de ese perímetro llega cuando el tráfico ya se ha movido. La conectividad que propone Puertos del Estado es un indicador más rápido que el porcentaje de transbordo; si Bruselas no lo adopta, los puertos españoles de transbordo seguirán pidiendo la lista siguiente para corregir lo que la anterior no vio.",
+ "campaign": null,
+ "date": "2026-11-27",
+ "event_date": "2026-11-19",
+ "featured": 0,
+ "fiabilidad": "primaria",
+ "firma_motivo": "importancia 3 (hace falta 4 o más)",
+ "geo": {
+  "lat": 36.1408,
+  "lon": -5.4562,
+  "place": "Algeciras"
+ },
+ "id": "la-lista-que-deja-fuera-a-nador-hihb",
+ "image": {
+  "alt": "Grúas pórtico azules de una terminal de contenedores operando un portacontenedores",
+  "credit": "jssz",
+  "license": "CC BY-SA 2.0",
+  "orig_src": "img/puerto-algeciras.jpg",
+  "source": "https://www.flickr.com/photos/54533793@N05/7050719921",
+  "src": "img/puerto-algeciras.jpg"
+ },
+ "importancia": 3,
+ "importancia_agente": 3,
+ "key_data": [
+  {
+   "label": "Norma",
+   "source": "EUR-Lex; Europalov",
+   "value": "Reglamento de Ejecución (UE) 2026/2562, de 19-11-2026 (DOUE del 20-11-2026)"
+  },
+  {
+   "label": "Aplicación",
+   "source": "Europalov; Anave, 26-11-2026",
+   "value": "10-12-2026"
+  },
+  {
+   "label": "Puertos en la lista",
+   "source": "Reglamentos de Ejecución (UE) 2023/2297 y 2026/2562",
+   "value": "East Port Said y Tánger Med (2023); Damietta y Abu Qir (2026)"
+  },
+  {
+   "label": "Criterios",
+   "source": "Anave, 26-11-2026",
+   "value": "Menos de 300 millas de un puerto de la UE y más del 65 % de transbordo"
+  },
+  {
+   "label": "Cuota de Tánger Med en TEU-milla (Mediterráneo occidental)",
+   "source": "Puertos del Estado, observatorio ETS, datos a marzo de 2026",
+   "value": "41 % (2022) → 37 % (2026)"
+  },
+  {
+   "label": "Vinculación UE-Reino Unido",
+   "source": "Anave, 26-11-2026",
+   "value": "1-1-2028, a falta de ratificación"
+  }
+ ],
+ "key_fact": "4 puertos vecinos de transbordo desde el 10-12-2026: East Port Said, Tánger Med, Damietta y Abu Qir",
+ "kicker": "Comercio de emisiones · Puertos de transbordo",
+ "kind": "analisis",
+ "medio": "mar",
+ "modo": "mar",
+ "modos": [
+  "puertos",
+  "carga-maritima"
+ ],
+ "motivo_importante": "",
+ "next": "Aplicación de la nueva lista y del reglamento gemelo de FuelEU Maritime el 10-12-2026; cambios legislativos de la Unión y el Reino Unido en 2027 para vincular sus mercados el 1-1-2028; próxima revisión de la lista, con Nador West Med en discusión.",
+ "published_at": "2026-11-27T07:24:00+01:00",
+ "published_time": "07:24",
+ "relevance": "ALTA",
+ "relevance_for": "Autoridades portuarias de Algeciras, Valencia y Barcelona; navieras de contenedores y sus terminales; consignatarios; administraciones que aplican el comercio de emisiones marítimo; navieras con tráficos entre España y el Reino Unido",
+ "review_note": "Rutinaria: análisis de la redacción sobre una norma europea y una norma española publicadas, con datos del observatorio de Puertos del Estado; no atribuye conductas indebidas ni toca al grupo.",
+ "risk": "rutinaria",
+ "scope": "Marítimo y puertos",
+ "section": "analisis",
+ "sources": [
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "EUR-Lex (DOUE)",
+   "published": "2026-11-20",
+   "title": "Reglamento de Ejecución (UE) 2026/2562 de la Comisión, de 19 de noviembre de 2026, que modifica el Reglamento de Ejecución (UE) 2023/2297 en lo relativo a los puertos vecinos de transbordo de contenedores",
+   "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/2562/oj"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "EUR-Lex (DOUE)",
+   "published": "",
+   "title": "Reglamento de Ejecución (UE) 2023/2297 de la Comisión, lista de puertos vecinos de transbordo de contenedores (en inglés)",
+   "url": "https://eur-lex.europa.eu/eli/reg_impl/2023/2297/oj/eng"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "BOE",
+   "published": "2026-11-21",
+   "title": "Real Decreto-ley 41/2026, de 20 de noviembre, por el que se modifica la Ley 1/2005 del comercio de derechos de emisión (BOE-A-2026-24438)",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "oficial",
+   "outlet": "Puertos del Estado",
+   "published": "",
+   "title": "ETS Observatory. Summary, March 2026 (en inglés)",
+   "url": "https://www.puertos.es/system/files/2026-07/ETS%20OBSERVATORY%20SUMMARY%20MAR-2026%20EN.pdf"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "medios",
+   "outlet": "Anave",
+   "published": "2026-11-26",
+   "title": "Bruselas incorpora Damietta y Abu Qir a la lista de puertos vecinos de transbordo del EU ETS",
+   "url": "https://anave.es/bruselas-incorpora-damietta-y-abu-qir-a-la-lista-de-puertos-vecinos-de-transbordo-del-eu-ets/"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "medios",
+   "outlet": "Anave",
+   "published": "2026-11-26",
+   "title": "Reino Unido y la UE acuerdan vincular sus mercados de derechos de emisión a partir de 2028",
+   "url": "https://anave.es/reino-unido-y-la-ue-acuerdan-vincular-sus-mercados-de-derechos-de-emision-a-partir-de-2028/"
+  },
+  {
+   "accessed": "2026-11-27",
+   "kind": "medios",
+   "outlet": "Europalov",
+   "published": "",
+   "title": "Kvotehandelsdirektivet (ETS): endringsbestemmelser om havner for kontaineromlasting (en noruego)",
+   "url": "https://europalov.no/rettsakt/kvotehandelsdirektivet-ets-endringsbestemmelser-om-havner-for-kontaineromlasting/id-35353"
+  }
+ ],
+ "status": "publicado",
+ "submodo": "puertos",
+ "subsector": "marítimo",
+ "subtitle": "Bruselas añade Damietta y Abu Qir a los puertos vecinos de transbordo del comercio de emisiones desde el 10 de diciembre; el puerto marroquí que inquieta a los españoles sigue fuera y la fuga por cambio de orilla no tiene remedio en la norma",
+ "summary": "El Reglamento de Ejecución (UE) 2026/2562 amplía a cuatro los puertos donde una escala no recorta el cómputo del comercio de emisiones marítimo. Cierra el atajo egipcio, pero deja fuera a Nador West Med y no alcanza a los servicios que dejan de tocar puertos europeos, como ya documenta Puertos del Estado.",
+ "tags": [
+  "comercio de emisiones",
+  "Puertos del Estado",
+  "Tánger Med",
+  "Nador West Med",
+  "puerto de Algeciras",
+  "Comisión Europea",
+  "transbordo de contenedores"
+ ],
+ "taxonomia_manual": true,
+ "temas": [
+  "analisis",
+  "regulacion"
+ ],
+ "territorios": [
+  "andalucia",
+  "comunidad-valenciana",
+  "ue"
+ ],
+ "timeline": [
+  {
+   "date": "2023",
+   "text": "El Reglamento de Ejecución (UE) 2023/2297 incluye East Port Said y Tánger Med"
+  },
+  {
+   "date": "2024-01-01",
+   "text": "El transporte marítimo entra en el comercio europeo de derechos de emisión"
+  },
+  {
+   "date": "2026-11-19",
+   "text": "La Comisión adopta el Reglamento de Ejecución (UE) 2026/2562"
+  },
+  {
+   "date": "2026-11-20",
+   "text": "Cumbre UE-Reino Unido: concluye la negociación para vincular los mercados de emisiones"
+  },
+  {
+   "date": "2026-11-21",
+   "text": "El BOE publica el Real Decreto-ley 41/2026, que adapta la Ley 1/2005"
+  },
+  {
+   "date": "2026-12-10",
+   "text": "Se aplica la nueva lista de puertos vecinos de transbordo"
+  },
+  {
+   "date": "2028-01-01",
+   "text": "Vinculación prevista de los mercados de la UE y el Reino Unido"
+  },
+  {
+   "date": "2028-09-30",
+   "text": "Primer plazo de entrega conjunto, por las obligaciones de 2027"
+  }
+ ],
+ "tipo_contenido": "editorial",
+ "title": "La lista que deja fuera a Nador",
+ "why": "Decide dónde se paga el carbono del transporte marítimo y, con ello, a qué orilla del Mediterráneo se va el transbordo. La revisión cierra una fuga, pero el método llega siempre después del movimiento del tráfico."
+}
