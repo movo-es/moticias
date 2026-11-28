@@ -1,0 +1,146 @@
+{
+ "analysis_id": "la-cuenta-que-paro-el-tranvia-pv2n",
+ "boe_range": [
+  "2026-11-28",
+  "2026-11-28"
+ ],
+ "boe_series": {
+  "2026-11-13": {
+   "disp": 2,
+   "lic": 7,
+   "total": 27
+  },
+  "2026-11-14": {
+   "disp": 6,
+   "lic": 0,
+   "total": 8
+  },
+  "2026-11-16": {
+   "disp": 3,
+   "lic": 13,
+   "total": 26
+  },
+  "2026-11-17": {
+   "disp": 6,
+   "lic": 9,
+   "total": 20
+  },
+  "2026-11-18": {
+   "disp": 3,
+   "lic": 6,
+   "total": 18
+  },
+  "2026-11-19": {
+   "disp": 4,
+   "lic": 9,
+   "total": 24
+  },
+  "2026-11-20": {
+   "disp": 15,
+   "lic": 11,
+   "total": 34
+  },
+  "2026-11-21": {
+   "disp": 1,
+   "lic": 0,
+   "total": 1
+  },
+  "2026-11-23": {
+   "disp": 2,
+   "lic": 12,
+   "total": 21
+  },
+  "2026-11-24": {
+   "disp": 1,
+   "lic": 4,
+   "total": 11
+  },
+  "2026-11-25": {
+   "disp": 0,
+   "lic": 6,
+   "total": 9
+  },
+  "2026-11-26": {
+   "disp": 12,
+   "lic": 15,
+   "total": 36
+  },
+  "2026-11-27": {
+   "disp": 4,
+   "lic": 13,
+   "total": 24
+  },
+  "2026-11-28": {
+   "disp": 2,
+   "lic": 0,
+   "total": 2
+  }
+ },
+ "closed_at": "07:35",
+ "date": "2026-11-28",
+ "document": {
+  "date": "2026-11-28",
+  "kicker": "Comercio de emisiones · Convalidación parlamentaria",
+  "ref": "BOE-A-2026-25024",
+  "source": "BOE",
+  "summary": "Acuerdo de la Diputación Permanente del Congreso en su sesión del 26 de noviembre, al amparo del artículo 86.2 de la Constitución.\nConvalida el Real Decreto-ley 41/2026, publicado en el BOE núm. 290 del 21 de noviembre y en vigor desde el 22.\nLa resolución no recoge la tramitación del decreto-ley como proyecto de ley.\nLas entidades que despachan combustibles sin autorización de emisión deben pedirla antes del 22 de diciembre (disposición transitoria cuarta).\nFirma la presidenta del Congreso, Francina Armengol Socias.",
+  "title": "Resolución de 26 de noviembre de 2026, del Congreso de los Diputados, por la que se ordena la publicación del Acuerdo de convalidación del Real Decreto-ley 41/2026, de 20 de noviembre, por el que se modifica la Ley 1/2005, de 9 de marzo, por la que se regula el régimen del comercio de derechos de emisión de gases de efecto invernadero",
+  "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25024"
+ },
+ "lead_id": "plus-ultra-plantea-cerrar-y-despedir-a-sus-659-trabajadores-6x6o",
+ "note_metodologica": "Edición nº 22 de MOTICIAS, cerrada a las 07:35 (CET) del sábado 28 de noviembre de 2026. Cuatro noticias y un análisis. Periodo barrido en el BOE: 28 de noviembre (BOE núm. 296), con dos referencias; la agenda suma dos fechas. Las normas citadas se han leído en la API de datos abiertos del BOE. La pieza sobre el cierre planteado por Plus Ultra se apoya en tres medios citados en el texto, a falta de un comunicado de la empresa, con el marco legal tomado del BOE. La del remolque del buque Med Emre a Cartagena se apoya en dos medios especializados y en un tercer medio, citados en el texto, a falta de una nota oficial accesible, con el marco legal tomado del BOE; incluye una precisión sobre la pieza del 27 de noviembre, que habló de hundimiento cuando el buque está volcado y a flote. La de la compensación al transporte de mercancías con Canarias se apoya en las notas de la CNMC y en los dos reales decretos del régimen. La de la convalidación del Real Decreto-ley 41/2026 se apoya en el BOE. El análisis corresponde al ámbito «Ferrocarril», según la rotación —el tranvía es un sistema ferroviario urbano según la Ley 9/2006 de Servicios Ferroviarios de Andalucía—, y se apoya en la nota de la Junta de Andalucía, el análisis económico del plan de transporte metropolitano de Jaén, la resolución de la Comisión Mixta para las Relaciones con el Tribunal de Cuentas y la adjudicación del suministro eléctrico del sistema. La búsqueda de información y los borradores se apoyan en herramientas de inteligencia artificial, bajo supervisión editorial.",
+ "number": 22,
+ "ticker": [
+  {
+   "ref": "BOE-A-2026-25024",
+   "text": "Convalidado el Real Decreto-ley 41/2026: comercio de emisiones para navieras, aerolíneas y combustibles",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25024"
+  },
+  {
+   "ref": "BOE-A-2026-25022",
+   "text": "Convalidado el Real Decreto-ley 39/2026 de condiciones laborales transparentes y previsibles",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-25022"
+  },
+  {
+   "ref": "BOE-A-2026-24990",
+   "text": "Orden TED/1273/2026: la regasificadora de El Musel entra en el sistema gasista el 1 de enero",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24990"
+  },
+  {
+   "ref": "BOE-B-2026-39135",
+   "text": "Adif licita por 4,27 millones los cerramientos de la red convencional sur",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39135"
+  },
+  {
+   "ref": "BOE-B-2026-39124",
+   "text": "Adif busca apoyo de ensayos para su laboratorio central por 3,48 millones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39124"
+  },
+  {
+   "ref": "BOE-B-2026-39130",
+   "text": "Adif compra equipos de regulación de la tensión en cuatro lotes",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39130"
+  },
+  {
+   "ref": "BOE-B-2026-39131",
+   "text": "Mantenimiento de las puertas automáticas de estaciones de Adif durante tres años",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39131"
+  },
+  {
+   "ref": "BOE-B-2026-39161",
+   "text": "Avilés otorga a R Cable y Telecable una concesión para su red de telecomunicaciones",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-B-2026-39161"
+  },
+  {
+   "ref": "BOE-A-2026-24438",
+   "text": "Real Decreto-ley 41/2026: comercio de emisiones para navieras, aerolíneas y carretera",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24438"
+  },
+  {
+   "ref": "BOE-A-2026-24703",
+   "text": "Real Decreto-ley 45/2026: descuentos del transporte público en 2027",
+   "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-24703"
+  }
+ ],
+ "ticker_label": "Boletines"
+}

@@ -67,6 +67,22 @@
   {
    "date": "2026-11-24",
    "scope": "Regulación y gobernanza"
+  },
+  {
+   "date": "2026-11-25",
+   "scope": "Autobús y carretera"
+  },
+  {
+   "date": "2026-11-26",
+   "scope": "Aéreo"
+  },
+  {
+   "date": "2026-11-27",
+   "scope": "Marítimo y puertos"
+  },
+  {
+   "date": "2026-11-28",
+   "scope": "Ferrocarril"
   }
  ],
  "rotation": [
